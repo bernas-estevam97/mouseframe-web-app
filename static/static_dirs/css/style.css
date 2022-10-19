@@ -1,0 +1,45 @@
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* align y axis */
+}
+
+header h1{
+    border: 1px solid #000;
+
+}
+
+.img-selection{
+    display: flex;
+    justify-content: space-evenly;
+    position: relative;
+    text-align: center;
+    align-items: center;
+}
+
+.requirements h3{
+    border: 1px solid #000;
+}
+.image-container{
+    position: relative;
+    /* left: 50%;
+    transform: translateX(-50%); */
+    height: 600px;
+    width: 1200px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: 1px solid #000;
+    margin: 20px;
+}
+
+
+ul li{
+    list-style-type: none;
+}
+
+
+.data-results{
+    text-align: center;
+}
+
