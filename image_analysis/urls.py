@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', index)
+    path('', index),
+    path('canvas', canvas),
 ] + static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)

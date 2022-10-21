@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 style="font-size: 3em;">Canvas Test</h1>
+    <form action="">
+        <label for="img">Select image:</label>
+        <input type="file" id="uploader" name="image" accept="image/*">
+    </form>
+    <canvas id="canvas" width="1200" height="600"></canvas>
+    <div class="img-container"></div>
+    <script>
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const uploader = document.getElementById('uploader');
+            uploader.addEventListener('change', (e)=>{
+                console.log(canvas.height, canvas.width);
+                const myFile = uploader.files[0];
+                console.log(myFile);
+                const img = new Image();
+                img.src = URL.createObjectURL(myFile);
+                img.onload = function (){
+                    console.log(img.height, img.width);
+                    canvas.height = img.height;
+                    canvas.width = img.width;
+                    ctx.clearRect (0, 0, canvas.width, canvas.height); // deleting previous image to add next
+                    ctx.drawImage(img, 0, 0);
+                }
+            });
+    </script>
+</body>
+</html>

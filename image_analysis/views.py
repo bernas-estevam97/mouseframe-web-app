@@ -10,3 +10,7 @@ from django.template import RequestContext
 
 def index(request):
     return render(request, 'index.html')
+
+
+def canvas(request):
+    return render(request, 'canvas_test.html')
