@@ -38,6 +38,14 @@ ul li{
     list-style-type: none;
 }
 
+.bottom-functions{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.buttons{
+    margin-left: 100px;
+}
 
 .data-results{
     text-align: center;
