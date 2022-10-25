@@ -14,3 +14,6 @@ def index(request):
 
 def canvas(request):
     return render(request, 'canvas_test.html')
+
+def image_editor(request):
+    return render(request, 'image_editor.html')

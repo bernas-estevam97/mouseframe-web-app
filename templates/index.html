@@ -160,7 +160,9 @@
         <label for="img">Select image:</label>
         <input type="file" id="file" name="image" accept="image/*" onchange="loadFile(event)">
       </form>
-    <div id="imgContainer" class="image-container"></div>
+    <div id="imgContainer" class="image-container">
+      <canvas id="canvas_2"></canvas>
+    </div>
     </div>
     </div>
     <div class="data-results" id="showData">
@@ -173,7 +175,7 @@
         </ul>
     </div>
 <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/distance_points.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/canvas_2.js' %}"></script>
 <script>
    let imgContainer = document.getElementById("imgContainer");
     let loadFile = function(event){

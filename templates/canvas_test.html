@@ -1,9 +1,11 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/canvas.css' %}">
     <title>Document</title>
 </head>
 <body>
@@ -12,26 +14,11 @@
         <label for="img">Select image:</label>
         <input type="file" id="uploader" name="image" accept="image/*">
     </form>
-    <canvas id="canvas" width="1200" height="600"></canvas>
-    <div class="img-container"></div>
-    <script>
-            const canvas = document.getElementById('canvas');
-            const ctx = canvas.getContext('2d');
-            const uploader = document.getElementById('uploader');
-            uploader.addEventListener('change', (e)=>{
-                console.log(canvas.height, canvas.width);
-                const myFile = uploader.files[0];
-                console.log(myFile);
-                const img = new Image();
-                img.src = URL.createObjectURL(myFile);
-                img.onload = function (){
-                    console.log(img.height, img.width);
-                    canvas.height = img.height;
-                    canvas.width = img.width;
-                    ctx.clearRect (0, 0, canvas.width, canvas.height); // deleting previous image to add next
-                    ctx.drawImage(img, 0, 0);
-                }
-            });
-    </script>
+    <canvas id="canvas" height="600" width="1200"></canvas>
+    <canvas id="canvas_2"></canvas>
+    <!-- <div class="img-container"></div> -->
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/canvas.js' %}"></script>
+
 </body>
 </html>

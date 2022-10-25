@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('canvas', canvas),
+    path('editor', image_editor),
 ] + static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)
