@@ -39,8 +39,8 @@
       <div class="buttons">
          <button id="redCircle" onclick="drawRedCircle();">Add button - Red</button>
          <button id="blueCircle" onclick="drawBlueCircle();">Add button - Blue</button>
-         <button id="deleteCircle" onclick="removeRedCircle();">Delete last added Red dot</button>
-         <button id="deleteCircle" onclick="removeBlueCircle();">Delete last added Blue dot</button>
+         <button id="deleteCircleRed" onclick="removeRedCircle();">Delete last added Red dot</button>
+         <button id="deleteCircleBlue" onclick="removeBlueCircle();">Delete last added Blue dot</button>
          <button id="reset" onclick="clearCanvas();">Reset Canvas</button>
          <button id="reset" onclick="resetFile();">Reset Image</button>
        </div>
@@ -57,6 +57,8 @@
    </div>
 <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/canvas_testing.js' %}"></script>
+<!-- <script type="text/javascript" src="{% static 'js/canvasjs.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.canvasjs.min.js' %}"></script> -->
 <script>
    let imgContainer = document.getElementById("imgContainer");
     let loadFile = function(event){

@@ -1,7 +1,9 @@
 let pointSize = 4;
-var points = [];
+let pointsRed = [];
+let pointsBlue = [];
 var timeout = 300;
-var clicks = 0;
+var clicksRed = 0;
+var clicksBlue = 0;
 
 
 
@@ -10,7 +12,8 @@ const ctx = canvas.getContext("2d");
 let cw = (canvas.width = 1200);
 let ch = (canvas.height = 600);
 const resetButton = document.getElementById("reset");
-const redButton = document.getElementById("redCircle");
+const deleteLastRed = document.getElementById("deleteCircleRed");
+const deleteLastBlue = document.getElementById("deleteCircleBlue");
 
 function getPosition(event) {
   var rect = canvas.getBoundingClientRect();
@@ -36,21 +39,26 @@ function drawCoordinatesBlue(point, r) {
 
 
 function drawRed(e){
-  clicks++;
+  clicksRed++;
   var m = getPosition(e);
   drawCoordinatesRed(m, pointSize);
+  pointsRed.push(m);
+  console.log(pointsRed);
 }
 
 function drawBlue(e){
-  clicks++;
+  clicksBlue++;
   var n = getPosition(e);
   drawCoordinatesBlue(n, pointSize);
+  pointsBlue.push(n);
+  console.log(pointsBlue);
 }
 
 
 function drawRedCircle(){
   canvas.addEventListener("click", drawRed, false);
   canvas.addEventListener("click", printMousePos, false);
+  canvas.removeEventListener('click', drawBlue);
     // clicks++;
     // this point won't be added to the points array
     // it's here only to mark the point on click since otherwise it will appear with a delay equal to the timeout
@@ -60,14 +68,16 @@ function drawRedCircle(){
 function drawBlueCircle(){
   canvas.addEventListener("click", drawBlue, false);
   canvas.addEventListener("click", printMousePos, false);
-    // clicks++;
-   
-    // this point won't be added to the points array
-    // it's here only to mark the point on click since otherwise it will appear with a delay equal to the timeout
+  canvas.removeEventListener('click', drawRed);
 }
 
-
-// function removeRedCircle(){
+// canvas.addEventListener("click", function(e) {
+//   clicks++;
+//   var m = getPosition(e);
+//   // this point won't be added to the points array
+//   // it's here only to mark the point on click since otherwise it will appear with a delay equal to the timeout
+//   drawCoordinates(m, pointSize);
+  
 //   if (clicks == 1) {
 //     setTimeout(function() {
 //       if (clicks == 1) {
@@ -76,57 +86,44 @@ function drawBlueCircle(){
 //       } else { // on double click 
 //         // 1. check if point in path
 //         for (let i = 0; i < points.length; i++) {
-//           ctxTwo.beginPath();
-//           ctxTwo.arc(points[i].x, points[i].y, pointSize, 0, Math.PI * 2, true);
+//           ctx.beginPath();
+//           ctx.arc(points[i].x, points[i].y, pointSize, 0, Math.PI * 2, true);
 
-//           if (ctxTwo.isPointInPath(m.x, m.y)) {
+//           if (ctx.isPointInPath(m.x, m.y)) {
 //             points.splice(i, 1); // remove the point from the array
 //             break;// if a point is found and removed, break the loop. No need to check any further.
 //           }
 //         }
 
 //         //clear the canvas
-//         ctxTwo.clearRect(0, 0, cw, ch);
+//         ctx.clearRect(0, 0, cw, ch);
 //       }
 
 //       points.map(p => {
-//         drawCoordinatesRed(p, pointSize);
+//         drawCoordinates(p, pointSize);
 //       });
 //       clicks = 0;
 //     }, timeout);
 //   }
-// }
+// });
 
 
-// function removeBlueCircle(){
-//   if (clicks == 1) {
-//     setTimeout(function() {
-//       if (clicks == 1) {
-//         // on click add a new point to the points array
-//         points.push(m);
-//       } else { // on double click 
-//         // 1. check if point in path
-//         for (let i = 0; i < points.length; i++) {
-//           ctxTwo.beginPath();
-//           ctxTwo.arc(points[i].x, points[i].y, pointSize, 0, Math.PI * 2, true);
 
-//           if (ctxTwo.isPointInPath(m.x, m.y)) {
-//             points.splice(i, 1); // remove the point from the array
-//             break;// if a point is found and removed, break the loop. No need to check any further.
-//           }
-//         }
+function removeRedCircle(){
+    lastCordRed = pointsRed.pop();
+    console.log(lastCordRed.x, lastCordRed.y);
+    ctx.clearRect((lastCordRed.x - 4), (lastCordRed.y - 4), 8, 8); 
+    // coordinates minus the radius 
+    //since the rect starts at the top left corner and the circle coords focus on the middle point
+    // 8 is the diameter of any point, so create a square with an edge of 8
+}
 
-//         //clear the canvas
-//         ctxTwo.clearRect(0, 0, cw, ch);
-//       }
+function removeBlueCircle(){
+  lastCordBlue = pointsBlue.pop();
+  console.log(lastCordBlue.x, lastCordBlue.y);
+  ctx.clearRect((lastCordBlue.x - 4), (lastCordBlue.y - 4), 8, 8);
+}
 
-//       points.map(p => {
-//         drawCoordinatesRed(p, pointSize);
-//       });
-//       clicks = 0;
-//     }, timeout);
-//   }
-// }
 
 
 function clearCanvas(){
@@ -134,10 +131,13 @@ function clearCanvas(){
   canvas.removeEventListener('click', drawRed);
   canvas.removeEventListener("click", printMousePos);
   ctx.clearRect(0, 0, cw, ch);
+  pointsRed.length = 0;
+  pointsBlue.length = 0;
 };
 
 
 function printMousePos(event) {
-  console.log(event.clientX, event.clientY)
+  var rect = event.target.getBoundingClientRect();
+  console.log("x:" + Math.round(event.clientX - rect.left) + " y:" + (event.clientY - rect.top))
 }
 
