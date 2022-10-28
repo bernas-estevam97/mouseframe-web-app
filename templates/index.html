@@ -37,12 +37,12 @@
     </div>
     <div class="bottom-functions">
       <div class="buttons">
-         <button id="redCircle" onclick="drawRedCircle();">Add button - Red</button>
-         <button id="blueCircle" onclick="drawBlueCircle();">Add button - Blue</button>
-         <button id="deleteCircleRed" onclick="removeRedCircle();">Delete last added Red dot</button>
-         <button id="deleteCircleBlue" onclick="removeBlueCircle();">Delete last added Blue dot</button>
-         <button id="reset" onclick="clearCanvas();">Reset Canvas</button>
-         <button id="reset" onclick="resetFile();">Reset Image</button>
+         <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Red</button>
+         <button class="button" type="button" id="blueCircle" onclick="drawBlueCircle();">Add button - Blue</button>
+         <button class="button" type="button" id="deleteCircleRed" onclick="removeRedCircle();">Delete last added Red dot</button>
+         <button class="button" type="button" id="deleteCircleBlue" onclick="removeBlueCircle();">Delete last added Blue dot</button>
+         <button class="button" type="button" id="reset" onclick="clearCanvas();">Reset Canvas</button>
+         <button class="button" type="button" id="reset" onclick="resetFile();">Reset Image</button>
        </div>
     <div class="data-results" id="showData">
         <h3>Data retrieved:</h3>
@@ -60,13 +60,24 @@
 <!-- <script type="text/javascript" src="{% static 'js/canvasjs.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.canvasjs.min.js' %}"></script> -->
 <script>
+   let results = document.querySelector(".data-results");
+   let buttons = document.querySelector(".buttons");
+   buttons.style.display = "none";
+   results.style.display = "none";
    let imgContainer = document.getElementById("imgContainer");
     let loadFile = function(event){
         imgContainer.style.backgroundImage = "url(" +URL.createObjectURL(event.target.files[0])+ ")"
+        buttons.style.display = "inline-block";
+        results.style.display = "inline-block";
     }
     let resetFile = function(event){
       imgContainer.style.backgroundImage = ""
+      buttons.style.display = "none";
+      results.style.display = "none";
     }
+    
+     
+    
 </script>
 </body>
 </html>

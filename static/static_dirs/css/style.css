@@ -28,7 +28,7 @@ header h1{
     width: 1200px;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 1200px 600px;
     border: 1px solid #000;
     margin: 20px;
 }

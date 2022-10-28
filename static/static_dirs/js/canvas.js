@@ -15,7 +15,6 @@ uploader.addEventListener('change', (e)=>{
         canvas.width = img.width;
         ctx.clearRect (0, 0, canvas.width, canvas.height); // deleting previous image to add next
         ctx.drawImage(img, 0, 0);
-        
     }
 });
 
