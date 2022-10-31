@@ -1,4 +1,21 @@
-let pointSize = 4;
+// Set point Size.  pointSize is the radius of the dots created and need to be dynamic and chosen by the user
+
+let pointSize;
+let showSize = document.getElementById("dynamicSize");
+
+function changeSize(){
+  let inputSize = document.getElementById("sizeInput").value;
+  if (inputSize){
+    pointSize = inputSize;
+  } else{
+    pointSize = 4; // if no input is given 4 is default value
+  }
+  console.log(inputSize);
+  showSize.innerHTML = "Current point size is: " + pointSize;
+}
+
+changeSize(); // initiate function on page load/refresh ---- Still testing
+
 let pointsRed = [];
 let pointsBlue = [];
 var timeout = 300;
@@ -44,6 +61,8 @@ function drawRed(e){
   drawCoordinatesRed(m, pointSize);
   pointsRed.push(m);
   console.log(pointsRed);
+  let index = pointsRed.indexOf(m);
+  console.log(index);
 }
 
 function drawBlue(e){
@@ -52,6 +71,8 @@ function drawBlue(e){
   drawCoordinatesBlue(n, pointSize);
   pointsBlue.push(n);
   console.log(pointsBlue);
+  let index = pointsRed.indexOf(n);
+  console.log(index);
 }
 
 
@@ -59,6 +80,7 @@ function drawRedCircle(){
   canvas.addEventListener("click", drawRed, false);
   canvas.addEventListener("click", printMousePos, false);
   canvas.removeEventListener('click', drawBlue);
+  canvas.style.cursor = "crosshair";
     // clicks++;
     // this point won't be added to the points array
     // it's here only to mark the point on click since otherwise it will appear with a delay equal to the timeout
@@ -69,50 +91,13 @@ function drawBlueCircle(){
   canvas.addEventListener("click", drawBlue, false);
   canvas.addEventListener("click", printMousePos, false);
   canvas.removeEventListener('click', drawRed);
+  canvas.style.cursor = "crosshair";
 }
-
-// canvas.addEventListener("click", function(e) {
-//   clicks++;
-//   var m = getPosition(e);
-//   // this point won't be added to the points array
-//   // it's here only to mark the point on click since otherwise it will appear with a delay equal to the timeout
-//   drawCoordinates(m, pointSize);
-  
-//   if (clicks == 1) {
-//     setTimeout(function() {
-//       if (clicks == 1) {
-//         // on click add a new point to the points array
-//         points.push(m);
-//       } else { // on double click 
-//         // 1. check if point in path
-//         for (let i = 0; i < points.length; i++) {
-//           ctx.beginPath();
-//           ctx.arc(points[i].x, points[i].y, pointSize, 0, Math.PI * 2, true);
-
-//           if (ctx.isPointInPath(m.x, m.y)) {
-//             points.splice(i, 1); // remove the point from the array
-//             break;// if a point is found and removed, break the loop. No need to check any further.
-//           }
-//         }
-
-//         //clear the canvas
-//         ctx.clearRect(0, 0, cw, ch);
-//       }
-
-//       points.map(p => {
-//         drawCoordinates(p, pointSize);
-//       });
-//       clicks = 0;
-//     }, timeout);
-//   }
-// });
-
-
 
 function removeRedCircle(){
     lastCordRed = pointsRed.pop();
-    console.log(lastCordRed.x, lastCordRed.y);
-    ctx.clearRect((lastCordRed.x - 4), (lastCordRed.y - 4), 8, 8); 
+    console.log("Removed point on the coordinates: X " + lastCordRed.x + " Y: " + lastCordRed.y);
+    ctx.clearRect((lastCordRed.x - pointSize), (lastCordRed.y - pointSize), pointSize*2, pointSize*2); 
     // coordinates minus the radius 
     //since the rect starts at the top left corner and the circle coords focus on the middle point
     // 8 is the diameter of any point, so create a square with an edge of 8
@@ -120,10 +105,9 @@ function removeRedCircle(){
 
 function removeBlueCircle(){
   lastCordBlue = pointsBlue.pop();
-  console.log(lastCordBlue.x, lastCordBlue.y);
-  ctx.clearRect((lastCordBlue.x - 4), (lastCordBlue.y - 4), 8, 8);
+  console.log("Removed point on the coordinates: X " + lastCordBlue.x + " Y: " + lastCordBlue.y);
+  ctx.clearRect((lastCordBlue.x - pointSize), (lastCordBlue.y - pointSize), pointSize*2, pointSize*2); 
 }
-
 
 
 function clearCanvas(){
@@ -133,6 +117,9 @@ function clearCanvas(){
   ctx.clearRect(0, 0, cw, ch);
   pointsRed.length = 0;
   pointsBlue.length = 0;
+  canvas.style.cursor = "auto";
+  pointSize = 4;  // when clicking reset canvas point size also goes to default --- can be changed
+  showSize.innerHTML = "Current point size is: " + pointSize;
 };
 
 
@@ -141,3 +128,5 @@ function printMousePos(event) {
   console.log("x:" + Math.round(event.clientX - rect.left) + " y:" + (event.clientY - rect.top))
 }
 
+
+// function distanceRed()

@@ -14,16 +14,21 @@
         <h1>Image Analysis - Mus Musculus walking behaviour</h1>
         <img src="{% static 'img/mouse.png' %}">
     </header>
+    <div class="container-full">
+        <!-- <div class="left-part"> -->
+        <div class="requirements">
+            <h3>Requirements</h3>
+            <ol>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa inventore ipsam enim, laudantium aliquam nam ipsum aliquid. Ipsam cumque blanditiis vero et minus recusandae nostrum, quam provident, delectus, tempore quisquam!</li>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium error obcaecati omnis officiis, vero maxime ipsum ducimus ratione placeat facilis maiores accusamus, fugit autem alias, mollitia odit numquam ullam corrupti!</li>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam illum adipisci reiciendis, cum commodi sit non debitis placeat laudantium, rem in. Eveniet expedita vel laboriosam ea veritatis blanditiis id eius!</li>
+                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas repellat perferendis provident error a aperiam consequuntur similique tempore, deleniti dicta magnam quo adipisci! Repellat ipsam temporibus nobis doloremque modi nulla.</li>
+            </ol>
+        </div>
+    <!-- </div> -->
+    <!-- <div class="right-part"> -->
     <div class="img-selection">
-    <div class="requirements">
-        <h3>Requirements</h3>
-        <ol>
-            <li>***</li>
-            <li>***</li>
-            <li>***</li>
-            <li>***</li>
-        </ol>
-    </div>
+    
     <div class="img-upload">
     <form action="">
         <label for="img">Upload your image here:</label>
@@ -52,9 +57,17 @@
             <li>Overlap: {}</li>
             <li>Stride width: {}</li>
         </ul>
-    </div>
-    
+    </div>   
    </div>
+   <div class="buttons-change">
+    <input id="sizeInput" type="number" placeholder="Dot Size">
+    <button onclick="changeSize();">Change dot size</button>
+    <p> Default size is set to 4</p>
+    <p id="dynamicSize"></p>
+    <p><strong>Note:</strong>When deleting buttons make sure you don't change point size. Only delete buttons when working with a fixed size</p>
+   </div>
+   <!-- </div> -->
+</div>
 <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/canvas_testing.js' %}"></script>
 <!-- <script type="text/javascript" src="{% static 'js/canvasjs.min.js' %}"></script>
@@ -62,18 +75,27 @@
 <script>
    let results = document.querySelector(".data-results");
    let buttons = document.querySelector(".buttons");
+   let chButtons = document.querySelector(".buttons-change");
    buttons.style.display = "none";
    results.style.display = "none";
+   chButtons.style.display = "none";
    let imgContainer = document.getElementById("imgContainer");
     let loadFile = function(event){
         imgContainer.style.backgroundImage = "url(" +URL.createObjectURL(event.target.files[0])+ ")"
         buttons.style.display = "inline-block";
         results.style.display = "inline-block";
+        chButtons.style.display = "inline-block";
     }
     let resetFile = function(event){
       imgContainer.style.backgroundImage = ""
       buttons.style.display = "none";
       results.style.display = "none";
+      chButtons.style.display = "none";
+      canvas.style.cursor = "auto";
+      canvas.removeEventListener('click', drawBlue);            // Remove all event listeners and also clear canvas
+      canvas.removeEventListener('click', drawRed);
+      canvas.removeEventListener("click", printMousePos);
+      ctx.clearRect(0, 0, cw, ch);
     }
     
      

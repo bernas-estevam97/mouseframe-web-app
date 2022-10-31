@@ -6,7 +6,23 @@ header{
 
 header h1{
     border: 1px solid #000;
+}
 
+/* .container-full{
+    position: relative;
+    justify-content: space-between;
+    display: flex;
+    /* flex-direction: column; 
+} */
+
+.requirements h3{
+    text-align: center;
+    border: 1px solid #000;
+}
+
+.requirements ol li{
+    font-size: 1em;
+    padding-top: 20px;
 }
 
 .img-selection{
@@ -15,11 +31,12 @@ header h1{
     position: relative;
     text-align: center;
     align-items: center;
+    margin-top: 100px;
 }
 
-.requirements h3{
-    border: 1px solid #000;
-}
+
+
+
 .image-container{
     position: relative;
     /* left: 50%;
@@ -44,10 +61,13 @@ ul li{
 }
 
 .buttons{
-    margin-left: 300px;
+    margin-left: 0;
 }
 
 .data-results{
     text-align: center;
 }
 
+.buttons-change{
+    margin-left: 0;
+}
