@@ -48,7 +48,7 @@ function drawCoordinatesRed(point, r) {
 }
 
 function drawCoordinatesBlue(point, r) {
-  ctx.fillStyle = "#29BBF6"; // Blue color
+  ctx.fillStyle = "#0980F1"; // Blue color
   ctx.beginPath();
   ctx.arc(point.x, point.y, r, 0, Math.PI * 2, true);
   ctx.fill();
@@ -63,6 +63,8 @@ function drawRed(e){
   console.log(pointsRed);
   let index = pointsRed.indexOf(m);
   console.log(index);
+  ctx.font = "15px Arial";
+  ctx.fillText(index + 1, m.x + pointSize*1.2, m.y + pointSize*1.2 + 10);
 }
 
 function drawBlue(e){
@@ -71,8 +73,10 @@ function drawBlue(e){
   drawCoordinatesBlue(n, pointSize);
   pointsBlue.push(n);
   console.log(pointsBlue);
-  let index = pointsRed.indexOf(n);
+  let index = pointsBlue.indexOf(n);
   console.log(index);
+  ctx.font = "15px Arial";
+  ctx.fillText(index + 1, n.x + pointSize*1.2, n.y + pointSize*1.2 + 10);
 }
 
 
@@ -97,16 +101,18 @@ function drawBlueCircle(){
 function removeRedCircle(){
     lastCordRed = pointsRed.pop();
     console.log("Removed point on the coordinates: X " + lastCordRed.x + " Y: " + lastCordRed.y);
-    ctx.clearRect((lastCordRed.x - pointSize), (lastCordRed.y - pointSize), pointSize*2, pointSize*2); 
+    ctx.clearRect((lastCordRed.x - pointSize), (lastCordRed.y - pointSize), pointSize*4, pointSize*4 + 10); 
     // coordinates minus the radius 
     //since the rect starts at the top left corner and the circle coords focus on the middle point
     // 8 is the diameter of any point, so create a square with an edge of 8
+    // to also delete the number we add another square with same size for deletion hence the times 4, also de plus 10 offset
+    // in the y axis like we did to draw the index numbers above
 }
 
 function removeBlueCircle(){
   lastCordBlue = pointsBlue.pop();
   console.log("Removed point on the coordinates: X " + lastCordBlue.x + " Y: " + lastCordBlue.y);
-  ctx.clearRect((lastCordBlue.x - pointSize), (lastCordBlue.y - pointSize), pointSize*2, pointSize*2); 
+  ctx.clearRect((lastCordBlue.x - pointSize), (lastCordBlue.y - pointSize), pointSize*4, pointSize*4 + 10); 
 }
 
 
@@ -125,7 +131,7 @@ function clearCanvas(){
 
 function printMousePos(event) {
   var rect = event.target.getBoundingClientRect();
-  console.log("x:" + Math.round(event.clientX - rect.left) + " y:" + (event.clientY - rect.top))
+  console.log("x:" + Math.round(event.clientX - rect.left) + " y:" + Math.round(event.clientY - rect.top))
 }
 
 
