@@ -109,10 +109,24 @@ function removeRedCircle(){
     // in the y axis like we did to draw the index numbers above
 }
 
+function removeAllRedCircle(){
+  for (let i = 0; i < pointsRed.length; i++){
+    ctx.clearRect((pointsRed[i].x - pointSize), (pointsRed[i].y - pointSize), pointSize*4, pointSize*4 + 10);
+  }
+  pointsRed.length = 0;
+}
+
 function removeBlueCircle(){
   lastCordBlue = pointsBlue.pop();
   console.log("Removed point on the coordinates: X " + lastCordBlue.x + " Y: " + lastCordBlue.y);
   ctx.clearRect((lastCordBlue.x - pointSize), (lastCordBlue.y - pointSize), pointSize*4, pointSize*4 + 10); 
+}
+
+function removeAllBlueCircle(){
+  for (let i = 0; i < pointsBlue.length; i++){
+    ctx.clearRect((pointsBlue[i].x - pointSize), (pointsBlue[i].y - pointSize), pointSize*4, pointSize*4 + 10);
+  }
+  pointsBlue.length = 0;
 }
 
 
