@@ -126,8 +126,11 @@
     let canvasInputWidth = document.getElementById("canvasWidth").value;
     if (canvasInputWidth){
         canvas.width = canvasInputWidth;
+        imgContainer.style.width = canvasInputWidth + "px";
+
     } else{
         canvas.width = 500;
+        imgContainer.style.width = "500px";
     }
     }
 
@@ -137,8 +140,10 @@ function changeHeight(){
   let canvasInputHeight = document.getElementById("canvasHeight").value;
   if (canvasInputHeight){
     canvas.height = canvasInputHeight;
+    imgContainer.style.height = canvasInputHeight + "px";
   } else{
     canvas.height = 500;
+    imgContainer.style.height = "500px";
   }
 }
 
@@ -173,9 +178,6 @@ changeHeight();
       imgContainer.style.width = "500px";
       imgContainer.style.height = "500px";
     }
-    
-
-     
     
 </script>
 </body>
