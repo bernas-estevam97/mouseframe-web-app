@@ -1,3 +1,23 @@
+// Upload image and have the canvas with same sizes --- Testing with 2 canvas on above the other
+
+// const canvas = document.getElementById("canvas");
+// const ctx = canvas.getContext("2d");
+// const uploader = document.getElementById('uploadImage');
+// uploader.addEventListener('change', (e)=>{
+//     console.log(canvas.height, canvas.width);
+//     const myFile = uploader.files[0];
+//     console.log(myFile);
+//     const img = new Image();
+//     img.src = URL.createObjectURL(myFile);
+//     img.onload = function (){
+//         console.log(img.height, img.width);
+//         canvas.height = img.height;
+//         canvas.width = img.width;
+//         ctx.clearRect (0, 0, canvas.width, canvas.height); // deleting previous image to add next
+//         ctx.drawImage(img, 0, 0);
+//     }
+// });
+
 // Set point Size.  pointSize is the radius of the dots created and need to be dynamic and chosen by the user
 
 let pointSize;
@@ -16,6 +36,12 @@ function changeSize(){
 
 changeSize(); // initiate function on page load/refresh ---- Still testing
 
+// Canvas size changes
+
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+
 let pointsRed = [];
 let pointsBlue = [];
 var timeout = 300;
@@ -23,11 +49,6 @@ var clicksRed = 0;
 var clicksBlue = 0;
 
 
-
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-let cw = (canvas.width = 1200);
-let ch = (canvas.height = 600);
 const resetButton = document.getElementById("reset");
 const deleteLastRed = document.getElementById("deleteCircleRed");
 const deleteLastBlue = document.getElementById("deleteCircleBlue");
@@ -134,7 +155,7 @@ function clearCanvas(){
   canvas.removeEventListener('click', drawBlue);
   canvas.removeEventListener('click', drawRed);
   canvas.removeEventListener("click", printMousePos);
-  ctx.clearRect(0, 0, cw, ch);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   pointsRed.length = 0;
   pointsBlue.length = 0;
   canvas.style.cursor = "auto";

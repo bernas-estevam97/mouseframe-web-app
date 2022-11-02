@@ -32,8 +32,10 @@
     <div class="img-upload">
     <form action="">
         <label for="img">Upload your image here:</label>
-        <input type="file" id="image" name="image" alt="Upload" accept="image/*" onchange="loadFile(event)" style="display: none;">
-        <input class="upload-btn" type="button" value="Select Image" onclick="document.getElementById('image').click();" />
+        <p id="canvasInfo"> Default canvas (500x500)</p>
+        <p id="canvasUpload">Canvas has the same size of the image uploaded. Change below if necessary.</p>
+        <input type="file" id="uploadImage" name="img" alt="Upload" accept="image/*" onchange="loadFile(event)" style="display: none;">
+        <input class="upload-btn" type="button" value="Select Image" onclick="document.getElementById('uploadImage').click();" style="cursor: pointer;"/>
       </form>
     <div id="imgContainer" class="image-container">
       <canvas id="canvas"></canvas>
@@ -62,9 +64,15 @@
     </div>   
    </div>
    <div class="buttons-change">
+    <p id="imageUploadedWidth"></p>
+    <p id="imageUploadedHeight"></p>
+    <input id="canvasWidth" type="number" placeholder="Canvas Width">
+    <button onclick="changeWidth();">Change canvas width</button>
+    <input id="canvasHeight" type="number" placeholder="Canvas Height">
+    <button onclick="changeHeight();">Change canvas height</button>
     <input id="sizeInput" type="number" placeholder="Dot Size">
-    <button onclick="changeSize();">Change dot size</button>
-    <p> Default size is set to 4</p>
+    <button onclick="changeSize();">Change point size</button>
+    <p> Default point radius size is set to 4px</p>
     <p id="dynamicSize"></p>
     <p><strong>Note:</strong>When deleting buttons make sure you don't change point size. Only delete buttons when working with a fixed size</p>
    </div>
@@ -75,21 +83,81 @@
 <!-- <script type="text/javascript" src="{% static 'js/canvasjs.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.canvasjs.min.js' %}"></script> -->
 <script>
+//    let image = document.createElement('img');
+   let imgWidth = document.getElementById('imageUploadedWidth');
+   let imgHeight = document.getElementById('imageUploadedHeight');
    let results = document.querySelector(".data-results");
    let buttons = document.querySelector(".buttons");
    let chButtons = document.querySelector(".buttons-change");
+   let canvasInfo = document.getElementById("canvasInfo");
+   let canvasUpload = document.getElementById("canvasUpload");
+   canvasUpload.style.display = "none";
    buttons.style.display = "none";
    results.style.display = "none";
    chButtons.style.display = "none";
    let imgContainer = document.getElementById("imgContainer");
+   let img = new Image()
     let loadFile = function(event){
-        imgContainer.style.backgroundImage = "url(" +URL.createObjectURL(event.target.files[0])+ ")"
+        img.src = URL.createObjectURL(event.target.files[0]);
+        imgContainer.style.backgroundImage = "url(" +img.src+ ")";
         buttons.style.display = "inline-block";
         results.style.display = "inline-block";
         chButtons.style.display = "inline-block";
+        // canvasInfo.style.display = "none";
+        canvasUpload.style.display = "";
+
+// On image load canvas and container become the same size as uploaded image
+        img.onload = () => {
+            event.target.value = null;
+            imgWidth.innerHTML = "Uploaded image width: "+ img.width + "px";
+            imgHeight.innerHTML = "Uploaded image height: "+ img.height + "px";
+            imgContainer.style.width = img.width + "px";
+            imgContainer.style.height = img.height + "px";
+            canvas.height = img.height;
+            canvas.width = img.width;
+            canvasInfo.innerHTML = "Canvas size is: " + canvas.width + "x" + canvas.height;
+        }
     }
+
+    let canvasWidth = document.getElementById("canvasWidth");
+    let canvasHeight = document.getElementById("canvasHeight");
+
+    function changeWidth(){
+    let canvasInputWidth = document.getElementById("canvasWidth").value;
+    if (canvasInputWidth){
+        canvas.width = canvasInputWidth;
+    } else{
+        canvas.width = 500;
+    }
+    }
+
+changeWidth();
+
+function changeHeight(){
+  let canvasInputHeight = document.getElementById("canvasHeight").value;
+  if (canvasInputHeight){
+    canvas.height = canvasInputHeight;
+  } else{
+    canvas.height = 500;
+  }
+}
+
+changeHeight();
+    
+        // let img = document.createElement("img");
+        // img.src = URL.createObjectURL(event.target.files[0]);
+        // img.style.position = "absolute";
+        // let widthI = img.width;
+        // let heightI = img.height;
+        // imgContainer.appendChild(img);
+        // imgContainer.style.backgroundImage = "url(" +URL.createObjectURL(event.target.files[0])+ ")";
+        // buttons.style.display = "inline-block";
+        // results.style.display = "inline-block";
+        // chButtons.style.display = "inline-block";
+
     let resetFile = function(event){
-      imgContainer.style.backgroundImage = ""
+      
+      imgContainer.style.backgroundImage = "";
       buttons.style.display = "none";
       results.style.display = "none";
       chButtons.style.display = "none";
@@ -97,9 +165,16 @@
       canvas.removeEventListener('click', drawBlue);            // Remove all event listeners and also clear canvas
       canvas.removeEventListener('click', drawRed);
       canvas.removeEventListener("click", printMousePos);
-      ctx.clearRect(0, 0, cw, ch);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      canvasInfo.innerHTML = "Canvas size returned to default size (500x500)";
+      canvasUpload.style.display = "none";
+      canvas.width = 500;
+      canvas.height = 500;
+      imgContainer.style.width = "500px";
+      imgContainer.style.height = "500px";
     }
     
+
      
     
 </script>

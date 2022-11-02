@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Dimensions</title>
+</head>
+<body>
+    <form action="">
+        <label for="img">Upload your image here:</label>
+        <input type="file" id="uploadImage" name="img" alt="Upload" accept="image/*" onchange="loadFile(event)" style="display: none;">
+        <input class="upload-btn" type="button" value="Select Image" onclick="document.getElementById('uploadImage').click();" style="cursor: pointer;"/>
+      </form>
+
+
+<script type="javascript" src="{% static 'js/image_dim.js' %}"></script>
+<script type="javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script>
+
+let img = new Image()
+let loadFile = function(event){
+img.src = window.URL.createObjectURL(event.target.files[0])
+}
+img.onload = () => {
+   console.log(img.width + " " + img.height);
+}
+</script>
+</body>
+</html>

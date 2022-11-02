@@ -17,3 +17,6 @@ def canvas(request):
 
 def image_editor(request):
     return render(request, 'image_editor.html')
+
+def img_dim(request):
+    return render(request, 'image_dim.html')

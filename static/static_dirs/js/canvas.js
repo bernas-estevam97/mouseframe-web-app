@@ -1,22 +1,30 @@
-//---------------------------------------FIRST TEST-----------------------------------------//
-
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
+const canvasImg = document.getElementById('canvasImage');
+canvasImg.style.position = 'absolute';
+canvasImg.style.top = "300px";
+canvasImg.style.left = "50px";
+canvasImg.style.zIndex = 2;
+const ctxImg = canvasImg.getContext('2d');
 const uploader = document.getElementById('uploader');
 uploader.addEventListener('change', (e)=>{
-    console.log(canvas.height, canvas.width);
+    console.log(canvasImg.height, canvasImg.width);
     const myFile = uploader.files[0];
     console.log(myFile);
     const img = new Image();
     img.src = URL.createObjectURL(myFile);
     img.onload = function (){
         console.log(img.height, img.width);
-        canvas.height = img.height;
-        canvas.width = img.width;
-        ctx.clearRect (0, 0, canvas.width, canvas.height); // deleting previous image to add next
+        canvasImg.height = img.height;
+        canvasImg.width = img.width;
+        ctx.clearRect (0, 0, canvasImg.width, canvasImg.height); // deleting previous image to add next
         ctx.drawImage(img, 0, 0);
     }
 });
+
+const canvas = document.getElementById('canvas');
+canvas.style.position = 'absolute';
+canvas.style.top = "300px";
+canvas.style.left = "50px";
+const ctx = canvas.getContext('2d');
 
 let painting = false;
 
@@ -67,6 +75,3 @@ function draw_blue(e){
 canvas.addEventListener("click", startPositionRed);
 // // canvas.addEventListener("mouseup", endPosition);
 // // canvas.addEventListener("mousemove", draw);
-
-
-
