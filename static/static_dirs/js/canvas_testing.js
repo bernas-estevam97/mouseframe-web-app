@@ -171,3 +171,8 @@ function printMousePos(event) {
 
 
 // function distanceRed()
+
+let distances = [];
+let dist = Math.sqrt( Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2) );
+
+// const distance = (x1, y1, x2, y2) => Math.hypot(x2 - x1, y2 - y1); 
