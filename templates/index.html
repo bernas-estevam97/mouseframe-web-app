@@ -17,13 +17,13 @@
     <div class="container-full">
         <!-- <div class="left-part"> -->
         <div class="requirements">
-            <h3>Requirements</h3>
-            <ol>
-                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa inventore ipsam enim, laudantium aliquam nam ipsum aliquid. Ipsam cumque blanditiis vero et minus recusandae nostrum, quam provident, delectus, tempore quisquam!</li>
-                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium error obcaecati omnis officiis, vero maxime ipsum ducimus ratione placeat facilis maiores accusamus, fugit autem alias, mollitia odit numquam ullam corrupti!</li>
-                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam illum adipisci reiciendis, cum commodi sit non debitis placeat laudantium, rem in. Eveniet expedita vel laboriosam ea veritatis blanditiis id eius!</li>
-                <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas repellat perferendis provident error a aperiam consequuntur similique tempore, deleniti dicta magnam quo adipisci! Repellat ipsam temporibus nobis doloremque modi nulla.</li>
-            </ol>
+            <h3>Information and requirements</h3>
+            <ul>
+                <li>Only image file formats are supported.</li>
+                <li>Make sure you note which dpi was used in the case of scanned images to later add the number to further calculus in order to increase the results precision.</li>
+                <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies if a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
+                <li>The canvas will be automatically set to the uploaded image dimensions although a canvas bigger than the uploaded image would not make a difference in the distance calculations as long as the user adds the dots exclusively in the image.</li>
+            </ul>
         </div>
     <!-- </div> -->
     <!-- <div class="right-part"> -->
@@ -32,54 +32,50 @@
     <div class="img-upload">
     <form action="">
         <label for="img">Upload your image here:</label>
-        <p id="canvasInfo"> Canvas size is set to default (300x150).</p>
-        <p id="canvasUpload">Canvas has the same size of the image uploaded. Change below if necessary.</p>
+        <p id="canvasUpload">Canvas starts with same size as the image uploaded. Change below if necessary.</p>
         <input type="file" id="uploadImage" name="img" alt="Upload" accept="image/*" onchange="loadFile(event)" style="display: none;">
         <input class="upload-btn" type="button" value="Select Image" onclick="document.getElementById('uploadImage').click();" style="cursor: pointer;"/>
       </form>
     <div id="imgContainer" class="image-container">
       <canvas id="canvas"></canvas>
     </div>
-    <div id="imageInfo">
-      <p id="imageUploadedWidth"></p>
-      <p id="imageUploadedHeight"></p>
-      <p id="imageUploadedSize"></p>
-      <p id="imageUploadedPPI"></p>
-      <p id="imageUploadedDPI"></p>
-    </div>
     </div>
     </div>
     <div class="bottom-functions">
       <div class="buttons">
          <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Red</button>
-         <button class="button" type="button" id="blueCircle" onclick="drawBlueCircle();">Add button - Blue</button>
          <button class="button" type="button" id="deleteCircleRed" onclick="removeRedCircle();">Delete last added Red dot</button>
-         <button class="button" type="button" id="deleteAllCircleRed" onclick="removeAllRedCircle();">Delete all red dots</button>
+         <button class="button" type="button" id="deleteAllCircleRed" onclick="removeAllRedCircle();">Delete all red dots</button><br>
+         <button class="button" type="button" id="blueCircle" onclick="drawBlueCircle();">Add button - Blue</button>
          <button class="button" type="button" id="deleteCircleBlue" onclick="removeBlueCircle();">Delete last added Blue dot</button>
-         <button class="button" type="button" id="deleteAllCircleBlue" onclick="removeAllBlueCircle();">Delete all blue dots</button>
-         <button class="button" type="button" id="reset" onclick="clearCanvas();">Reset Canvas</button>
-         <button class="button" type="button" id="reset" onclick="resetFile();">Reset Image</button>
+         <button class="button" type="button" id="deleteAllCircleBlue" onclick="removeAllBlueCircle();">Delete all blue dots</button><br>
+         <button class="button" type="button" id="resetCanvas" onclick="clearCanvas();">Reset Canvas</button>
+         <button class="button" type="button" id="resetFile" onclick="resetFile();">Reset Image</button>
        </div>
-    <div class="data-results" id="showData">
-        <h3>Data retrieved:</h3>
-        <ul>
-            <li>Stride length hind legs: {}</li>
-            <li>Stride length front legs: {}</li>
-            <li>Overlap: {}</li>
-            <li>Stride width: {}</li>
-        </ul>
-    </div>   
+       <div id="imageInfo" class="image-info">
+        <p id="imageUploadedWidth"></p>
+        <p id="imageUploadedHeight"></p>
+        <p id="imageUploadedSize"></p>
+        <p id="canvasInfo"> Canvas size is set to default (300x150).</p>
+        <p id="imageUploadedPPI"></p>
+        <p id="imageUploadedDPI"></p>
+      </div>  
    </div>
    <div class="buttons-change">
     <input id="canvasWidth" type="number" placeholder="Canvas Width">
-    <button onclick="changeWidth();">Change canvas width</button>
+    <button id="changeW" onclick="changeWidth();">Change canvas width</button>
+    <button id="resetW" onclick="resetWidth();">Reset Width</button>
     <input id="canvasHeight" type="number" placeholder="Canvas Height">
-    <button onclick="changeHeight();">Change canvas height</button>
+    <button id="changeH" onclick="changeHeight();">Change canvas height</button>
+    <button id="resetH" onclick="resetHeight();">Reset Height</button><br><br>
+    <div class="point-size">
     <input id="sizeInput" type="number" placeholder="Dot Size">
-    <button onclick="changeSize();">Change point size</button>
+    <button id="changeS" onclick="changeSize();">Change point size</button>
+    <button id="resetS" onclick="resetSize();">Reset point size</button>
     <p> Default point radius size is set to 4px</p>
     <p id="dynamicSize"></p>
     <p><strong>Note:</strong>When deleting buttons make sure you don't change point size. Only delete buttons when working with a fixed size</p>
+    </div>
    </div>
    <div class="saved-distances" id="savedDistance">
     <ol class="list-distances" id="listDistance">
@@ -89,6 +85,15 @@
    <div class="dpi-ppi-conversion">
 
    </div>
+   <div class="data-results" id="showData">
+    <h3>Data retrieved:</h3>
+    <ul>
+        <li>Stride length hind legs: {}</li>
+        <li>Stride length front legs: {}</li>
+        <li>Overlap: {}</li>
+        <li>Stride width: {}</li>
+    </ul>
+</div> 
    <!-- </div> -->
 </div>
 <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
@@ -121,18 +126,18 @@
         imgInfo.style.display = "inline-block";
         // canvasInfo.style.display = "none";
         canvasUpload.style.display = "";
-        imgSize.innerHTML = "Uploaded image size: "+ ((event.target.files[0].size)/1024).toFixed(2) + " kb";
+        imgSize.innerHTML = "<strong>Uploaded image size:</strong> "+ ((event.target.files[0].size)/1024).toFixed(2) + " kb";
 
 // On image load canvas and container become the same size as uploaded image
         img.onload = () => {
             event.target.value = null;
-            imgWidth.innerHTML = "Uploaded image width: "+ img.width + "px";
-            imgHeight.innerHTML = "Uploaded image height: "+ img.height + "px";
+            imgWidth.innerHTML = "<strong>Uploaded image width:</strong> "+ img.width + "px";
+            imgHeight.innerHTML = "<strong>Uploaded image height:</strong> "+ img.height + "px";
             imgContainer.style.width = img.width + "px";
             imgContainer.style.height = img.height + "px";
             canvas.height = img.height;
             canvas.width = img.width;
-            canvasInfo.innerHTML = "Canvas size is: " + canvas.width + "x" + canvas.height;
+            canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
         }
     }
 
@@ -144,6 +149,7 @@
     if (canvasInputWidth){
         canvas.width = canvasInputWidth;
         imgContainer.style.width = canvasInputWidth + "px";
+        canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
     } else{
         return;
     }
@@ -156,12 +162,28 @@ function changeHeight(){
   if (canvasInputHeight){
     canvas.height = canvasInputHeight;
     imgContainer.style.height = canvasInputHeight + "px";
+    canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
   } else{
     return;
   }
 }
 
 changeHeight();
+
+    function resetWidth(){
+      canvas.width = img.width;
+      imgContainer.style.width = canvas.width + "px";
+      canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
+      document.getElementById("canvasWidth").value = '';
+    }
+
+
+    function resetHeight(){
+      canvas.height = img.height;
+      imgContainer.style.height = canvas.height + "px";
+      canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
+      document.getElementById("canvasHeight").value = '';
+    }
     
         // let img = document.createElement("img");
         // img.src = URL.createObjectURL(event.target.files[0]);
@@ -186,7 +208,7 @@ changeHeight();
       canvas.removeEventListener('click', drawRed);
       canvas.removeEventListener("click", printMousePos);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      canvasInfo.innerHTML = "Canvas size returned to default size (300x150)";
+      // canvasInfo.innerHTML = "<strong>Canvas size is:</strong> ";
       canvasUpload.style.display = "none";
       canvas.width = 300;
       canvas.height = 150;

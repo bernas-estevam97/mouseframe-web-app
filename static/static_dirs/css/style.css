@@ -1,11 +1,27 @@
+body{
+    position: relative;
+    width: 80vw;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #EEECD9;
+}
+
 header{
     display: flex;
     justify-content: space-between;
     align-items: center; /* align y axis */
+    border: 3px double grey;
+    border-width: 0.6em 1.2em;
+    position: relative;
+    background-color: #F7EFB6;
+    margin: 20px;
 }
 
 header h1{
-    border: 1px solid #000;
+    
+    color: black;
+   
+    padding: 30px;
 }
 
 /* .container-full{
@@ -17,12 +33,25 @@ header h1{
 
 .requirements h3{
     text-align: center;
-    border: 1px solid #000;
+    background-color: #C1C1C1;
+    border: 2px dashed gray;
+    margin: 0 50px;
+    padding: 10px 0;
 }
 
-.requirements ol li{
+.requirements ul{
+    margin: 0 40px;
+}
+
+.requirements ul li{
     font-size: 1em;
     padding-top: 20px;
+    list-style-type: square;
+    font-size: 1.2em;
+}
+
+.upload-btn{
+    padding: 10px 20px;
 }
 
 .img-selection{
@@ -48,32 +77,235 @@ header h1{
     /* background-size: 1200px 600px; */
     margin-top: 20px;
     margin-bottom: 20px;
-    border: 1px solid #000;
+    border: 1px solid #000; /* testing purposes */
 }
 
 .image-container canvas{
     position: relative;
 }
 
-
-
-ul li{
-    list-style-type: none;
-}
-
 .bottom-functions{
     display: flex;
     justify-content: space-evenly;
+    margin-bottom: 30px;
+}
+
+.image-info{
+    display: none;
+    border: 3px solid #c1c1c1;
+    background: #fff;
+    padding: 10px 40px 0 40px;
 }
 
 .buttons{
-    margin-left: 0;
+    background-color: #fff;
+    border: 5px double #c1c1c1;
+    padding: 10px 10px;
+}
+
+.buttons button{
+    padding: 10px 20px;
+    margin-bottom: 10px;
+}
+
+#redCircle{
+    color: #fff;
+    background: #ff2626;
+    border-radius: 5px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+#redCircle:hover{
+    background: #DE0202;
+}
+
+#deleteCircleRed{
+    border-radius: 5px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#deleteCircleRed:hover{
+    background: rgb(155, 155, 155);
+}
+
+#deleteAllCircleRed{
+    border-radius: 5px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#deleteAllCircleRed:hover{
+    background: rgb(155, 155, 155);
+}
+
+#blueCircle{
+    color: #fff;
+    background: #0980F1;
+    border-radius: 5px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+#blueCircle:hover{
+    background: hsl(216, 100%, 35%);
+}
+
+#deleteCircleBlue{
+    border-radius: 5px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#deleteCircleBlue:hover{
+    background: rgb(155, 155, 155);
+}
+
+#deleteAllCircleBlue{
+    border-radius: 5px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#deleteAllCircleBlue:hover{
+    background: rgb(155, 155, 155);
+}
+
+#resetCanvas{
+    position: relative;
+    border-radius: 5px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: 120px;
+    margin-top: 10px;
+}
+
+#resetCanvas:hover{
+    background: rgb(155, 155, 155);
+}
+
+#resetFile{
+    position: relative;
+    border-radius: 5px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px; 
+}
+
+#resetFile:hover{
+    background: rgb(155, 155, 155);
+}
+
+
+.buttons-change{
+    position: relative;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+
+}
+
+#canvasWidth, #canvasHeight{
+    padding: 5px;
+}
+
+#canvasHeight{
+    margin-left: 40px;
+}
+
+
+#changeW, #changeH{
+    padding: 5px 20px;
+    position: relative;
+    border-radius: 2px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+
+
+#changeW:hover, #changeH:hover{
+    background: rgb(155, 155, 155);
+}
+
+#resetW, #resetH{
+    padding: 5px 20px;
+    position: relative;
+    border-radius: 2px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#resetW{
+    margin-right: 40px;
+}
+
+#resetW:hover, #resetH:hover{
+    background: rgb(155, 155, 155);
+}
+
+
+.point-size{
+    background-color: #fff;
+    border: 3px double #000;
+}
+
+.point-size p{
+    margin-left: 10px;
+}
+
+#sizeInput{
+    margin-top: 10px;
+    padding: 5px;
+    margin-left: 10px;
+}
+
+#changeS{
+    margin-top: 10px;
+    padding: 5px 20px;
+    position: relative;
+    border-radius: 2px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#changeS:hover{
+    background: rgb(155, 155, 155);
+}
+
+#resetS{
+    margin-top: 10px;
+    padding: 5px 20px;
+    position: relative;
+    border-radius: 2px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#resetS:hover{
+    background: rgb(155, 155, 155);
 }
 
 .data-results{
     text-align: center;
 }
 
-.buttons-change{
-    margin-left: 0;
+.data-results ul li{
+    list-style-type: none;
 }

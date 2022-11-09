@@ -31,7 +31,7 @@ function changeSize(){
     pointSize = 4; // if no input is given 4 is default value
   }
   console.log(inputSize);
-  showSize.innerHTML = "Current point size is: " + pointSize;
+  showSize.innerHTML = "Current point radius size is: " + pointSize + "px";
 }
 
 changeSize(); // initiate function on page load/refresh ---- Still testing
@@ -122,17 +122,17 @@ function drawBlueCircle(){
 function removeRedCircle(){
     lastCordRed = pointsRed.pop();
     console.log("Removed point on the coordinates: X " + lastCordRed.x + " Y: " + lastCordRed.y);
-    ctx.clearRect((lastCordRed.x - pointSize), (lastCordRed.y - pointSize), pointSize*4, pointSize*4 + 10); 
+    ctx.clearRect((lastCordRed.x - pointSize), (lastCordRed.y - pointSize), pointSize*4 + 10, pointSize*4 + 10); 
     // coordinates minus the radius 
     //since the rect starts at the top left corner and the circle coords focus on the middle point
     // 8 is the diameter of any point, so create a square with an edge of 8
     // to also delete the number we add another square with same size for deletion hence the times 4, also de plus 10 offset
-    // in the y axis like we did to draw the index numbers above
+    // in the y axis and x axis like we did to draw the index numbers above
 }
 
 function removeAllRedCircle(){
   for (let i = 0; i < pointsRed.length; i++){
-    ctx.clearRect((pointsRed[i].x - pointSize), (pointsRed[i].y - pointSize), pointSize*4, pointSize*4 + 10);
+    ctx.clearRect((pointsRed[i].x - pointSize), (pointsRed[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
   }
   pointsRed.length = 0;
 }
@@ -140,12 +140,12 @@ function removeAllRedCircle(){
 function removeBlueCircle(){
   lastCordBlue = pointsBlue.pop();
   console.log("Removed point on the coordinates: X " + lastCordBlue.x + " Y: " + lastCordBlue.y);
-  ctx.clearRect((lastCordBlue.x - pointSize), (lastCordBlue.y - pointSize), pointSize*4, pointSize*4 + 10); 
+  ctx.clearRect((lastCordBlue.x - pointSize), (lastCordBlue.y - pointSize), pointSize*4 + 10, pointSize*4 + 10); 
 }
 
 function removeAllBlueCircle(){
   for (let i = 0; i < pointsBlue.length; i++){
-    ctx.clearRect((pointsBlue[i].x - pointSize), (pointsBlue[i].y - pointSize), pointSize*4, pointSize*4 + 10);
+    ctx.clearRect((pointsBlue[i].x - pointSize), (pointsBlue[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
   }
   pointsBlue.length = 0;
 }
