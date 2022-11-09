@@ -23,6 +23,7 @@
                 <li>Make sure you note which dpi was used in the case of scanned images to later add the number to further calculus in order to increase the results precision.</li>
                 <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies if a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
                 <li>The canvas will be automatically set to the uploaded image dimensions although a canvas bigger than the uploaded image would not make a difference in the distance calculations as long as the user adds the dots exclusively in the image.</li>
+                <li>All the functionalities are shown after successful image upload.</li>
             </ul>
         </div>
     <!-- </div> -->
@@ -31,7 +32,7 @@
     
     <div class="img-upload">
     <form action="">
-        <label for="img">Upload your image here:</label>
+        <label for="img" style="font-size: 1.1em;">Upload your image here:</label>
         <p id="canvasUpload">Canvas starts with same size as the image uploaded. Change below if necessary.</p>
         <input type="file" id="uploadImage" name="img" alt="Upload" accept="image/*" onchange="loadFile(event)" style="display: none;">
         <input class="upload-btn" type="button" value="Select Image" onclick="document.getElementById('uploadImage').click();" style="cursor: pointer;"/>
@@ -87,12 +88,19 @@
    </div>
    <div class="data-results" id="showData">
     <h3>Data retrieved:</h3>
-    <ul>
+    <table>
+      <tr>
+        <th>Entry number</th>
+        <th>Measurement type</th>
+        <th>Value</th>
+      </tr>
+    </table>
+    <!-- <ul>
         <li>Stride length hind legs: {}</li>
         <li>Stride length front legs: {}</li>
         <li>Overlap: {}</li>
         <li>Stride width: {}</li>
-    </ul>
+    </ul> -->
 </div> 
    <!-- </div> -->
 </div>
@@ -113,7 +121,7 @@
    let canvasUpload = document.getElementById("canvasUpload");
    canvasUpload.style.display = "none";
    buttons.style.display = "none";
-   results.style.display = "none";
+  //  results.style.display = "none";
    chButtons.style.display = "none";
    let imgContainer = document.getElementById("imgContainer");
    let img = new Image()
@@ -121,7 +129,7 @@
         img.src = URL.createObjectURL(event.target.files[0]);
         imgContainer.style.backgroundImage = "url(" +img.src+ ")";
         buttons.style.display = "inline-block";
-        results.style.display = "inline-block";
+        // results.style.display = "inline-block";
         chButtons.style.display = "inline-block";
         imgInfo.style.display = "inline-block";
         // canvasInfo.style.display = "none";
@@ -200,7 +208,7 @@ changeHeight();
       
       imgContainer.style.backgroundImage = "";
       buttons.style.display = "none";
-      results.style.display = "none";
+      // results.style.display = "none";
       chButtons.style.display = "none";
       imgInfo.style.display = "none";
       canvas.style.cursor = "auto";
