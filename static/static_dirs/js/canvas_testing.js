@@ -36,6 +36,12 @@ function changeSize(){
 
 changeSize(); // initiate function on page load/refresh ---- Still testing
 
+
+function resetSize(){
+  document.getElementById("sizeInput").value = '';
+  pointSize = 4
+  showSize.innerHTML = "Current point radius size is: " + pointSize + "px";
+}
 // Canvas size changes
 
 const canvas = document.getElementById("canvas");
@@ -170,9 +176,8 @@ function printMousePos(event) {
 }
 
 
-// function distanceRed()
-
 let distances = [];
-let dist = Math.sqrt( Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2) );
-
-// const distance = (x1, y1, x2, y2) => Math.hypot(x2 - x1, y2 - y1); 
+// let dist = Math.sqrt( Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2) );
+// const distance = (x1, y1, x2, y2) => Math.hypot(x2 - x1, y2 - y1);
+// length[mm] = pixel * 25.4mm (1 in) / dpi
+// 1 pixel/inch  =  0.393701 pixel/centimeter

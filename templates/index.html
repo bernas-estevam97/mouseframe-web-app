@@ -20,7 +20,7 @@
             <h3>Information and requirements</h3>
             <ul>
                 <li>Only image file formats are supported.</li>
-                <li>Make sure you note which dpi was used in the case of scanned images to later add the number to further calculus in order to increase the results precision.</li>
+                <li>Make sure you note which dpi was used in the case of scanned images to later add the number to further calculations in order to increase the results precision.</li>
                 <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies if a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
                 <li>The canvas will be automatically set to the uploaded image dimensions although a canvas bigger than the uploaded image would not make a difference in the distance calculations as long as the user adds the dots exclusively in the image.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
@@ -57,10 +57,16 @@
         <p id="imageUploadedWidth"></p>
         <p id="imageUploadedHeight"></p>
         <p id="imageUploadedSize"></p>
-        <p id="canvasInfo"> Canvas size is set to default (300x150).</p>
-        <p id="imageUploadedPPI"></p>
-        <p id="imageUploadedDPI"></p>
+        <p id="canvasInfo"></p>
       </div>  
+   </div>
+   <div class="resolution-info">
+    <p id="userResolution"></p><br>
+    <label for="inches">Your screen size in inches(in):</label>
+    <input name="inches" class="input-inches" id="inputScreenInches" type="text" maxlength="4" size="4" onkeypress="if(!event.key.match(/[1-9.]/)) event.preventDefault()">
+    <button class="ppi-calc" id="ppiCalculus" onclick="getScreenPPI();">Get Screen PPI</button>
+    <p id="screenPPI"></p>
+    <p id="imageUploadedDPI"></p>
    </div>
    <div class="buttons-change">
     <input id="canvasWidth" type="number" placeholder="Canvas Width">
@@ -75,7 +81,7 @@
     <button id="resetS" onclick="resetSize();">Reset point size</button>
     <p> Default point radius size is set to 4px</p>
     <p id="dynamicSize"></p>
-    <p><strong>Note:</strong>When deleting buttons make sure you don't change point size. Only delete buttons when working with a fixed size</p>
+    <p><strong>Note:</strong>When deleting buttons make sure you don't change radius size. Only delete buttons when working with a fixed size</p>
     </div>
    </div>
    <div class="saved-distances" id="savedDistance">
@@ -88,13 +94,14 @@
    </div>
    <div class="data-results" id="showData">
     <h3>Data retrieved:</h3>
-    <table>
+    <table id="tbl_exporttable_to_xls">
       <tr>
         <th>Entry number</th>
         <th>Measurement type</th>
         <th>Value</th>
       </tr>
     </table>
+    <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
     <!-- <ul>
         <li>Stride length hind legs: {}</li>
         <li>Stride length front legs: {}</li>
@@ -106,6 +113,7 @@
 </div>
 <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/canvas_testing.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xlsx-full.min.js' %}"></script>
 <!-- <script type="text/javascript" src="{% static 'js/canvasjs.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.canvasjs.min.js' %}"></script> -->
 <script>
@@ -218,12 +226,37 @@ changeHeight();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // canvasInfo.innerHTML = "<strong>Canvas size is:</strong> ";
       canvasUpload.style.display = "none";
-      canvas.width = 300;
-      canvas.height = 150;
-      imgContainer.style.width = "300px";
-      imgContainer.style.height = "150px";
+      canvas.width = 0;
+      canvas.height = 0;
+      imgContainer.style.width = "0";
+      imgContainer.style.height = "0";
+    }
+
+    function getUserResolution(){
+      document.getElementById("userResolution").innerHTML ="<strong>Your resolution is:</strong> " + window.screen.width * window.devicePixelRatio + "x" + window.screen.height * window.devicePixelRatio;
+    }
+
+    getUserResolution();
+
+    function getScreenPPI(){
+      let diagonal = Math.sqrt(Math.pow((window.screen.width * window.devicePixelRatio), 2)+Math.pow((window.screen.height * window.devicePixelRatio), 2));
+      if (document.getElementById("inputScreenInches").value != ''){
+        document.getElementById("screenPPI").innerHTML = "<b>Your screen PPI is:</b> " + (diagonal/document.getElementById("inputScreenInches").value).toFixed(2);
+      } else
+      alert("No screen size in inches was given"); 
     }
     
+</script>
+<script>
+
+  function ExportToExcel(type, fn, dl) {
+      var elt = document.getElementById('tbl_exporttable_to_xls');
+      var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+      return dl ?
+          XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+          XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+  }
+
 </script>
 </body>
 </html>

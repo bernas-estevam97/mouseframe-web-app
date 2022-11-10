@@ -52,6 +52,7 @@ header h1{
 
 .upload-btn{
     padding: 10px 15px;
+    margin-left: 20px;
 }
 
 .img-selection{
@@ -70,14 +71,14 @@ header h1{
     position: relative;
     /* left: 50%;
     transform: translateX(-50%); */
-    /* height: 600px;
-    width: 1200px; */
+    height: 0;
+    width: 0;
     background-position: center;
     background-repeat: no-repeat;
     /* background-size: 1200px 600px; */
     margin-top: 20px;
     margin-bottom: 20px;
-    border: 1px solid #000; /* testing purposes */
+    /* border: 1px solid #000; testing purposes */
 }
 
 .image-container canvas{
@@ -205,6 +206,34 @@ header h1{
     background: rgb(155, 155, 155);
 }
 
+.resolution-info{
+    position: relative;
+    background: #fff;
+    width: 300px;
+    padding: 10px;
+    left: 20%;
+    margin-bottom: 20px;
+    border: 3px double #000;    
+}
+
+.input-inches{
+    height: 20px;
+}
+
+.ppi-calc{
+    padding: 5px;
+    position: relative;
+    border-radius: 1px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px; 
+}
+
+.ppi-calc:hover{
+    background: rgb(202, 202, 202); 
+}
+
 
 .buttons-change{
     position: relative;
@@ -304,10 +333,12 @@ header h1{
 
 
 .data-results{
+    position: relative;
     background: #fff;
     width: 400px;
     border: 1px solid #c1c1c1;
     padding: 0 10px;
+    left: 20%;
 }
 .data-results h3{
     text-align: center;
@@ -324,3 +355,16 @@ header h1{
 }
 
 
+#exportEx{
+    margin-top: 20px;
+    padding: 5px 20px;
+    position: relative;
+    border-radius: 2px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#exportEx:hover{
+    background: rgb(180, 180, 180);
+}
