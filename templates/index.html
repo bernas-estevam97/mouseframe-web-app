@@ -21,9 +21,11 @@
             <ul>
                 <li>Only image file formats are supported.</li>
                 <li>Make sure you note which dpi was used in the case of scanned images to later add the number to further calculations in order to increase the results precision.</li>
-                <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies if a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
-                <li>The canvas will be automatically set to the uploaded image dimensions although a canvas bigger than the uploaded image would not make a difference in the distance calculations as long as the user adds the dots exclusively in the image.</li>
+                <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
+                <li>The canvas will be automatically set to the uploaded image dimensions although a canvas bigger than the uploaded image would not make a difference in the distance calculations as long as the user adds the dots wherever it is wanted.</li>
+                <li>Make sure your image resolution fits your computer screen as the canvas will automatically adopt its dimensions.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
+                
             </ul>
         </div>
     <!-- </div> -->
@@ -62,11 +64,13 @@
    </div>
    <div class="resolution-info">
     <p id="userResolution"></p><br>
-    <label for="inches">Your screen size in inches(in):</label>
+    <label id="labelInput" for="inches">Your screen size in inches(in):</label>
     <input name="inches" class="input-inches" id="inputScreenInches" type="text" maxlength="4" size="4" onkeypress="if(!event.key.match(/[1-9.]/)) event.preventDefault()">
     <button class="ppi-calc" id="ppiCalculus" onclick="getScreenPPI();">Get Screen PPI</button>
     <p id="screenPPI"></p>
     <p id="imageUploadedDPI"></p>
+    <p id="imageDimInches"></p>
+    <p id="imageDimCm"></p>
    </div>
    <div class="buttons-change">
     <input id="canvasWidth" type="number" placeholder="Canvas Width">
@@ -75,13 +79,23 @@
     <input id="canvasHeight" type="number" placeholder="Canvas Height">
     <button id="changeH" onclick="changeHeight();">Change canvas height</button>
     <button id="resetH" onclick="resetHeight();">Reset Height</button><br><br>
+    <input id="containerWidth" type="number" placeholder="Image Width">
+    <!-- <button id="changeImgW" onclick="changeImgW();">Change image width</button> -->
+    <!-- <button id="resetImgW" onclick="resetImgW();">Reset Image Width</button> -->
+    <input id="containerHeight" type="number" placeholder="Image Height">
+    <button id="changeImgDim" onclick="changeImgDim();">Change Image dimensions</button>
+    <button id="resetImgDim" onclick="resetImgDim();">Reset Image dimensions</button>
+    <button id="fiftyP" onclick="resizeSF();">75% Dimensions</button>
+    <button id="fiftyP" onclick="resizeFifty();">50% Dimensions</button>
+    <button id="twentyF" onclick="resizeTwentyF();">25% Dimensions</button><br><br>
+    <p id="currentImgSize"></p><br><br>
     <div class="point-size">
     <input id="sizeInput" type="number" placeholder="Dot Size">
     <button id="changeS" onclick="changeSize();">Change point size</button>
     <button id="resetS" onclick="resetSize();">Reset point size</button>
     <p> Default point radius size is set to 4px</p>
     <p id="dynamicSize"></p>
-    <p><strong>Note:</strong>When deleting buttons make sure you don't change radius size. Only delete buttons when working with a fixed size</p>
+    <p><strong>Note:</strong>When deleting buttons make sure you don't change radius size. Only delete points when working with a fixed size</p>
     </div>
    </div>
    <div class="saved-distances" id="savedDistance">
@@ -102,6 +116,8 @@
       </tr>
     </table>
     <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
+    <!-- <button id="distBtn" onclick=""> Get distance </button>
+    <p id="distanceRed"></p> -->
     <!-- <ul>
         <li>Stride length hind legs: {}</li>
         <li>Stride length front legs: {}</li>
@@ -127,8 +143,15 @@
    let chButtons = document.querySelector(".buttons-change");
    let canvasInfo = document.getElementById("canvasInfo");
    let canvasUpload = document.getElementById("canvasUpload");
+   document.getElementById("inputScreenInches").style.display = 'none';
+   document.getElementById("screenPPI").style.display = 'none';
+   document.getElementById("imageDimInches").style.display = 'none';
+   document.getElementById("imageDimCm").style.display = 'none';
+   document.getElementById("labelInput").style.display = 'none';
+   document.getElementById("ppiCalculus").style.display = 'none';
    canvasUpload.style.display = "none";
    buttons.style.display = "none";
+   canvas.style.display = "none";
   //  results.style.display = "none";
    chButtons.style.display = "none";
    let imgContainer = document.getElementById("imgContainer");
@@ -143,6 +166,10 @@
         // canvasInfo.style.display = "none";
         canvasUpload.style.display = "";
         imgSize.innerHTML = "<strong>Uploaded image size:</strong> "+ ((event.target.files[0].size)/1024).toFixed(2) + " kb";
+        canvas.style.display = '';
+        document.getElementById("canvasWidth").value = '';
+        document.getElementById("canvasHeight").value = '';
+
 
 // On image load canvas and container become the same size as uploaded image
         img.onload = () => {
@@ -151,9 +178,17 @@
             imgHeight.innerHTML = "<strong>Uploaded image height:</strong> "+ img.height + "px";
             imgContainer.style.width = img.width + "px";
             imgContainer.style.height = img.height + "px";
+            imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
             canvas.height = img.height;
             canvas.width = img.width;
             canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
+            document.getElementById("inputScreenInches").style.display = '';
+            document.getElementById("screenPPI").style.display = '';
+            document.getElementById("imageDimInches").style.display = '';
+            document.getElementById("imageDimCm").style.display = '';
+            document.getElementById("labelInput").style.display = '';
+            document.getElementById("ppiCalculus").style.display = '';
+            document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width+ "x" + img.height;
         }
     }
 
@@ -200,6 +235,45 @@ changeHeight();
       canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
       document.getElementById("canvasHeight").value = '';
     }
+
+    function changeImgDim(){
+      let imgWidthInput = document.getElementById("containerWidth").value;
+      let imgHeightInput = document.getElementById("containerHeight").value;
+      if ((imgWidthInput) && (imgHeightInput)){
+        imgContainer.style.backgroundSize = imgWidthInput + "px " + imgHeightInput + "px";
+        imgContainer.style.width = imgWidthInput + "px";
+        imgContainer.style.height = imgHeightInput + "px";
+        document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + imgWidthInput + "x" + imgHeightInput;
+      } else{
+        alert("Give both dimensions to change!");
+      }
+    }
+
+    function resetImgDim(){
+      let imgWidthInput = document.getElementById("containerWidth");
+      let imgHeightInput = document.getElementById("containerHeight");
+      imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
+      imgContainer.style.width= img.width + "px";
+      imgContainer.style.height = img.height + "px";
+      imgWidthInput.value = '';
+      imgHeightInput.value = '';
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width + "x" + img.height;
+    }
+
+    function resizeFifty(){
+      imgContainer.style.backgroundSize = img.width*0.5 + "px " + img.width*0.5 + "px";
+      document.getElementById("currentImgSize").innerHTML = "Current image size is: " + img.width*0.5 + "x" + img.height*0.5;
+    }
+
+    function resizeSF(){
+      imgContainer.style.backgroundSize = img.width*0.75 + "px " + img.height*0.75 + "px";
+      document.getElementById("currentImgSize").innerHTML = "Current image size is: " + img.width*0.75 + "x" + img.height*0.75;
+    }
+
+    function resizeTwentyF(){
+      imgContainer.style.backgroundSize = img.width*0.25 + "px " + img.height*0.25 + "px";
+      document.getElementById("currentImgSize").innerHTML = "Current image size is: " + img.width*0.25 + "x" + img.height*0.25;
+    }
     
         // let img = document.createElement("img");
         // img.src = URL.createObjectURL(event.target.files[0]);
@@ -230,6 +304,20 @@ changeHeight();
       canvas.height = 0;
       imgContainer.style.width = "0";
       imgContainer.style.height = "0";
+      document.getElementById("inputScreenInches").value = '';
+      document.getElementById("inputScreenInches").style.display = 'none';
+      document.getElementById("screenPPI").innerHTML = '';
+      document.getElementById("imageDimInches").innerHTML = '';
+      document.getElementById("imageDimCm").innerHTML = '';
+      document.getElementById("labelInput").style.display = 'none';
+      document.getElementById("ppiCalculus").style.display = 'none';
+      canvas.style.display = "none";
+      document.getElementById("canvasWidth").value = '';
+      document.getElementById("canvasHeight").value = '';
+      let imgWidthInput = document.getElementById("containerWidth");
+      let imgHeightInput = document.getElementById("containerHeight");
+      imgWidthInput.value = '';
+      imgHeightInput.value = '';
     }
 
     function getUserResolution(){
@@ -242,6 +330,10 @@ changeHeight();
       let diagonal = Math.sqrt(Math.pow((window.screen.width * window.devicePixelRatio), 2)+Math.pow((window.screen.height * window.devicePixelRatio), 2));
       if (document.getElementById("inputScreenInches").value != ''){
         document.getElementById("screenPPI").innerHTML = "<b>Your screen PPI is:</b> " + (diagonal/document.getElementById("inputScreenInches").value).toFixed(2);
+        document.getElementById("imageDimInches").innerHTML = "<b>Your image dimensions in inches are:</b> " + (img.width/(diagonal/document.getElementById("inputScreenInches").value)).toFixed(2) 
+        + "x" + (img.height/(diagonal/document.getElementById("inputScreenInches").value)).toFixed(2);
+        document.getElementById("imageDimCm").innerHTML = "<b>Your image dimensions in cm are:</b> " + ((img.width/(diagonal/document.getElementById("inputScreenInches").value)) * 2.54).toFixed(2) 
+        + "x" + ((img.height/(diagonal/document.getElementById("inputScreenInches").value)) * 2.54).toFixed(2);
       } else
       alert("No screen size in inches was given"); 
     }

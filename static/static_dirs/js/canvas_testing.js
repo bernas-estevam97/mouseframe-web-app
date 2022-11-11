@@ -129,6 +129,10 @@ function removeRedCircle(){
     lastCordRed = pointsRed.pop();
     console.log("Removed point on the coordinates: X " + lastCordRed.x + " Y: " + lastCordRed.y);
     ctx.clearRect((lastCordRed.x - pointSize), (lastCordRed.y - pointSize), pointSize*4 + 10, pointSize*4 + 10); 
+    canvas.removeEventListener('click', drawBlue);
+    canvas.removeEventListener('click', drawRed);
+    canvas.removeEventListener("click", printMousePos);
+    canvas.style.cursor = "default";
     // coordinates minus the radius 
     //since the rect starts at the top left corner and the circle coords focus on the middle point
     // 8 is the diameter of any point, so create a square with an edge of 8
@@ -141,12 +145,20 @@ function removeAllRedCircle(){
     ctx.clearRect((pointsRed[i].x - pointSize), (pointsRed[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
   }
   pointsRed.length = 0;
+  canvas.removeEventListener('click', drawBlue);
+  canvas.removeEventListener('click', drawRed);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.style.cursor = "default";
 }
 
 function removeBlueCircle(){
   lastCordBlue = pointsBlue.pop();
   console.log("Removed point on the coordinates: X " + lastCordBlue.x + " Y: " + lastCordBlue.y);
-  ctx.clearRect((lastCordBlue.x - pointSize), (lastCordBlue.y - pointSize), pointSize*4 + 10, pointSize*4 + 10); 
+  ctx.clearRect((lastCordBlue.x - pointSize), (lastCordBlue.y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+  canvas.removeEventListener('click', drawBlue);
+  canvas.removeEventListener('click', drawRed);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.style.cursor = "default"; 
 }
 
 function removeAllBlueCircle(){
@@ -154,6 +166,10 @@ function removeAllBlueCircle(){
     ctx.clearRect((pointsBlue[i].x - pointSize), (pointsBlue[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
   }
   pointsBlue.length = 0;
+  canvas.removeEventListener('click', drawBlue);
+  canvas.removeEventListener('click', drawRed);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.style.cursor = "default";
 }
 
 

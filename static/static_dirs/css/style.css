@@ -1,6 +1,6 @@
 body{
     position: relative;
-    width: 80vw;
+    width: 85vw;
     left: 50%;
     transform: translateX(-50%);
     background-color: #EEECD9;
@@ -75,14 +75,16 @@ header h1{
     width: 0;
     background-position: center;
     background-repeat: no-repeat;
-    /* background-size: 1200px 600px; */
+    /* background-size: 1400px 800px; */
     margin-top: 20px;
     margin-bottom: 20px;
     /* border: 1px solid #000; testing purposes */
+    aspect-ratio: 16/9;
 }
 
-.image-container canvas{
+#canvas{
     position: relative;
+    border: 1px solid #000; /* testing only */
 }
 
 .bottom-functions{
@@ -209,11 +211,15 @@ header h1{
 .resolution-info{
     position: relative;
     background: #fff;
-    width: 300px;
+    width: 400px;
     padding: 10px;
     left: 20%;
     margin-bottom: 20px;
     border: 3px double #000;    
+}
+
+#userResolution{
+    height: 0;
 }
 
 .input-inches{
@@ -243,7 +249,13 @@ header h1{
     margin-bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
+    background-color: #fff;
+    border: 3px double #c1c1c1;
+    padding: 10px;
+}
 
+#currentImgSize{
+    height: 0;
 }
 
 #canvasWidth, #canvasHeight{
@@ -286,6 +298,48 @@ header h1{
 #resetW:hover, #resetH:hover{
     background: rgb(155, 155, 155);
 }
+
+/* #containerWidth, #containerHeight{
+    padding: 5px;
+}
+
+#containerHeight{
+    margin-left: 0;
+}
+
+
+#changeImgW, #changeImgH{
+    padding: 5px 20px;
+    position: relative;
+    border-radius: 2px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+
+
+#changeImgW:hover, #changeImgH:hover{
+    background: rgb(155, 155, 155);
+}
+
+#resetImgW, #resetImgH{
+    padding: 5px 20px;
+    position: relative;
+    border-radius: 2px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#resetImgW{
+    margin-right: 40px;
+}
+
+#resetImgW:hover, #resetImgH:hover{
+    background: rgb(155, 155, 155);
+} */
+
 
 
 .point-size{
