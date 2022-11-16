@@ -27,6 +27,7 @@
                 <li>All the functionalities are shown after successful image upload.</li>
                 
             </ul>
+            <p id="userResolution"></p><br>
         </div>
     <!-- </div> -->
     <!-- <div class="right-part"> -->
@@ -63,7 +64,6 @@
       </div>  
    </div>
    <div class="resolution-info">
-    <p id="userResolution"></p><br>
     <label id="labelInput" for="inches">Your screen size in inches(in):</label>
     <input name="inches" class="input-inches" id="inputScreenInches" type="text" maxlength="4" size="4" onkeypress="if(!event.key.match(/[1-9.]/)) event.preventDefault()">
     <button class="ppi-calc" id="ppiCalculus" onclick="getScreenPPI();">Get Screen PPI</button>
@@ -85,9 +85,9 @@
     <input id="containerHeight" type="number" placeholder="Image Height">
     <button id="changeImgDim" onclick="changeImgDim();">Change Image dimensions</button>
     <button id="resetImgDim" onclick="resetImgDim();">Reset Image dimensions</button>
-    <button id="fiftyP" onclick="resizeSF();">75% Dimensions</button>
-    <button id="fiftyP" onclick="resizeFifty();">50% Dimensions</button>
-    <button id="twentyF" onclick="resizeTwentyF();">25% Dimensions</button><br><br>
+    <button id="fiftyP" onclick="resizeSF();">75% Size</button>
+    <button id="fiftyP" onclick="resizeFifty();">50% Size</button>
+    <button id="twentyF" onclick="resizeTwentyF();">25% Size</button><br><br>
     <p id="currentImgSize"></p><br><br>
     <div class="point-size">
     <input id="sizeInput" type="number" placeholder="Dot Size">
@@ -106,7 +106,8 @@
    <div class="dpi-ppi-conversion">
 
    </div>
-   <div class="data-results" id="showData">
+   <div class="data-management" id="showData">
+    <div class="table-results">
     <h3>Data retrieved:</h3>
     <table id="tbl_exporttable_to_xls">
       <tr>
@@ -116,14 +117,28 @@
       </tr>
     </table>
     <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
-    <!-- <button id="distBtn" onclick=""> Get distance </button>
-    <p id="distanceRed"></p> -->
-    <!-- <ul>
-        <li>Stride length hind legs: {}</li>
-        <li>Stride length front legs: {}</li>
-        <li>Overlap: {}</li>
-        <li>Stride width: {}</li>
-    </ul> -->
+  </div>
+  <div class="select-options">
+    <form action="/">
+      <label for="point">Select point 1:</label>
+        <select name="point" id="point">
+          <option value="points"></option>
+        </select>
+      <label for="point">Select point 2:</label>
+      <select name="point" id="point">
+          <option value="points"></option>
+      </select>
+      <label for="measurement">Measurement:</label>
+      <select name="measurement" id="measurement">
+        <option value="Overlap">Overlap</option>
+        <option value="Stride length left">Stride length right</option>
+        <option value="Stride length right">Stride length right</option>
+      </select>
+      
+      <br><br><input type="submit" value="Add Entry">
+      <button id="removeEntry">Remove Entry</button>
+    </form>
+  </div>
 </div> 
    <!-- </div> -->
 </div>
