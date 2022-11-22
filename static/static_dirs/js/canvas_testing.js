@@ -143,6 +143,7 @@ function removeRedCircle(){
 function removeAllRedCircle(){
   for (let i = 0; i < pointsRed.length; i++){
     ctx.clearRect((pointsRed[i].x - pointSize), (pointsRed[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+    console.log("Removed point on the coordinates: X " + pointsRed[i].x + " Y: " + pointsRed[i].y);
   }
   pointsRed.length = 0;
   canvas.removeEventListener('click', drawBlue);
@@ -164,6 +165,7 @@ function removeBlueCircle(){
 function removeAllBlueCircle(){
   for (let i = 0; i < pointsBlue.length; i++){
     ctx.clearRect((pointsBlue[i].x - pointSize), (pointsBlue[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+    console.log("Removed point on the coordinates: X " + pointsBlue[i].x + " Y: " + pointsBlue[i].y);
   }
   pointsBlue.length = 0;
   canvas.removeEventListener('click', drawBlue);
@@ -197,3 +199,21 @@ let distances = [];
 // const distance = (x1, y1, x2, y2) => Math.hypot(x2 - x1, y2 - y1);
 // length[mm] = pixel * 25.4mm (1 in) / dpi
 // 1 pixel/inch  =  0.393701 pixel/centimeter
+
+
+// function getDistance(point1, point2){
+//   if (point1 != undefined && point2 != undefined){
+
+//   }
+// }
+
+
+function distancePointRed(){
+  if (pointsRed.length != 0){
+    let dist = (Math.hypot(pointsRed[1].x - pointsRed[0].x, pointsRed[1].y - pointsRed[0].y)).toFixed(2);
+    console.log(dist); 
+  } else{
+    alert ("Something went wrong");
+  }
+  
+}
