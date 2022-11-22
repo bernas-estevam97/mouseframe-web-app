@@ -20,3 +20,21 @@ def image_editor(request):
 
 def img_dim(request):
     return render(request, 'image_dim.html')
+
+
+
+def saved_distance(request):
+    if request.method == 'POST':
+
+        form = savedDistancesForm(request.POST)
+        if form.is_valid():
+            #This is called when the form fields are ok and we can create the object
+            application_object = form.save()
+
+            return HttpResponse("Some HTML code") # or HttResponseRedirect("/any_url")
+
+    else:
+        form = savedDistancesForm() 
+
+    #This called when we need to display the form: get or error in form fields
+    return render('registration/saved_distance.html', {'form': form})

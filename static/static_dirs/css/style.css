@@ -394,6 +394,22 @@ header h1{
     background: rgb(155, 155, 155);
 }
 
+.saved-distances{
+    position: relative;
+    margin-bottom: 30px;
+    /* display: flex; */
+    justify-content: space-between;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 3px double #c1c1c1;
+    padding: 10px;
+    width: 60vw;
+}
+
+.saved-distances h2{
+    text-align: center;
+}
 
 .data-management{
     position: relative;
