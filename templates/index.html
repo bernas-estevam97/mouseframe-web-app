@@ -56,12 +56,23 @@
          <button class="button" type="button" id="resetCanvas" onclick="clearCanvas();">Reset Canvas</button>
          <button class="button" type="button" id="resetFile" onclick="resetFile();">Reset Image</button>
        </div>
+       
        <div id="imageInfo" class="image-info">
         <p id="imageUploadedWidth"></p>
         <p id="imageUploadedHeight"></p>
         <p id="imageUploadedSize"></p>
         <p id="canvasInfo"></p>
       </div>  
+   </div>
+   <div class="saved-distances" id="savedDistance">
+    <h2>Define how many pixels are in a centimeter.</h2>
+    <p>If there is a drawn line with the length of 1cm, measure it in pixels here:</p>
+    <p id="scaleDistance"></p>
+    <button id="measureButton" onclick="drawMeasureCircle();">Add measuring points</button>
+    <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset points</button>
+    <button onclick = "distanceMeasurePoint()">Measure</button>
+    <p id="measureToCm"></p>
+    <button type="submit">Store value</button>
    </div>
    <div class="resolution-info">
     <label id="labelInput" for="inches">Your screen size in inches(in):</label>
@@ -98,14 +109,15 @@
     <p><strong>Note:</strong>When deleting buttons make sure you don't change radius size. Only delete points when working with a fixed size</p>
     </div>
    </div>
-   <div class="saved-distances" id="savedDistance">
+   <!-- <div class="saved-distances" id="savedDistance">
     <h2>Define how many pixels are in a centimeter.</h2>
     <p>If there is a drawn line with the length of 1cm, measure it in pixels here:</p>
     <p id="scaleDistance"></p>
-    <button id="measureButton">Measure</button>
+    <button id="measureButton" onclick="drawMeasureCircle();">Measure</button>
+    <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset</button>
     <button type="submit">Save</button>
     <button onclick = "distancePointRed();">DistanceRed</button>
-   </div>
+   </div> -->
    <div class="dpi-ppi-conversion">
 
    </div>
@@ -122,14 +134,12 @@
     <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
   </div>
   <div class="select-options">
-    <form action="/">
+    <!-- <form action="/"> -->
       <label for="point">Select point 1:</label>
-        <select name="point" id="point">
-          <option value="points"></option>
+        <select name="point" id="pointChosen1">
         </select>
       <label for="point">Select point 2:</label>
-      <select name="point" id="point">
-          <option value="points"></option>
+      <select name="point" id="pointChosen2">
       </select>
       <label for="measurement">Measurement:</label>
       <select name="measurement" id="measurement">
@@ -138,10 +148,13 @@
         <option value="Stride length right">Stride length right</option>
       </select>
       
-      <br><br><input type="submit" value="Add Entry">
+      <br><br><p id="entryPreview"></p>
+      <button id="refreshList" onclick="refreshList();">Refresh</button>
+      <button id="empty" onclick="emptyList();">Empty</button>
+      <input type="submit" value="Add Entry">
       <button id="removeEntry">Remove Entry</button>
       
-    </form>
+    <!-- </form> -->
   </div>
 </div> 
    <!-- </div> -->
@@ -152,7 +165,8 @@
 <!-- <script type="text/javascript" src="{% static 'js/canvasjs.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.canvasjs.min.js' %}"></script> -->
 <script>
-//    let image = document.createElement('img');
+// ----------------------- ALL VARIABLES ASSIGNED --------------------------- //
+
    let imgWidth = document.getElementById('imageUploadedWidth');
    let imgHeight = document.getElementById('imageUploadedHeight');
    let imgSize = document.getElementById('imageUploadedSize');
@@ -190,7 +204,7 @@
         document.getElementById("canvasHeight").value = '';
 
 
-// On image load canvas and container become the same size as uploaded image
+// IMAGE ONLOAD SECTION - On image load canvas and container become the same size as uploaded image //
         img.onload = () => {
             event.target.value = null;
             imgWidth.innerHTML = "<strong>Uploaded image width:</strong> "+ img.width + "px";
@@ -210,6 +224,8 @@
             document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width+ "x" + img.height;
         }
     }
+
+// FUNCTIONS TO CHANGE CANVAS DIMENSIONS //
 
     let canvasWidth = document.getElementById("canvasWidth");
     let canvasHeight = document.getElementById("canvasHeight");
@@ -254,6 +270,8 @@ changeHeight();
       canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
       document.getElementById("canvasHeight").value = '';
     }
+
+  // FUNCTIONS TO CHANGE IMAGE DIMENSIONS AND KEEPING CANVAS SIZE (some functions probably unnecessary) //   
 
     function changeImgDim(){
       let imgWidthInput = document.getElementById("containerWidth").value;
@@ -305,6 +323,9 @@ changeHeight();
         // results.style.display = "inline-block";
         // chButtons.style.display = "inline-block";
 
+
+// ------------------- RESET FILE SECTION ===> RESET IMAGE AND FUNCTIONS -------------- //
+
     let resetFile = function(event){
       
       imgContainer.style.backgroundImage = "";
@@ -338,6 +359,10 @@ changeHeight();
       imgWidthInput.value = '';
       imgHeightInput.value = '';
     }
+  
+//---------------------------------------------------------//
+
+// Resolution section //
 
     function getUserResolution(){
       document.getElementById("userResolution").innerHTML ="<strong>Your resolution is:</strong> " + window.screen.width * window.devicePixelRatio + "x" + window.screen.height * window.devicePixelRatio;
@@ -356,7 +381,35 @@ changeHeight();
       } else
       alert("No screen size in inches was given"); 
     }
+ 
+// --------------------------------------- //
     
+
+// OPTIONS LIST DYNAMIC - SHOWING EVERY AVAILABLE OPTIONS OF POINTS TO CHOOSE //
+
+let pointsChosen1 = document.getElementById("pointChosen1");
+let pointsChosen2 = document.getElementById("pointChosen2");
+
+function refreshList(){
+  pointsChosen1.options.length = 0; // Every refresh click removes previous list to avoid duplicates
+  pointsChosen2.options.length = 0;
+  for(let i = 0; i < pointsRed.length; i++) {
+    newIndexRed = i+1;
+    pointsChosen1.options[pointsChosen1.options.length] = new Option("Red " + newIndexRed);
+    pointsChosen2.options[pointsChosen2.options.length] = new Option("Red " + newIndexRed);
+  }
+
+  for(let g = 0; g < pointsBlue.length; g++) {
+    newIndexBlue = g+1;
+    pointsChosen1.options[pointsChosen1.options.length] = new Option("Blue " + newIndexBlue);
+    pointsChosen2.options[pointsChosen2.options.length] = new Option("Blue " + newIndexBlue);
+  }
+}
+
+function emptyList(){
+  pointsChosen1.options.length = 0;
+  pointsChosen2.options.length = 0;
+}
 </script>
 <script>
 
