@@ -265,8 +265,31 @@ function distanceMeasurePoint(){
 }
 
 
-function distanceBetweenPoints(){
-  if ((pointsRed.length !=0) && (pointsBlue.length != 0)){
-    
-  }
-}
+// function distanceBetweenPoints(){
+//   var index1 = document.getElementById("pointChosen1").selectedIndex;
+//   var index2 = document.getElementById("pointChosen2").selectedIndex;
+//   let option1 = pointsChosen1.value;
+//   let option2 = pointsChosen2.value;
+//   let distance;
+//   if (option1){
+//     if (option1.includes("Red")){
+//       point1 = pointsRed[index1];
+//       console.log(point1.x, point1.y);
+//     }
+//     if (option1.includes("Blue")){
+//       point1 = pointsBlue[index1 - pointsRed.length];
+//       console.log(point1.x, point1.y);
+//     }
+//   }
+//   if (option2){    
+//     if (option2.includes("Red")){
+//       point2 = pointsRed[index2];
+//       console.log(point2.x, point2.y);
+//     }
+//     if (option2.includes("Blue")){
+//       point2 = pointsBlue[index2 - pointsRed.length];
+//       console.log(point2.x, point2.y);
+//   }
+// }
+//   distance = (Math.hypot(point1.x - point2.x, point1.y - point2.y)).toFixed(2);
+// }

@@ -159,6 +159,7 @@
       <button id="empty" onclick="emptyList();">Empty</button>
       <input type="submit" onclick="addEntry();" value="Add Entry">
       <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
+      <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button>
       
     <!-- </form> -->
   </div>
@@ -424,15 +425,45 @@ function addEntry(){
   value1 = pointsChosen1.value;
   value2 = pointsChosen2.value;
   value3 = measurementType.options[measurementType.selectedIndex].value;
-  // value4 = measure distance between chosen points
+  let value4;
+  let value5;
   var newRow = tbody.insertRow(-1);
   var cellOne = newRow.insertCell();
   var cellTwo = newRow.insertCell();
   var cellThree = newRow.insertCell();
+  var cellFour = newRow.insertCell();
   cellOne.innerHTML = value1 + "-" + value2;
   cellTwo.innerHTML = value3;
-  cellThree.innerHTML = "NONE";
-  console.log(value1, value2, value3);
+  var index1 = document.getElementById("pointChosen1").selectedIndex;
+  var index2 = document.getElementById("pointChosen2").selectedIndex;
+  let option1 = pointsChosen1.value;
+  let option2 = pointsChosen2.value;
+  let distance;
+  if (option1){
+    if (option1.includes("Red")){
+      point1 = pointsRed[index1];
+      console.log(point1.x, point1.y);
+    }
+    if (option1.includes("Blue")){
+      point1 = pointsBlue[index1 - pointsRed.length];
+      console.log(point1.x, point1.y);
+    }
+  }
+  if (option2){    
+    if (option2.includes("Red")){
+      point2 = pointsRed[index2];
+      console.log(point2.x, point2.y);
+    }
+    if (option2.includes("Blue")){
+      point2 = pointsBlue[index2 - pointsRed.length];
+      console.log(point2.x, point2.y);
+  }
+  }
+  distance = (Math.hypot(point1.x - point2.x, point1.y - point2.y)).toFixed(2);
+  value4 = distance;
+  cellThree.innerHTML = value4;
+  cellFour.innerHTML = "NONE";
+  // console.log(value1, value2, value3, value4, value5);
 }
 
 
