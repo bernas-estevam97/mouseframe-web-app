@@ -262,5 +262,11 @@ function distanceMeasurePoint(){
   } else{
     alert ("Something went wrong");
   }
-  
+}
+
+
+function distanceBetweenPoints(){
+  if ((pointsRed.length !=0) && (pointsBlue.length != 0)){
+    
+  }
 }

@@ -124,12 +124,18 @@
    <div class="data-management" id="showData">
     <div class="table-results">
     <h3>Data retrieved:</h3>
-    <table id="tbl_exporttable_to_xls">
+    <table id="table">
+      <thead>
       <tr>
         <th>Entry number</th>
         <th>Measurement type</th>
-        <th>Value</th>
+        <th>Value(px)</th>
+        <th>Value(cm)</th>
       </tr>
+    </thead>
+    <tbody id="tbody">
+
+    </tbody>
     </table>
     <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
   </div>
@@ -143,16 +149,16 @@
       </select>
       <label for="measurement">Measurement:</label>
       <select name="measurement" id="measurement">
-        <option value="Overlap">Overlap</option>
-        <option value="Stride length left">Stride length right</option>
+        <option value="Overlap" selected>Overlap</option>
+        <option value="Stride length left">Stride length left</option>
         <option value="Stride length right">Stride length right</option>
       </select>
       
       <br><br><p id="entryPreview"></p>
       <button id="refreshList" onclick="refreshList();">Refresh</button>
       <button id="empty" onclick="emptyList();">Empty</button>
-      <input type="submit" value="Add Entry">
-      <button id="removeEntry">Remove Entry</button>
+      <input type="submit" onclick="addEntry();" value="Add Entry">
+      <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
       
     <!-- </form> -->
   </div>
@@ -389,6 +395,7 @@ changeHeight();
 
 let pointsChosen1 = document.getElementById("pointChosen1");
 let pointsChosen2 = document.getElementById("pointChosen2");
+let measurementType = document.getElementById("measurement");
 
 function refreshList(){
   pointsChosen1.options.length = 0; // Every refresh click removes previous list to avoid duplicates
@@ -410,11 +417,34 @@ function emptyList(){
   pointsChosen1.options.length = 0;
   pointsChosen2.options.length = 0;
 }
+
+tbody = document.getElementById("tbody");
+
+function addEntry(){
+  value1 = pointsChosen1.value;
+  value2 = pointsChosen2.value;
+  value3 = measurementType.options[measurementType.selectedIndex].value;
+  // value4 = measure distance between chosen points
+  var newRow = tbody.insertRow(-1);
+  var cellOne = newRow.insertCell();
+  var cellTwo = newRow.insertCell();
+  var cellThree = newRow.insertCell();
+  cellOne.innerHTML = value1 + "-" + value2;
+  cellTwo.innerHTML = value3;
+  cellThree.innerHTML = "NONE";
+  console.log(value1, value2, value3);
+}
+
+
+function removeEntry(){
+  table = document.getElementById("table");
+  table.deleteRow(-1);
+}
 </script>
 <script>
 
   function ExportToExcel(type, fn, dl) {
-      var elt = document.getElementById('tbl_exporttable_to_xls');
+      var elt = document.getElementById('table');
       var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
       return dl ?
           XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
