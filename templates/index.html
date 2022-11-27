@@ -127,7 +127,7 @@
     <table id="table">
       <thead>
       <tr>
-        <th>Entry number</th>
+        <th>Points</th>
         <th>Measurement type</th>
         <th>Value(px)</th>
         <th>Value(cm)</th>
@@ -159,7 +159,7 @@
       <button id="empty" onclick="emptyList();">Empty</button>
       <input type="submit" onclick="addEntry();" value="Add Entry">
       <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
-      <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button>
+      <!-- <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button> -->
       
     <!-- </form> -->
   </div>
@@ -432,7 +432,7 @@ function addEntry(){
   var cellTwo = newRow.insertCell();
   var cellThree = newRow.insertCell();
   var cellFour = newRow.insertCell();
-  cellOne.innerHTML = value1 + "-" + value2;
+  cellOne.innerHTML = value1 + "|" + value2;
   cellTwo.innerHTML = value3;
   var index1 = document.getElementById("pointChosen1").selectedIndex;
   var index2 = document.getElementById("pointChosen2").selectedIndex;

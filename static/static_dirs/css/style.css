@@ -437,6 +437,11 @@ header h1{
     padding: 0 10px;
 }
 
+.data-management tbody tr td{
+    border: 1px solid #000;
+    text-align: center;
+}
+
 
 #exportEx{
     margin-top: 20px;
