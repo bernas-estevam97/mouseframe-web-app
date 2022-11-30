@@ -37,7 +37,8 @@
     <form action="">
         <label for="img" style="font-size: 1.1em;">Upload your image here:</label>
         <p id="canvasUpload">Canvas starts with same size as the image uploaded. Change below if necessary.</p>
-        <input type="file" id="uploadImage" name="img" alt="Upload" accept="image/*" onchange="loadFile(event)" style="display: none;">
+        <input type="file" id="uploadImage" name="img" alt="Upload" accept="image/*" onchange="loadFile(event);" style="display:none;">
+        <!-- <input type="file" onchange="previewFile();"> -->
         <input class="upload-btn" type="button" value="Select Image" onclick="document.getElementById('uploadImage').click();" style="cursor: pointer;"/>
       </form>
     <div id="imgContainer" class="image-container">
@@ -58,6 +59,7 @@
        </div>
        
        <div id="imageInfo" class="image-info">
+        <p id="imageName"></p>
         <p id="imageUploadedWidth"></p>
         <p id="imageUploadedHeight"></p>
         <p id="imageUploadedSize"></p>
@@ -90,15 +92,16 @@
     <input id="canvasHeight" type="number" placeholder="Canvas Height">
     <button id="changeH" onclick="changeHeight();">Change canvas height</button>
     <button id="resetH" onclick="resetHeight();">Reset Height</button><br><br>
-    <input id="containerWidth" type="number" placeholder="Image Width">
+    <!-- <input id="containerWidth" type="number" placeholder="Image Width"> -->
     <!-- <button id="changeImgW" onclick="changeImgW();">Change image width</button> -->
     <!-- <button id="resetImgW" onclick="resetImgW();">Reset Image Width</button> -->
-    <input id="containerHeight" type="number" placeholder="Image Height">
-    <button id="changeImgDim" onclick="changeImgDim();">Change Image dimensions</button>
-    <button id="resetImgDim" onclick="resetImgDim();">Reset Image dimensions</button>
+    <!-- <input id="containerHeight" type="number" placeholder="Image Height"> -->
+    <!-- <button id="changeImgDim" onclick="changeImgDim();">Change Image dimensions</button> -->
+    <h3>Image resizing:</h3>
     <button id="fiftyP" onclick="resizeSF();">75% Size</button>
     <button id="fiftyP" onclick="resizeFifty();">50% Size</button>
-    <button id="twentyF" onclick="resizeTwentyF();">25% Size</button><br><br>
+    <button id="twentyF" onclick="resizeTwentyF();">25% Size</button>
+    <button id="resetImgDim" onclick="resetImgDim();">Reset Image dimensions</button><br><br>
     <p id="currentImgSize"></p><br><br>
     <div class="point-size">
     <input id="sizeInput" type="number" placeholder="Dot Size">
@@ -126,6 +129,9 @@
     <h3>Data retrieved:</h3>
     <table id="table">
       <thead>
+      <tr>
+        <td colspan="4" id="titleImage"></td>
+      </tr>
       <tr>
         <th>Points</th>
         <th>Measurement type</th>
@@ -183,6 +189,8 @@
    let chButtons = document.querySelector(".buttons-change");
    let canvasInfo = document.getElementById("canvasInfo");
    let canvasUpload = document.getElementById("canvasUpload");
+   let imgName = document.getElementById("imageName");
+   let tableTitle = document.getElementById("titleImage");
    document.getElementById("inputScreenInches").style.display = 'none';
    document.getElementById("screenPPI").style.display = 'none';
    document.getElementById("imageDimInches").style.display = 'none';
@@ -195,10 +203,11 @@
   //  results.style.display = "none";
    chButtons.style.display = "none";
    let imgContainer = document.getElementById("imgContainer");
-   let img = new Image()
+   let img = new Image();
     let loadFile = function(event){
         img.src = URL.createObjectURL(event.target.files[0]);
-        imgContainer.style.backgroundImage = "url(" +img.src+ ")";
+        let blob = img.src;
+        imgContainer.style.backgroundImage = "url(" +blob+ ")";
         buttons.style.display = "inline-block";
         // results.style.display = "inline-block";
         chButtons.style.display = "inline-block";
@@ -206,10 +215,11 @@
         // canvasInfo.style.display = "none";
         canvasUpload.style.display = "";
         imgSize.innerHTML = "<strong>Uploaded image size:</strong> "+ ((event.target.files[0].size)/1024).toFixed(2) + " kb";
+        imgName.innerHTML = "<b>Image name:</b> " + event.target.files[0].name;
+        tableTitle.innerHTML = "<b>Table for image:</b> " + event.target.files[0].name;
         canvas.style.display = '';
         document.getElementById("canvasWidth").value = '';
         document.getElementById("canvasHeight").value = '';
-
 
 // IMAGE ONLOAD SECTION - On image load canvas and container become the same size as uploaded image //
         img.onload = () => {
@@ -294,29 +304,29 @@ changeHeight();
     }
 
     function resetImgDim(){
-      let imgWidthInput = document.getElementById("containerWidth");
-      let imgHeightInput = document.getElementById("containerHeight");
+      // let imgWidthInput = document.getElementById("containerWidth");
+      // let imgHeightInput = document.getElementById("containerHeight");
       imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
       imgContainer.style.width= img.width + "px";
       imgContainer.style.height = img.height + "px";
-      imgWidthInput.value = '';
-      imgHeightInput.value = '';
+      // imgWidthInput.value = '';
+      // imgHeightInput.value = '';
       document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width + "x" + img.height;
     }
 
     function resizeFifty(){
       imgContainer.style.backgroundSize = img.width*0.5 + "px " + img.width*0.5 + "px";
-      document.getElementById("currentImgSize").innerHTML = "Current image size is: " + img.width*0.5 + "x" + img.height*0.5;
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.5 + "x" + img.height*0.5 + " (50% of size!)";
     }
 
     function resizeSF(){
       imgContainer.style.backgroundSize = img.width*0.75 + "px " + img.height*0.75 + "px";
-      document.getElementById("currentImgSize").innerHTML = "Current image size is: " + img.width*0.75 + "x" + img.height*0.75;
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.75 + "x" + img.height*0.75 + " (75% of size!)";
     }
 
     function resizeTwentyF(){
       imgContainer.style.backgroundSize = img.width*0.25 + "px " + img.height*0.25 + "px";
-      document.getElementById("currentImgSize").innerHTML = "Current image size is: " + img.width*0.25 + "x" + img.height*0.25;
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.25 + "x" + img.height*0.25 + " (25% of size!)";
     }
     
         // let img = document.createElement("img");
@@ -361,10 +371,11 @@ changeHeight();
       canvas.style.display = "none";
       document.getElementById("canvasWidth").value = '';
       document.getElementById("canvasHeight").value = '';
-      let imgWidthInput = document.getElementById("containerWidth");
-      let imgHeightInput = document.getElementById("containerHeight");
-      imgWidthInput.value = '';
-      imgHeightInput.value = '';
+      // let imgWidthInput = document.getElementById("containerWidth");
+      // let imgHeightInput = document.getElementById("containerHeight");
+      // imgWidthInput.value = '';
+      // imgHeightInput.value = '';
+      tableTitle.innerHTML = '';
     }
   
 //---------------------------------------------------------//
@@ -479,7 +490,7 @@ function removeEntry(){
       var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
       return dl ?
           XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
-          XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+          XLSX.writeFile(wb, fn || ('Measurements.' + (type || 'xlsx')));
   }
 
 </script>

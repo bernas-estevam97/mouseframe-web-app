@@ -203,6 +203,8 @@ function drawMeasurePoint(e){
 function drawMeasureCircle(){
   canvas.addEventListener("click", drawMeasurePoint, false);
   canvas.addEventListener("click", printMousePos, false);
+  canvas.removeEventListener('click', drawBlue);
+  canvas.removeEventListener('click', drawRed);
   canvas.style.cursor = "pointer";
 }
 
