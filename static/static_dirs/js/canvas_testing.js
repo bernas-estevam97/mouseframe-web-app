@@ -260,9 +260,21 @@ function distanceMeasurePoint(){
   if (pointsMeasure.length != 0){
     let dist = (Math.hypot(pointsMeasure[1].x - pointsMeasure[0].x, pointsMeasure[1].y - pointsMeasure[0].y)).toFixed(2);
     console.log(dist);
-    document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter"; 
+    if (imgSizeStatus == 1){
+      document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter"; 
+    }
+    if (imgSizeStatus == 0.75){
+      document.getElementById("measureToCm").innerHTML = dist + "px equals 0.75 centimeter"; 
+    }
+    if (imgSizeStatus == 0.5){
+      document.getElementById("measureToCm").innerHTML = dist + "px equals 0.5 centimeter"; 
+    }
+    if (imgSizeStatus == 0.25){
+      document.getElementById("measureToCm").innerHTML = dist + "px equals 0.25 centimeter"; 
+    }
+    
   } else{
-    alert ("Something went wrong");
+    alert ("Add 2 points and measure");
   }
 }
 
