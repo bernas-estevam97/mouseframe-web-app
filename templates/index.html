@@ -197,6 +197,8 @@
    document.getElementById("imageDimCm").style.display = 'none';
    document.getElementById("labelInput").style.display = 'none';
    document.getElementById("ppiCalculus").style.display = 'none';
+   document.getElementById("savedDistance").style.display = "none";
+   document.getElementById("showData").style.display = "none";
    canvasUpload.style.display = "none";
    buttons.style.display = "none";
    canvas.style.display = "none";
@@ -212,6 +214,8 @@
         // results.style.display = "inline-block";
         chButtons.style.display = "inline-block";
         imgInfo.style.display = "inline-block";
+        savedDistance.style.display = '';
+        showData.style.display = '';
         // canvasInfo.style.display = "none";
         canvasUpload.style.display = "";
         imgSize.innerHTML = "<strong>Uploaded image size:</strong> "+ ((event.target.files[0].size)/1024).toFixed(2) + " kb";
@@ -368,6 +372,8 @@ changeHeight();
       document.getElementById("imageDimCm").innerHTML = '';
       document.getElementById("labelInput").style.display = 'none';
       document.getElementById("ppiCalculus").style.display = 'none';
+      document.getElementById("savedDistance").style.display = "none";
+      document.getElementById("showData").style.display = "none";
       canvas.style.display = "none";
       document.getElementById("canvasWidth").value = '';
       document.getElementById("canvasHeight").value = '';
