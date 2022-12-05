@@ -130,9 +130,10 @@
     <table id="table">
       <thead>
       <tr>
-        <td colspan="4" id="titleImage"></td>
+        <td colspan="5" id="titleImage"></td>
       </tr>
       <tr>
+        <th>Entry Number</th>
         <th>Points</th>
         <th>Measurement type</th>
         <th>Value(px)</th>
@@ -446,66 +447,85 @@ function emptyList(){
 tbody = document.getElementById("tbody");
 
 function addEntry(){
-  value1 = pointsChosen1.value;
-  value2 = pointsChosen2.value;
-  value3 = measurementType.options[measurementType.selectedIndex].value;
+  let value1 = pointsChosen1.value;
+  let value2 = pointsChosen2.value;
+  let rows = tbody.rows;
+  let value3 = measurementType.options[measurementType.selectedIndex].value;
   let value4;
   let value5;
-  var newRow = tbody.insertRow(-1);
-  var cellOne = newRow.insertCell();
-  var cellTwo = newRow.insertCell();
-  var cellThree = newRow.insertCell();
-  var cellFour = newRow.insertCell();
-  cellOne.innerHTML = value1 + "|" + value2;
-  cellTwo.innerHTML = value3;
-  var index1 = document.getElementById("pointChosen1").selectedIndex;
-  var index2 = document.getElementById("pointChosen2").selectedIndex;
-  let option1 = pointsChosen1.value;
-  let option2 = pointsChosen2.value;
-  let distance;
-  if (option1){
-    if (option1.includes("Red")){
-      point1 = pointsRed[index1];
-      console.log(point1.x, point1.y);
+  if ((value1 != '') || (value2 != '')){
+    var newRow = tbody.insertRow(-1);
+    let indexRow = newRow.rowIndex;
+    var cellOne = newRow.insertCell();
+    var cellTwo = newRow.insertCell();
+    var cellThree = newRow.insertCell();
+    var cellFour = newRow.insertCell();
+    var cellFive = newRow.insertCell();
+    cellOne.innerHTML = indexRow-1;
+    cellTwo.innerHTML = value1 + "|" + value2;
+    cellThree.innerHTML = value3;
+    var index1 = document.getElementById("pointChosen1").selectedIndex;
+    var index2 = document.getElementById("pointChosen2").selectedIndex;
+    let option1 = pointsChosen1.value;
+    let option2 = pointsChosen2.value;
+    let distance;
+    if (option1){
+      if (option1.includes("Red")){
+        point1 = pointsRed[index1];
+        // console.log(point1.x, point1.y);
+      }
+      if (option1.includes("Blue")){
+        point1 = pointsBlue[index1 - pointsRed.length];
+        // console.log(point1.x, point1.y);
+      }
     }
-    if (option1.includes("Blue")){
-      point1 = pointsBlue[index1 - pointsRed.length];
-      console.log(point1.x, point1.y);
+    if (option2){
+      if (option2.includes("Red")){
+        point2 = pointsRed[index2];
+        // console.log(point2.x, point2.y);
+      }
+      if (option2.includes("Blue")){
+        point2 = pointsBlue[index2 - pointsRed.length];
+        // console.log(point2.x, point2.y);
     }
-  }
-  if (option2){
-    if (option2.includes("Red")){
-      point2 = pointsRed[index2];
-      console.log(point2.x, point2.y);
     }
-    if (option2.includes("Blue")){
-      point2 = pointsBlue[index2 - pointsRed.length];
-      console.log(point2.x, point2.y);
-  }
-  }
-  distance = (Math.hypot(point1.x - point2.x, point1.y - point2.y)).toFixed(2);
-  value4 = distance;
-  cellThree.innerHTML = value4;
-  if (dist != 0){
-    cellFour.innerHTML = (value4/dist).toFixed(2);
-  }
-  if (dist == 0){
-    cellFour.innerHTML = "-----";
-  }
+    distance = (Math.hypot(point1.x - point2.x, point1.y - point2.y)).toFixed(2);
+    value4 = distance;
+    cellFour.innerHTML = value4;
+    if (dist != 0){
+      cellFive.innerHTML = (value4/dist).toFixed(2);
+    }
+    if (dist == 0){
+      cellFive.innerHTML = "-----";
+    }
 
-  // console.log(value1, value2, value3, value4, value5);
+    // console.log(value1, value2, value3, value4, value5);
+  } else{
+    alert('Need points to be selected');
+  }
 }
+
 
 let entryNumber = document.getElementById("entryNumber");
 
 function removeEntry(){
-  // console.log(entryNumber.value);
-  // if (entryNumber.value != ''){
-  //   tbody.deleteRow(parseInt(entryNumber)+1);
-  // } else{
+  if (entryNumber.value != ''){
+    console.log(entryNumber.value);
+    tbody.deleteRow(entryNumber.value - 1);
+    for (var i = 0; i < tbody.rows.length; i++){
+      let updatedCell = tbody.rows[i].cells[0];
+      updatedCell.innerHTML = i+1;
+    }
+  } else{
     tbody.deleteRow(-1);
-  // }
+  }
 }
+
+
+// function updateTable(){
+//   let rowsUpdated = tbody.rows;
+//   for (i=0; i<rowsUpdated.length; i++){}
+// }
 </script>
 <script>
 
