@@ -255,10 +255,11 @@ let distances = [];
 //   }
 // }
 
+let dist = 0;
 
 function distanceMeasurePoint(){
   if (pointsMeasure.length != 0){
-    let dist = (Math.hypot(pointsMeasure[1].x - pointsMeasure[0].x, pointsMeasure[1].y - pointsMeasure[0].y)).toFixed(2);
+    dist = (Math.hypot(pointsMeasure[1].x - pointsMeasure[0].x, pointsMeasure[1].y - pointsMeasure[0].y)).toFixed(2);
     console.log(dist);
     document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
     // if (imgSizeStatus == 1){

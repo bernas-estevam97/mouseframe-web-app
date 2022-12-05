@@ -25,14 +25,14 @@
                 <li>The canvas will be automatically set to the uploaded image dimensions although a canvas bigger than the uploaded image would not make a difference in the distance calculations as long as the user adds the dots wherever it is wanted.</li>
                 <li>Make sure your image resolution fits your computer screen as the canvas will automatically adopt its dimensions.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
-                
+
             </ul>
             <p id="userResolution"></p><br>
         </div>
     <!-- </div> -->
     <!-- <div class="right-part"> -->
     <div class="img-selection">
-    
+
     <div class="img-upload">
     <form action="">
         <label for="img" style="font-size: 1.1em;">Upload your image here:</label>
@@ -57,14 +57,14 @@
          <button class="button" type="button" id="resetCanvas" onclick="clearCanvas();">Reset Canvas</button>
          <button class="button" type="button" id="resetFile" onclick="resetFile();">Reset Image</button>
        </div>
-       
+
        <div id="imageInfo" class="image-info">
         <p id="imageName"></p>
         <p id="imageUploadedWidth"></p>
         <p id="imageUploadedHeight"></p>
         <p id="imageUploadedSize"></p>
         <p id="canvasInfo"></p>
-      </div>  
+      </div>
    </div>
    <div class="saved-distances" id="savedDistance">
     <h2>Define how many pixels are in a centimeter.</h2>
@@ -159,17 +159,18 @@
         <option value="Stride length left">Stride length left</option>
         <option value="Stride length right">Stride length right</option>
       </select>
-      
+
       <br><br><p id="entryPreview"></p>
       <button id="refreshList" onclick="refreshList();">Refresh</button>
       <button id="empty" onclick="emptyList();">Empty</button>
       <input type="submit" onclick="addEntry();" value="Add Entry">
+      <input id="entryNumber" placeholder="Enter entry number">
       <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
       <!-- <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button> -->
-      
+
     <!-- </form> -->
   </div>
-</div> 
+</div>
    <!-- </div> -->
 </div>
 <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
@@ -292,7 +293,7 @@ changeHeight();
       document.getElementById("canvasHeight").value = '';
     }
 
-  // FUNCTIONS TO CHANGE IMAGE DIMENSIONS AND KEEPING CANVAS SIZE (some functions probably unnecessary) //   
+  // FUNCTIONS TO CHANGE IMAGE DIMENSIONS AND KEEPING CANVAS SIZE (some functions probably unnecessary) //
 
     let imgSizeStatus = 1;
 
@@ -338,7 +339,7 @@ changeHeight();
       imgContainer.style.backgroundSize = img.width*0.25 + "px " + img.height*0.25 + "px";
       document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.25 + "x" + img.height*0.25 + " (25% of size!)";
     }
-    
+
         // let img = document.createElement("img");
         // img.src = URL.createObjectURL(event.target.files[0]);
         // img.style.position = "absolute";
@@ -354,7 +355,7 @@ changeHeight();
 // ------------------- RESET FILE SECTION ===> RESET IMAGE AND FUNCTIONS -------------- //
 
     let resetFile = function(event){
-      
+
       imgContainer.style.backgroundImage = "";
       buttons.style.display = "none";
       // results.style.display = "none";
@@ -389,7 +390,7 @@ changeHeight();
       // imgHeightInput.value = '';
       tableTitle.innerHTML = '';
     }
-  
+
 //---------------------------------------------------------//
 
 // Resolution section //
@@ -404,16 +405,16 @@ changeHeight();
       let diagonal = Math.sqrt(Math.pow((window.screen.width * window.devicePixelRatio), 2)+Math.pow((window.screen.height * window.devicePixelRatio), 2));
       if (document.getElementById("inputScreenInches").value != ''){
         document.getElementById("screenPPI").innerHTML = "<b>Your screen PPI is:</b> " + (diagonal/document.getElementById("inputScreenInches").value).toFixed(2);
-        document.getElementById("imageDimInches").innerHTML = "<b>Your image dimensions in inches are:</b> " + (img.width/(diagonal/document.getElementById("inputScreenInches").value)).toFixed(2) 
+        document.getElementById("imageDimInches").innerHTML = "<b>Your image dimensions in inches are:</b> " + (img.width/(diagonal/document.getElementById("inputScreenInches").value)).toFixed(2)
         + "x" + (img.height/(diagonal/document.getElementById("inputScreenInches").value)).toFixed(2);
-        document.getElementById("imageDimCm").innerHTML = "<b>Your image dimensions in cm are:</b> " + ((img.width/(diagonal/document.getElementById("inputScreenInches").value)) * 2.54).toFixed(2) 
+        document.getElementById("imageDimCm").innerHTML = "<b>Your image dimensions in cm are:</b> " + ((img.width/(diagonal/document.getElementById("inputScreenInches").value)) * 2.54).toFixed(2)
         + "x" + ((img.height/(diagonal/document.getElementById("inputScreenInches").value)) * 2.54).toFixed(2);
       } else
-      alert("No screen size in inches was given"); 
+      alert("No screen size in inches was given");
     }
- 
+
 // --------------------------------------- //
-    
+
 
 // OPTIONS LIST DYNAMIC - SHOWING EVERY AVAILABLE OPTIONS OF POINTS TO CHOOSE //
 
@@ -472,7 +473,7 @@ function addEntry(){
       console.log(point1.x, point1.y);
     }
   }
-  if (option2){    
+  if (option2){
     if (option2.includes("Red")){
       point2 = pointsRed[index2];
       console.log(point2.x, point2.y);
@@ -485,13 +486,25 @@ function addEntry(){
   distance = (Math.hypot(point1.x - point2.x, point1.y - point2.y)).toFixed(2);
   value4 = distance;
   cellThree.innerHTML = value4;
-  cellFour.innerHTML = "NONE";
+  if (dist != 0){
+    cellFour.innerHTML = (value4/dist).toFixed(2);
+  }
+  if (dist == 0){
+    cellFour.innerHTML = "-----";
+  }
+
   // console.log(value1, value2, value3, value4, value5);
 }
 
+let entryNumber = document.getElementById("entryNumber");
 
 function removeEntry(){
-  tbody.deleteRow(-1);
+  // console.log(entryNumber.value);
+  // if (entryNumber.value != ''){
+  //   tbody.deleteRow(parseInt(entryNumber)+1);
+  // } else{
+    tbody.deleteRow(-1);
+  // }
 }
 </script>
 <script>
