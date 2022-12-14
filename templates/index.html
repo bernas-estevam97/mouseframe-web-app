@@ -30,21 +30,18 @@
         </div>
     <!-- </div> -->
     <!-- <div class="right-part"> -->
-    <div class="img-selection">
-
-    <div class="img-upload">
-    <form action="">
-        <label for="img" style="font-size: 1.1em;">Upload your image here:</label>
-        <p id="canvasUpload">Canvas starts with same size as the image uploaded. Change below if necessary.</p>
-        <input type="file" id="uploadImage" name="img" alt="Upload" accept="image/*" onchange="loadFile(event);" style="display:none;">
-        <!-- <input type="file" onchange="previewFile();"> -->
-        <input class="upload-btn" type="button" value="Select Image" onclick="document.getElementById('uploadImage').click();" style="cursor: pointer;"/>
-      </form>
-    <div id="imgContainer" class="image-container">
-      <canvas id="canvas"></canvas>
-    </div>
-    </div>
-    </div>
+    <!-- <div class="img-selection"> -->
+        <div class="img-upload">
+            <label for="img" style="font-size: 1.1em;">Upload your image here:</label>
+            <p id="canvasUpload">Canvas starts with same size as the image uploaded. Change below if necessary.</p>
+            <input type="file" id="uploadImage" name="img" alt="Upload" accept="image/*" onchange="loadFile(event);" style="display:none;">
+            <!-- <input type="file" onchange="previewFile();"> -->
+            <input class="upload-btn" type="button" value="Select Image" onclick="document.getElementById('uploadImage').click();" style="cursor: pointer;"/>
+        </div>
+        <div id="imgContainer" class="image-container">
+          <canvas id="canvas"></canvas>
+        </div>
+    <!-- </div> -->
     <div class="bottom-functions">
       <div class="buttons">
          <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Left</button>
@@ -109,7 +106,10 @@
     <button id="fiftyP" onclick="resizeFifty();">50% Size</button>
     <button id="twentyF" onclick="resizeTwentyF();">25% Size</button>
     <button id="resetImgDim" onclick="resetImgDim();">Reset Image dimensions</button><br><br>
-    <p id="currentImgSize"></p><br><br>
+    <p id="currentImgSize"></p><br>
+    <h3>Flip image (90deg)</h3>
+    <button onclick="rotate90();">Flip Image</button>
+    <p></p>
     <div class="point-size">
     <input id="sizeInput" type="number" placeholder="Dot Size">
     <button id="changeS" onclick="changeSize();">Change point size</button>
@@ -334,7 +334,7 @@ changeHeight();
 
     function resizeFifty(){
       imgSizeStatus = 0.5;
-      imgContainer.style.backgroundSize = img.width*0.5 + "px " + img.width*0.5 + "px";
+      imgContainer.style.backgroundSize = img.width*0.5 + "px " + img.height*0.5 + "px";
       document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.5 + "x" + img.height*0.5 + " (50% of size!)";
     }
 
@@ -537,6 +537,16 @@ function updateTableID(){
 function removeTableID(){
   tableTitle.innerHTML = '<b>Table ID: <b>';
   manualID.value = '';
+}
+
+let angle = [0, 90, 180, 270];
+let current = 0;
+
+function rotate90() {
+  current++;
+  if (current == 4)
+    current = 0;
+  $('#imgContainer').css('transform', 'rotate(' + angle[current] + 'deg)');
 }
 
 </script>

@@ -1,8 +1,5 @@
 body{
     position: relative;
-    width: 85vw;
-    left: 50%;
-    transform: translateX(-50%);
     background-color: #EEECD9;
 }
 
@@ -15,12 +12,13 @@ header{
     position: relative;
     background-color: #F7EFB6;
     margin: 20px;
+    width: 85vw;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 header h1{
-    
     color: black;
-   
     padding: 30px;
 }
 
@@ -30,6 +28,16 @@ header h1{
     display: flex;
     /* flex-direction: column; 
 } */
+.container-full{
+    position: relative;
+}
+
+.requirements{
+    position: relative;
+    width: 85vw;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
 .requirements h3{
     text-align: center;
@@ -65,32 +73,37 @@ header h1{
     margin-left: 20px;
 }
 
-.img-selection{
-    display: flex;
-    justify-content: space-evenly;
+.img-upload{
     position: relative;
     text-align: center;
-    align-items: center;
     margin-top: 50px;
 }
+
+/* .img-selection{
+    position: relative;
+    text-align: center;
+    margin-top: 50px;
+} */
 
 
 
 
 .image-container{
+    display: block;
     position: relative;
-    /* left: 50%;
-    transform: translateX(-50%); */
-    height: 0;
-    width: 0;
+    left: 50%;
+    transform: translateX(-50%);
     background-position: center;
     background-repeat: no-repeat;
     /* background-size: 1400px 800px; */
     margin-top: 20px;
     margin-bottom: 20px;
     /* border: 1px solid #000; testing purposes */
-    aspect-ratio: 16/9;
 }
+
+
+
+
 
 #canvas{
     position: relative;
