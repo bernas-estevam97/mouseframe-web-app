@@ -25,7 +25,6 @@
                 <li>The canvas will be automatically set to the uploaded image dimensions although a canvas bigger than the uploaded image would not make a difference in the distance calculations as long as the user adds the dots wherever it is wanted.</li>
                 <li>Make sure your image resolution fits your computer screen as the canvas will automatically adopt its dimensions.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
-
             </ul>
             <p id="userResolution"></p><br>
         </div>
@@ -48,8 +47,10 @@
     </div>
     <div class="bottom-functions">
       <div class="buttons">
-         <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Red</button>
-         <button class="button" type="button" id="deleteCircleRed" onclick="removeRedCircle();">Delete last added Red dot</button>
+         <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Front</button>
+         <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Hind</button>
+         <button class="button" type="button" id="deleteCircleRed" onclick="removeRedCircle();">Delete last added front red dot</button>
+         <button class="button" type="button" id="deleteCircleRed" onclick="removeRedCircle();">Delete last added hind red dot</button>
          <button class="button" type="button" id="deleteAllCircleRed" onclick="removeAllRedCircle();">Delete all red dots</button><br>
          <button class="button" type="button" id="blueCircle" onclick="drawBlueCircle();">Add button - Blue</button>
          <button class="button" type="button" id="deleteCircleBlue" onclick="removeBlueCircle();">Delete last added Blue dot</button>
