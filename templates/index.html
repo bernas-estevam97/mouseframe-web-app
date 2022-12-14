@@ -47,14 +47,18 @@
     </div>
     <div class="bottom-functions">
       <div class="buttons">
-         <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Front</button>
-         <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Hind</button>
-         <button class="button" type="button" id="deleteCircleRed" onclick="removeRedCircle();">Delete last added front red dot</button>
-         <button class="button" type="button" id="deleteCircleRed" onclick="removeRedCircle();">Delete last added hind red dot</button>
-         <button class="button" type="button" id="deleteAllCircleRed" onclick="removeAllRedCircle();">Delete all red dots</button><br>
-         <button class="button" type="button" id="blueCircle" onclick="drawBlueCircle();">Add button - Blue</button>
-         <button class="button" type="button" id="deleteCircleBlue" onclick="removeBlueCircle();">Delete last added Blue dot</button>
-         <button class="button" type="button" id="deleteAllCircleBlue" onclick="removeAllBlueCircle();">Delete all blue dots</button><br>
+         <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Left</button>
+         <button class="button" type="button" id="deleteCircleRed" onclick="removeRedCircle();">Delete last added left red dot</button>
+         <button class="button" type="button" id="deleteAllCircleRed" onclick="removeAllRedCircle();">Delete all left red dots</button><br>
+         <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Right</button>
+         <button class="button" type="button" id="deleteCircleRed" onclick="removeRedCircle();">Delete last added right red dot</button>
+         <button class="button" type="button" id="deleteAllCircleRed" onclick="removeAllRedCircle();">Delete all hind red dots</button><br>
+         <button class="button" type="button" id="blueCircle" onclick="drawBlueCircle();">Add button - Left</button>
+         <button class="button" type="button" id="deleteCircleBlue" onclick="removeBlueCircle();">Delete last added left blue dot</button>
+         <button class="button" type="button" id="deleteAllCircleRed" onclick="removeAllRedCircle();">Delete all left blue dots</button><br>
+         <button class="button" type="button" id="blueCircle" onclick="drawBlueCircle();">Add button - Right</button>
+         <button class="button" type="button" id="deleteCircleBlue" onclick="removeBlueCircle();">Delete last added right blue dot</button>
+         <button class="button" type="button" id="deleteAllCircleBlue" onclick="removeAllBlueCircle();">Delete all right blue dots</button><br>
          <button class="button" type="button" id="resetCanvas" onclick="clearCanvas();">Reset Canvas</button>
          <button class="button" type="button" id="resetFile" onclick="resetFile();">Reset Image</button>
        </div>
@@ -74,6 +78,8 @@
     <button id="measureButton" onclick="drawMeasureCircle();">Add measuring points</button>
     <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset points</button>
     <button onclick = "distanceMeasurePoint()">Measure</button>
+    <p>Or manually input known value of pixels in 1 cm:</p>
+    <input id="pixelsInCmMan" type="number" placeholder="Px in cm..."><button>Submit</button>
     <p id="measureToCm"></p>
     <button type="submit">Store value</button>
    </div>
@@ -131,7 +137,7 @@
     <table id="table">
       <thead>
       <tr>
-        <td colspan="5" id="titleImage"></td>
+        <td colspan="5" id="titleImage"><b>Table ID: </b></td>
       </tr>
       <tr>
         <th>Entry Number</th>
@@ -158,16 +164,18 @@
       <label for="measurement">Measurement:</label>
       <select name="measurement" id="measurement">
         <option value="Overlap" selected>Overlap</option>
-        <option value="Stride length left">Stride length left</option>
-        <option value="Stride length right">Stride length right</option>
+        <option value="Stride length left front">Stride length left front</option>
+        <option value="Stride length left hind">Stride length left hind</option>
+        <option value="Stride length right front">Stride length right front</option>
+        <option value="Stride length right hind">Stride length right hind</option>
       </select>
-
-      <br><br><p id="entryPreview"></p>
+      <br><p id="entryPreview"></p>
       <button id="refreshList" onclick="refreshList();">Refresh</button>
       <button id="empty" onclick="emptyList();">Empty</button>
       <input type="submit" onclick="addEntry();" value="Add Entry">
       <input id="entryNumber" placeholder="Enter entry number">
       <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
+      <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table"><button onclick="updateTableID()">Submit</button><button onclick="removeTableID();">Remove</button>
       <!-- <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button> -->
 
     <!-- </form> -->
@@ -194,6 +202,7 @@
    let canvasUpload = document.getElementById("canvasUpload");
    let imgName = document.getElementById("imageName");
    let tableTitle = document.getElementById("titleImage");
+   let manualID = document.getElementById("entryTableID");
    document.getElementById("inputScreenInches").style.display = 'none';
    document.getElementById("screenPPI").style.display = 'none';
    document.getElementById("imageDimInches").style.display = 'none';
@@ -223,7 +232,6 @@
         canvasUpload.style.display = "";
         imgSize.innerHTML = "<strong>Uploaded image size:</strong> "+ ((event.target.files[0].size)/1024).toFixed(2) + " kb";
         imgName.innerHTML = "<b>Image name:</b> " + event.target.files[0].name;
-        tableTitle.innerHTML = "<b>Table for image:</b> " + event.target.files[0].name;
         canvas.style.display = '';
         document.getElementById("canvasWidth").value = '';
         document.getElementById("canvasHeight").value = '';
@@ -390,7 +398,7 @@ changeHeight();
       // let imgHeightInput = document.getElementById("containerHeight");
       // imgWidthInput.value = '';
       // imgHeightInput.value = '';
-      tableTitle.innerHTML = '';
+      tableTitle.innerHTML = '<b>Table ID: <b>';
     }
 
 //---------------------------------------------------------//
@@ -522,11 +530,15 @@ function removeEntry(){
   }
 }
 
+function updateTableID(){
+  tableTitle.innerHTML += ' ' + manualID.value;
+}
 
-// function updateTable(){
-//   let rowsUpdated = tbody.rows;
-//   for (i=0; i<rowsUpdated.length; i++){}
-// }
+function removeTableID(){
+  tableTitle.innerHTML = '<b>Table ID: <b>';
+  manualID.value = '';
+}
+
 </script>
 <script>
 

@@ -463,9 +463,10 @@ header h1{
 }
 
 
-.select-options form{
+.data-management .select-options{
     position: relative;
     height: 20px;
+    border-left: 1px solid #000;
 }
 
 .select-options label{
