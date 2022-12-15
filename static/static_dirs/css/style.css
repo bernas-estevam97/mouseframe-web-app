@@ -73,24 +73,23 @@ header h1{
     margin-left: 20px;
 }
 
+/* .img-selection{
+    
+} */
+
 .img-upload{
     position: relative;
     text-align: center;
     margin-top: 50px;
 }
 
-/* .img-selection{
-    position: relative;
-    text-align: center;
-    margin-top: 50px;
-} */
-
 
 
 
 .image-container{
-    display: block;
     position: relative;
+    width: 100%;
+    height: 100%;
     left: 50%;
     transform: translateX(-50%);
     background-position: center;
@@ -98,16 +97,13 @@ header h1{
     /* background-size: 1400px 800px; */
     margin-top: 20px;
     margin-bottom: 20px;
+    transform-origin: center;
     /* border: 1px solid #000; testing purposes */
 }
 
-
-
-
-
 #canvas{
     position: relative;
-    border: 1px solid #000; /* testing only */
+    /* border: 1px solid #000; testing only */
 }
 
 .bottom-functions{
@@ -135,7 +131,7 @@ header h1{
     margin-bottom: 10px;
 }
 
-#redCircle{
+#redCircleLeft, #redCircleRight{
     color: #fff;
     background: #ff2626;
     border-radius: 5px;
@@ -144,33 +140,33 @@ header h1{
     transition: all 0.5s;
 }
 
-#redCircle:hover{
+#redCircleLeft:hover, #redCircleRight:hover{
     background: #DE0202;
 }
 
-#deleteCircleRed{
+#deleteCircleRedLeft, #deleteCircleRedRight{
     border-radius: 5px;
     border: 1px solid #c1c1c1;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-#deleteCircleRed:hover{
+#deleteCircleRedLeft:hover, #deleteCircleRedRight:hover{
     background: rgb(155, 155, 155);
 }
 
-#deleteAllCircleRed{
+#deleteAllCircleRedLeft, #deleteAllCircleRedRight{
     border-radius: 5px;
     border: 1px solid #c1c1c1;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-#deleteAllCircleRed:hover{
+#deleteAllCircleRedLeft:hover, #deleteAllCircleRedRight:hover{
     background: rgb(155, 155, 155);
 }
 
-#blueCircle{
+#blueCircleLeft, #blueCircleRight{
     color: #fff;
     background: #0980F1;
     border-radius: 5px;
@@ -179,29 +175,29 @@ header h1{
     transition: all 0.5s;
 }
 
-#blueCircle:hover{
+#blueCircleLeft:hover, #blueCircleRight:hover{
     background: hsl(216, 100%, 35%);
 }
 
-#deleteCircleBlue{
+#deleteCircleBlueLeft, #deleteCircleBlueRight{
     border-radius: 5px;
     border: 1px solid #c1c1c1;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-#deleteCircleBlue:hover{
+#deleteCircleBlueLeft:hover, #deleteCircleBlueRight:hover{
     background: rgb(155, 155, 155);
 }
 
-#deleteAllCircleBlue{
+#deleteAllCircleBlueLeft, #deleteAllCircleBlueRight{
     border-radius: 5px;
     border: 1px solid #c1c1c1;
     cursor: pointer;
     transition: all 0.2s;
 }
 
-#deleteAllCircleBlue:hover{
+#deleteAllCircleBlueLeft:hover, #deleteAllCircleBlueRight:hover{
     background: rgb(155, 155, 155);
 }
 

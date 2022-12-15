@@ -48,8 +48,10 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 
-let pointsRed = [];
-let pointsBlue = [];
+let pointsRedLeft = [];
+let pointsRedRight = [];
+let pointsBlueLeft = [];
+let pointsBlueRight = [];
 let pointsMeasure = [];
 var timeout = 300;
 var clicksRed = 0;
@@ -76,40 +78,70 @@ function printMousePos(event) {
 // DRAW RED - ALL EVENTS
 
 function drawCoordinatesRed(point, r) {
-  ctx.fillStyle = "#ff2626"; // Red color
+  ctx.fillStyle = "hsl(0, 100%, 30%)"; // Dark Red color
   ctx.beginPath();
   ctx.arc(point.x, point.y, r, 0, Math.PI * 2, true);
   ctx.fill();
 }
 
-function drawRed(e){
+function drawRedLeft(e){
   clicksRed++;
   var m = getPosition(e);
   drawCoordinatesRed(m, pointSize);
-  pointsRed.push(m);
-  console.log(pointsRed);
-  let index = pointsRed.indexOf(m);
+  pointsRedLeft.push(m);
+  console.log(pointsRedLeft);
+  let index = pointsRedLeft.indexOf(m);
   console.log(index);
   ctx.font = "15px Arial";
-  ctx.fillText(index + 1, m.x + pointSize*1.2, m.y + pointSize*1.2 + 10);
+  ctx.fillText('L' + (index + 1), m.x + pointSize*1.2, m.y + pointSize*1.2 + 10);
 }
 
-function drawRedCircle(){
-  canvas.addEventListener("click", drawRed, false);
+function drawRedRight(e){
+  clicksRed++;
+  var m = getPosition(e);
+  drawCoordinatesRed(m, pointSize);
+  pointsRedRight.push(m);
+  console.log(pointsRedRight);
+  let index = pointsRedRight.indexOf(m);
+  console.log(index);
+  ctx.font = "15px Arial";
+  ctx.fillText('R' + (index + 1), m.x + pointSize*1.2, m.y + pointSize*1.2 + 10);
+}
+
+function drawRedCircleLeft(){
+  canvas.addEventListener("click", drawRedLeft, false);
   canvas.addEventListener("click", printMousePos, false);
-  canvas.removeEventListener('click', drawBlue);
+  canvas.removeEventListener('click', drawRedRight, false);
+  canvas.removeEventListener('click', drawBlueLeft, false);
+  canvas.removeEventListener('click', drawBlueRight, false);
   canvas.style.cursor = "crosshair";
     // clicks++;
     // this point won't be added to the points array
     // it's here only to mark the point on click since otherwise it will appear with a delay equal to the timeout
 }
 
-function removeRedCircle(){
-  lastCordRed = pointsRed.pop();
-  console.log("Removed point on the coordinates: X " + lastCordRed.x + " Y: " + lastCordRed.y);
-  ctx.clearRect((lastCordRed.x - pointSize), (lastCordRed.y - pointSize), pointSize*4 + 10, pointSize*4 + 10); 
-  canvas.removeEventListener('click', drawBlue);
-  canvas.removeEventListener('click', drawRed);
+function drawRedCircleRight(){
+  canvas.addEventListener("click", drawRedRight, false);
+  canvas.addEventListener("click", printMousePos, false);
+  canvas.removeEventListener('click', drawRedLeft, false);
+  canvas.removeEventListener('click', drawBlueLeft, false);
+  canvas.removeEventListener('click', drawBlueRight, false);
+  canvas.style.cursor = "crosshair";
+}
+
+function removeRedCircleLeft(){
+  let lastElementRedLeft = pointsRedLeft[pointsRedLeft.length - 1];
+  console.log("Removed left red point on the coordinates: X " + lastElementRedLeft.x + " Y: " + lastElementRedLeft.y);
+  if (pointsRedLeft.indexOf(lastElementRedLeft) >= 9){
+    ctx.clearRect((lastElementRedLeft.x - pointSize), (lastElementRedLeft.y - pointSize), pointSize*4 + 18, pointSize*4 + 10); 
+  } else{
+    ctx.clearRect((lastElementRedLeft.x - pointSize), (lastElementRedLeft.y - pointSize), pointSize*4 + 10, pointSize*4 + 10); 
+  }
+  pointsRedLeft.pop();
+  canvas.removeEventListener('click', drawRedLeft, false);
+  canvas.removeEventListener('click', drawRedRight, false);
+  canvas.removeEventListener('click', drawBlueLeft, false);
+  canvas.removeEventListener('click', drawBlueRight, false);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
   // coordinates minus the radius 
@@ -119,65 +151,176 @@ function removeRedCircle(){
   // in the y axis and x axis like we did to draw the index numbers above
 }
 
-
-function removeAllRedCircle(){
-  for (let i = 0; i < pointsRed.length; i++){
-    ctx.clearRect((pointsRed[i].x - pointSize), (pointsRed[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
-    console.log("Removed point on the coordinates: X " + pointsRed[i].x + " Y: " + pointsRed[i].y);
+function removeRedCircleRight(){
+  let lastElementRedRight = pointsRedRight[pointsRedRight.length - 1];
+  console.log("Removed left red point on the coordinates: X " + lastElementRedRight.x + " Y: " + lastElementRedRight.y);
+  if (pointsRedRight.indexOf(lastElementRedRight) >= 9){
+    ctx.clearRect((lastElementRedRight.x - pointSize), (lastElementRedRight.y - pointSize), pointSize*4 + 20, pointSize*4 + 10); 
+  } else{
+    ctx.clearRect((lastElementRedRight.x - pointSize), (lastElementRedRight.y - pointSize), pointSize*4 + 12, pointSize*4 + 10); 
   }
-  pointsRed.length = 0;
-  canvas.removeEventListener('click', drawBlue);
-  canvas.removeEventListener('click', drawRed);
+  pointsRedRight.pop(); 
+  canvas.removeEventListener('click', drawRedLeft, false);
+  canvas.removeEventListener('click', drawRedRight, false);
+  canvas.removeEventListener('click', drawBlueLeft, false);
+  canvas.removeEventListener('click', drawBlueRight, false);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.style.cursor = "default";
+}
+
+function removeAllRedCircleLeft(){
+  for (let i = 0; i < pointsRedLeft.length; i++){
+    if (i>=9){
+      ctx.clearRect((pointsRedLeft[i].x - pointSize), (pointsRedLeft[i].y - pointSize), pointSize*4 + 18, pointSize*4 + 10);
+    }else{
+      ctx.clearRect((pointsRedLeft[i].x - pointSize), (pointsRedLeft[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+    }
+    console.log("Removed point on the coordinates: X " + pointsRedLeft[i].x + " Y: " + pointsRedLeft[i].y);
+  }
+  pointsRedLeft.length = 0;
+  canvas.removeEventListener('click', drawRedLeft, false);
+  canvas.removeEventListener('click', drawRedRight, false);
+  canvas.removeEventListener('click', drawBlueLeft, false);
+  canvas.removeEventListener('click', drawBlueRight, false);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.style.cursor = "default";
+}
+
+function removeAllRedCircleRight(){
+  for (let i = 0; i < pointsRedRight.length; i++){
+    if (i>=9){
+      ctx.clearRect((pointsRedRight[i].x - pointSize), (pointsRedRight[i].y - pointSize), pointSize*4 + 20, pointSize*4 + 10);
+    }else{
+      ctx.clearRect((pointsRedRight[i].x - pointSize), (pointsRedRight[i].y - pointSize), pointSize*4 + 12, pointSize*4 + 10);
+    }
+    console.log("Removed point on the coordinates: X " + pointsRedRight[i].x + " Y: " + pointsRedRight[i].y);
+  }
+  pointsRedRight.length = 0;
+  canvas.removeEventListener('click', drawRedLeft, false);
+  canvas.removeEventListener('click', drawRedRight, false);
+  canvas.removeEventListener('click', drawBlueLeft, false);
+  canvas.removeEventListener('click', drawBlueRight, false);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
 }
 
 // DRAW BLUE - ALL EVENTS
 
-function drawCoordinatesBlue(point, r) {
-  ctx.fillStyle = "#0980F1"; // Blue color
+function drawCoordinatesBlue(point, r){
+  ctx.fillStyle = "hsl(245, 89%, 42%)"; // Dark Blue color
   ctx.beginPath();
   ctx.arc(point.x, point.y, r, 0, Math.PI * 2, true);
   ctx.fill();
 }
 
-function drawBlue(e){
+function drawBlueLeft(e){
   clicksBlue++;
   var n = getPosition(e);
   drawCoordinatesBlue(n, pointSize);
-  pointsBlue.push(n);
-  console.log(pointsBlue);
-  let index = pointsBlue.indexOf(n);
+  pointsBlueLeft.push(n);
+  console.log(pointsBlueLeft);
+  let index = pointsBlueLeft.indexOf(n);
   console.log(index);
   ctx.font = "15px Arial";
-  ctx.fillText(index + 1, n.x + pointSize*1.2, n.y + pointSize*1.2 + 10);
+  ctx.fillText('L' + (index + 1), n.x + pointSize*1.2, n.y + pointSize*1.2 + 10);
 }
 
-function drawBlueCircle(){
-  canvas.addEventListener("click", drawBlue, false);
+function drawBlueRight(e){
+  clicksBlue++;
+  var n = getPosition(e);
+  drawCoordinatesBlue(n, pointSize);
+  pointsBlueRight.push(n);
+  console.log(pointsBlueRight);
+  let index = pointsBlueRight.indexOf(n);
+  console.log(index);
+  ctx.font = "15px Arial";
+  ctx.fillText('R' + (index + 1), n.x + pointSize*1.2, n.y + pointSize*1.2 + 10);
+}
+
+function drawBlueCircleLeft(){
+  canvas.addEventListener("click", drawBlueLeft, false);
   canvas.addEventListener("click", printMousePos, false);
-  canvas.removeEventListener('click', drawRed);
+  canvas.removeEventListener('click', drawBlueRight, false);
+  canvas.removeEventListener('click', drawRedRight, false);
+  canvas.removeEventListener('click', drawRedLeft, false);
   canvas.style.cursor = "crosshair";
 }
 
-function removeBlueCircle(){
-  lastCordBlue = pointsBlue.pop();
-  console.log("Removed point on the coordinates: X " + lastCordBlue.x + " Y: " + lastCordBlue.y);
-  ctx.clearRect((lastCordBlue.x - pointSize), (lastCordBlue.y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
-  canvas.removeEventListener('click', drawBlue);
-  canvas.removeEventListener('click', drawRed);
+function drawBlueCircleRight(){
+  canvas.addEventListener("click", drawBlueRight, false);
+  canvas.addEventListener("click", printMousePos, false);
+  canvas.removeEventListener('click', drawBlueLeft, false);
+  canvas.removeEventListener('click', drawRedRight, false);
+  canvas.removeEventListener('click', drawRedLeft, false);
+  canvas.style.cursor = "crosshair";
+}
+
+function removeBlueCircleLeft(){
+  let lastElementBlueLeft = pointsBlueLeft[pointsBlueLeft.length - 1];
+  console.log("Removed left Blue point on the coordinates: X " + lastElementBlueLeft.x + " Y: " + lastElementBlueLeft.y);
+  if (pointsBlueLeft.indexOf(lastElementBlueLeft) >= 9){
+    ctx.clearRect((lastElementBlueLeft.x - pointSize), (lastElementBlueLeft.y - pointSize), pointSize*4 + 18, pointSize*4 + 10); 
+  } else{
+    ctx.clearRect((lastElementBlueLeft.x - pointSize), (lastElementBlueLeft.y - pointSize), pointSize*4 + 10, pointSize*4 + 10); 
+  }
+  pointsBlueLeft.pop();
+  canvas.removeEventListener('click', drawBlueLeft);
+  canvas.removeEventListener('click', drawBlueRight);
+  canvas.removeEventListener('click', drawRedLeft);
+  canvas.removeEventListener('click', drawRedRight);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default"; 
 }
 
-function removeAllBlueCircle(){
-  for (let i = 0; i < pointsBlue.length; i++){
-    ctx.clearRect((pointsBlue[i].x - pointSize), (pointsBlue[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
-    console.log("Removed point on the coordinates: X " + pointsBlue[i].x + " Y: " + pointsBlue[i].y);
+function removeBlueCircleRight(){
+  let lastElementBlueRight = pointsBlueRight[pointsBlueRight.length - 1];
+  console.log("Removed Right Blue point on the coordinates: X " + lastElementBlueRight.x + " Y: " + lastElementBlueRight.y);
+  if (pointsBlueRight.indexOf(lastElementBlueRight) >= 9){
+    ctx.clearRect((lastElementBlueRight.x - pointSize), (lastElementBlueRight.y - pointSize), pointSize*4 + 20, pointSize*4 + 10); 
+  } else{
+    ctx.clearRect((lastElementBlueRight.x - pointSize), (lastElementBlueRight.y - pointSize), pointSize*4 + 12, pointSize*4 + 10); 
   }
-  pointsBlue.length = 0;
-  canvas.removeEventListener('click', drawBlue);
-  canvas.removeEventListener('click', drawRed);
+  pointsBlueRight.pop();
+  canvas.removeEventListener('click', drawBlueLeft);
+  canvas.removeEventListener('click', drawBlueRight);
+  canvas.removeEventListener('click', drawRedLeft);
+  canvas.removeEventListener('click', drawRedRight);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.style.cursor = "default"; 
+}
+
+function removeAllBlueCircleLeft(){
+  for (let i = 0; i < pointsBlueLeft.length; i++){
+    if (i>=9){
+      ctx.clearRect((pointsBlueLeft[i].x - pointSize), (pointsBlueLeft[i].y - pointSize), pointSize*4 + 18, pointSize*4 + 10);
+    }else{
+      ctx.clearRect((pointsBlueLeft[i].x - pointSize), (pointsBlueLeft[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+    }
+    console.log("Removed point on the coordinates: X " + pointsBlueLeft[i].x + " Y: " + pointsBlueLeft[i].y);
+  }
+  pointsBlueLeft.length = 0;
+  canvas.removeEventListener('click', drawBlueLeft);
+  canvas.removeEventListener('click', drawBlueRight);
+  canvas.removeEventListener('click', drawRedLeft);
+  canvas.removeEventListener('click', drawRedRight);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.style.cursor = "default";
+}
+
+function removeAllBlueCircleRight(){
+  for (let i = 0; i < pointsBlueRight.length; i++){
+    if (i>=9){
+      ctx.clearRect((pointsBlueRight[i].x - pointSize), (pointsBlueRight[i].y - pointSize), pointSize*4 + 18, pointSize*4 + 10);
+    }else{
+      ctx.clearRect((pointsBlueRight[i].x - pointSize), (pointsBlueRight[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+    }
+    console.log("Removed point on the coordinates: X " + pointsBlueRight[i].x + " Y: " + pointsBlueRight[i].y);
+  }
+  pointsBlueRight.length = 0;
+  canvas.removeEventListener('click', drawBlueLeft);
+  canvas.removeEventListener('click', drawBlueRight);
+  canvas.removeEventListener('click', drawRedLeft);
+  canvas.removeEventListener('click', drawRedRight);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
 }
@@ -225,13 +368,17 @@ function removeAllMeasurePoints(){
 
 
 function clearCanvas(){
-  canvas.removeEventListener('click', drawBlue);
-  canvas.removeEventListener('click', drawRed);
-  canvas.removeEventListener('click', drawMeasurePoint);
+  canvas.removeEventListener('click', drawBlueLeft);
+  canvas.removeEventListener('click', drawBlueRight);
+  canvas.removeEventListener('click', drawRedLeft);
+  canvas.removeEventListener('click', drawRedRight);
   canvas.removeEventListener("click", printMousePos);
+  canvas.removeEventListener('click', drawMeasurePoint);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  pointsRed.length = 0;
-  pointsBlue.length = 0;
+  pointsRedLeft.length = 0;
+  pointsRedRight.length = 0;
+  pointsBlueLeft.length = 0;
+  pointsBlueRight.length = 0;
   pointsMeasure.length = 0;
   canvas.style.cursor = "auto";
   pointSize = 4;  // when clicking reset canvas point size also goes to default --- can be changed

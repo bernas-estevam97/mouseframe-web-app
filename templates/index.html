@@ -30,7 +30,7 @@
         </div>
     <!-- </div> -->
     <!-- <div class="right-part"> -->
-    <!-- <div class="img-selection"> -->
+      <div class="img-selection">
         <div class="img-upload">
             <label for="img" style="font-size: 1.1em;">Upload your image here:</label>
             <p id="canvasUpload">Canvas starts with same size as the image uploaded. Change below if necessary.</p>
@@ -41,21 +41,21 @@
         <div id="imgContainer" class="image-container">
           <canvas id="canvas"></canvas>
         </div>
-    <!-- </div> -->
+        </div>
     <div class="bottom-functions">
       <div class="buttons">
-         <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Left</button>
-         <button class="button" type="button" id="deleteCircleRed" onclick="removeRedCircle();">Delete last added left red dot</button>
-         <button class="button" type="button" id="deleteAllCircleRed" onclick="removeAllRedCircle();">Delete all left red dots</button><br>
-         <button class="button" type="button" id="redCircle" onclick="drawRedCircle();">Add button - Right</button>
-         <button class="button" type="button" id="deleteCircleRed" onclick="removeRedCircle();">Delete last added right red dot</button>
-         <button class="button" type="button" id="deleteAllCircleRed" onclick="removeAllRedCircle();">Delete all hind red dots</button><br>
-         <button class="button" type="button" id="blueCircle" onclick="drawBlueCircle();">Add button - Left</button>
-         <button class="button" type="button" id="deleteCircleBlue" onclick="removeBlueCircle();">Delete last added left blue dot</button>
-         <button class="button" type="button" id="deleteAllCircleRed" onclick="removeAllRedCircle();">Delete all left blue dots</button><br>
-         <button class="button" type="button" id="blueCircle" onclick="drawBlueCircle();">Add button - Right</button>
-         <button class="button" type="button" id="deleteCircleBlue" onclick="removeBlueCircle();">Delete last added right blue dot</button>
-         <button class="button" type="button" id="deleteAllCircleBlue" onclick="removeAllBlueCircle();">Delete all right blue dots</button><br>
+         <button class="button" type="button" id="redCircleLeft" onclick="drawRedCircleLeft();">Add button - Left</button>
+         <button class="button" type="button" id="deleteCircleRedLeft" onclick="removeRedCircleLeft();">Delete last added left red dot</button>
+         <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete all left red dots</button><br>
+         <button class="button" type="button" id="redCircleRight" onclick="drawRedCircleRight();">Add button - Right</button>
+         <button class="button" type="button" id="deleteCircleRedRight" onclick="removeRedCircleRight();">Delete last added right red dot</button>
+         <button class="button" type="button" id="deleteAllCircleRedRight" onclick="removeAllRedCircleRight();">Delete all hind red dots</button><br>
+         <button class="button" type="button" id="blueCircleLeft" onclick="drawBlueCircleLeft();">Add button - Left</button>
+         <button class="button" type="button" id="deleteCircleBlueLeft" onclick="removeBlueCircleLeft();">Delete last added left blue dot</button>
+         <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllBlueCircleLeft();">Delete all left blue dots</button><br>
+         <button class="button" type="button" id="blueCircleRight" onclick="drawBlueCircleRight();">Add button - Right</button>
+         <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
+         <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br>
          <button class="button" type="button" id="resetCanvas" onclick="clearCanvas();">Reset Canvas</button>
          <button class="button" type="button" id="resetFile" onclick="resetFile();">Reset Image</button>
        </div>
@@ -76,7 +76,7 @@
     <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset points</button>
     <button onclick = "distanceMeasurePoint()">Measure</button>
     <p>Or manually input known value of pixels in 1 cm:</p>
-    <input id="pixelsInCmMan" type="number" placeholder="Px in cm..."><button>Submit</button>
+    <input id="pixelsInCmMan" type="number" placeholder="Px in cm...">&nbsp<button>Submit</button>
     <p id="measureToCm"></p>
     <button type="submit">Store value</button>
    </div>
@@ -107,9 +107,9 @@
     <button id="twentyF" onclick="resizeTwentyF();">25% Size</button>
     <button id="resetImgDim" onclick="resetImgDim();">Reset Image dimensions</button><br><br>
     <p id="currentImgSize"></p><br>
-    <h3>Flip image (90deg)</h3>
+    <!-- <h3>Flip image (90deg)</h3>
     <button onclick="rotate90();">Flip Image</button>
-    <p></p>
+    <p></p> -->
     <div class="point-size">
     <input id="sizeInput" type="number" placeholder="Dot Size">
     <button id="changeS" onclick="changeSize();">Change point size</button>
@@ -175,7 +175,7 @@
       <input type="submit" onclick="addEntry();" value="Add Entry">
       <input id="entryNumber" placeholder="Enter entry number">
       <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
-      <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table"><button onclick="updateTableID()">Submit</button><button onclick="removeTableID();">Remove</button>
+      <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()">Submit</button>&nbsp<button onclick="removeTableID();">Remove</button>
       <!-- <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button> -->
 
     <!-- </form> -->
@@ -454,6 +454,7 @@ function emptyList(){
 }
 
 tbody = document.getElementById("tbody");
+let pixelsManual = document.getElementById("pixelsInCmMan");
 
 function addEntry(){
   let value1 = pointsChosen1.value;
@@ -542,12 +543,12 @@ function removeTableID(){
 let angle = [0, 90, 180, 270];
 let current = 0;
 
-function rotate90() {
-  current++;
-  if (current == 4)
-    current = 0;
-  $('#imgContainer').css('transform', 'rotate(' + angle[current] + 'deg)');
-}
+// function rotate90() {
+//   current++;
+//   if (current == 4)
+//     current = 0;
+//   $('#imgContainer').css('transform', 'rotate(' + angle[current] + 'deg)');
+// }
 
 </script>
 <script>
