@@ -118,12 +118,13 @@ header h1{
     border: 3px solid #c1c1c1;
     background: #fff;
     padding: 10px 40px 0 40px;
+    max-height: 200px;
 }
 
 .buttons{
     background-color: #fff;
     border: 5px double #c1c1c1;
-    padding: 10px 10px;
+    padding: 10px 20px;
 }
 
 .buttons button{
@@ -225,6 +226,25 @@ header h1{
 }
 
 #resetFile:hover{
+    background: rgb(155, 155, 155);
+}
+
+.point-input{
+    height: 20px;
+}
+
+#removePoint{
+    padding: 5px 10px;
+    margin: 0;
+    position: relative;
+    border-radius: 3px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px; 
+}
+
+#removePoint:hover{
     background: rgb(155, 155, 155);
 }
 
@@ -475,7 +495,6 @@ header h1{
 .data-management .select-options{
     position: relative;
     height: 20px;
-    border-left: 1px solid #000;
 }
 
 .select-options label{
@@ -488,4 +507,8 @@ header h1{
 }
 
 .select-options select{
+}
+
+#entryTableID{
+    margin-left: 0;
 }

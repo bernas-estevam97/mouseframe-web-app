@@ -44,20 +44,29 @@
         </div>
     <div class="bottom-functions">
       <div class="buttons">
-         <button class="button" type="button" id="redCircleLeft" onclick="drawRedCircleLeft();">Add button - Left</button>
+         <button class="button" type="button" id="redCircleLeft" onclick="drawRedCircleLeft();">Red (front) - Left</button>
          <button class="button" type="button" id="deleteCircleRedLeft" onclick="removeRedCircleLeft();">Delete last added left red dot</button>
          <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete all left red dots</button><br>
-         <button class="button" type="button" id="redCircleRight" onclick="drawRedCircleRight();">Add button - Right</button>
+         <button class="button" type="button" id="redCircleRight" onclick="drawRedCircleRight();">Red (front) - Right</button>
          <button class="button" type="button" id="deleteCircleRedRight" onclick="removeRedCircleRight();">Delete last added right red dot</button>
          <button class="button" type="button" id="deleteAllCircleRedRight" onclick="removeAllRedCircleRight();">Delete all hind red dots</button><br>
-         <button class="button" type="button" id="blueCircleLeft" onclick="drawBlueCircleLeft();">Add button - Left</button>
+         <button class="button" type="button" id="blueCircleLeft" onclick="drawBlueCircleLeft();">Blue (hind) - Left</button>
          <button class="button" type="button" id="deleteCircleBlueLeft" onclick="removeBlueCircleLeft();">Delete last added left blue dot</button>
          <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllBlueCircleLeft();">Delete all left blue dots</button><br>
-         <button class="button" type="button" id="blueCircleRight" onclick="drawBlueCircleRight();">Add button - Right</button>
+         <button class="button" type="button" id="blueCircleRight" onclick="drawBlueCircleRight();">Blue (hind) - Right</button>
          <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
          <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br>
          <button class="button" type="button" id="resetCanvas" onclick="clearCanvas();">Reset Canvas</button>
          <button class="button" type="button" id="resetFile" onclick="resetFile();">Reset Image</button>
+         <h4>Remove a point of choice:</h4>
+         <p>Instructions for manual removal:</p>
+         <ul>
+          <li>When removing a point of choice identify color, side and index</li>
+          <li>Examples such as Red R 1 or Blue L 3 are functional</li>
+          <li>Make sure to use correct case for every identifier (example: Red L 5)</li>
+         </ul>
+         &nbsp<input class="point-input" id="removePointInput" placeholder="Point ID: Color Side Index...">&nbsp<button id="removePoint" onclick="removePointManually();">Remove Point</button>
+         
        </div>
 
        <div id="imageInfo" class="image-info">
@@ -76,9 +85,9 @@
     <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset points</button>
     <button onclick = "distanceMeasurePoint()">Measure</button>
     <p>Or manually input known value of pixels in 1 cm:</p>
-    <input id="pixelsInCmMan" type="number" placeholder="Px in cm...">&nbsp<button>Submit</button>
+    <input id="pixelsInCmMan" type="number" placeholder="Px in cm...">&nbsp<button onclick="manualInputMeasure()">Use</button>&nbsp<button onclick="resetInput();">Reset</button>
     <p id="measureToCm"></p>
-    <button type="submit">Store value</button>
+    <button type="submit" disabled>Store value</button>
    </div>
    <div class="resolution-info">
     <label id="labelInput" for="inches">Your screen size in inches(in):</label>
@@ -372,9 +381,12 @@ changeHeight();
       chButtons.style.display = "none";
       imgInfo.style.display = "none";
       canvas.style.cursor = "auto";
-      canvas.removeEventListener('click', drawBlue);            // Remove all event listeners and also clear canvas
-      canvas.removeEventListener('click', drawRed);
+      canvas.removeEventListener('click', drawBlueLeft);
+      canvas.removeEventListener('click', drawBlueRight);
+      canvas.removeEventListener('click', drawRedLeft);
+      canvas.removeEventListener('click', drawRedRight);
       canvas.removeEventListener("click", printMousePos);
+      canvas.removeEventListener('click', drawMeasurePoint);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       // canvasInfo.innerHTML = "<strong>Canvas size is:</strong> ";
       canvasUpload.style.display = "none";

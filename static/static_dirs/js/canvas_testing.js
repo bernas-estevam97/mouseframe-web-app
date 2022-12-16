@@ -92,7 +92,7 @@ function drawRedLeft(e){
   console.log(pointsRedLeft);
   let index = pointsRedLeft.indexOf(m);
   console.log(index);
-  ctx.font = "15px Arial";
+  ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
   ctx.fillText('L' + (index + 1), m.x + pointSize*1.2, m.y + pointSize*1.2 + 10);
 }
 
@@ -104,7 +104,7 @@ function drawRedRight(e){
   console.log(pointsRedRight);
   let index = pointsRedRight.indexOf(m);
   console.log(index);
-  ctx.font = "15px Arial";
+  ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
   ctx.fillText('R' + (index + 1), m.x + pointSize*1.2, m.y + pointSize*1.2 + 10);
 }
 
@@ -221,7 +221,7 @@ function drawBlueLeft(e){
   console.log(pointsBlueLeft);
   let index = pointsBlueLeft.indexOf(n);
   console.log(index);
-  ctx.font = "15px Arial";
+  ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
   ctx.fillText('L' + (index + 1), n.x + pointSize*1.2, n.y + pointSize*1.2 + 10);
 }
 
@@ -233,7 +233,7 @@ function drawBlueRight(e){
   console.log(pointsBlueRight);
   let index = pointsBlueRight.indexOf(n);
   console.log(index);
-  ctx.font = "15px Arial";
+  ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
   ctx.fillText('R' + (index + 1), n.x + pointSize*1.2, n.y + pointSize*1.2 + 10);
 }
 
@@ -327,6 +327,9 @@ function removeAllBlueCircleRight(){
 
 // MEASURE POINTS - ALL EVENTS
 
+let dist = 0;
+
+
 function drawMeasureCoordinates(point, r){
   ctx.fillStyle = "#000000"; // Black
   ctx.beginPath();
@@ -346,8 +349,10 @@ function drawMeasurePoint(e){
 function drawMeasureCircle(){
   canvas.addEventListener("click", drawMeasurePoint, false);
   canvas.addEventListener("click", printMousePos, false);
-  canvas.removeEventListener('click', drawBlue);
-  canvas.removeEventListener('click', drawRed);
+  canvas.removeEventListener('click', drawBlueLeft);
+  canvas.removeEventListener('click', drawBlueRight);
+  canvas.removeEventListener('click', drawRedLeft);
+  canvas.removeEventListener('click', drawRedRight);
   canvas.style.cursor = "pointer";
 }
 
@@ -360,7 +365,8 @@ function removeAllMeasurePoints(){
   canvas.removeEventListener('click', drawMeasurePoint);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
-  document.getElementById("measureToCm").innerHTML = ""; 
+  document.getElementById("measureToCm").innerHTML = "";
+  dist = 0; 
 }
 
 ///////////////////////////////////////////////
@@ -389,7 +395,7 @@ function clearCanvas(){
 
 
 
-let distances = [];
+// let distances = [];
 // let dist = Math.sqrt( Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2) );
 // const distance = (x1, y1, x2, y2) => Math.hypot(x2 - x1, y2 - y1);
 // length[mm] = pixel * 25.4mm (1 in) / dpi
@@ -402,7 +408,7 @@ let distances = [];
 //   }
 // }
 
-let dist = 0;
+
 
 function distanceMeasurePoint(){
   if (pointsMeasure.length != 0){
@@ -423,8 +429,21 @@ function distanceMeasurePoint(){
     // }
     
   } else{
-    alert ("Add 2 points and measure");
+    alert ("Add 2 points and measure or manually input known values under.");
   }
+}
+
+let inputPixelsManually = document.getElementById("pixelsInCmMan");
+
+function manualInputMeasure(){
+  dist = inputPixelsManually.value;
+  document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
+}
+
+function resetInput(){
+  inputPixelsManually.value = '';
+  dist = 0;
+  document.getElementById("measureToCm").innerHTML = '';
 }
 
 
@@ -456,3 +475,23 @@ function distanceMeasurePoint(){
 // }
 //   distance = (Math.hypot(point1.x - point2.x, point1.y - point2.y)).toFixed(2);
 // }
+
+
+
+let removePoint = document.getElementById('removePointInput').value;
+
+function removePointManually(){
+  if (removePoint.includes("Red")){
+    if (removePoint.includes(' R ')){
+
+    }if (removePoint.includes(' L ')){
+
+    }
+  }if (removePoint.includes("Blue")){
+    if (removePoint.includes(' R ')){
+
+    }if (removePoint.includes(' L ')){
+
+    }
+  }
+}
