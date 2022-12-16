@@ -94,7 +94,6 @@ header h1{
 
 #canvas{
     position: relative;
-    border: 1px solid #000; /* testing only */
 }
 
 .bottom-functions{
