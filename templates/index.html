@@ -702,18 +702,178 @@ function addEntry(){
     }
   } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Front'){
     if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
-
+      for (var i = 0; i < pointsRedLeft.length; i++){
+        for (var j = 0; j < pointsRedRight.length; j++){
+          if (i == j){
+            var newRow = tbody.insertRow(-1);
+            let indexRow = newRow.rowIndex;
+            var cellOne = newRow.insertCell();
+            var cellTwo = newRow.insertCell();
+            var cellThree = newRow.insertCell();
+            var cellFour = newRow.insertCell();
+            var cellFive = newRow.insertCell();
+            cellOne.innerHTML = indexRow-1;
+            cellTwo.innerHTML = 'Imaginary' + (i+1) + ' &#x2192 Red R' + (j+1);
+            cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+            distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+            cellFour.innerHTML = distance;
+            if (dist != 0){
+              cellFive.innerHTML = (distance/dist).toFixed(2);
+            } else{
+              cellFive.innerHTML = 'Undefined';
+            }
+        } if (i == j-1){
+          var newRow = tbody.insertRow(-1);
+            let indexRow = newRow.rowIndex;
+            var cellOne = newRow.insertCell();
+            var cellTwo = newRow.insertCell();
+            var cellThree = newRow.insertCell();
+            var cellFour = newRow.insertCell();
+            var cellFive = newRow.insertCell();
+            cellOne.innerHTML = indexRow-1;
+            cellTwo.innerHTML = 'Imaginary' + (indexRow) + ' &#x2192 Red L' + (j+1);
+            cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+            distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+            cellFour.innerHTML = distance;
+            if (dist != 0){
+              cellFive.innerHTML = (distance/dist).toFixed(2);
+            }else{
+              cellFive.innerHTML = 'Undefined';
+            } 
+        }
+        }
+      }
     }
-    if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
-
+    if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
+      for (var i = 0; i < pointsRedLeft.length; i++){
+        for (var j = 0; j < pointsRedRight.length; j++){
+          if (i == j){
+            var newRow = tbody.insertRow(-1);
+            let indexRow = newRow.rowIndex;
+            var cellOne = newRow.insertCell();
+            var cellTwo = newRow.insertCell();
+            var cellThree = newRow.insertCell();
+            var cellFour = newRow.insertCell();
+            var cellFive = newRow.insertCell();
+            cellOne.innerHTML = indexRow-1;
+            cellTwo.innerHTML = 'Imaginary' + (i+1) + ' &#x2192 Red L' + (j+1);
+            cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+            distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedRight[j].y - pointsRedLeft[i].y)).toFixed(2);
+            cellFour.innerHTML = distance;
+            if (dist != 0){
+              cellFive.innerHTML = (distance/dist).toFixed(2);
+            } else{
+              cellFive.innerHTML = 'Undefined';
+            }
+        } if (j == i-1){
+          var newRow = tbody.insertRow(-1);
+            let indexRow = newRow.rowIndex;
+            var cellOne = newRow.insertCell();
+            var cellTwo = newRow.insertCell();
+            var cellThree = newRow.insertCell();
+            var cellFour = newRow.insertCell();
+            var cellFive = newRow.insertCell();
+            cellOne.innerHTML = indexRow-1;
+            cellTwo.innerHTML = 'Imaginary' + (indexRow) + ' &#x2192 Red R' + (j+1);
+            cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+            distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+            cellFour.innerHTML = distance;
+            if (dist != 0){
+              cellFive.innerHTML = (distance/dist).toFixed(2);
+            }else{
+              cellFive.innerHTML = 'Undefined';
+            } 
+        }
+        }
+      }
     }
   }
    if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Hind'){
     if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
-
+      for (var i = 0; i < pointsBlueLeft.length; i++){
+        for (var j = 0; j < pointsBlueRight.length; j++){
+          if (i == j){
+            var newRow = tbody.insertRow(-1);
+            let indexRow = newRow.rowIndex;
+            var cellOne = newRow.insertCell();
+            var cellTwo = newRow.insertCell();
+            var cellThree = newRow.insertCell();
+            var cellFour = newRow.insertCell();
+            var cellFive = newRow.insertCell();
+            cellOne.innerHTML = indexRow-1;
+            cellTwo.innerHTML = 'Imaginary' + (i+1) + ' &#x2192 Blue R' + (j+1);
+            cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+            distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+            cellFour.innerHTML = distance;
+            if (dist != 0){
+              cellFive.innerHTML = (distance/dist).toFixed(2);
+            } else{
+              cellFive.innerHTML = 'Undefined';
+            }
+        } if (i == j-1){
+          var newRow = tbody.insertRow(-1);
+            let indexRow = newRow.rowIndex;
+            var cellOne = newRow.insertCell();
+            var cellTwo = newRow.insertCell();
+            var cellThree = newRow.insertCell();
+            var cellFour = newRow.insertCell();
+            var cellFive = newRow.insertCell();
+            cellOne.innerHTML = indexRow-1;
+            cellTwo.innerHTML = 'Imaginary' + (indexRow) + ' &#x2192 Blue L' + (j+1);
+            cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+            distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+            cellFour.innerHTML = distance;
+            if (dist != 0){
+              cellFive.innerHTML = (distance/dist).toFixed(2);
+            }else{
+              cellFive.innerHTML = 'Undefined';
+            } 
+        }
+        }
+      }
     }
-    if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
-
+    if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
+      for (var i = 0; i < pointsBlueLeft.length; i++){
+        for (var j = 0; j < pointsBlueRight.length; j++){
+          if (i == j){
+            var newRow = tbody.insertRow(-1);
+            let indexRow = newRow.rowIndex;
+            var cellOne = newRow.insertCell();
+            var cellTwo = newRow.insertCell();
+            var cellThree = newRow.insertCell();
+            var cellFour = newRow.insertCell();
+            var cellFive = newRow.insertCell();
+            cellOne.innerHTML = indexRow-1;
+            cellTwo.innerHTML = 'Imaginary' + (i+1) + ' &#x2192 Blue L' + (j+1);
+            cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+            distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueRight[j].y - pointsBlueLeft[i].y)).toFixed(2);
+            cellFour.innerHTML = distance;
+            if (dist != 0){
+              cellFive.innerHTML = (distance/dist).toFixed(2);
+            } else{
+              cellFive.innerHTML = 'Undefined';
+            }
+        } if (j == i-1){
+          var newRow = tbody.insertRow(-1);
+            let indexRow = newRow.rowIndex;
+            var cellOne = newRow.insertCell();
+            var cellTwo = newRow.insertCell();
+            var cellThree = newRow.insertCell();
+            var cellFour = newRow.insertCell();
+            var cellFive = newRow.insertCell();
+            cellOne.innerHTML = indexRow-1;
+            cellTwo.innerHTML = 'Imaginary' + (indexRow) + ' &#x2192 Blue R' + (j+1);
+            cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+            distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+            cellFour.innerHTML = distance;
+            if (dist != 0){
+              cellFive.innerHTML = (distance/dist).toFixed(2);
+            }else{
+              cellFive.innerHTML = 'Undefined';
+            } 
+        }
+        }
+      }
     }
   }
 }
