@@ -164,26 +164,37 @@
   </div>
   <div class="select-options">
     <!-- <form action="/"> -->
-      <label for="point">Select point 1:</label>
+      <!-- <label for="point">Select point 1:</label>
         <select name="point" id="pointChosen1">
         </select>
       <label for="point">Select point 2:</label>
       <select name="point" id="pointChosen2">
-      </select>
+      </select> -->
       <label for="measurement">Measurement:</label>
       <select name="measurement" id="measurement">
-        <option value="Overlap" selected>Overlap</option>
+        <option value="Overlap Left" selected>Overlap Left</option>
+        <option value="Overlap Right" selected>Overlap Right</option>
         <option value="Stride length left front">Stride length left front</option>
         <option value="Stride length left hind">Stride length left hind</option>
         <option value="Stride length right front">Stride length right front</option>
         <option value="Stride length right hind">Stride length right hind</option>
+        <option value="Stride Width Front">Stride Width Front</option>
+        <option value="Stride Width Hind">Stride Width Hind</option>
       </select>
-      <br><p id="entryPreview"></p>
-      <button id="refreshList" onclick="refreshList();">Refresh</button>
-      <button id="empty" onclick="emptyList();">Empty</button>
-      <input type="submit" onclick="addEntry();" value="Add Entry">
-      <input id="entryNumber" placeholder="Enter entry number">
+      <div id="footstepsBeginning">
+      <label for="beginning">First set of footsteps:</label>
+      <select name="beginning" id="footstepStart">
+        <option value="Left">Left</option>
+        <option value="Right">Right</option>
+      </select>
+      </div>
+      <input type="submit" onclick="addEntry();" value="Add Entries"><br>
+      <!-- <br><p id="entryPreview"></p> -->
+      <!-- <button id="refreshList" onclick="refreshList();">Refresh</button>
+      <button id="empty" onclick="emptyList();">Empty</button> -->
+      <br><input id="entryNumber" placeholder="Entry nº" size="4" maxlength="4">
       <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
+      <button id="removeAllEntries" onclick="removeAllEntries();">Remove All Entries</button>
       <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()">Submit</button>&nbsp<button onclick="removeTableID();">Remove</button>
       <!-- <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button> -->
 
@@ -440,90 +451,257 @@ changeHeight();
 
 // OPTIONS LIST DYNAMIC - SHOWING EVERY AVAILABLE OPTIONS OF POINTS TO CHOOSE //
 
-let pointsChosen1 = document.getElementById("pointChosen1");
-let pointsChosen2 = document.getElementById("pointChosen2");
+// let pointsChosen1 = document.getElementById("pointChosen1");
+// let pointsChosen2 = document.getElementById("pointChosen2");
+
+let footstepsBeginning = document.getElementById('footstepsBeginning');
+footstepsBeginning.style.display = 'none';
+let footstepStart = document.getElementById('footstepStart');
 let measurementType = document.getElementById("measurement");
 
-function refreshList(){
-  pointsChosen1.options.length = 0; // Every refresh click removes previous list to avoid duplicates
-  pointsChosen2.options.length = 0;
-  for(let i = 0; i < pointsRed.length; i++) {
-    newIndexRed = i+1;
-    pointsChosen1.options[pointsChosen1.options.length] = new Option("Red " + newIndexRed);
-    pointsChosen2.options[pointsChosen2.options.length] = new Option("Red " + newIndexRed);
+measurementType.addEventListener("change", function(){
+  var options = measurementType.querySelectorAll('option');
+  if (measurementType.value == "Stride Width Front" || measurementType.value == "Stride Width Hind"){
+    footstepsBeginning.style.display = '';
+  } else{
+    footstepsBeginning.style.display = 'none';
   }
+})
 
-  for(let g = 0; g < pointsBlue.length; g++) {
-    newIndexBlue = g+1;
-    pointsChosen1.options[pointsChosen1.options.length] = new Option("Blue " + newIndexBlue);
-    pointsChosen2.options[pointsChosen2.options.length] = new Option("Blue " + newIndexBlue);
-  }
-}
 
-function emptyList(){
-  pointsChosen1.options.length = 0;
-  pointsChosen2.options.length = 0;
-}
+// function refreshList(){
+//   pointsChosen1.options.length = 0; // Every refresh click removes previous list to avoid duplicates
+//   pointsChosen2.options.length = 0;
+//   for(let i = 0; i < pointsRed.length; i++) {
+//     newIndexRed = i+1;
+//     pointsChosen1.options[pointsChosen1.options.length] = new Option("Red " + newIndexRed);
+//     pointsChosen2.options[pointsChosen2.options.length] = new Option("Red " + newIndexRed);
+//   }
+
+//   for(let g = 0; g < pointsBlue.length; g++) {
+//     newIndexBlue = g+1;
+//     pointsChosen1.options[pointsChosen1.options.length] = new Option("Blue " + newIndexBlue);
+//     pointsChosen2.options[pointsChosen2.options.length] = new Option("Blue " + newIndexBlue);
+//   }
+// }
+
+// function emptyList(){
+//   pointsChosen1.options.length = 0;
+//   pointsChosen2.options.length = 0;
+// }
 
 tbody = document.getElementById("tbody");
 let pixelsManual = document.getElementById("pixelsInCmMan");
 
-function addEntry(){
-  let value1 = pointsChosen1.value;
-  let value2 = pointsChosen2.value;
-  let rows = tbody.rows;
-  let value3 = measurementType.options[measurementType.selectedIndex].value;
-  let value4;
-  let value5;
-  if ((value1 != '') || (value2 != '')){
-    var newRow = tbody.insertRow(-1);
-    let indexRow = newRow.rowIndex;
-    var cellOne = newRow.insertCell();
-    var cellTwo = newRow.insertCell();
-    var cellThree = newRow.insertCell();
-    var cellFour = newRow.insertCell();
-    var cellFive = newRow.insertCell();
-    cellOne.innerHTML = indexRow-1;
-    cellTwo.innerHTML = value1 + "|" + value2;
-    cellThree.innerHTML = value3;
-    var index1 = document.getElementById("pointChosen1").selectedIndex;
-    var index2 = document.getElementById("pointChosen2").selectedIndex;
-    let option1 = pointsChosen1.value;
-    let option2 = pointsChosen2.value;
-    let distance;
-    if (option1){
-      if (option1.includes("Red")){
-        point1 = pointsRed[index1];
-        // console.log(point1.x, point1.y);
-      }
-      if (option1.includes("Blue")){
-        point1 = pointsBlue[index1 - pointsRed.length];
-        // console.log(point1.x, point1.y);
-      }
-    }
-    if (option2){
-      if (option2.includes("Red")){
-        point2 = pointsRed[index2];
-        // console.log(point2.x, point2.y);
-      }
-      if (option2.includes("Blue")){
-        point2 = pointsBlue[index2 - pointsRed.length];
-        // console.log(point2.x, point2.y);
-    }
-    }
-    distance = (Math.hypot(point1.x - point2.x, point1.y - point2.y)).toFixed(2);
-    value4 = distance;
-    cellFour.innerHTML = value4;
-    if (dist != 0){
-      cellFive.innerHTML = (value4/dist).toFixed(2);
-    }
-    if (dist == 0){
-      cellFive.innerHTML = "-----";
-    }
+// function addEntry(){
+//   let value1 = pointsChosen1.value;
+//   let value2 = pointsChosen2.value;
+//   let rows = tbody.rows;
+//   let value3 = measurementType.options[measurementType.selectedIndex].value;
+//   let value4;
+//   let value5;
+//   if ((value1 != '') || (value2 != '')){
+//     var newRow = tbody.insertRow(-1);
+//     let indexRow = newRow.rowIndex;
+//     var cellOne = newRow.insertCell();
+//     var cellTwo = newRow.insertCell();
+//     var cellThree = newRow.insertCell();
+//     var cellFour = newRow.insertCell();
+//     var cellFive = newRow.insertCell();
+//     cellOne.innerHTML = indexRow-1;
+//     cellTwo.innerHTML = value1 + "|" + value2;
+//     cellThree.innerHTML = value3;
+//     var index1 = document.getElementById("pointChosen1").selectedIndex;
+//     var index2 = document.getElementById("pointChosen2").selectedIndex;
+//     let option1 = pointsChosen1.value;
+//     let option2 = pointsChosen2.value;
+//     let distance;
+//     if (option1){
+//       if (option1.includes("Red")){
+//         point1 = pointsRed[index1];
+//         // console.log(point1.x, point1.y);
+//       }
+//       if (option1.includes("Blue")){
+//         point1 = pointsBlue[index1 - pointsRed.length];
+//         // console.log(point1.x, point1.y);
+//       }
+//     }
+//     if (option2){
+//       if (option2.includes("Red")){
+//         point2 = pointsRed[index2];
+//         // console.log(point2.x, point2.y);
+//       }
+//       if (option2.includes("Blue")){
+//         point2 = pointsBlue[index2 - pointsRed.length];
+//         // console.log(point2.x, point2.y);
+//     }
+//     }
+//     distance = (Math.hypot(point1.x - point2.x, point1.y - point2.y)).toFixed(2);
+//     value4 = distance;
+//     cellFour.innerHTML = value4;
+//     if (dist != 0){
+//       cellFive.innerHTML = (value4/dist).toFixed(2);
+//     }
+//     if (dist == 0){
+//       cellFive.innerHTML = "-----";
+//     }
 
-    // console.log(value1, value2, value3, value4, value5);
-  } else{
-    alert('Need points to be selected');
+//     // console.log(value1, value2, value3, value4, value5);
+//   } else{
+//     alert('Need points to be selected');
+//   }
+// }
+
+
+
+function addEntry(){
+  if (measurementType.options[measurementType.selectedIndex].value == 'Stride length left front'){
+    if (pointsRedLeft.length > 1){
+      for (var i = 0; i < (pointsRedLeft.length-1); i++){
+        var newRow = tbody.insertRow(-1);
+        let indexRow = newRow.rowIndex;
+        var cellOne = newRow.insertCell();
+        var cellTwo = newRow.insertCell();
+        var cellThree = newRow.insertCell();
+        var cellFour = newRow.insertCell();
+        var cellFive = newRow.insertCell();
+        cellOne.innerHTML = indexRow-1;
+        cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Red L' + (i+2);
+        cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+        distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i+1].x, pointsRedLeft[i].y - pointsRedLeft[i+1].y)).toFixed(2);
+        cellFour.innerHTML = distance;
+        if (dist != 0){
+          cellFive.innerHTML = (distance/dist).toFixed(2);
+        } else{
+          cellFive.innerHTML = 'Undefined';
+        }
+      }
+    } else{
+      alert('Not enough points to perform this measurement');
+    } 
+  } if (measurementType.options[measurementType.selectedIndex].value == 'Stride length right front'){
+    if (pointsRedRight.length > 1){
+      for (var i = 0; i < (pointsRedRight.length-1); i++){
+        var newRow = tbody.insertRow(-1);
+        let indexRow = newRow.rowIndex;
+        var cellOne = newRow.insertCell();
+        var cellTwo = newRow.insertCell();
+        var cellThree = newRow.insertCell();
+        var cellFour = newRow.insertCell();
+        var cellFive = newRow.insertCell();
+        cellOne.innerHTML = indexRow-1;
+        cellTwo.innerHTML = 'Red R' + (i+1) + ' &#x2192 Red R' + (i+2);
+        cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+        distance = (Math.hypot(pointsRedRight[i].x - pointsRedRight[i+1].x, pointsRedRight[i].y - pointsRedRight[i+1].y)).toFixed(2);
+        cellFour.innerHTML = distance;
+        if (dist != 0){
+          cellFive.innerHTML = (distance/dist).toFixed(2);
+        } else{
+          cellFive.innerHTML = 'Undefined';
+        }
+      }
+    }  else{
+      alert('Not enough points to perform this measurement');
+    }
+  } if (measurementType.options[measurementType.selectedIndex].value == 'Stride length left hind'){
+    if (pointsBlueLeft.length > 1){
+      for (var i = 0; i < (pointsBlueLeft.length-1); i++){
+        var newRow = tbody.insertRow(-1);
+        let indexRow = newRow.rowIndex;
+        var cellOne = newRow.insertCell();
+        var cellTwo = newRow.insertCell();
+        var cellThree = newRow.insertCell();
+        var cellFour = newRow.insertCell();
+        var cellFive = newRow.insertCell();
+        cellOne.innerHTML = indexRow-1;
+        cellTwo.innerHTML = 'Blue L' + (i+1) + ' &#x2192 Blue L' + (i+2);
+        cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+        distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i+1].x, pointsBlueLeft[i].y - pointsBlueLeft[i+1].y)).toFixed(2);
+        cellFour.innerHTML = distance;
+        if (dist != 0){
+          cellFive.innerHTML = (distance/dist).toFixed(2);
+        } else{
+          cellFive.innerHTML = 'Undefined';
+        }
+      }
+    }  else{
+      alert('Not enough points to perform this measurement');
+    }
+  } if (measurementType.options[measurementType.selectedIndex].value == 'Stride length right hind'){
+    if (pointsBlueRight.length > 1){
+      for (var i = 0; i < (pointsBlueRight.length-1); i++){
+        var newRow = tbody.insertRow(-1);
+        let indexRow = newRow.rowIndex;
+        var cellOne = newRow.insertCell();
+        var cellTwo = newRow.insertCell();
+        var cellThree = newRow.insertCell();
+        var cellFour = newRow.insertCell();
+        var cellFive = newRow.insertCell();
+        cellOne.innerHTML = indexRow-1;
+        cellTwo.innerHTML = 'Blue L' + (i+1) + ' &#x2192 Blue L' + (i+2);
+        cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+        distance = (Math.hypot(pointsBlueRight[i].x - pointsBlueRight[i+1].x, pointsBlueRight[i].y - pointsBlueRight[i+1].y)).toFixed(2);
+        cellFour.innerHTML = distance;
+        if (dist != 0){
+          cellFive.innerHTML = (distance/dist).toFixed(2);
+        } else{
+          cellFive.innerHTML = 'Undefined';
+        }
+      }
+    }  else{
+      alert('Not enough points to perform this measurement');
+    }
+  } if (measurementType.options[measurementType.selectedIndex].value == 'Overlap Left'){
+    for (var i= 0; i < pointsRedLeft.length; i++){
+      for (var j = 0; j < pointsBlueLeft.length; j++){
+        if (i == j){
+        var newRow = tbody.insertRow(-1);
+        let indexRow = newRow.rowIndex;
+        var cellOne = newRow.insertCell();
+        var cellTwo = newRow.insertCell();
+        var cellThree = newRow.insertCell();
+        var cellFour = newRow.insertCell();
+        var cellFive = newRow.insertCell();
+        cellOne.innerHTML = indexRow-1;
+        cellTwo.innerHTML = 'Red L' + (i) + ' &#x2192 Blue L' + (j);
+        cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+        distance = (Math.hypot(pointsRedLeft[i].x - pointsBlueLeft[j].x, pointsRedLeft[i].y - pointsBlueLeft[j].y)).toFixed(2);
+        cellFour.innerHTML = distance;
+        if (dist != 0){
+          cellFive.innerHTML = (distance/dist).toFixed(2);
+        } else{
+          cellFive.innerHTML = 'Undefined';
+        }
+      }
+    }
+    }
+  } if (measurementType.options[measurementType.selectedIndex].value == 'Overlap Right'){
+    for (var i= 0; i < pointsRedRight.length; i++){
+      for (var j = 0; j < pointsBlueRight.length; j++){
+        if (i == j){
+        var newRow = tbody.insertRow(-1);
+        let indexRow = newRow.rowIndex;
+        var cellOne = newRow.insertCell();
+        var cellTwo = newRow.insertCell();
+        var cellThree = newRow.insertCell();
+        var cellFour = newRow.insertCell();
+        var cellFive = newRow.insertCell();
+        cellOne.innerHTML = indexRow-1;
+        cellTwo.innerHTML = 'Red L' + (i) + ' &#x2192 Blue L' + (j);
+        cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+        distance = (Math.hypot(pointsRedRight[i].x - pointsBlueRight[j].x, pointsRedRight[i].y - pointsBlueRight[j].y)).toFixed(2);
+        cellFour.innerHTML = distance;
+        if (dist != 0){
+          cellFive.innerHTML = (distance/dist).toFixed(2);
+        } else{
+          cellFive.innerHTML = 'Undefined';
+        }
+      }
+    }
+    }
+  } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Front'){
+
+  } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Hind'){
   }
 }
 
@@ -543,6 +721,10 @@ function removeEntry(){
   }
 }
 
+function removeAllEntries(){
+  tbody.remove();
+}
+
 function updateTableID(){
   tableTitle.innerHTML += ' ' + manualID.value;
 }
@@ -552,8 +734,8 @@ function removeTableID(){
   manualID.value = '';
 }
 
-let angle = [0, 90, 180, 270];
-let current = 0;
+// let angle = [0, 90, 180, 270];
+// let current = 0;
 
 // function rotate90() {
 //   current++;

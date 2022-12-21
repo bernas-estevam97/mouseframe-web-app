@@ -450,7 +450,7 @@ header h1{
     background-color: #fff;
     border: 3px double #c1c1c1;
     padding: 10px;
-    width: 70vw;
+    width: 60vw;
 }
 .data-management h3{
     text-align: center;
@@ -494,21 +494,20 @@ header h1{
 
 .data-management .select-options{
     position: relative;
-    height: 20px;
+    width: 50%;
+    text-align: center;
 }
 
 .select-options label{
     width: 6em;
-    margin-left: 30px;
 }
 
-.select-options input{
-    margin-left: 10px;
-}
-
-.select-options select{
-}
 
 #entryTableID{
     margin-left: 0;
+}
+
+#footstepsBeginning{
+    position: relative;
+    margin: 5px 0;
 }
