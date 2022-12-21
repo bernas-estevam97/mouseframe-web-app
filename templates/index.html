@@ -454,21 +454,6 @@ changeHeight();
 // let pointsChosen1 = document.getElementById("pointChosen1");
 // let pointsChosen2 = document.getElementById("pointChosen2");
 
-let footstepsBeginning = document.getElementById('footstepsBeginning');
-footstepsBeginning.style.display = 'none';
-let footstepStart = document.getElementById('footstepStart');
-let measurementType = document.getElementById("measurement");
-
-measurementType.addEventListener("change", function(){
-  var options = measurementType.querySelectorAll('option');
-  if (measurementType.value == "Stride Width Front" || measurementType.value == "Stride Width Hind"){
-    footstepsBeginning.style.display = '';
-  } else{
-    footstepsBeginning.style.display = 'none';
-  }
-})
-
-
 // function refreshList(){
 //   pointsChosen1.options.length = 0; // Every refresh click removes previous list to avoid duplicates
 //   pointsChosen2.options.length = 0;
@@ -489,9 +474,6 @@ measurementType.addEventListener("change", function(){
 //   pointsChosen1.options.length = 0;
 //   pointsChosen2.options.length = 0;
 // }
-
-tbody = document.getElementById("tbody");
-let pixelsManual = document.getElementById("pixelsInCmMan");
 
 // function addEntry(){
 //   let value1 = pointsChosen1.value;
@@ -553,6 +535,25 @@ let pixelsManual = document.getElementById("pixelsInCmMan");
 // }
 
 
+
+// Measuring all available distances for every chosen measurement type //
+
+tbody = document.getElementById("tbody");
+let pixelsManual = document.getElementById("pixelsInCmMan");
+
+let footstepsBeginning = document.getElementById('footstepsBeginning');
+footstepsBeginning.style.display = 'none';
+let footstepStart = document.getElementById('footstepStart');
+let measurementType = document.getElementById("measurement");
+
+measurementType.addEventListener("change", function(){
+  var options = measurementType.querySelectorAll('option');
+  if (measurementType.value == "Stride Width Front" || measurementType.value == "Stride Width Hind"){
+    footstepsBeginning.style.display = '';
+  } else{
+    footstepsBeginning.style.display = 'none';
+  }
+})
 
 function addEntry(){
   if (measurementType.options[measurementType.selectedIndex].value == 'Stride length left front'){
@@ -700,8 +701,20 @@ function addEntry(){
     }
     }
   } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Front'){
+    if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
 
-  } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Hind'){
+    }
+    if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
+
+    }
+  }
+   if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Hind'){
+    if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
+
+    }
+    if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
+
+    }
   }
 }
 
