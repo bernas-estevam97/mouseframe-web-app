@@ -11,20 +11,20 @@ from accounts.views import login_user
 
 def index(request):
    if not request.user.is_authenticated:
-        return redirect('login')
+        return redirect('/authenticate/login')
    else:
         return render(request, 'index.html')
     
 
 
-def canvas(request):
-    return render(request, 'canvas_test.html')
+# def canvas(request):
+#     return render(request, 'canvas_test.html')
 
 def image_editor(request):
     return render(request, 'image_editor.html')
 
-def img_dim(request):
-    return render(request, 'image_dim.html')
+# def img_dim(request):
+#     return render(request, 'image_dim.html')
 
 
 

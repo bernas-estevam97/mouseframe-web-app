@@ -1,22 +1,8 @@
 // Upload image and have the canvas with same sizes --- Testing with 2 canvas on above the other
 
-// const canvas = document.getElementById("canvas");
-// const ctx = canvas.getContext("2d");
-// const uploader = document.getElementById('uploadImage');
-// uploader.addEventListener('change', (e)=>{
-//     console.log(canvas.height, canvas.width);
-//     const myFile = uploader.files[0];
-//     console.log(myFile);
-//     const img = new Image();
-//     img.src = URL.createObjectURL(myFile);
-//     img.onload = function (){
-//         console.log(img.height, img.width);
-//         canvas.height = img.height;
-//         canvas.width = img.width;
-//         ctx.clearRect (0, 0, canvas.width, canvas.height); // deleting previous image to add next
-//         ctx.drawImage(img, 0, 0);
-//     }
-// });
+// const canvasTwo = document.getElementById("canvasTwo");
+// const ctxTwo = canvasTwo.getContext("2d");
+
 
 // Set point Size.  pointSize is the radius of the dots created and need to be dynamic and chosen by the user
 

@@ -21,11 +21,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('django.contrib.auth.urls')),
-    path('', include('accounts.urls')),
-    path('app', index),
-    path('canvas', canvas),
+    path('', index),
+    path('authenticate/', include('django.contrib.auth.urls')),
+    path('authenticate/', include('accounts.urls')),
+    
+    # path('canvas', canvas),
     path('editor', image_editor),
-    path('image_dim', img_dim),
+    # path('image_dim', img_dim),
 ] + static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)
