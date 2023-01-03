@@ -26,7 +26,7 @@ urlpatterns = [
     path('authenticate/', include('accounts.urls')),
     
     # path('canvas', canvas),
-    path('editor', image_editor),
+    # path('editor', image_editor),
     # path('image_dim', img_dim),
 ] + static(settings.MEDIA_URL,
            document_root=settings.MEDIA_ROOT)
