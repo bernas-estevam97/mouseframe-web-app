@@ -860,6 +860,17 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
      } else{
        cellFive.innerHTML = 'Undefined';
      }
+    //  cellRemove.innerHTML = '&#x2718;';
+    //  cellRemove.style.cursor = 'pointer';
+    //  cellRemove.style.fontSize = 'x-large';
+    //  cellRemove.style.color = 'red';
+    //  cellRemove.onclick = function removeOnClick(){
+    //   tbody.deleteRow(indexRow-2);
+    //   for (var i = 0; i < tbody.rows.length; i++){
+    //     let updatedCell = tbody.rows[i].cells[0];
+    //     updatedCell.innerHTML = i+1;
+    //   }
+    // };
    }
  } else{
    alert('Not enough points to perform this measurement');
@@ -937,31 +948,36 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
    alert('Not enough points to perform this measurement');
  }
 } if (measurementType.options[measurementType.selectedIndex].value == 'Overlap Left'){
- for (var i= 0; i < pointsRedLeft.length; i++){
-   for (var j = 0; j < pointsBlueLeft.length; j++){
-     if (i == j){
-     var newRow = tbody.insertRow(-1);
-     let indexRow = newRow.rowIndex;
-     var cellOne = newRow.insertCell();
-     var cellTwo = newRow.insertCell();
-     var cellThree = newRow.insertCell();
-     var cellFour = newRow.insertCell();
-     var cellFive = newRow.insertCell();
-     cellOne.innerHTML = indexRow-1;
-     cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Blue L' + (j+1);
-     cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
-     distance = (Math.hypot(pointsRedLeft[i].x - pointsBlueLeft[j].x, pointsRedLeft[i].y - pointsBlueLeft[j].y)).toFixed(2);
-     cellFour.innerHTML = distance;
-     if (dist != 0){
-       cellFive.innerHTML = (distance/dist).toFixed(2);
-     } else{
-       cellFive.innerHTML = 'Undefined';
-     }
+  if ((pointsRedLeft.length > 1) && (pointsBlueLeft.length > 1)){
+  for (var i= 0; i < pointsRedLeft.length; i++){
+    for (var j = 0; j < pointsBlueLeft.length; j++){
+      if (i == j){
+      var newRow = tbody.insertRow(-1);
+      let indexRow = newRow.rowIndex;
+      var cellOne = newRow.insertCell();
+      var cellTwo = newRow.insertCell();
+      var cellThree = newRow.insertCell();
+      var cellFour = newRow.insertCell();
+      var cellFive = newRow.insertCell();
+      cellOne.innerHTML = indexRow-1;
+      cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Blue L' + (j+1);
+      cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+      distance = (Math.hypot(pointsRedLeft[i].x - pointsBlueLeft[j].x, pointsRedLeft[i].y - pointsBlueLeft[j].y)).toFixed(2);
+      cellFour.innerHTML = distance;
+      if (dist != 0){
+        cellFive.innerHTML = (distance/dist).toFixed(2);
+      } else{
+        cellFive.innerHTML = 'Undefined';
+      }
    }
  }
  }
+} else{
+  alert('Not enough points to perform this measurement');
+}
 } if (measurementType.options[measurementType.selectedIndex].value == 'Overlap Right'){
- for (var i= 0; i < pointsRedRight.length; i++){
+  if ((pointsRedRight.length > 1) && (pointsBlueRight > 1)){
+  for (var i= 0; i < pointsRedRight.length; i++){
    for (var j = 0; j < pointsBlueRight.length; j++){
      if (i == j){
      var newRow = tbody.insertRow(-1);
@@ -984,8 +1000,12 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
    }
  }
  }
+} else{
+  alert('Not enough points to perform this measurement');
+}
 } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Front'){
  if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
+  if((pointsRedLeft.length > 1) && (pointsRedRight.length > 1)){
    for (var i = 0; i < pointsRedLeft.length; i++){
      for (var j = 0; j < pointsRedRight.length; j++){
        if (i == j){
@@ -997,7 +1017,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
          var cellFour = newRow.insertCell();
          var cellFive = newRow.insertCell();
          cellOne.innerHTML = indexRow-1;
-         cellTwo.innerHTML = 'Imaginary' + (i+1) + ' &#x2192 Red R' + (j+1);
+         cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red R' + (j+1);
          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
          cellFour.innerHTML = distance;
@@ -1006,7 +1026,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
          } else{
            cellFive.innerHTML = 'Undefined';
          }
-     } if (i == j-1){
+     } if (i == j+1){
        var newRow = tbody.insertRow(-1);
          let indexRow = newRow.rowIndex;
          var cellOne = newRow.insertCell();
@@ -1015,7 +1035,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
          var cellFour = newRow.insertCell();
          var cellFive = newRow.insertCell();
          cellOne.innerHTML = indexRow-1;
-         cellTwo.innerHTML = 'Imaginary' + (indexRow) + ' &#x2192 Red L' + (j+1);
+         cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red L' + (i+1);
          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
          cellFour.innerHTML = distance;
@@ -1027,9 +1047,13 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
      }
      }
    }
+  } else{
+  alert('Not enough points to perform this measurement');
  }
+}
  if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
-   for (var i = 0; i < pointsRedLeft.length; i++){
+  if((pointsRedLeft.length > 1) && (pointsRedRight.length > 1)){ 
+  for (var i = 0; i < pointsRedLeft.length; i++){
      for (var j = 0; j < pointsRedRight.length; j++){
        if (i == j){
          var newRow = tbody.insertRow(-1);
@@ -1040,7 +1064,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
          var cellFour = newRow.insertCell();
          var cellFive = newRow.insertCell();
          cellOne.innerHTML = indexRow-1;
-         cellTwo.innerHTML = 'Imaginary' + (i+1) + ' &#x2192 Red L' + (j+1);
+         cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red L' + (i+1);
          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedRight[j].y - pointsRedLeft[i].y)).toFixed(2);
          cellFour.innerHTML = distance;
@@ -1049,7 +1073,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
          } else{
            cellFive.innerHTML = 'Undefined';
          }
-     } if (j == i-1){
+     } if (j == i+1){
        var newRow = tbody.insertRow(-1);
          let indexRow = newRow.rowIndex;
          var cellOne = newRow.insertCell();
@@ -1058,7 +1082,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
          var cellFour = newRow.insertCell();
          var cellFive = newRow.insertCell();
          cellOne.innerHTML = indexRow-1;
-         cellTwo.innerHTML = 'Imaginary' + (indexRow) + ' &#x2192 Red R' + (j+1);
+         cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red R' + (j+1);
          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
          cellFour.innerHTML = distance;
@@ -1070,10 +1094,13 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
      }
      }
    }
+ } else{
+  alert('Not enough points to perform this measurement');
  }
 }
-if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Hind'){
+} if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Hind'){
  if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
+  if((pointsBlueLeft.length > 1) &&(pointsBlueRight.length > 1)){
    for (var i = 0; i < pointsBlueLeft.length; i++){
      for (var j = 0; j < pointsBlueRight.length; j++){
        if (i == j){
@@ -1085,7 +1112,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride Widt
          var cellFour = newRow.insertCell();
          var cellFive = newRow.insertCell();
          cellOne.innerHTML = indexRow-1;
-         cellTwo.innerHTML = 'Imaginary' + (i+1) + ' &#x2192 Blue R' + (j+1);
+         cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue R' + (j+1);
          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
          cellFour.innerHTML = distance;
@@ -1094,7 +1121,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride Widt
          } else{
            cellFive.innerHTML = 'Undefined';
          }
-     } if (i == j-1){
+     } if (i == j+1){
        var newRow = tbody.insertRow(-1);
          let indexRow = newRow.rowIndex;
          var cellOne = newRow.insertCell();
@@ -1103,7 +1130,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride Widt
          var cellFour = newRow.insertCell();
          var cellFive = newRow.insertCell();
          cellOne.innerHTML = indexRow-1;
-         cellTwo.innerHTML = 'Imaginary' + (indexRow) + ' &#x2192 Blue L' + (j+1);
+         cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue L' + (i+1);
          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
          cellFour.innerHTML = distance;
@@ -1115,8 +1142,12 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride Widt
      }
      }
    }
+ } else{
+  alert('Not enough points to perform this measurement');
  }
+}
  if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
+  if((pointsBlueLeft.length > 1) &&(pointsBlueRight.length > 1)){
    for (var i = 0; i < pointsBlueLeft.length; i++){
      for (var j = 0; j < pointsBlueRight.length; j++){
        if (i == j){
@@ -1128,7 +1159,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride Widt
          var cellFour = newRow.insertCell();
          var cellFive = newRow.insertCell();
          cellOne.innerHTML = indexRow-1;
-         cellTwo.innerHTML = 'Imaginary' + (i+1) + ' &#x2192 Blue L' + (j+1);
+         cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue L' + (i+1);
          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueRight[j].y - pointsBlueLeft[i].y)).toFixed(2);
          cellFour.innerHTML = distance;
@@ -1137,7 +1168,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride Widt
          } else{
            cellFive.innerHTML = 'Undefined';
          }
-     } if (j == i-1){
+     } if (j == i+1){
        var newRow = tbody.insertRow(-1);
          let indexRow = newRow.rowIndex;
          var cellOne = newRow.insertCell();
@@ -1146,7 +1177,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride Widt
          var cellFour = newRow.insertCell();
          var cellFive = newRow.insertCell();
          cellOne.innerHTML = indexRow-1;
-         cellTwo.innerHTML = 'Imaginary' + (indexRow) + ' &#x2192 Blue R' + (j+1);
+         cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue R' + (j+1);
          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
          cellFour.innerHTML = distance;
@@ -1158,7 +1189,10 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride Widt
        }
      }
    }
+ }else{
+  alert('Not enough points to perform this measurement');
  }
+}
 }
 }
 
@@ -1178,6 +1212,8 @@ if (entryNumber.value != ''){
 }
 }
 
+
+
 function removeAllEntries(){
   $('#tbody').empty();
 }
@@ -1191,12 +1227,4 @@ tableTitle.innerHTML = '<b>Table ID: <b>';
 manualID.value = '';
 }
 
-// let angle = [0, 90, 180, 270];
-// let current = 0;
 
-// function rotate90() {
-//   current++;
-//   if (current == 4)
-//     current = 0;
-//   $('#imgContainer').css('transform', 'rotate(' + angle[current] + 'deg)');
-// }
