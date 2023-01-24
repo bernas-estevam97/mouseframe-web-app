@@ -948,7 +948,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
      var cellFour = newRow.insertCell();
      var cellFive = newRow.insertCell();
      cellOne.innerHTML = indexRow-1;
-     cellTwo.innerHTML = 'Red L' + (i) + ' &#x2192 Blue L' + (j);
+     cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Blue L' + (j+1);
      cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
      distance = (Math.hypot(pointsRedLeft[i].x - pointsBlueLeft[j].x, pointsRedLeft[i].y - pointsBlueLeft[j].y)).toFixed(2);
      cellFour.innerHTML = distance;
@@ -972,7 +972,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
      var cellFour = newRow.insertCell();
      var cellFive = newRow.insertCell();
      cellOne.innerHTML = indexRow-1;
-     cellTwo.innerHTML = 'Red L' + (i) + ' &#x2192 Blue L' + (j);
+     cellTwo.innerHTML = 'Red R' + (i+1) + ' &#x2192 Blue R' + (j+1);
      cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
      distance = (Math.hypot(pointsRedRight[i].x - pointsBlueRight[j].x, pointsRedRight[i].y - pointsBlueRight[j].y)).toFixed(2);
      cellFour.innerHTML = distance;
