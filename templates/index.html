@@ -198,9 +198,22 @@
       <!-- <br><p id="entryPreview"></p> -->
       <!-- <button id="refreshList" onclick="refreshList();">Refresh</button>
       <button id="empty" onclick="emptyList();">Empty</button> -->
-      <br><input id="entryNumber" placeholder="Entry nº" size="4" maxlength="4">
+      <p>Remove by entries &#8628;</p>
+      <input id="entryNumber" placeholder="Entry nº" size="4" maxlength="4">
       <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
       <button id="removeAllEntries" onclick="removeAllEntries();">Remove All Entries</button>
+      <!-- <p>Remove by measurement type &#8628;</p>
+      <select name="measurement" id="removeMeasurement">
+        <option value="Overlap Left" selected>Overlap Left</option>
+        <option value="Overlap Right" selected>Overlap Right</option>
+        <option value="Stride length left front">Stride length left front</option>
+        <option value="Stride length left hind">Stride length left hind</option>
+        <option value="Stride length right front">Stride length right front</option>
+        <option value="Stride length right hind">Stride length right hind</option>
+        <option value="Stride Width Front">Stride Width Front</option>
+        <option value="Stride Width Hind">Stride Width Hind</option>
+      </select>
+      <button onclick="removeByMeasurement();">Remove</button> -->
       <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()">Submit</button>&nbsp<button onclick="removeTableID();">Remove</button>
       <!-- <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button> -->
 

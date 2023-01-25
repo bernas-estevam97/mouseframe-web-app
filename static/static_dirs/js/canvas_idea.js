@@ -931,7 +931,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
    alert('Not enough points to perform this measurement');
  }
 } if (measurementType.options[measurementType.selectedIndex].value == 'Overlap Left'){
-  if ((pointsRedLeft.length > 1) && (pointsBlueLeft.length > 1)){
+  if ((pointsRedLeft.length >= 1) && (pointsBlueLeft.length >= 1)){
   for (var i= 0; i < pointsRedLeft.length; i++){
     for (var j = 0; j < pointsBlueLeft.length; j++){
       if (i == j){
@@ -959,7 +959,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
   alert('Not enough points to perform this measurement');
 }
 } if (measurementType.options[measurementType.selectedIndex].value == 'Overlap Right'){
-  if ((pointsRedRight.length > 1) && (pointsBlueRight > 1)){
+  if ((pointsRedRight.length >= 1) && (pointsBlueRight >= 1)){
   for (var i= 0; i < pointsRedRight.length; i++){
    for (var j = 0; j < pointsBlueRight.length; j++){
      if (i == j){
@@ -988,7 +988,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
 }
 } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Front'){
  if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
-  if((pointsRedLeft.length > 1) && (pointsRedRight.length > 1)){
+  if((pointsRedLeft.length >= 1) && (pointsRedRight.length >= 1)){
    for (var i = 0; i < pointsRedLeft.length; i++){
      for (var j = 0; j < pointsRedRight.length; j++){
        if (i == j){
@@ -1035,7 +1035,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
  }
 }
  if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
-  if((pointsRedLeft.length > 1) && (pointsRedRight.length > 1)){ 
+  if((pointsRedLeft.length >= 1) && (pointsRedRight.length >= 1)){ 
   for (var i = 0; i < pointsRedLeft.length; i++){
      for (var j = 0; j < pointsRedRight.length; j++){
        if (i == j){
@@ -1083,7 +1083,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
 }
 } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Hind'){
  if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
-  if((pointsBlueLeft.length > 1) &&(pointsBlueRight.length > 1)){
+  if((pointsBlueLeft.length >= 1) &&(pointsBlueRight.length >= 1)){
    for (var i = 0; i < pointsBlueLeft.length; i++){
      for (var j = 0; j < pointsBlueRight.length; j++){
        if (i == j){
@@ -1130,7 +1130,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
  }
 }
  if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
-  if((pointsBlueLeft.length > 1) &&(pointsBlueRight.length > 1)){
+  if((pointsBlueLeft.length >= 1) &&(pointsBlueRight.length >= 1)){
    for (var i = 0; i < pointsBlueLeft.length; i++){
      for (var j = 0; j < pointsBlueRight.length; j++){
        if (i == j){
@@ -1342,27 +1342,30 @@ function removeChosenPoint(){
   }
 }
 
+let removeMeasurement = document.getElementById('removeMeasurement');
 
+let removableRows = [];
 
+function removeByMeasurement(){
+  if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Overlap Left'){
+    for (var i = 0, row; row = tbody.rows[i]; i++){
+      if (row.cells[2].innerHTML === 'Overlap Left'){
+        
+      }
+    }
+  } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Overlap Right'){
 
+  } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length left front'){
 
+  } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length left hind'){
 
-// function drawRedLeftAut(x, y){
-//   clicksRed++;
-//   var m = pointsRedLeft;
-//   drawCoordinatesRed(m, pointSize);
-//   pointsRedLeft.push(m);
-//   console.log(pointsRedLeft);
-//   let index = pointsRedLeft.indexOf(m);
-//   console.log(index);
-//   ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
-//   ctx.fillText('L' + (index + 1), m.x + pointSize*1.2, m.y + pointSize*1.2 + 10);
-// }
+  } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length right front'){
 
+  } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length right hind'){
 
-// function drawCoordinatesRedAut(point, r) {
-//   ctx.fillStyle = "hsl(0, 100%, 30%)"; // Dark Red color
-//   ctx.beginPath();
-//   ctx.arc(point.x, point.y, r, 0, Math.PI * 2, true);
-//   ctx.fill();
-// }
+  } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride Width Front'){
+
+  } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride Width Hind'){
+
+  }
+}
