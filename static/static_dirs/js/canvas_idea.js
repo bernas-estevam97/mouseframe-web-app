@@ -1243,11 +1243,20 @@ function removeChosenPoint(){
   if (value.includes('Red L')){
     for (var i = 0; i < pointsRedLeft.length; i++){
       newIndexRL = i+1;
-      if (value.includes(newIndex)){
+      if (value.includes(newIndexRL)){
+        if (i>=9){
+          ctx.clearRect((pointsRedLeft[i].x - pointSize), (pointsRedLeft[i].y - pointSize), pointSize*4 + 18, pointSize*4 + 10);
+          pointsRedLeft.splice(i, 1);
+        } else{
         ctx.clearRect((pointsRedLeft[i].x - pointSize), (pointsRedLeft[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
         pointsRedLeft.splice(i, 1);
       }
-      ctx.clearRect((pointsRedLeft[i].x - pointSize), (pointsRedLeft[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+      }
+      if (i>=9){
+        ctx.clearRect((pointsRedLeft[i].x - pointSize), (pointsRedLeft[i].y - pointSize), pointSize*4 + 18, pointSize*4 + 10);
+      } else{
+        ctx.clearRect((pointsRedLeft[i].x - pointSize), (pointsRedLeft[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+      }
       ctx.beginPath();
       ctx.arc(pointsRedLeft[i].x, pointsRedLeft[i].y, pointSize, 0, Math.PI * 2, true);
       ctx.fill();
@@ -1259,15 +1268,24 @@ function removeChosenPoint(){
     for (var j = 0; j < pointsRedRight.length; j++){
       newIndexRR = j+1;
       if (value.includes(newIndexRR)){
-        ctx.clearRect((pointsRedRight[j].x - pointSize), (pointsRedRight[j].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
-        pointsRedRight.splice(j, 1);
+        if (j>=9){
+          ctx.clearRect((pointsRedRight[j].x - pointSize), (pointsRedRight[j].y - pointSize), pointSize*4 + 20, pointSize*4 + 10);
+          pointsRedRight.splice(i, 1);
+        } else{
+        ctx.clearRect((pointsRedRight[j].x - pointSize), (pointsRedRight[j].y - pointSize), pointSize*4 + 12, pointSize*4 + 10);
+        pointsRedRight.splice(i, 1);
       }
-      ctx.clearRect((pointsRedRight[j].x - pointSize), (pointsRedRight[j].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+      }
+      if (i>=9){
+        ctx.clearRect((pointsRedRight[j].x - pointSize), (pointsRedRight[j].y - pointSize), pointSize*4 + 20, pointSize*4 + 10);
+      } else{
+        ctx.clearRect((pointsRedRight[j].x - pointSize), (pointsRedRight[j].y - pointSize), pointSize*4 + 12, pointSize*4 + 10);
+      }
       ctx.beginPath();
       ctx.arc(pointsRedRight[j].x, pointsRedRight[j].y, pointSize, 0, Math.PI * 2, true);
       ctx.fill();
       ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
-      ctx.fillText('R' + (j + 1), pointsRedRight[j].x + pointSize*1.2, pointsRedRight[j].y + pointSize*1.2 + 10);
+      ctx.fillText('L' + (j + 1), pointsRedRight[j].x + pointSize*1.2, pointsRedRight[j].y + pointSize*1.2 + 10);
     }
   }
   if (value.includes('Blue L')){
