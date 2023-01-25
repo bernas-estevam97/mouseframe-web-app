@@ -434,23 +434,6 @@ function resetInput(){
 
 
 
-let removePoint = document.getElementById('removePointInput').value;
-
-function removePointManually(){
-  if (removePoint.includes("Red")){
-    if (removePoint.includes(' R ')){
-
-    }if (removePoint.includes(' L ')){
-
-    }
-  }if (removePoint.includes("Blue")){
-    if (removePoint.includes(' R ')){
-
-    }if (removePoint.includes(' L ')){
-
-    }
-  }
-}
 
 // ------------------------------------------------------------------------------------- -------------------------------------------------------------//
 
@@ -1228,3 +1211,118 @@ manualID.value = '';
 }
 
 
+let selectPoint = document.getElementById('selectPoint');
+
+function refreshRemoveList(){
+  selectPoint.options.length = 0;
+  for (var i = 0; i < pointsRedLeft.length; i++){
+    newIndexRedL = i+1;
+    selectPoint.options[selectPoint.options.length] = new Option("Red L" + newIndexRedL);
+  }
+  for (var j = 0; j < pointsRedRight.length; j++){
+    newIndexRedR = j+1;
+    selectPoint.options[selectPoint.options.length] = new Option("Red R" + newIndexRedR);
+  }
+  for (var k = 0; k < pointsBlueLeft.length; k++){
+    newIndexBlueL = k+1;
+    selectPoint.options[selectPoint.options.length] = new Option("Blue L" + newIndexBlueL);
+  }
+  for (var l = 0; l < pointsBlueRight.length; l++){
+    newIndexBlueR = l+1;
+    selectPoint.options[selectPoint.options.length] = new Option("Blue R" + newIndexBlueR);
+  }
+}
+
+function emptyRemoveList(){
+  selectPoint.options.length = 0;
+}
+
+
+function removeChosenPoint(){
+  let value = selectPoint.value;
+  if (value.includes('Red L')){
+    for (var i = 0; i < pointsRedLeft.length; i++){
+      newIndexRL = i+1;
+      if (value.includes(newIndex)){
+        ctx.clearRect((pointsRedLeft[i].x - pointSize), (pointsRedLeft[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+        pointsRedLeft.splice(i, 1);
+      }
+      ctx.clearRect((pointsRedLeft[i].x - pointSize), (pointsRedLeft[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+      ctx.beginPath();
+      ctx.arc(pointsRedLeft[i].x, pointsRedLeft[i].y, pointSize, 0, Math.PI * 2, true);
+      ctx.fill();
+      ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
+      ctx.fillText('L' + (i + 1), pointsRedLeft[i].x + pointSize*1.2, pointsRedLeft[i].y + pointSize*1.2 + 10);
+    }
+  }
+  if (value.includes('Red R')){
+    for (var j = 0; j < pointsRedRight.length; j++){
+      newIndexRR = j+1;
+      if (value.includes(newIndexRR)){
+        ctx.clearRect((pointsRedRight[j].x - pointSize), (pointsRedRight[j].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+        pointsRedRight.splice(j, 1);
+      }
+      ctx.clearRect((pointsRedRight[j].x - pointSize), (pointsRedRight[j].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+      ctx.beginPath();
+      ctx.arc(pointsRedRight[j].x, pointsRedRight[j].y, pointSize, 0, Math.PI * 2, true);
+      ctx.fill();
+      ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
+      ctx.fillText('R' + (j + 1), pointsRedRight[j].x + pointSize*1.2, pointsRedRight[j].y + pointSize*1.2 + 10);
+    }
+  }
+  if (value.includes('Blue L')){
+    for (var k = 0; k < pointsBlueLeft.length; k++){
+      newIndexBL = k+1;
+      if (value.includes(newIndexBL)){
+        ctx.clearRect((pointsBlueLeft[k].x - pointSize), (pointsBlueLeft[k].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+        pointsBlueLeft.splice(k, 1);
+      }
+      ctx.clearRect((pointsBlueLeft[k].x - pointSize), (pointsBlueLeft[k].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+      ctx.beginPath();
+      ctx.arc(pointsBlueLeft[k].x, pointsBlueLeft[k].y, pointSize, 0, Math.PI * 2, true);
+      ctx.fill();
+      ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
+      ctx.fillText('L' + (k + 1), pointsBlueLeft[k].x + pointSize*1.2, pointsBlueLeft[k].y + pointSize*1.2 + 10);
+    }
+  }
+  if (value.includes('Blue R')){
+    for (var l = 0; l < pointsBlueRight.length; l++){
+      newIndexBR = l+1;
+      if (value.includes(newIndexBR)){
+        ctx.clearRect((pointsBlueRight[l].x - pointSize), (pointsBlueRight[l].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+        pointsBlueRight.splice(l, 1);
+      }
+      ctx.clearRect((pointsBlueRight[l].x - pointSize), (pointsBlueRight[l].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+      ctx.beginPath();
+      ctx.arc(pointsBlueRight[l].x, pointsBlueRight[l].y, pointSize, 0, Math.PI * 2, true);
+      ctx.fill();
+      ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
+      ctx.fillText('R' + (l + 1), pointsBlueRight[l].x + pointSize*1.2, pointsBlueRight[l].y + pointSize*1.2 + 10);
+    }
+  }
+}
+
+
+
+
+
+
+// function drawRedLeftAut(x, y){
+//   clicksRed++;
+//   var m = pointsRedLeft;
+//   drawCoordinatesRed(m, pointSize);
+//   pointsRedLeft.push(m);
+//   console.log(pointsRedLeft);
+//   let index = pointsRedLeft.indexOf(m);
+//   console.log(index);
+//   ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
+//   ctx.fillText('L' + (index + 1), m.x + pointSize*1.2, m.y + pointSize*1.2 + 10);
+// }
+
+
+// function drawCoordinatesRedAut(point, r) {
+//   ctx.fillStyle = "hsl(0, 100%, 30%)"; // Dark Red color
+//   ctx.beginPath();
+//   ctx.arc(point.x, point.y, r, 0, Math.PI * 2, true);
+//   ctx.fill();
+// }

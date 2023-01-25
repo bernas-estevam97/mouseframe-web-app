@@ -62,11 +62,15 @@
          <h4>Remove a point of choice:</h4>
          <p>Instructions for manual removal:</p>
          <ul>
-          <li>When removing a point of choice identify color, side and index</li>
-          <li>Examples such as Red R 1 or Blue L 3 are functional</li>
-          <li>Make sure to use correct case for every identifier (example: Red L 5)</li>
+          <li>If you have points added, click to refresh button to show all available points for removal.</li>
+          <li>After choosing your desired point for removal click the Remove Point button.</li>
+          <li>By deleting a button, the group that it made part of will update.</li>
          </ul>
-         &nbsp<input class="point-input" id="removePointInput" placeholder="Point ID: Color Side Index...">&nbsp<button id="removePoint" onclick="removePointManually();">Remove Point</button>
+         <button id="refreshButton" onclick="refreshRemoveList();">Refresh</button>
+         <button id="emptyListRemoval" onclick="emptyRemoveList();">Empty</button>
+         <select id="selectPoint">
+         </select>
+         &nbsp<button id="removePoint" onclick="removeChosenPoint();">Remove Point</button>
         </div>
        </div>
        <div class="image-resize" id="imageEdit">
