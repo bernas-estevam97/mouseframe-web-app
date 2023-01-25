@@ -1258,6 +1258,7 @@ function removeChosenPoint(){
         ctx.clearRect((pointsRedLeft[i].x - pointSize), (pointsRedLeft[i].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
       }
       ctx.beginPath();
+      ctx.fillStyle = "hsl(0, 100%, 30%)"; // dark red
       ctx.arc(pointsRedLeft[i].x, pointsRedLeft[i].y, pointSize, 0, Math.PI * 2, true);
       ctx.fill();
       ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
@@ -1276,27 +1277,38 @@ function removeChosenPoint(){
         pointsRedRight.splice(i, 1);
       }
       }
-      if (i>=9){
+      if (j>=9){
         ctx.clearRect((pointsRedRight[j].x - pointSize), (pointsRedRight[j].y - pointSize), pointSize*4 + 20, pointSize*4 + 10);
       } else{
         ctx.clearRect((pointsRedRight[j].x - pointSize), (pointsRedRight[j].y - pointSize), pointSize*4 + 12, pointSize*4 + 10);
       }
       ctx.beginPath();
+      ctx.fillStyle = "hsl(0, 100%, 30%)"; // dark red
       ctx.arc(pointsRedRight[j].x, pointsRedRight[j].y, pointSize, 0, Math.PI * 2, true);
       ctx.fill();
       ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
-      ctx.fillText('L' + (j + 1), pointsRedRight[j].x + pointSize*1.2, pointsRedRight[j].y + pointSize*1.2 + 10);
+      ctx.fillText('R' + (j + 1), pointsRedRight[j].x + pointSize*1.2, pointsRedRight[j].y + pointSize*1.2 + 10);
     }
   }
   if (value.includes('Blue L')){
     for (var k = 0; k < pointsBlueLeft.length; k++){
       newIndexBL = k+1;
       if (value.includes(newIndexBL)){
+        if (k>=9){
+          ctx.clearRect((pointsBlueLeft[k].x - pointSize), (pointsBlueLeft[k].y - pointSize), pointSize*4 + 18, pointSize*4 + 10);
+          pointsBlueLeft.splice(k, 1);
+        } else{
         ctx.clearRect((pointsBlueLeft[k].x - pointSize), (pointsBlueLeft[k].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
         pointsBlueLeft.splice(k, 1);
       }
-      ctx.clearRect((pointsBlueLeft[k].x - pointSize), (pointsBlueLeft[k].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+      }
+      if (k>=9){
+        ctx.clearRect((pointsBlueLeft[k].x - pointSize), (pointsBlueLeft[k].y - pointSize), pointSize*4 + 18, pointSize*4 + 10);
+      } else{
+        ctx.clearRect((pointsBlueLeft[k].x - pointSize), (pointsBlueLeft[k].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+      }
       ctx.beginPath();
+      ctx.fillStyle = "hsl(245, 89%, 42%)"; // Dark Blue color
       ctx.arc(pointsBlueLeft[k].x, pointsBlueLeft[k].y, pointSize, 0, Math.PI * 2, true);
       ctx.fill();
       ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
@@ -1307,11 +1319,21 @@ function removeChosenPoint(){
     for (var l = 0; l < pointsBlueRight.length; l++){
       newIndexBR = l+1;
       if (value.includes(newIndexBR)){
-        ctx.clearRect((pointsBlueRight[l].x - pointSize), (pointsBlueRight[l].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+        if (l>=9){
+          ctx.clearRect((pointsBlueRight[l].x - pointSize), (pointsBlueRight[l].y - pointSize), pointSize*4 + 20, pointSize*4 + 10);
+          pointsBlueRight.splice(l, 1);
+        } else{
+        ctx.clearRect((pointsBlueRight[l].x - pointSize), (pointsBlueRight[l].y - pointSize), pointSize*4 + 12, pointSize*4 + 10);
         pointsBlueRight.splice(l, 1);
       }
-      ctx.clearRect((pointsBlueRight[l].x - pointSize), (pointsBlueRight[l].y - pointSize), pointSize*4 + 10, pointSize*4 + 10);
+      }
+      if (l>=9){
+        ctx.clearRect((pointsBlueRight[l].x - pointSize), (pointsBlueRight[l].y - pointSize), pointSize*4 + 20, pointSize*4 + 10);
+      } else{
+        ctx.clearRect((pointsBlueRight[l].x - pointSize), (pointsBlueRight[l].y - pointSize), pointSize*4 + 12, pointSize*4 + 10);
+      }
       ctx.beginPath();
+      ctx.fillStyle = "hsl(245, 89%, 42%)"; // Dark Blue color
       ctx.arc(pointsBlueRight[l].x, pointsBlueRight[l].y, pointSize, 0, Math.PI * 2, true);
       ctx.fill();
       ctx.font = " " + (parseInt(pointSize)+8) + "px Arial";
