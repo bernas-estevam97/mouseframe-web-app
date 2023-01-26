@@ -1348,24 +1348,52 @@ let removableRows = [];
 
 function removeByMeasurement(){
   if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Overlap Left'){
-    for (var i = 0, row; row = tbody.rows[i]; i++){
-      if (row.cells[2].innerHTML === 'Overlap Left'){
-        
-      }
+    $("#tbody").find("td:contains('Overlap Left')").closest('tr').remove();
+    for (var i = 0; i < tbody.rows.length; i++){
+      let updatedCell = tbody.rows[i].cells[0];
+      updatedCell.innerHTML = i+1;
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Overlap Right'){
-
+    $("#tbody").find("td:contains('Overlap Right')").closest('tr').remove();
+    for (var i = 0; i < tbody.rows.length; i++){
+      let updatedCell = tbody.rows[i].cells[0];
+      updatedCell.innerHTML = i+1;
+    }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length left front'){
-
+    $("#tbody").find("td:contains('Stride length left front')").closest('tr').remove();
+    for (var i = 0; i < tbody.rows.length; i++){
+      let updatedCell = tbody.rows[i].cells[0];
+      updatedCell.innerHTML = i+1;
+    }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length left hind'){
-
+    $("#tbody").find("td:contains('Stride length left hind')").closest('tr').remove();
+    for (var i = 0; i < tbody.rows.length; i++){
+      let updatedCell = tbody.rows[i].cells[0];
+      updatedCell.innerHTML = i+1;
+    }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length right front'){
-
+    $("#tbody").find("td:contains('Stride length right front')").closest('tr').remove();
+    for (var i = 0; i < tbody.rows.length; i++){
+      let updatedCell = tbody.rows[i].cells[0];
+      updatedCell.innerHTML = i+1;
+    }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length right hind'){
-
+    $("#tbody").find("td:contains('Stride length right hind')").closest('tr').remove();
+    for (var i = 0; i < tbody.rows.length; i++){
+      let updatedCell = tbody.rows[i].cells[0];
+      updatedCell.innerHTML = i+1;
+    }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride Width Front'){
-
+    $("#tbody").find("td:contains('Stride Width Front')").closest('tr').remove();
+    for (var i = 0; i < tbody.rows.length; i++){
+      let updatedCell = tbody.rows[i].cells[0];
+      updatedCell.innerHTML = i+1;
+    }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride Width Hind'){
-
+    $("#tbody").find("td:contains('Stride Width Hind')").closest('tr').remove();
+    for (var i = 0; i < tbody.rows.length; i++){
+      let updatedCell = tbody.rows[i].cells[0];
+      updatedCell.innerHTML = i+1;
+    }
   }
 }
