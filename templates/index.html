@@ -245,23 +245,6 @@
   }
 
 </script>
-<script>
-  $( "form" ).on( "submit", function(e) {
-    var dataString = $(this).serialize();
-    
-    // alert(dataString); return false; 
-    $.ajax({
-      type: "POST",
-      url: "success",
-      data: dataString,
-      success: function () {
-        $("#messageSave").empty();
-        $("#messageSave").append("<p>" + saveDistance.value + " saved" + "</p>");
-          }
-      }
-    );
-    e.preventDefault();
-  });
-</script>
+<script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
 </body>
 </html>

@@ -30,11 +30,14 @@ def home(request):
 
 
 def saved_distance(request):
-    if request.method == 'POST':
-            distance = request.POST.get('saved_distance')
-            print(distance)
-            new = SavedDistances(saved_distance=distance)
-            new.save()
-            messages.success(request, ('Saved successfully'))
-    return render(request, 'index.html')
+      if not request.user.is_authenticated:
+        return redirect('/authenticate/login')
+      if request.method == 'POST':
+                distance = request.POST.get('saved_distance')
+                print(distance)
+                new = SavedDistances(saved_distance=distance)
+                new.save()
+                messages.success(request, ('Saved successfully'))
+      saved_distances = SavedDistances.objects.all()
+      return render(request, 'index.html', {'saved_distances': saved_distances})
 
