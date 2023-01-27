@@ -420,14 +420,22 @@ function distanceMeasurePoint(){
 }
 
 let inputPixelsManually = document.getElementById("pixelsInCmMan");
+let savedChoices = document.getElementById("savedChoices");
 
 function manualInputMeasure(){
-  dist = inputPixelsManually.value;
-  document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
+  if ((inputPixelsManually.value != '') && (savedChoices.options[savedChoices.selectedIndex].value == 'None')){
+    dist = inputPixelsManually.value;
+    savedChoices.value = 'None';
+    document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
+  } if ((savedChoices.options[savedChoices.selectedIndex].value != 'None') && (inputPixelsManually.value == '')){
+    dist = savedChoices[savedChoices.selectedIndex].value;
+    document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
+  }
 }
 
 function resetInput(){
   inputPixelsManually.value = '';
+  savedChoices.value = 'None';
   dist = 0;
   document.getElementById("measureToCm").innerHTML = '';
 }

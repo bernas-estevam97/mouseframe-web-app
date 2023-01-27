@@ -96,13 +96,16 @@
     <button id="measureButton" onclick="drawMeasureCircle();">Add measuring points</button>
     <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset points</button>
     <button onclick = "distanceMeasurePoint()" id="measureDistance">Measure</button>
-    <p>Manually input known value of pixels in 1 cm or use saved values:</p>
-    <input id="pixelsInCmMan" type="number" size="6" placeholder="Px in cm...">&nbsp<button onclick="manualInputMeasure()" id="manualUse">Use</button>&nbsp<button onclick="resetInput();" id="resetManual">Reset</button>
-    <select>
+    <p>Manually input known value of pixels in 1 cm or use saved values (choose only one value before clicking use):</p>
+    <input id="pixelsInCmMan" type="number" size="6" placeholder="Px in cm...">&nbspOR&nbsp
+    <select id="savedChoices">
+        <option value="None" selected>None</option>
       {% for distance in saved_distances %}
         <option value="{{distance}}">{{distance}}</option>
       {% endfor %}
     </select>
+    <button onclick="manualInputMeasure();" id="manualUse">Use</button>
+    <button onclick="resetInput();" id="resetManual">Reset</button>
     <p id="measureToCm"></p>
     <br><form action="" method="POST" id="savedDistancesForm">{% csrf_token %}
       <input name="saved_distance" id="saveDistance" placeholder="Save value...">
