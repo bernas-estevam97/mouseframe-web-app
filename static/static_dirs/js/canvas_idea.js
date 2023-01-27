@@ -959,7 +959,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
   alert('Not enough points to perform this measurement');
 }
 } if (measurementType.options[measurementType.selectedIndex].value == 'Overlap Right'){
-  if ((pointsRedRight.length >= 1) && (pointsBlueRight >= 1)){
+  if ((pointsRedRight.length >= 1) && (pointsBlueRight.length >= 1)){
   for (var i= 0; i < pointsRedRight.length; i++){
    for (var j = 0; j < pointsBlueRight.length; j++){
      if (i == j){

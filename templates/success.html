@@ -1,0 +1,9 @@
+{% extends "index.html" %}
+{% if messages %}
+    {% for message in messages %}
+    <div class="alert-save">
+    {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+{% endif %}

@@ -2,15 +2,17 @@ from django.db import models
 from django import forms
 
 
-class savedDistances(models.Model):
-    saved_distance = models.IntegerField()
+class SavedDistances(models.Model):
+    saved_distance = models.DecimalField(max_digits=5, decimal_places=2)
+    class Meta:
+        ordering = ['saved_distance']
 
     def __str__(self):
         return f'{self.saved_distance}'
 
 
-class savedDistancesForm(forms.ModelForm):
+# class SavedDistancesForm(forms.ModelForm):
 
-    class Meta:
-        model = savedDistances
-        fields = ('saved_distance',)
+#     class Meta:
+#         model = SavedDistances
+#         fields = ('saved_distance',)

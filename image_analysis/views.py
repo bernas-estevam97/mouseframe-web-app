@@ -1,19 +1,20 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from image_analysis.models import *
-from django.db.models import Q
+from image_analysis.models import SavedDistances
 from django.contrib import messages
 from django.core.management import CommandError
 from django.template import RequestContext
-from accounts.views import login_user
 
 
 
-def index(request):
+def home(request):
    if not request.user.is_authenticated:
         return redirect('/authenticate/login')
    else:
-        return render(request, 'index.html')
+        saved_distances = SavedDistances.objects.all()
+        return render(request, 'index.html', {'saved_distances': saved_distances})
+        
+
     
 
 
@@ -30,16 +31,10 @@ def index(request):
 
 def saved_distance(request):
     if request.method == 'POST':
+            distance = request.POST.get('saved_distance')
+            print(distance)
+            new = SavedDistances(saved_distance=distance)
+            new.save()
+            messages.success(request, ('Saved successfully'))
+    return render(request, 'index.html')
 
-        form = savedDistancesForm(request.POST)
-        if form.is_valid():
-            #This is called when the form fields are ok and we can create the object
-            application_object = form.save()
-
-            return HttpResponse("Some HTML code") # or HttResponseRedirect("/any_url")
-
-    else:
-        form = savedDistancesForm() 
-
-    #This called when we need to display the form: get or error in form fields
-    return render('registration/saved_distance.html', {'form': form})

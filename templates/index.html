@@ -20,9 +20,7 @@
             <h3>Information and requirements</h3>
             <ul>
                 <li>Only image file formats are supported.</li>
-                <li>Make sure you note which dpi was used in the case of scanned images to later add the number to further calculations in order to increase the results precision.</li>
                 <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
-                <li>The canvas will be automatically set to the uploaded image dimensions although a canvas bigger than the uploaded image would not make a difference in the distance calculations as long as the user adds the dots wherever it is wanted.</li>
                 <li>Make sure your image resolution fits your computer screen as the canvas will automatically adopt its dimensions.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
             </ul>
@@ -98,10 +96,19 @@
     <button id="measureButton" onclick="drawMeasureCircle();">Add measuring points</button>
     <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset points</button>
     <button onclick = "distanceMeasurePoint()" id="measureDistance">Measure</button>
-    <p>Or manually input known value of pixels in 1 cm:</p>
-    <input id="pixelsInCmMan" type="number" placeholder="Px in cm...">&nbsp<button onclick="manualInputMeasure()" id="manualUse">Use</button>&nbsp<button onclick="resetInput();" id="resetManual">Reset</button>
+    <p>Manually input known value of pixels in 1 cm or use saved values:</p>
+    <input id="pixelsInCmMan" type="number" size="6" placeholder="Px in cm...">&nbsp<button onclick="manualInputMeasure()" id="manualUse">Use</button>&nbsp<button onclick="resetInput();" id="resetManual">Reset</button>
+    <select>
+      {% for distance in saved_distances %}
+        <option value="{{distance}}">{{distance}}</option>
+      {% endfor %}
+    </select>
     <p id="measureToCm"></p>
-    <button type="submit" disabled>Store value</button>
+    <br><form action="" method="POST" id="savedDistancesForm">{% csrf_token %}
+      <input name="saved_distance" id="saveDistance" placeholder="Save value...">
+    <button type="submit">Save</button> 
+    </form>
+    <div id="messageSave"></div>
    </div>
   </div>
    <div class="resolution-info">
@@ -237,6 +244,24 @@
           XLSX.writeFile(wb, fn || ('Measurements.' + (type || 'xlsx')));
   }
 
+</script>
+<script>
+  $( "form" ).on( "submit", function(e) {
+    var dataString = $(this).serialize();
+    
+    // alert(dataString); return false; 
+    $.ajax({
+      type: "POST",
+      url: "success",
+      data: dataString,
+      success: function () {
+        $("#messageSave").empty();
+        $("#messageSave").append("<p>" + saveDistance.value + " saved" + "</p>");
+          }
+      }
+    );
+    e.preventDefault();
+  });
 </script>
 </body>
 </html>
