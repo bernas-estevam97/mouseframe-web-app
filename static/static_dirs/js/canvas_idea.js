@@ -494,7 +494,7 @@ let img = new Image();
      // document.getElementById("canvasWidth").value = '';
      // document.getElementById("canvasHeight").value = '';
 
-// IMAGE ONLOAD SECTION - On image load canvas and container become the same size as uploaded image //
+// IMAGE ONLOAD SECTION - //
      img.onload = () => {
          event.target.value = null;
          imgWidth.innerHTML = "<strong>Uploaded image default width:</strong> "+ img.width + "px";
