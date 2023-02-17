@@ -13,6 +13,12 @@ def home(request):
    else:
         saved_distances = SavedDistances.objects.all()
         return render(request, 'index.html', {'saved_distances': saved_distances})
+
+def info(request):
+   if not request.user.is_authenticated:
+        return redirect('/authenticate/login')
+   else:
+        return render(request, 'info.html')
         
 
     

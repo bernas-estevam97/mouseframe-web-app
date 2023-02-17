@@ -17,13 +17,13 @@
     <div class="container-full">
         <!-- <div class="left-part"> -->
         <div class="requirements">
-            <h3>Information and requirements</h3>
+            <h3>Brief information and requirements</h3>
             <ul>
                 <li>Only image file formats are supported.</li>
                 <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
                 <li>Make sure your image resolution fits your computer screen as the canvas will automatically adopt its dimensions.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
-                <li>Check <a href="#" >this</a> page to see how the calculations are made for each measurement and other important information.</li>
+                <li>Check <a href="{% url 'info' %}">this</a> page to see how the calculations are made for each measurement and other important information.</li>
             </ul>
             <p id="userResolution"></p><a class="logout-button" href="{% url 'logout' %}">Logout</a><br>
         </div>
@@ -81,6 +81,9 @@
         <button id="twentyFiveP" onclick="resizeTwentyF();">25% Size</button>
         <button id="resetImgDim" onclick="resetImgDim();">Reset Dimensions</button><br><br>
         <p id="currentImgSize"></p>
+        <br><br><h3>Image resizing slider:</h3>
+        <input type="range" min="1" max="20" value="1" class="slider" id="Slider">
+        <p>Value: <output id="value"></output></p>
        </div>
 
        <div id="imageInfo" class="image-info">
