@@ -83,7 +83,7 @@
         <p id="currentImgSize"></p>
         <br><br><h3>Image resizing slider:</h3>
         <input type="range" min="1" max="20" value="1" class="slider" id="Slider">
-        <p>Value: <output id="value"></output></p>
+        <p><output id="value"></output></p>
        </div>
 
        <div id="imageInfo" class="image-info">
@@ -95,7 +95,7 @@
       </div>
    
    <div class="saved-distances" id="savedDistance">
-    <h2>Define how many pixels are in a centimeter.</h2>
+    <h3>Define how many pixels are in a centimeter.</h3>
     <p>If there is a drawn line with the length of 1cm, measure it in pixels here:</p>
     <p id="scaleDistance"></p>
     <button id="measureButton" onclick="drawMeasureCircle();">Add measuring points</button>
@@ -112,7 +112,7 @@
     <button onclick="manualInputMeasure();" id="manualUse">Use</button>
     <button onclick="resetInput();" id="resetManual">Reset</button>
     <p id="measureToCm"></p>
-    <br><form action="" method="POST" id="savedDistancesForm">{% csrf_token %}
+    <form action="" method="POST" id="savedDistancesForm">{% csrf_token %}
       <input name="saved_distance" id="saveDistance" placeholder="Save value...">
     <button type="submit">Save</button> 
     </form>
@@ -214,7 +214,7 @@
       <!-- <button id="refreshList" onclick="refreshList();">Refresh</button>
       <button id="empty" onclick="emptyList();">Empty</button> -->
       <p>Remove by entries &#8628;</p>
-      <input id="entryNumber" placeholder="Entry nº" size="4" maxlength="4">
+      <input id="entryNumber" placeholder="Entry nº" size="3" maxlength="3">
       <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
       <button id="removeAllEntries" onclick="removeAllEntries();">Remove All Entries</button>
       <p>Remove by measurement type &#8628;</p>

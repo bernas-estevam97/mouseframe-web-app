@@ -601,6 +601,7 @@ let img = new Image();
    // imgWidthInput.value = '';
    // imgHeightInput.value = '';
    document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width + "x" + img.height;
+   value.textContent = '';
  }
 
  function resizeFifty(){
@@ -611,6 +612,7 @@ let img = new Image();
    canvas.width = (img.width*0.5);
    canvas.height = (img.height*0.5);
    document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.5 + "x" + img.height*0.5 + " (50% of size!)";
+   value.textContent = '';
  }
 
  function resizeSF(){
@@ -621,6 +623,7 @@ let img = new Image();
    canvas.width = (img.width*0.75);
    canvas.height = (img.height*0.75);
    document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.75 + "x" + img.height*0.75 + " (75% of size!)";
+   value.textContent = '';
  }
 
  function resizeForty(){
@@ -631,6 +634,7 @@ let img = new Image();
    canvas.width = (img.width*0.4);
    canvas.height = (img.height*0.4);
    document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + (img.width*0.4).toFixed(0) + "x" + (img.height*0.4).toFixed(0) + " (40% of size! Values are rounded)";
+   value.textContent = '';
  }
 
  function resizeTwentyF(){
@@ -641,13 +645,14 @@ let img = new Image();
    canvas.width = (img.width*0.25);
    canvas.height = (img.height*0.25);
    document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.25 + "x" + img.height*0.25 + " (25% of size!)";
+   value.textContent = '';
  }
 
  const value = document.querySelector("#value")
  const slider = document.getElementById('Slider');
  slider.addEventListener('input', handleChange);
  slider.addEventListener("input", (event) => {
-  value.textContent = Math.round((slider.value)/20*100) + '% of image size';
+  value.textContent = 'Value: ' + Math.round((slider.value)/20*100) + '% of image size';
 })
 
  function handleChange(e) {
