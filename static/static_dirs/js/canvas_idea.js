@@ -842,18 +842,18 @@ tbody = document.getElementById("tbody");
 let pixelsManual = document.getElementById("pixelsInCmMan");
 
 let footstepsBeginning = document.getElementById('footstepsBeginning');
-footstepsBeginning.style.display = 'none';
+// footstepsBeginning.style.display = 'none';
 let footstepStart = document.getElementById('footstepStart');
 let measurementType = document.getElementById("measurement");
 
-measurementType.addEventListener("change", function(){
-var options = measurementType.querySelectorAll('option');
-if (measurementType.value == "Stride Width Front" || measurementType.value == "Stride Width Hind"){
- footstepsBeginning.style.display = '';
-} else{
- footstepsBeginning.style.display = 'none';
-}
-})
+// measurementType.addEventListener("change", function(){
+// var options = measurementType.querySelectorAll('option');
+// if (measurementType.value == "Stride Width Front" || measurementType.value == "Stride Width Hind"){
+//  footstepsBeginning.style.display = '';
+// } else{
+//  footstepsBeginning.style.display = 'none';
+// }
+// })
 
 function addEntry(){
 if (measurementType.options[measurementType.selectedIndex].value == 'Stride length left front'){
@@ -950,7 +950,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
      var cellFour = newRow.insertCell();
      var cellFive = newRow.insertCell();
      cellOne.innerHTML = indexRow-1;
-     cellTwo.innerHTML = 'Blue L' + (i+1) + ' &#x2192 Blue L' + (i+2);
+     cellTwo.innerHTML = 'Blue R' + (i+1) + ' &#x2192 Blue R' + (i+2);
      cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
      distance = (Math.hypot(pointsBlueRight[i].x - pointsBlueRight[i+1].x, pointsBlueRight[i].y - pointsBlueRight[i+1].y)).toFixed(2);
      cellFour.innerHTML = distance;
@@ -1417,13 +1417,15 @@ function removeByMeasurement(){
       updatedCell.innerHTML = i+1;
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride Width Front'){
-    $("#tbody").find("td:contains('Stride Width Front')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Front(L)')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Front(R)')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       updatedCell.innerHTML = i+1;
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride Width Hind'){
-    $("#tbody").find("td:contains('Stride Width Hind')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Hind(L)')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Hind(R)')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       updatedCell.innerHTML = i+1;
@@ -1435,5 +1437,326 @@ function removeByMeasurement(){
 // WORK IN PROGRESS -- ADD ALL ENTRIES WITH ONE CLICK
 
 function addEntriesAll(){
-
+  for (var i = 0; i < (pointsRedLeft.length-1); i++){
+    var newRow = tbody.insertRow(-1);
+    let indexRow = newRow.rowIndex;
+    var cellOne = newRow.insertCell();
+    var cellTwo = newRow.insertCell();
+    var cellThree = newRow.insertCell();
+    var cellFour = newRow.insertCell();
+    var cellFive = newRow.insertCell();
+    cellOne.innerHTML = indexRow-1;
+    cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Red L' + (i+2);
+    cellThree.innerHTML = 'Stride length left front';
+    distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i+1].x, pointsRedLeft[i].y - pointsRedLeft[i+1].y)).toFixed(2);
+    cellFour.innerHTML = distance;
+    if (dist != 0){
+      cellFive.innerHTML = (distance/dist).toFixed(2);
+    } else{
+      cellFive.innerHTML = 'Undefined';
+    }
+} 
+  for (var i = 0; i < (pointsRedRight.length-1); i++){
+    var newRow = tbody.insertRow(-1);
+    let indexRow = newRow.rowIndex;
+    var cellOne = newRow.insertCell();
+    var cellTwo = newRow.insertCell();
+    var cellThree = newRow.insertCell();
+    var cellFour = newRow.insertCell();
+    var cellFive = newRow.insertCell();
+    cellOne.innerHTML = indexRow-1;
+    cellTwo.innerHTML = 'Red R' + (i+1) + ' &#x2192 Red R' + (i+2);
+    cellThree.innerHTML = 'Stride length right front';
+    distance = (Math.hypot(pointsRedRight[i].x - pointsRedRight[i+1].x, pointsRedRight[i].y - pointsRedRight[i+1].y)).toFixed(2);
+    cellFour.innerHTML = distance;
+    if (dist != 0){
+      cellFive.innerHTML = (distance/dist).toFixed(2);
+    } else{
+      cellFive.innerHTML = 'Undefined';
+    }
+  }
+  for (var i = 0; i < (pointsBlueLeft.length-1); i++){
+    var newRow = tbody.insertRow(-1);
+    let indexRow = newRow.rowIndex;
+    var cellOne = newRow.insertCell();
+    var cellTwo = newRow.insertCell();
+    var cellThree = newRow.insertCell();
+    var cellFour = newRow.insertCell();
+    var cellFive = newRow.insertCell();
+    cellOne.innerHTML = indexRow-1;
+    cellTwo.innerHTML = 'Blue L' + (i+1) + ' &#x2192 Blue L' + (i+2);
+    cellThree.innerHTML = 'Stride length left hind';
+    distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i+1].x, pointsBlueLeft[i].y - pointsBlueLeft[i+1].y)).toFixed(2);
+    cellFour.innerHTML = distance;
+    if (dist != 0){
+      cellFive.innerHTML = (distance/dist).toFixed(2);
+    } else{
+      cellFive.innerHTML = 'Undefined';
+    }
+  }
+  for (var i = 0; i < (pointsBlueRight.length-1); i++){
+    var newRow = tbody.insertRow(-1);
+    let indexRow = newRow.rowIndex;
+    var cellOne = newRow.insertCell();
+    var cellTwo = newRow.insertCell();
+    var cellThree = newRow.insertCell();
+    var cellFour = newRow.insertCell();
+    var cellFive = newRow.insertCell();
+    cellOne.innerHTML = indexRow-1;
+    cellTwo.innerHTML = 'Blue R' + (i+1) + ' &#x2192 Blue R' + (i+2);
+    cellThree.innerHTML = 'Stride length right hind';
+    distance = (Math.hypot(pointsBlueRight[i].x - pointsBlueRight[i+1].x, pointsBlueRight[i].y - pointsBlueRight[i+1].y)).toFixed(2);
+    cellFour.innerHTML = distance;
+    if (dist != 0){
+      cellFive.innerHTML = (distance/dist).toFixed(2);
+    } else{
+      cellFive.innerHTML = 'Undefined';
+    }
+  }
+  for (var i= 0; i < pointsRedLeft.length; i++){
+    for (var j = 0; j < pointsBlueLeft.length; j++){
+      if (i == j){
+      var newRow = tbody.insertRow(-1);
+      let indexRow = newRow.rowIndex;
+      var cellOne = newRow.insertCell();
+      var cellTwo = newRow.insertCell();
+      var cellThree = newRow.insertCell();
+      var cellFour = newRow.insertCell();
+      var cellFive = newRow.insertCell();
+      cellOne.innerHTML = indexRow-1;
+      cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Blue L' + (j+1);
+      cellThree.innerHTML = 'Overlap Left';
+      distance = (Math.hypot(pointsRedLeft[i].x - pointsBlueLeft[j].x, pointsRedLeft[i].y - pointsBlueLeft[j].y)).toFixed(2);
+      cellFour.innerHTML = distance;
+      if (dist != 0){
+        cellFive.innerHTML = (distance/dist).toFixed(2);
+      } else{
+        cellFive.innerHTML = 'Undefined';
+      }
+   }
+ }
+ }
+ for (var i= 0; i < pointsRedRight.length; i++){
+  for (var j = 0; j < pointsBlueRight.length; j++){
+    if (i == j){
+    var newRow = tbody.insertRow(-1);
+    let indexRow = newRow.rowIndex;
+    var cellOne = newRow.insertCell();
+    var cellTwo = newRow.insertCell();
+    var cellThree = newRow.insertCell();
+    var cellFour = newRow.insertCell();
+    var cellFive = newRow.insertCell();
+    cellOne.innerHTML = indexRow-1;
+    cellTwo.innerHTML = 'Red R' + (i+1) + ' &#x2192 Blue R' + (j+1);
+    cellThree.innerHTML = 'Overlap Right';
+    distance = (Math.hypot(pointsRedRight[i].x - pointsBlueRight[j].x, pointsRedRight[i].y - pointsBlueRight[j].y)).toFixed(2);
+    cellFour.innerHTML = distance;
+    if (dist != 0){
+      cellFive.innerHTML = (distance/dist).toFixed(2);
+    } else{
+      cellFive.innerHTML = 'Undefined';
+    }
+  }
 }
+}
+if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
+    var indexImaginaryFrontLeft = 0;
+    var indexImaginaryHindLeft = 0;
+    for (var i = 0; i < pointsRedLeft.length; i++){
+      for (var j = 0; j < pointsRedRight.length; j++){
+        if (i == j){
+          var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryFrontLeft += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontLeft + ' &#x2192 Red R' + (j+1);
+          cellThree.innerHTML = 'Stride Width Front(L)';
+          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          } else{
+            cellFive.innerHTML = 'Undefined';
+          }
+      } if (i == j+1){
+        var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryFrontLeft += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontLeft + ' &#x2192 Red L' + (i+1);
+          cellThree.innerHTML = 'Stride Width Front(L)';
+          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          }else{
+            cellFive.innerHTML = 'Undefined';
+          } 
+      }
+  }
+}
+    for (var i = 0; i < pointsBlueLeft.length; i++){
+      for (var j = 0; j < pointsBlueRight.length; j++){
+        if (i == j){
+          var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryHindLeft += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindLeft + ' &#x2192 Blue R' + (j+1);
+          cellThree.innerHTML = 'Stride Width Hind(L)';
+          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          } else{
+            cellFive.innerHTML = 'Undefined';
+          }
+      } if (i == j+1){
+        var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryHindLeft += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindLeft + ' &#x2192 Blue L' + (i+1);
+          cellThree.innerHTML = 'Stride Width Hind(L)';
+          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          }else{
+            cellFive.innerHTML = 'Undefined';
+          } 
+      }
+    }
+    }
+}
+  if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
+    var indexImaginaryFrontRight = 0;
+    var indexImaginaryHindRight = 0;
+    for (var i = 0; i < pointsRedLeft.length; i++){
+      for (var j = 0; j < pointsRedRight.length; j++){
+        if (i == j){
+          var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryFrontRight += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontRight + ' &#x2192 Red L' + (i+1);
+          cellThree.innerHTML = 'Stride Width Front(R)';
+          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedRight[j].y - pointsRedLeft[i].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          } else{
+            cellFive.innerHTML = 'Undefined';
+          }
+      } if (j == i+1){
+        var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryFrontRight += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontRight + ' &#x2192 Red R' + (j+1);
+          cellThree.innerHTML = 'Stride Width Front(R)';
+          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          }else{
+            cellFive.innerHTML = 'Undefined';
+          } 
+      }
+    }
+  }
+  for (var i = 0; i < pointsBlueLeft.length; i++){
+    for (var j = 0; j < pointsBlueRight.length; j++){
+      if (i == j){
+        var newRow = tbody.insertRow(-1);
+        let indexRow = newRow.rowIndex;
+        var cellOne = newRow.insertCell();
+        var cellTwo = newRow.insertCell();
+        var cellThree = newRow.insertCell();
+        var cellFour = newRow.insertCell();
+        var cellFive = newRow.insertCell();
+        indexImaginaryHindRight += 1;
+        cellOne.innerHTML = indexRow-1;
+        cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindRight + ' &#x2192 Blue L' + (i+1);
+        cellThree.innerHTML = 'Stride Width Hind(R)';
+        distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueRight[j].y - pointsBlueLeft[i].y)).toFixed(2);
+        cellFour.innerHTML = distance;
+        if (dist != 0){
+          cellFive.innerHTML = (distance/dist).toFixed(2);
+        } else{
+          cellFive.innerHTML = 'Undefined';
+        }
+    } if (j == i+1){
+      var newRow = tbody.insertRow(-1);
+        let indexRow = newRow.rowIndex;
+        var cellOne = newRow.insertCell();
+        var cellTwo = newRow.insertCell();
+        var cellThree = newRow.insertCell();
+        var cellFour = newRow.insertCell();
+        var cellFive = newRow.insertCell();
+        indexImaginaryHindRight += 1;
+        cellOne.innerHTML = indexRow-1;
+        cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindRight + ' &#x2192 Blue R' + (j+1);
+        cellThree.innerHTML = 'Stride Width Hind(R)';
+        distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+        cellFour.innerHTML = distance;
+        if (dist != 0){
+          cellFive.innerHTML = (distance/dist).toFixed(2);
+        }else{
+          cellFive.innerHTML = 'Undefined';
+        } 
+      }
+    }
+  } 
+}
+if ((pointsRedLeft.length < 1) || (pointsRedRight.length < 1) || (pointsBlueLeft.length < 1) || (pointsBlueRight.length < 1)){
+  alert('Points missing in some measurements.');
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
