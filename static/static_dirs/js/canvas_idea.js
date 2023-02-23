@@ -648,23 +648,28 @@ let img = new Image();
    value.textContent = '';
  }
 
- const value = document.querySelector("#value")
- const slider = document.getElementById('Slider');
- slider.addEventListener('input', handleChange);
- slider.addEventListener("input", (event) => {
-  value.textContent = 'Value: ' + Math.round((slider.value)/20*100) + '% of image size';
-})
+// SLIDER IMAGE RESIZING IS STOPPING BUTTON EVENT LISTENERS --- WORK ON FIX 
 
- function handleChange(e) {
-  const {value, max} = e.target;
-  imgContainer.style.backgroundSize = img.width*(value/20) + "px " + img.height*(value/20) + "px";
-  imgContainer.style.width = img.width*(value/20) + "px";
-  imgContainer.style.height = img.height*(value/20) + "px";
-  canvas.width = img.width*(value/20) + "px";
-  canvas.height = img.height*(value/20) + "px";
-  document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*(value/20) + "x" + img.height*(value/20) + " (" +Math.round((value/20*100))+ "% of size!)";
-}
 
+//  const value = document.querySelector("#value");
+//  const slider = document.getElementById('Slider');
+//  slider.addEventListener('input', handleChange);
+//  slider.addEventListener("input", (e) => {
+//   value.textContent = 'Value: ' + Math.round((slider.value)/20*100) + '% of image size';
+// });
+ 
+
+//  function handleChange(drag) {
+//   const {value} = drag.target;
+//   imgContainer.style.backgroundSize = img.width*(value/20) + "px " + img.height*(value/20) + "px";
+//   imgContainer.style.width = img.width*(value/20) + "px";
+//   imgContainer.style.height = img.height*(value/20) + "px";
+//   canvas.width = img.width*(value/20) + "px";
+//   canvas.height = img.height*(value/20) + "px";
+//   document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*(value/20) + "x" + img.height*(value/20) + " (" +Math.round((value/20*100))+ "% of size!)";
+// }
+
+//-------------------------------------------------------------------------------------//
 
 
 
@@ -845,6 +850,9 @@ let footstepsBeginning = document.getElementById('footstepsBeginning');
 // footstepsBeginning.style.display = 'none';
 let footstepStart = document.getElementById('footstepStart');
 let measurementType = document.getElementById("measurement");
+
+
+// SHOW OPTIONS OF RIGHT AND LEFT WHEN CHOOSING THE STRIDE WIDTH MEASUREMENT
 
 // measurementType.addEventListener("change", function(){
 // var options = measurementType.querySelectorAll('option');
