@@ -495,35 +495,43 @@ let img = new Image();
      // document.getElementById("canvasHeight").value = '';
 
 // IMAGE ONLOAD SECTION - //
-     img.onload = () => {
-         event.target.value = null;
-         imgWidth.innerHTML = "<strong>Uploaded image default width:</strong> "+ img.width + "px";
-         imgHeight.innerHTML = "<strong>Uploaded image default height:</strong> "+ img.height + "px";
-         imgContainer.style.border = "2px solid black";
-         if ((img.width > 1500) || (img.height > 1500)) {
-          imgContainer.style.width = (img.width*0.5) + "px";
-          imgContainer.style.height = (img.height*0.5) + "px";
-          imgContainer.style.backgroundSize = (img.width*0.5) + "px " + (img.height*0.5) + "px";
-          canvas.height = (img.height*0.5);
-          canvas.width = (img.width*0.5);
-          document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.5 + "x" + img.height*0.5 + " (50% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to half the size.</i>";
-         } else{
-          imgContainer.style.width = img.width + "px";
-          imgContainer.style.height = img.height + "px";
-          imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
-          canvas.height = img.height;
-          canvas.width = img.width;
-          document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width+ "x" + img.height;
-         }
-         canvasInfo.innerHTML = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
-         document.getElementById("inputScreenInches").style.display = '';
-         document.getElementById("screenPPI").style.display = '';
-         document.getElementById("imageDimInches").style.display = '';
-         document.getElementById("imageDimCm").style.display = '';
-         document.getElementById("labelInput").style.display = '';
-         document.getElementById("ppiCalculus").style.display = '';
-         
-     }
+    img.onload = () => {
+      event.target.value = null;
+      imgWidth.innerHTML = "<strong>Uploaded image default width:</strong> "+ img.width + "px";
+      imgHeight.innerHTML = "<strong>Uploaded image default height:</strong> "+ img.height + "px";
+      imgContainer.style.border = "2px solid black";
+      if ((img.width > 1500) || (img.height > 1500)) {
+      imgContainer.style.width = (img.width*0.5) + "px";
+      imgContainer.style.height = (img.height*0.5) + "px";
+      imgContainer.style.backgroundSize = (img.width*0.5) + "px " + (img.height*0.5) + "px";
+      canvas.height = (img.height*0.5);
+      canvas.width = (img.width*0.5);
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.5 + "x" + img.height*0.5 + " (50% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to half the size.</i>";
+      } if ((img.width >= 3000) || (img.height >= 3000)) {
+      imgContainer.style.width = (img.width*0.25) + "px";
+      imgContainer.style.height = (img.height*0.25) + "px";
+      imgContainer.style.backgroundSize = (img.width*0.25) + "px " + (img.height*0.25) + "px";
+      canvas.height = (img.height*0.25);
+      canvas.width = (img.width*0.25);
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.25 + "x" + img.height*0.25 + " (25% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 25% of the size.</i>";
+      }
+      else{
+      imgContainer.style.width = img.width + "px";
+      imgContainer.style.height = img.height + "px";
+      imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
+      canvas.height = img.height;
+      canvas.width = img.width;
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width+ "x" + img.height;
+      }
+      canvasInfo.innerHTML = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
+      document.getElementById("inputScreenInches").style.display = '';
+      document.getElementById("screenPPI").style.display = '';
+      document.getElementById("imageDimInches").style.display = '';
+      document.getElementById("imageDimCm").style.display = '';
+      document.getElementById("labelInput").style.display = '';
+      document.getElementById("ppiCalculus").style.display = '';
+      
+    }
  }
 
 // FUNCTIONS TO CHANGE CANVAS DIMENSIONS //
@@ -1750,6 +1758,11 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
 if ((pointsRedLeft.length < 1) || (pointsRedRight.length < 1) || (pointsBlueLeft.length < 1) || (pointsBlueRight.length < 1)){
   alert('Points missing in some measurements.');
 }
+var lastRow = tbody.insertRow(-1);
+var lastCell = lastRow.insertCell();
+lastCell.innerHTML = '------------------------------BREAK------------------------------';
+lastCell.colSpan = "5";
+lastCell.style.textAlign = 'center';
 }
 
 
