@@ -500,21 +500,29 @@ let img = new Image();
       imgWidth.innerHTML = "<strong>Uploaded image default width:</strong> "+ img.width + "px";
       imgHeight.innerHTML = "<strong>Uploaded image default height:</strong> "+ img.height + "px";
       imgContainer.style.border = "2px solid black";
-      if ((img.width > 1500) || (img.height > 1500)) {
-      imgContainer.style.width = (img.width*0.5) + "px";
+      if ((img.width >= 3000) || (img.height >= 3000)) {
+        imgContainer.style.width = (img.width*0.25) + "px";
+        imgContainer.style.height = (img.height*0.25) + "px";
+        imgContainer.style.backgroundSize = (img.width*0.25) + "px " + (img.height*0.25) + "px";
+        canvas.height = (img.height*0.25);
+        canvas.width = (img.width*0.25);
+        document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.25 + "x" + img.height*0.25 + " (25% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 25% of the size.</i>";
+      } 
+      else if (((img.width >= 1500) && (img.width < 2000)) || ((img.height >= 1500) && (img.height < 2000))) {
+      imgContainer.style.width = (img.width*0.75) + "px";
+      imgContainer.style.height = (img.height*0.75) + "px";
+      imgContainer.style.backgroundSize = (img.width*0.75) + "px " + (img.height*0.75) + "px";
+      canvas.height = (img.height*0.75);
+      canvas.width = (img.width*0.75);
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.75 + "x" + img.height*0.75 + " (75% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 75% of the size.</i>";
+      } else if (((img.width >= 2000) && (img.width < 3000)) || ((img.height >= 2000) && (img.height < 3000))){
+        imgContainer.style.width = (img.width*0.5) + "px";
       imgContainer.style.height = (img.height*0.5) + "px";
       imgContainer.style.backgroundSize = (img.width*0.5) + "px " + (img.height*0.5) + "px";
       canvas.height = (img.height*0.5);
       canvas.width = (img.width*0.5);
-      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.5 + "x" + img.height*0.5 + " (50% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to half the size.</i>";
-      } if ((img.width >= 3000) || (img.height >= 3000)) {
-      imgContainer.style.width = (img.width*0.25) + "px";
-      imgContainer.style.height = (img.height*0.25) + "px";
-      imgContainer.style.backgroundSize = (img.width*0.25) + "px " + (img.height*0.25) + "px";
-      canvas.height = (img.height*0.25);
-      canvas.width = (img.width*0.25);
-      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.25 + "x" + img.height*0.25 + " (25% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 25% of the size.</i>";
-      }
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.5 + "x" + img.height*0.5 + " (50% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 50% of the size.</i>";
+      } 
       else{
       imgContainer.style.width = img.width + "px";
       imgContainer.style.height = img.height + "px";
@@ -609,7 +617,6 @@ let img = new Image();
    // imgWidthInput.value = '';
    // imgHeightInput.value = '';
    document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width + "x" + img.height;
-   value.textContent = '';
  }
 
  function resizeFifty(){
@@ -620,7 +627,6 @@ let img = new Image();
    canvas.width = (img.width*0.5);
    canvas.height = (img.height*0.5);
    document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.5 + "x" + img.height*0.5 + " (50% of size!)";
-   value.textContent = '';
  }
 
  function resizeSF(){
@@ -631,7 +637,6 @@ let img = new Image();
    canvas.width = (img.width*0.75);
    canvas.height = (img.height*0.75);
    document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.75 + "x" + img.height*0.75 + " (75% of size!)";
-   value.textContent = '';
  }
 
  function resizeForty(){
@@ -642,7 +647,6 @@ let img = new Image();
    canvas.width = (img.width*0.4);
    canvas.height = (img.height*0.4);
    document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + (img.width*0.4).toFixed(0) + "x" + (img.height*0.4).toFixed(0) + " (40% of size! Values are rounded)";
-   value.textContent = '';
  }
 
  function resizeTwentyF(){
@@ -653,7 +657,6 @@ let img = new Image();
    canvas.width = (img.width*0.25);
    canvas.height = (img.height*0.25);
    document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.25 + "x" + img.height*0.25 + " (25% of size!)";
-   value.textContent = '';
  }
 
 // SLIDER IMAGE RESIZING IS STOPPING BUTTON EVENT LISTENERS --- WORK ON FIX 
