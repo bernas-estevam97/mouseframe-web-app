@@ -718,6 +718,11 @@ let img = new Image();
    canvasUpload.style.display = "none";
    canvas.width = 0;
    canvas.height = 0;
+   pointsRedLeft.length = 0;
+   pointsRedRight.length = 0;
+   pointsBlueLeft.length = 0;
+   pointsBlueRight.length = 0;
+   pointsMeasure.length = 0;
    imgContainer.style.width = "0";
    imgContainer.style.height = "0";
    document.getElementById("inputScreenInches").value = '';
@@ -738,6 +743,8 @@ let img = new Image();
    // imgWidthInput.value = '';
    // imgHeightInput.value = '';
    tableTitle.innerHTML = '<b>Table ID: <b>';
+   document.getElementById("measureToCm").innerHTML = "";
+   dist = 0; 
  }
 
 //---------------------------------------------------------//
