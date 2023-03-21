@@ -476,24 +476,28 @@ chButtons.style.display = "none";
 let imgContainer = document.getElementById("imgContainer");
 let img = new Image();
  let loadFile = function(event){
-     img.src = URL.createObjectURL(event.target.files[0]);
-     let blob = img.src;
-     imgContainer.style.backgroundImage = "url(" +blob+ ")";
-     buttons.style.display = "block";
-     // results.style.display = "inline-block";
-     chButtons.style.display = "block";
-     imgInfo.style.display = "block";
-     imgEdit.style.display = "block";
-     savedDistance.style.display = '';
-     showData.style.display = '';
-     // canvasInfo.style.display = "none";
-     canvasUpload.style.display = "";
-     imgSize.innerHTML = "<strong>Uploaded image size:</strong> "+ ((event.target.files[0].size)/1024).toFixed(2) + " kb";
-     imgName.innerHTML = "<b>Image name:</b> " + event.target.files[0].name;
-     canvas.style.display = '';
+     if (event.target.files[0]['type'].split('/')[0] === 'image'){
+      img.src = URL.createObjectURL(event.target.files[0]);
+      let blob = img.src;
+      imgContainer.style.backgroundImage = "url(" +blob+ ")";
+      buttons.style.display = "block";
+      // results.style.display = "inline-block";
+      chButtons.style.display = "block";
+      imgInfo.style.display = "block";
+      imgEdit.style.display = "block";
+      savedDistance.style.display = '';
+      showData.style.display = '';
+      // canvasInfo.style.display = "none";
+      canvasUpload.style.display = "";
+      imgSize.innerHTML = "<strong>Uploaded image size:</strong> "+ ((event.target.files[0].size)/1024).toFixed(2) + " kb";
+      imgName.innerHTML = "<b>Image name:</b> " + event.target.files[0].name;
+      canvas.style.display = '';
      // document.getElementById("canvasWidth").value = '';
      // document.getElementById("canvasHeight").value = '';
-
+     } else{
+      alert('Please enter a valid image format!');
+      event.target.value = null;
+     }
 // IMAGE ONLOAD SECTION - //
     img.onload = () => {
       event.target.value = null;
