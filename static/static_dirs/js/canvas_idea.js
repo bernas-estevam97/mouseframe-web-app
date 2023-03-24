@@ -476,54 +476,74 @@ chButtons.style.display = "none";
 let imgContainer = document.getElementById("imgContainer");
 let img = new Image();
  let loadFile = function(event){
-     img.src = URL.createObjectURL(event.target.files[0]);
-     let blob = img.src;
-     imgContainer.style.backgroundImage = "url(" +blob+ ")";
-     buttons.style.display = "block";
-     // results.style.display = "inline-block";
-     chButtons.style.display = "block";
-     imgInfo.style.display = "block";
-     imgEdit.style.display = "block";
-     savedDistance.style.display = '';
-     showData.style.display = '';
-     // canvasInfo.style.display = "none";
-     canvasUpload.style.display = "";
-     imgSize.innerHTML = "<strong>Uploaded image size:</strong> "+ ((event.target.files[0].size)/1024).toFixed(2) + " kb";
-     imgName.innerHTML = "<b>Image name:</b> " + event.target.files[0].name;
-     canvas.style.display = '';
+     if (event.target.files[0]['type'].split('/')[0] === 'image'){
+      img.src = URL.createObjectURL(event.target.files[0]);
+      let blob = img.src;
+      imgContainer.style.backgroundImage = "url(" +blob+ ")";
+      buttons.style.display = "block";
+      // results.style.display = "inline-block";
+      chButtons.style.display = "block";
+      imgInfo.style.display = "block";
+      imgEdit.style.display = "block";
+      savedDistance.style.display = '';
+      showData.style.display = '';
+      // canvasInfo.style.display = "none";
+      canvasUpload.style.display = "";
+      imgSize.innerHTML = "<strong>Uploaded image size:</strong> "+ ((event.target.files[0].size)/1024).toFixed(2) + " kb";
+      imgName.innerHTML = "<b>Image name:</b> " + event.target.files[0].name;
+      canvas.style.display = '';
      // document.getElementById("canvasWidth").value = '';
      // document.getElementById("canvasHeight").value = '';
-
-// IMAGE ONLOAD SECTION - On image load canvas and container become the same size as uploaded image //
-     img.onload = () => {
-         event.target.value = null;
-         imgWidth.innerHTML = "<strong>Uploaded image default width:</strong> "+ img.width + "px";
-         imgHeight.innerHTML = "<strong>Uploaded image default height:</strong> "+ img.height + "px";
-         imgContainer.style.border = "2px solid black";
-         if ((img.width > 1500) || (img.height > 1500)) {
-          imgContainer.style.width = (img.width*0.5) + "px";
-          imgContainer.style.height = (img.height*0.5) + "px";
-          imgContainer.style.backgroundSize = (img.width*0.5) + "px " + (img.height*0.5) + "px";
-          canvas.height = (img.height*0.5);
-          canvas.width = (img.width*0.5);
-          document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.5 + "x" + img.height*0.5 + " (50% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to half the size.</i>";
-         } else{
-          imgContainer.style.width = img.width + "px";
-          imgContainer.style.height = img.height + "px";
-          imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
-          canvas.height = img.height;
-          canvas.width = img.width;
-          document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width+ "x" + img.height;
-         }
-         canvasInfo.innerHTML = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
-         document.getElementById("inputScreenInches").style.display = '';
-         document.getElementById("screenPPI").style.display = '';
-         document.getElementById("imageDimInches").style.display = '';
-         document.getElementById("imageDimCm").style.display = '';
-         document.getElementById("labelInput").style.display = '';
-         document.getElementById("ppiCalculus").style.display = '';
-         
+     } else{
+      alert('Please enter a valid image format!');
+      event.target.value = null;
      }
+// IMAGE ONLOAD SECTION - //
+    img.onload = () => {
+      event.target.value = null;
+      imgWidth.innerHTML = "<strong>Uploaded image default width:</strong> "+ img.width + "px";
+      imgHeight.innerHTML = "<strong>Uploaded image default height:</strong> "+ img.height + "px";
+      imgContainer.style.border = "2px solid black";
+      if ((img.width >= 3000) || (img.height >= 3000)) {
+        imgContainer.style.width = (img.width*0.25) + "px";
+        imgContainer.style.height = (img.height*0.25) + "px";
+        imgContainer.style.backgroundSize = (img.width*0.25) + "px " + (img.height*0.25) + "px";
+        canvas.height = (img.height*0.25);
+        canvas.width = (img.width*0.25);
+        document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.25 + "x" + img.height*0.25 + " (25% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 25% of the size.</i>";
+      } 
+      else if (((img.width >= 1500) && (img.width < 2000)) || ((img.height >= 1500) && (img.height < 2000))) {
+      imgContainer.style.width = (img.width*0.75) + "px";
+      imgContainer.style.height = (img.height*0.75) + "px";
+      imgContainer.style.backgroundSize = (img.width*0.75) + "px " + (img.height*0.75) + "px";
+      canvas.height = (img.height*0.75);
+      canvas.width = (img.width*0.75);
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.75 + "x" + img.height*0.75 + " (75% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 75% of the size.</i>";
+      } else if (((img.width >= 2000) && (img.width < 3000)) || ((img.height >= 2000) && (img.height < 3000))){
+        imgContainer.style.width = (img.width*0.5) + "px";
+      imgContainer.style.height = (img.height*0.5) + "px";
+      imgContainer.style.backgroundSize = (img.width*0.5) + "px " + (img.height*0.5) + "px";
+      canvas.height = (img.height*0.5);
+      canvas.width = (img.width*0.5);
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.5 + "x" + img.height*0.5 + " (50% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 50% of the size.</i>";
+      } 
+      else{
+      imgContainer.style.width = img.width + "px";
+      imgContainer.style.height = img.height + "px";
+      imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
+      canvas.height = img.height;
+      canvas.width = img.width;
+      document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width+ "x" + img.height;
+      }
+      canvasInfo.innerHTML = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
+      document.getElementById("inputScreenInches").style.display = '';
+      document.getElementById("screenPPI").style.display = '';
+      document.getElementById("imageDimInches").style.display = '';
+      document.getElementById("imageDimCm").style.display = '';
+      document.getElementById("labelInput").style.display = '';
+      document.getElementById("ppiCalculus").style.display = '';
+      
+    }
  }
 
 // FUNCTIONS TO CHANGE CANVAS DIMENSIONS //
@@ -643,6 +663,31 @@ let img = new Image();
    document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*0.25 + "x" + img.height*0.25 + " (25% of size!)";
  }
 
+// SLIDER IMAGE RESIZING IS STOPPING BUTTON EVENT LISTENERS --- WORK ON FIX 
+
+
+//  const value = document.querySelector("#value");
+//  const slider = document.getElementById('Slider');
+//  slider.addEventListener('input', handleChange);
+//  slider.addEventListener("input", (e) => {
+//   value.textContent = 'Value: ' + Math.round((slider.value)/20*100) + '% of image size';
+// });
+ 
+
+//  function handleChange(drag) {
+//   const {value} = drag.target;
+//   imgContainer.style.backgroundSize = img.width*(value/20) + "px " + img.height*(value/20) + "px";
+//   imgContainer.style.width = img.width*(value/20) + "px";
+//   imgContainer.style.height = img.height*(value/20) + "px";
+//   canvas.width = img.width*(value/20) + "px";
+//   canvas.height = img.height*(value/20) + "px";
+//   document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*(value/20) + "x" + img.height*(value/20) + " (" +Math.round((value/20*100))+ "% of size!)";
+// }
+
+//-------------------------------------------------------------------------------------//
+
+
+
      // let img = document.createElement("img");
      // img.src = URL.createObjectURL(event.target.files[0]);
      // img.style.position = "absolute";
@@ -677,6 +722,11 @@ let img = new Image();
    canvasUpload.style.display = "none";
    canvas.width = 0;
    canvas.height = 0;
+   pointsRedLeft.length = 0;
+   pointsRedRight.length = 0;
+   pointsBlueLeft.length = 0;
+   pointsBlueRight.length = 0;
+   pointsMeasure.length = 0;
    imgContainer.style.width = "0";
    imgContainer.style.height = "0";
    document.getElementById("inputScreenInches").value = '';
@@ -697,6 +747,8 @@ let img = new Image();
    // imgWidthInput.value = '';
    // imgHeightInput.value = '';
    tableTitle.innerHTML = '<b>Table ID: <b>';
+   document.getElementById("measureToCm").innerHTML = "";
+   dist = 0; 
  }
 
 //---------------------------------------------------------//
@@ -817,18 +869,21 @@ tbody = document.getElementById("tbody");
 let pixelsManual = document.getElementById("pixelsInCmMan");
 
 let footstepsBeginning = document.getElementById('footstepsBeginning');
-footstepsBeginning.style.display = 'none';
+// footstepsBeginning.style.display = 'none';
 let footstepStart = document.getElementById('footstepStart');
 let measurementType = document.getElementById("measurement");
 
-measurementType.addEventListener("change", function(){
-var options = measurementType.querySelectorAll('option');
-if (measurementType.value == "Stride Width Front" || measurementType.value == "Stride Width Hind"){
- footstepsBeginning.style.display = '';
-} else{
- footstepsBeginning.style.display = 'none';
-}
-})
+
+// SHOW OPTIONS OF RIGHT AND LEFT WHEN CHOOSING THE STRIDE WIDTH MEASUREMENT
+
+// measurementType.addEventListener("change", function(){
+// var options = measurementType.querySelectorAll('option');
+// if (measurementType.value == "Stride Width Front" || measurementType.value == "Stride Width Hind"){
+//  footstepsBeginning.style.display = '';
+// } else{
+//  footstepsBeginning.style.display = 'none';
+// }
+// })
 
 function addEntry(){
 if (measurementType.options[measurementType.selectedIndex].value == 'Stride length left front'){
@@ -925,7 +980,7 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
      var cellFour = newRow.insertCell();
      var cellFive = newRow.insertCell();
      cellOne.innerHTML = indexRow-1;
-     cellTwo.innerHTML = 'Blue L' + (i+1) + ' &#x2192 Blue L' + (i+2);
+     cellTwo.innerHTML = 'Blue R' + (i+1) + ' &#x2192 Blue R' + (i+2);
      cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
      distance = (Math.hypot(pointsBlueRight[i].x - pointsBlueRight[i+1].x, pointsBlueRight[i].y - pointsBlueRight[i+1].y)).toFixed(2);
      cellFour.innerHTML = distance;
@@ -1392,16 +1447,351 @@ function removeByMeasurement(){
       updatedCell.innerHTML = i+1;
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride Width Front'){
-    $("#tbody").find("td:contains('Stride Width Front')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Front(L)')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Front(R)')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       updatedCell.innerHTML = i+1;
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride Width Hind'){
-    $("#tbody").find("td:contains('Stride Width Hind')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Hind(L)')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Hind(R)')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       updatedCell.innerHTML = i+1;
     }
   }
 }
+
+
+// WORK IN PROGRESS -- ADD ALL ENTRIES WITH ONE CLICK
+
+function addEntriesAll(){
+  for (var i = 0; i < (pointsRedLeft.length-1); i++){
+    var newRow = tbody.insertRow(-1);
+    let indexRow = newRow.rowIndex;
+    var cellOne = newRow.insertCell();
+    var cellTwo = newRow.insertCell();
+    var cellThree = newRow.insertCell();
+    var cellFour = newRow.insertCell();
+    var cellFive = newRow.insertCell();
+    cellOne.innerHTML = indexRow-1;
+    cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Red L' + (i+2);
+    cellThree.innerHTML = 'Stride length left front';
+    distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i+1].x, pointsRedLeft[i].y - pointsRedLeft[i+1].y)).toFixed(2);
+    cellFour.innerHTML = distance;
+    if (dist != 0){
+      cellFive.innerHTML = (distance/dist).toFixed(2);
+    } else{
+      cellFive.innerHTML = 'Undefined';
+    }
+} 
+  for (var i = 0; i < (pointsRedRight.length-1); i++){
+    var newRow = tbody.insertRow(-1);
+    let indexRow = newRow.rowIndex;
+    var cellOne = newRow.insertCell();
+    var cellTwo = newRow.insertCell();
+    var cellThree = newRow.insertCell();
+    var cellFour = newRow.insertCell();
+    var cellFive = newRow.insertCell();
+    cellOne.innerHTML = indexRow-1;
+    cellTwo.innerHTML = 'Red R' + (i+1) + ' &#x2192 Red R' + (i+2);
+    cellThree.innerHTML = 'Stride length right front';
+    distance = (Math.hypot(pointsRedRight[i].x - pointsRedRight[i+1].x, pointsRedRight[i].y - pointsRedRight[i+1].y)).toFixed(2);
+    cellFour.innerHTML = distance;
+    if (dist != 0){
+      cellFive.innerHTML = (distance/dist).toFixed(2);
+    } else{
+      cellFive.innerHTML = 'Undefined';
+    }
+  }
+  for (var i = 0; i < (pointsBlueLeft.length-1); i++){
+    var newRow = tbody.insertRow(-1);
+    let indexRow = newRow.rowIndex;
+    var cellOne = newRow.insertCell();
+    var cellTwo = newRow.insertCell();
+    var cellThree = newRow.insertCell();
+    var cellFour = newRow.insertCell();
+    var cellFive = newRow.insertCell();
+    cellOne.innerHTML = indexRow-1;
+    cellTwo.innerHTML = 'Blue L' + (i+1) + ' &#x2192 Blue L' + (i+2);
+    cellThree.innerHTML = 'Stride length left hind';
+    distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i+1].x, pointsBlueLeft[i].y - pointsBlueLeft[i+1].y)).toFixed(2);
+    cellFour.innerHTML = distance;
+    if (dist != 0){
+      cellFive.innerHTML = (distance/dist).toFixed(2);
+    } else{
+      cellFive.innerHTML = 'Undefined';
+    }
+  }
+  for (var i = 0; i < (pointsBlueRight.length-1); i++){
+    var newRow = tbody.insertRow(-1);
+    let indexRow = newRow.rowIndex;
+    var cellOne = newRow.insertCell();
+    var cellTwo = newRow.insertCell();
+    var cellThree = newRow.insertCell();
+    var cellFour = newRow.insertCell();
+    var cellFive = newRow.insertCell();
+    cellOne.innerHTML = indexRow-1;
+    cellTwo.innerHTML = 'Blue R' + (i+1) + ' &#x2192 Blue R' + (i+2);
+    cellThree.innerHTML = 'Stride length right hind';
+    distance = (Math.hypot(pointsBlueRight[i].x - pointsBlueRight[i+1].x, pointsBlueRight[i].y - pointsBlueRight[i+1].y)).toFixed(2);
+    cellFour.innerHTML = distance;
+    if (dist != 0){
+      cellFive.innerHTML = (distance/dist).toFixed(2);
+    } else{
+      cellFive.innerHTML = 'Undefined';
+    }
+  }
+  for (var i= 0; i < pointsRedLeft.length; i++){
+    for (var j = 0; j < pointsBlueLeft.length; j++){
+      if (i == j){
+      var newRow = tbody.insertRow(-1);
+      let indexRow = newRow.rowIndex;
+      var cellOne = newRow.insertCell();
+      var cellTwo = newRow.insertCell();
+      var cellThree = newRow.insertCell();
+      var cellFour = newRow.insertCell();
+      var cellFive = newRow.insertCell();
+      cellOne.innerHTML = indexRow-1;
+      cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Blue L' + (j+1);
+      cellThree.innerHTML = 'Overlap Left';
+      distance = (Math.hypot(pointsRedLeft[i].x - pointsBlueLeft[j].x, pointsRedLeft[i].y - pointsBlueLeft[j].y)).toFixed(2);
+      cellFour.innerHTML = distance;
+      if (dist != 0){
+        cellFive.innerHTML = (distance/dist).toFixed(2);
+      } else{
+        cellFive.innerHTML = 'Undefined';
+      }
+   }
+ }
+ }
+ for (var i= 0; i < pointsRedRight.length; i++){
+  for (var j = 0; j < pointsBlueRight.length; j++){
+    if (i == j){
+    var newRow = tbody.insertRow(-1);
+    let indexRow = newRow.rowIndex;
+    var cellOne = newRow.insertCell();
+    var cellTwo = newRow.insertCell();
+    var cellThree = newRow.insertCell();
+    var cellFour = newRow.insertCell();
+    var cellFive = newRow.insertCell();
+    cellOne.innerHTML = indexRow-1;
+    cellTwo.innerHTML = 'Red R' + (i+1) + ' &#x2192 Blue R' + (j+1);
+    cellThree.innerHTML = 'Overlap Right';
+    distance = (Math.hypot(pointsRedRight[i].x - pointsBlueRight[j].x, pointsRedRight[i].y - pointsBlueRight[j].y)).toFixed(2);
+    cellFour.innerHTML = distance;
+    if (dist != 0){
+      cellFive.innerHTML = (distance/dist).toFixed(2);
+    } else{
+      cellFive.innerHTML = 'Undefined';
+    }
+  }
+}
+}
+if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
+    var indexImaginaryFrontLeft = 0;
+    var indexImaginaryHindLeft = 0;
+    for (var i = 0; i < pointsRedLeft.length; i++){
+      for (var j = 0; j < pointsRedRight.length; j++){
+        if (i == j){
+          var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryFrontLeft += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontLeft + ' &#x2192 Red R' + (j+1);
+          cellThree.innerHTML = 'Stride Width Front(L)';
+          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          } else{
+            cellFive.innerHTML = 'Undefined';
+          }
+      } if (i == j+1){
+        var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryFrontLeft += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontLeft + ' &#x2192 Red L' + (i+1);
+          cellThree.innerHTML = 'Stride Width Front(L)';
+          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          }else{
+            cellFive.innerHTML = 'Undefined';
+          } 
+      }
+  }
+}
+    for (var i = 0; i < pointsBlueLeft.length; i++){
+      for (var j = 0; j < pointsBlueRight.length; j++){
+        if (i == j){
+          var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryHindLeft += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindLeft + ' &#x2192 Blue R' + (j+1);
+          cellThree.innerHTML = 'Stride Width Hind(L)';
+          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          } else{
+            cellFive.innerHTML = 'Undefined';
+          }
+      } if (i == j+1){
+        var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryHindLeft += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindLeft + ' &#x2192 Blue L' + (i+1);
+          cellThree.innerHTML = 'Stride Width Hind(L)';
+          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          }else{
+            cellFive.innerHTML = 'Undefined';
+          } 
+      }
+    }
+    }
+}
+  if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
+    var indexImaginaryFrontRight = 0;
+    var indexImaginaryHindRight = 0;
+    for (var i = 0; i < pointsRedLeft.length; i++){
+      for (var j = 0; j < pointsRedRight.length; j++){
+        if (i == j){
+          var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryFrontRight += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontRight + ' &#x2192 Red L' + (i+1);
+          cellThree.innerHTML = 'Stride Width Front(R)';
+          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedRight[j].y - pointsRedLeft[i].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          } else{
+            cellFive.innerHTML = 'Undefined';
+          }
+      } if (j == i+1){
+        var newRow = tbody.insertRow(-1);
+          let indexRow = newRow.rowIndex;
+          var cellOne = newRow.insertCell();
+          var cellTwo = newRow.insertCell();
+          var cellThree = newRow.insertCell();
+          var cellFour = newRow.insertCell();
+          var cellFive = newRow.insertCell();
+          indexImaginaryFrontRight += 1;
+          cellOne.innerHTML = indexRow-1;
+          cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontRight + ' &#x2192 Red R' + (j+1);
+          cellThree.innerHTML = 'Stride Width Front(R)';
+          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+          cellFour.innerHTML = distance;
+          if (dist != 0){
+            cellFive.innerHTML = (distance/dist).toFixed(2);
+          }else{
+            cellFive.innerHTML = 'Undefined';
+          } 
+      }
+    }
+  }
+  for (var i = 0; i < pointsBlueLeft.length; i++){
+    for (var j = 0; j < pointsBlueRight.length; j++){
+      if (i == j){
+        var newRow = tbody.insertRow(-1);
+        let indexRow = newRow.rowIndex;
+        var cellOne = newRow.insertCell();
+        var cellTwo = newRow.insertCell();
+        var cellThree = newRow.insertCell();
+        var cellFour = newRow.insertCell();
+        var cellFive = newRow.insertCell();
+        indexImaginaryHindRight += 1;
+        cellOne.innerHTML = indexRow-1;
+        cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindRight + ' &#x2192 Blue L' + (i+1);
+        cellThree.innerHTML = 'Stride Width Hind(R)';
+        distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueRight[j].y - pointsBlueLeft[i].y)).toFixed(2);
+        cellFour.innerHTML = distance;
+        if (dist != 0){
+          cellFive.innerHTML = (distance/dist).toFixed(2);
+        } else{
+          cellFive.innerHTML = 'Undefined';
+        }
+    } if (j == i+1){
+      var newRow = tbody.insertRow(-1);
+        let indexRow = newRow.rowIndex;
+        var cellOne = newRow.insertCell();
+        var cellTwo = newRow.insertCell();
+        var cellThree = newRow.insertCell();
+        var cellFour = newRow.insertCell();
+        var cellFive = newRow.insertCell();
+        indexImaginaryHindRight += 1;
+        cellOne.innerHTML = indexRow-1;
+        cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindRight + ' &#x2192 Blue R' + (j+1);
+        cellThree.innerHTML = 'Stride Width Hind(R)';
+        distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+        cellFour.innerHTML = distance;
+        if (dist != 0){
+          cellFive.innerHTML = (distance/dist).toFixed(2);
+        }else{
+          cellFive.innerHTML = 'Undefined';
+        } 
+      }
+    }
+  } 
+}
+if ((pointsRedLeft.length < 1) || (pointsRedRight.length < 1) || (pointsBlueLeft.length < 1) || (pointsBlueRight.length < 1)){
+  alert('Points missing in some measurements.');
+}
+var lastRow = tbody.insertRow(-1);
+var lastCell = lastRow.insertCell();
+lastCell.innerHTML = '------------------------------BREAK------------------------------';
+lastCell.colSpan = "5";
+lastCell.style.textAlign = 'center';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -25,6 +25,7 @@ urlpatterns = [
     path('saved', saved_distance),
     path('authenticate/', include('django.contrib.auth.urls')),
     path('authenticate/', include('accounts.urls')),
+    path('info/', info, name="info"),
     
     # path('canvas', canvas),
     # path('editor', image_editor),

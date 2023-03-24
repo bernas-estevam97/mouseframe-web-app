@@ -1,25 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&display=swap');
 body{
     position: relative;
-    background-color: #EEECD9;
+    background-color: #f3f3f3;
 }
 
 header{
     display: flex;
     justify-content: space-between;
     align-items: center; /* align y axis */
-    border: 3px double grey;
-    border-width: 0.6em 1.2em;
+    border: 5px double grey;
+    border-radius: 20px;
     position: relative;
-    background-color: #F7EFB6;
-    margin: 20px;
-    width: 85vw;
-    left: 50%;
-    transform: translateX(-50%);
+    background-color: #b8b8b8;
+    margin: 20px 3em;
 }
 
 header h1{
     color: black;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
     padding: 30px;
+    text-align: center;
 }
 
 /* .container-full{
@@ -42,19 +43,25 @@ header h1{
 .requirements h3{
     text-align: center;
     background-color: #C1C1C1;
-    border: 2px dashed gray;
-    margin: 0 50px;
+    border: 3px solid rgb(117, 117, 117);
+    border-radius: 20px 20px 0 0;
+    margin: 0 40px;
     padding: 10px 0;
 }
 
 .requirements ul{
     margin: 0 40px;
+    background: #fff;
+    padding-bottom: 20px;
+    border-radius: 0 0 20px 20px;
+    border: 3px solid #727272;
+    border-top: none;
 }
 
 .requirements ul li{
     font-size: 1em;
     padding-top: 20px;
-    list-style-type: square;
+    list-style-type: disc;
     font-size: 1.2em;
 }
 
@@ -65,7 +72,7 @@ header h1{
     padding: 10px;
     left: 4em;
     border: 3px double #000;
-    margin-top: 3em; 
+    margin-top: 1em; 
 }
 
 .logout-button{
@@ -86,11 +93,12 @@ header h1{
 .upload-btn{
     padding: 10px 15px;
     margin-left: 20px;
+    background: #fff;
 }
 
-/* .img-selection{
-    
-} */
+.upload-btn:hover{
+    background:rgb(192, 192, 192);
+}
 
 .img-upload{
     position: relative;
@@ -114,21 +122,22 @@ header h1{
     position: relative;
     display: grid;
     gap: 5px;
-    margin: 0 5% 30px 5%;
+    margin: 0 5% 0 5%;
 }
 
 .buttons{
     display: none;
-    border: 3px solid #c1c1c1;
-    background: #fff;
     padding: 10px;
     text-align: center;
+    background: #fff;
+    border: 3px solid #c1c1c1;
+    max-height: 500px;
 }
 
 .point-removal{
-    padding-top: 40px;
+    padding-top: 10px;
     text-align: left;
-    font-size: 1.2em;
+    font-size: 1em;
     border-top-style: double;
 }
 
@@ -136,7 +145,7 @@ header h1{
     display: none;
     border: 3px solid #c1c1c1;
     background: #fff;
-    padding: 10px;
+    padding: 10px 10px 30px 10px;
     font-size: 1.1em;
 }
 
@@ -154,7 +163,7 @@ header h1{
     margin: 0 auto 10px auto;
     background-color: #fff;
     border: 3px double #c1c1c1;
-    padding: 10px;
+    padding: 0 10px 10px 10px;
     width: 50vw;
 }
 
@@ -166,8 +175,20 @@ header h1{
     cursor: pointer;
 }
 
+.buttons .marker{
+    padding: 7px 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 1px solid #c1c1c1;
+}
 
-.buttons button{
+.buttons .marker.active{
+    border: 3px solid #000;
+}
+
+
+.buttons .button{
     padding: 7px 10px;
     margin-bottom: 10px;
     border-radius: 10px;
@@ -183,14 +204,14 @@ header h1{
     color: #fff;
     background: #ff2626;
     border-radius: 5px;
-    border: 1px solid #c1c1c1;
     cursor: pointer;
-    transition: all 0.5s;
+    transition: background 0.3s;
 }
 
 #redCircleLeft:hover, #redCircleRight:hover{
     background: #DE0202;
 }
+
 
 #deleteCircleRedLeft, #deleteCircleRedRight{
     border-radius: 5px;
@@ -218,14 +239,14 @@ header h1{
     color: #fff;
     background: #0980F1;
     border-radius: 5px;
-    border: 1px solid #c1c1c1;
     cursor: pointer;
-    transition: all 0.5s;
+    transition: background 0.3s;
 }
 
 #blueCircleLeft:hover, #blueCircleRight:hover{
     background: hsl(216, 100%, 35%);
 }
+
 
 #deleteCircleBlueLeft, #deleteCircleBlueRight{
     border-radius: 5px;
@@ -290,7 +311,11 @@ header h1{
     border-radius: 3px;
     border: 1px solid #c1c1c1;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background 0.2s;
+}
+
+#measureButton.active{
+    border: 2px solid #000;
 }
 
 #manualUse, #resetManual{
@@ -495,7 +520,7 @@ header h1{
     background: rgb(155, 155, 155);
 }
 
-.saved-distances h2{
+.saved-distances h3{
     text-align: center;
 }
 
@@ -511,6 +536,13 @@ header h1{
     padding: 10px;
     width: 70vw;
 }
+
+.data-management .table-results{
+    border: 3px solid #c1c1c1;
+    padding: 5px;
+    margin: 5px;
+}
+
 .data-management h3{
     text-align: center;
 }
@@ -555,6 +587,9 @@ header h1{
     position: relative;
     width: 50%;
     text-align: center;
+    border: 3px solid #c1c1c1;
+    padding: 5px;
+    margin: 5px;
 }
 
 .select-options label{
@@ -571,11 +606,12 @@ header h1{
     margin: 5px 0;
 }
 
-@media (min-width: 1541px) {
+@media (min-width: 1541px) and (max-width: 1839px){
     .bottom-functions{
         grid-template-areas:
-        'header header main main right right'
-        'header header footer footer footer footer';
+        'header header header header' 
+        'main main right right'
+        'footer footer footer footer';
     }
     
     .buttons{
@@ -590,10 +626,62 @@ header h1{
     
     .image-info{
         grid-area: right;
+        height: 200px;
     }
     
     .saved-distances{
         grid-area: footer;
     }
     
+}
+
+@media (min-width: 1840px){
+    .bottom-functions{
+        grid-template-areas:
+        'header main main right right'
+        'header footer footer footer footer';
+    }
+    
+    .buttons{
+        grid-area: header;
+    }
+    
+    
+    .image-resize{
+        grid-area: main;
+
+    }
+    
+    .image-info{
+        grid-area: right;
+        height: 200px;
+    }
+    
+    .saved-distances{
+        grid-area: footer;
+    }
+    
+}
+
+
+
+@media (max-width: 1000px){
+
+    .data-management{
+        display: block;
+    }
+
+    .data-management .select-options{
+        position: relative;
+        align-items: center;
+        border-top: 1px solid #fff;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .data-management .table-results table{
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 }
