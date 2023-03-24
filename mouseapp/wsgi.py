@@ -15,11 +15,11 @@ import sys
 
 from django.core.wsgi import get_wsgi_application
 
-sys.path.append('/var/www/django_image_analysis')
+sys.path.append('/var/www/mouseframe')
 # adjust the Python version in the line below as needed
-sys.path.append('/var/www/django_image_analysis/venv/lib/python3.8/site-packages')
+sys.path.append('/var/www/mouseframe/venv/lib/python3.8/site-packages')
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'image_analysis.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mouseapp.settings')
 
 try:
     application = get_wsgi_application()

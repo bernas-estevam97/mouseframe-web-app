@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'image_analysis',
+    'mouseapp',
     'accounts',
 ]
 
@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'image_analysis.urls'
+ROOT_URLCONF = 'mouseapp.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'image_analysis.wsgi.application'
+WSGI_APPLICATION = 'mouseapp.wsgi.application'
 
 
 # Database

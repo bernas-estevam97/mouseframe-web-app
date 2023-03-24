@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from image_analysis.models import SavedDistances
+from mouseapp.models import SavedDistances
 from django.contrib import messages
 from django.core.management import CommandError
 from django.template import RequestContext
