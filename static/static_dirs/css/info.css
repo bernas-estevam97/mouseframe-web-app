@@ -1,31 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&display=swap');
 body{
     position: relative;
-    background-color: #EEECD9;
+    background-color: #f3f3f3;
 }
 
 header{
     display: flex;
     justify-content: space-between;
     align-items: center; /* align y axis */
-    border: 3px double grey;
-    border-width: 0.6em 1.2em;
+    border: 5px double grey;
+    border-radius: 20px;
     position: relative;
-    background-color: #F7EFB6;
-    margin: 20px;
+    background-color: #b8b8b8;
+    margin: 20px 3em;
+}
+
+header h1{
+    color: black;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    padding: 30px;
+    text-align: center;
+}
+
+.container{
+    position: relative;
     width: 85vw;
     left: 50%;
     transform: translateX(-50%);
 }
 
-header h1{
-    color: black;
-    padding: 30px;
-}
-
 .container h3{
     text-align: center;
     background-color: #C1C1C1;
-    border: 2px dashed gray;
-    margin: 0 50px;
+    border: 3px solid rgb(117, 117, 117);
+    border-radius: 20px 20px 0 0;
+    margin: 0 40px;
     padding: 10px 0;
+}
+
+.container ul{
+    margin: 0 40px;
+    background: #fff;
+    padding-bottom: 20px;
+    border-radius: 0 0 20px 20px;
+    border: 3px solid #727272;
+    border-top: none;
+}
+
+.container ul li{
+    font-size: 1em;
+    padding-top: 20px;
+    list-style-type: disc;
+    font-size: 1.2em;
+}
+
+
+.home-page{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 2em;
+    margin-right: 2em;
+}
+
+.home-page a{
+    text-decoration: none;
+    padding: 10px;
+    border: 3px solid #000;
+    border-radius: 10px;
+    font-size: 3em;
+    transition: all 0.3s;
+}
+
+.home-page a:hover{
+    background: #000;
+}
+
+.home-page a:hover > i{
+    color: #fff; 
+}
+
+.home-page a i{
+    color: #000;
+    transition: all 0.3s;
 }
