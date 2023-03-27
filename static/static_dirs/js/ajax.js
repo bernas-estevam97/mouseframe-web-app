@@ -12,7 +12,10 @@ $( "form" ).on( "submit", function(e) {
         $("#messageSave p").css('border', '3px solid #c1c1c1');
         $("#messageSave p").css('width', '250px');
         $("#messageSave p").css('padding', '5px');
-          }
+        },
+      error: function(){
+        alert('Value already in the database or of invalid input.');
+      }
       }
     );
     e.preventDefault();
