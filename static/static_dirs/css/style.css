@@ -65,6 +65,18 @@ header h1{
     font-size: 1.2em;
 }
 
+
+#loginName{
+    position: relative;
+    background: #fff;
+    width: 17em;
+    padding: 7px;
+    left: 4em;
+    border: 3px solid #919191;
+    margin-top: 1em;
+    text-align: center;
+}
+
 #userResolution{
     position: relative;
     background: #fff;
@@ -94,6 +106,8 @@ header h1{
     padding: 10px 15px;
     margin-left: 20px;
     background: #fff;
+    border-radius: 5px;
+    border: 2px solid #000;
 }
 
 .upload-btn:hover{
@@ -117,6 +131,7 @@ header h1{
     /* background-size: 1400px 800px; */
 }
 
+/* All containers */
 
 .bottom-functions{
     position: relative;
@@ -167,13 +182,9 @@ header h1{
     width: 50vw;
 }
 
-.saved-distances button{
-    padding: 7px 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    border: 1px solid #c1c1c1;
-    cursor: pointer;
-}
+
+/* Buttons that add points of different colors */
+
 
 .buttons .marker{
     padding: 7px 10px;
@@ -194,10 +205,6 @@ header h1{
     border-radius: 10px;
     border: 1px solid #c1c1c1;
     cursor: pointer;
-}
-
-.image-resize button{
-    padding: 7px 10px;
 }
 
 #redCircleLeft, #redCircleRight{
@@ -296,6 +303,19 @@ header h1{
     background: rgb(155, 155, 155);
 }
 
+#refreshButton, #emptyListRemoval{
+    padding: 3px 10px;
+    border-radius: 1px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+}
+
+#refreshButton:hover, #emptyListRemoval:hover{
+    background: rgb(184, 184, 184);
+}
+
+/* Image resize section */
+
 #fiftyP, #seventyFiveP, #fortyP, #twentyFiveP, #resetImgDim{
     border-radius: 5px;
     border: 1px solid #c1c1c1;
@@ -306,6 +326,16 @@ header h1{
 #fiftyP:hover, #seventyFiveP:hover, #fortyP:hover, #twentyFiveP:hover, #resetImgDim:hover{
     background: rgb(155, 155, 155);
 }
+
+#currentImgSize{
+    height: 0;
+}
+
+.image-resize button{
+    padding: 7px 10px;
+}
+
+/* Measure px in cm section */
 
 #measureButton, #resetMeasure, #measureDistance{
     border-radius: 3px;
@@ -346,6 +376,31 @@ header h1{
     background: rgb(155, 155, 155);
 }
 
+.saved-distances h3{
+    text-align: center;
+}
+
+.saved-distances button{
+    padding: 7px 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+}
+
+.save-button{
+    padding: 3px 10px;
+    border-radius: 1px !important;
+    border: 1px solid #c1c1c1;
+    cursor: pointer; 
+}
+
+.save-button:hover{
+    background: rgb(184, 184, 184);
+}
+
+/* Unused ppi section for now */
+
 .resolution-info{
     display: none;
     position: relative;
@@ -356,7 +411,6 @@ header h1{
     margin-bottom: 20px;
     border: 3px double #000;    
 }
-
 
 .input-inches{
     height: 20px;
@@ -376,6 +430,7 @@ header h1{
     background: rgb(202, 202, 202); 
 }
 
+/* ----------- */
 
 .buttons-change{
     position: relative;
@@ -387,10 +442,6 @@ header h1{
     background-color: #fff;
     border: 3px double #c1c1c1;
     padding: 10px;
-}
-
-#currentImgSize{
-    height: 0;
 }
 
 /* #canvasWidth, #canvasHeight{
@@ -476,6 +527,7 @@ header h1{
 } */
 
 
+/* Change point dimensions section */
 
 .point-size{
     background-color: #fff;
@@ -520,9 +572,7 @@ header h1{
     background: rgb(155, 155, 155);
 }
 
-.saved-distances h3{
-    text-align: center;
-}
+/* Data management section */
 
 .data-management{
     position: relative;
@@ -596,6 +646,27 @@ header h1{
     width: 6em;
 }
 
+.select-options #addAll{
+    padding: 3px 10px;
+    border-radius: 1px !important;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;  
+}
+
+.select-options #addAll:hover{
+    background: rgb(184, 184, 184); 
+}
+
+.select-options button{
+    padding: 3px 10px;
+    border-radius: 1px !important;
+    border: 1px solid #c1c1c1;
+    cursor: pointer; 
+}
+
+.select-options button:hover{
+    background: rgb(184, 184, 184); 
+}
 
 #entryTableID{
     margin-left: 0;
