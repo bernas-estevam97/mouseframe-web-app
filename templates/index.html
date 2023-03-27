@@ -56,7 +56,8 @@
          <button class="marker" type="button" id="blueCircleRight" onclick="drawBlueCircleRight();">Blue (hind) - Right</button>
          <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
          <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br>
-         <button class="button" type="button" id="resetCanvas" onclick="clearCanvas();">Reset Canvas</button>
+         <button class="button" type="button" id="resetCanvasNotIdx" onclick="clearCanvas()">Clear Canvas</button>
+         <button class="button" type="button" id="resetCanvas" onclick="resetCanvas();">Reset Canvas</button>
          <button class="button" type="button" id="resetFile" onclick="resetFile();">Reset Image</button>
          <div class="point-removal">
          <h4>Remove a point of choice:</h4>
@@ -114,7 +115,7 @@
     <button onclick="resetInput();" id="resetManual">Reset</button>
     <p id="measureToCm"></p>
     <form action="" method="POST" id="savedDistancesForm">{% csrf_token %}
-      <input name="saved_distance" id="saveDistance" placeholder="Save value...">
+      <input type="text" name="saved_distance" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="5" placeholder="Save value...">
     <button class="save-button" type="submit">Save</button> 
     </form>
     <div id="messageSave"></div>

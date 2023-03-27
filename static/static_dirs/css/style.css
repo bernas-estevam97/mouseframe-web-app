@@ -277,6 +277,19 @@ header h1{
     background: rgb(155, 155, 155);
 }
 
+#resetCanvasNotIdx{
+    position: relative;
+    border-radius: 5px;
+    border: 1px solid #c1c1c1;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 10px;
+}
+
+#resetCanvasNotIdx:hover{
+    background: rgb(155, 155, 155); 
+}
+
 #resetCanvas{
     position: relative;
     border-radius: 5px;
@@ -637,7 +650,6 @@ header h1{
     position: relative;
     width: 50%;
     text-align: center;
-    border: 3px solid #c1c1c1;
     padding: 5px;
     margin: 5px;
 }

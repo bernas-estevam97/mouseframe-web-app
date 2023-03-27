@@ -359,7 +359,7 @@ function removeAllMeasurePoints(){
 
 
 
-function clearCanvas(){
+function resetCanvas(){
   canvas.removeEventListener('click', drawBlueLeft);
   canvas.removeEventListener('click', drawBlueRight);
   canvas.removeEventListener('click', drawRedLeft);
@@ -376,6 +376,21 @@ function clearCanvas(){
   pointSize = 4;  // when clicking reset canvas point size also goes to default --- can be changed
   showSize.innerHTML = "Current point size is: " + pointSize;
 };
+
+function clearCanvas(){
+  canvas.removeEventListener('click', drawBlueLeft);
+  canvas.removeEventListener('click', drawBlueRight);
+  canvas.removeEventListener('click', drawRedLeft);
+  canvas.removeEventListener('click', drawRedRight);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.removeEventListener('click', drawMeasurePoint);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  alert("Clearing points from canvas but keeping indexes. If you want to start over entirely, remove the points from the image plus their indexes by clicking reset canvas instead.");
+  canvas.style.cursor = "auto";
+  pointSize = 4;  // when clicking reset canvas point size also goes to default --- can be changed
+  showSize.innerHTML = "Current point size is: " + pointSize;
+};
+
 
 
 
@@ -1606,11 +1621,15 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellOne.innerHTML = indexRow-1;
           cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontLeft + ' &#x2192 Red R' + (j+1);
           cellThree.innerHTML = 'Stride Width Front(L)';
+          if (i < pointsRedLeft.length-1){
+          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, (((pointsRedLeft[i].y) + (pointsRedLeft[i+1].y))/2) - pointsRedRight[j].y)).toFixed(2);
+          }else{
           distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+          }
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
-          } else{
+          }else{
             cellFive.innerHTML = 'Undefined';
           }
       } if (i == j+1){
@@ -1625,7 +1644,12 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellOne.innerHTML = indexRow-1;
           cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontLeft + ' &#x2192 Red L' + (i+1);
           cellThree.innerHTML = 'Stride Width Front(L)';
-          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+          if (j < pointsRedRight.length-1){
+            distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedLeft[i].y - (((pointsRedRight[j].y) + (pointsRedRight[j+1].y))/2))).toFixed(2);
+          }
+          else{
+            distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+          }
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
@@ -1649,7 +1673,11 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellOne.innerHTML = indexRow-1;
           cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindLeft + ' &#x2192 Blue R' + (j+1);
           cellThree.innerHTML = 'Stride Width Hind(L)';
-          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+          if (i < pointsBlueLeft.length-1){
+            distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, (((pointsBlueLeft[i].y) + (pointsBlueLeft[i+1].y))/2) - pointsBlueRight[j].y)).toFixed(2);
+          }else{
+            distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+          }
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
@@ -1668,7 +1696,12 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellOne.innerHTML = indexRow-1;
           cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindLeft + ' &#x2192 Blue L' + (i+1);
           cellThree.innerHTML = 'Stride Width Hind(L)';
-          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+          if (j < pointsBlueRight.length-1){
+            distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueLeft[i].y - (((pointsBlueRight[j].y) + (pointsBlueRight[j+1].y))/2))).toFixed(2);
+          }
+          else{
+            distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+          }
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
@@ -1696,7 +1729,11 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellOne.innerHTML = indexRow-1;
           cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontRight + ' &#x2192 Red L' + (i+1);
           cellThree.innerHTML = 'Stride Width Front(R)';
-          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedRight[j].y - pointsRedLeft[i].y)).toFixed(2);
+          if (j < pointsRedRight.length-1){
+            distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, (((pointsRedRight[j].y) + (pointsRedRight[j+1].y))/2) - pointsRedLeft[i].y)).toFixed(2);
+          } else{
+            distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedRight[j].y - pointsRedLeft[i].y)).toFixed(2);
+          }
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
@@ -1715,7 +1752,11 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellOne.innerHTML = indexRow-1;
           cellTwo.innerHTML = 'Imaginary Front ' + indexImaginaryFrontRight + ' &#x2192 Red R' + (j+1);
           cellThree.innerHTML = 'Stride Width Front(R)';
-          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+          if (i < pointsRedLeft.length-1){
+            distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, (((pointsRedLeft[i].y) + (pointsRedLeft[i+1].y))/2) - pointsRedRight[j].y)).toFixed(2);
+          } else{
+            distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
+          }
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
@@ -1739,7 +1780,11 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
         cellOne.innerHTML = indexRow-1;
         cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindRight + ' &#x2192 Blue L' + (i+1);
         cellThree.innerHTML = 'Stride Width Hind(R)';
-        distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueRight[j].y - pointsBlueLeft[i].y)).toFixed(2);
+        if (j < pointsBlueRight.length-1){
+          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, (((pointsBlueRight[j].y) + (pointsBlueRight[j+1].y))/2) - pointsBlueLeft[i].y)).toFixed(2);
+        } else{
+          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueRight[j].y - pointsBlueLeft[i].y)).toFixed(2);
+        }
         cellFour.innerHTML = distance;
         if (dist != 0){
           cellFive.innerHTML = (distance/dist).toFixed(2);
@@ -1758,7 +1803,11 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
         cellOne.innerHTML = indexRow-1;
         cellTwo.innerHTML = 'Imaginary Hind ' + indexImaginaryHindRight + ' &#x2192 Blue R' + (j+1);
         cellThree.innerHTML = 'Stride Width Hind(R)';
-        distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+        if (i < pointsBlueLeft.length-1){
+          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, (((pointsBlueLeft[i].y) + (pointsBlueLeft[i+1].y))/2) - pointsBlueRight[j].y)).toFixed(2);
+        } else{
+          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
+        }
         cellFour.innerHTML = distance;
         if (dist != 0){
           cellFive.innerHTML = (distance/dist).toFixed(2);

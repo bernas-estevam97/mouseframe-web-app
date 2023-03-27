@@ -3,7 +3,7 @@ from django import forms
 
 
 class SavedDistances(models.Model):
-    saved_distance = models.DecimalField(max_digits=5, decimal_places=2)
+    saved_distance = models.DecimalField(max_digits=5, decimal_places=2, unique=True)
     class Meta:
         ordering = ['saved_distance']
 
