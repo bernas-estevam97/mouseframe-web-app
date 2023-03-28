@@ -1261,16 +1261,28 @@ if (measurementType.options[measurementType.selectedIndex].value == 'Stride leng
 let entryNumber = document.getElementById("entryNumber");
 
 function removeEntry(){
-if (entryNumber.value != ''){
- console.log(entryNumber.value);
- tbody.deleteRow(entryNumber.value - 1);
- for (var i = 0; i < tbody.rows.length; i++){
-   let updatedCell = tbody.rows[i].cells[0];
-   updatedCell.innerHTML = i+1;
- }
-} else{
- tbody.deleteRow(-1);
-}
+  let lastRow = tbody.rows[tbody.rows.length-1];
+  if (entryNumber.value != ''){
+  // console.log(entryNumber.value);
+  tbody.deleteRow(entryNumber.value - 1);
+  for (var i = 0; i < tbody.rows.length; i++){
+    let updatedCell = tbody.rows[i].cells[0];
+    if (updatedCell.innerHTML === '------------------------------BREAK------------------------------'){
+      updatedCell.innerHTML = '------------------------------BREAK------------------------------';
+    }else{
+      updatedCell.innerHTML = i+1;
+    } 
+  }
+  } else if (tbody.rows.length == 1){
+    tbody.deleteRow(-1);
+  }
+  else{
+    if (lastRow.cells[0].innerHTML === '------------------------------BREAK------------------------------'){
+      $("#tbody tr:nth-last-child(2)").remove();
+    }else{
+      tbody.deleteRow(-1);
+    } 
+  }
 }
 
 
