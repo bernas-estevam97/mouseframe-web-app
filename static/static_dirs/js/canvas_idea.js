@@ -470,7 +470,7 @@ let imgEdit = document.getElementById('imageEdit');
 let results = document.querySelector(".data-results");
 let buttons = document.querySelector(".buttons");
 let chButtons = document.querySelector(".buttons-change");
-let canvasInfo = document.getElementById("canvasInfo");
+// let canvasInfo = document.getElementById("canvasInfo");
 let canvasUpload = document.getElementById("canvasUpload");
 let imgName = document.getElementById("imageName");
 let tableTitle = document.getElementById("titleImage");
@@ -550,7 +550,7 @@ let img = new Image();
       canvas.width = img.width;
       document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width+ "x" + img.height;
       }
-      canvasInfo.innerHTML = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
+      // canvasInfo.innerHTML = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
       document.getElementById("inputScreenInches").style.display = '';
       document.getElementById("screenPPI").style.display = '';
       document.getElementById("imageDimInches").style.display = '';

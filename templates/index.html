@@ -93,7 +93,7 @@
         <p id="imageUploadedWidth"></p>
         <p id="imageUploadedHeight"></p>
         <p id="imageUploadedSize"></p>
-        <p id="canvasInfo"></p>
+        <!-- <p id="canvasInfo"></p> -->
       </div>
    
    <div class="saved-distances" id="savedDistance">
@@ -210,17 +210,20 @@
         <option value="Left">Left</option>
         <option value="Right">Right</option>
       </select>
+      <input id="addAll" type="submit" onclick="addEntriesAll()" value="Add Entries"><br>
       </div>
       <!-- <input type="submit" onclick="addEntry();" value="Add Entries"><br> -->
-      <input id="addAll" type="submit" onclick="addEntriesAll()" value="Add Entries"><br>
       <!-- <br><p id="entryPreview"></p> -->
       <!-- <button id="refreshList" onclick="refreshList();">Refresh</button>
       <button id="empty" onclick="emptyList();">Empty</button> -->
-      <p style="border-top: 2px solid #000; padding-top: 10px">Remove by entries &#8628;</p>
+      <div class="remove-by-entries">
+      <p>Remove by entries &#8628;</p>
       <input id="entryNumber" placeholder="Entry nº" size="3" maxlength="3">
       <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
       <button id="removeAllEntries" onclick="removeAllEntries();">Remove All Entries</button>
-      <p style="border-top: 2px solid #000; padding-top: 10px">Remove by measurement type &#8628;</p>
+      </div>
+      <div class="remove-by-measurement">
+      <p>Remove by measurement type &#8628;</p>
       <select name="measurement" id="removeMeasurement">
         <option value="Overlap Left" selected>Overlap Left</option>
         <option value="Overlap Right" selected>Overlap Right</option>
@@ -232,7 +235,10 @@
         <option value="Stride Width Hind">Stride Width Hind</option>
       </select>
       <button onclick="removeByMeasurement();">Remove</button>
-      <p style="border-top: 2px solid #000; padding-top: 10px">Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()">Submit</button>&nbsp<button onclick="removeTableID();">Remove</button>
+      </div>
+      <div class="table-id">
+      <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()">Submit</button>&nbsp<button onclick="removeTableID();">Remove</button>
+      </div>
       <!-- <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button> -->
 
     <!-- </form> -->

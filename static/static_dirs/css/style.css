@@ -175,11 +175,10 @@ header h1{
     position: relative;
     /* display: flex; */
     justify-content: space-between;
-    margin: 0 auto 10px auto;
     background-color: #fff;
     border: 3px double #c1c1c1;
     padding: 0 10px 10px 10px;
-    width: 50vw;
+    width: 52vw;
 }
 
 
@@ -595,16 +594,14 @@ header h1{
     left: 50%;
     transform: translateX(-50%);
     background-color: #fff;
-    border: 3px double #c1c1c1;
+    border: 5px double #c1c1c1;
     padding: 10px;
     width: 70vw;
 }
 
 .data-management .table-results{
-    padding: 5px;
+    padding: 5px 10px;
     margin: 5px;
-    padding-right: 50px;
-    border-right: 3px double #c1c1c1;
 }
 
 .data-management h3{
@@ -660,6 +657,12 @@ header h1{
     width: 6em;
 }
 
+.select-options #footstepsBeginning, .select-options .remove-by-entries, .select-options .remove-by-measurement, .select-options .table-id{
+    border: 3px ridge #c1c1c1;
+    margin-bottom: 10px;
+    padding: 10px 0;
+}
+
 .select-options #addAll{
     padding: 3px 10px;
     border-radius: 1px !important;
@@ -691,12 +694,11 @@ header h1{
     margin: 5px 0;
 }
 
-@media (min-width: 1541px) and (max-width: 1839px){
+@media (min-width: 1570px) and (max-width: 1839px){
     .bottom-functions{
         grid-template-areas:
-        'header header header header' 
-        'main main right right'
-        'footer footer footer footer';
+        'header header main right' 
+        'header header footer footer';
     }
     
     .buttons{
@@ -750,7 +752,11 @@ header h1{
 
 
 
-@media (max-width: 1001px){
+@media (max-width: 1100px){
+
+    .saved-distances{
+        width: auto;
+    }
 
     .data-management{
         display: block;
@@ -764,10 +770,6 @@ header h1{
         transform: translateX(-50%);
     }
 
-    .data-management .table-results{
-        border-right: none;
-    }
-
     .data-management .table-results table{
         position: relative;
         left: 50%;
@@ -777,5 +779,11 @@ header h1{
     #footstepsBeginning{
         border-top: 2px solid #000; 
         padding-top: 10px;
+    }
+}
+
+@media (min-width: 1101px) and (max-width: 1569px){
+    .saved-distances{
+        width: auto;
     }
 }
