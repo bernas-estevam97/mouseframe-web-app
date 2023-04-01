@@ -16,7 +16,6 @@ function changeSize(){
   } else{
     pointSize = 4; // if no input is given 4 is default value
   }
-  console.log(inputSize);
   showSize.innerHTML = "Current point radius size is: " + pointSize + "px";
 }
 
@@ -377,19 +376,19 @@ function resetCanvas(){
   showSize.innerHTML = "Current point size is: " + pointSize;
 };
 
-function clearCanvas(){
-  canvas.removeEventListener('click', drawBlueLeft);
-  canvas.removeEventListener('click', drawBlueRight);
-  canvas.removeEventListener('click', drawRedLeft);
-  canvas.removeEventListener('click', drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener('click', drawMeasurePoint);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  alert("Clearing points from canvas but keeping indexes. If you want to start over entirely, remove the points from the image plus their indexes by clicking reset canvas instead.");
-  canvas.style.cursor = "auto";
-  pointSize = 4;  // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize;
-};
+//function clearCanvas(){
+//  canvas.removeEventListener('click', drawBlueLeft);
+//  canvas.removeEventListener('click', drawBlueRight);
+//  canvas.removeEventListener('click', drawRedLeft);
+//  canvas.removeEventListener('click', drawRedRight);
+//  canvas.removeEventListener("click", printMousePos);
+//  canvas.removeEventListener('click', drawMeasurePoint);
+//  ctx.clearRect(0, 0, canvas.width, canvas.height);
+//  alert("Clearing points from canvas but keeping indexes. If you want to start over entirely, remove the points from the image plus their indexes by clicking reset canvas instead.");
+//  canvas.style.cursor = "auto";
+//  pointSize = 4;  // when clicking reset canvas point size also goes to default --- can be changed
+//  showSize.innerHTML = "Current point size is: " + pointSize;
+//};
 
 
 
