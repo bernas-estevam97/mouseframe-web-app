@@ -48,12 +48,25 @@
             <h4>How are the values obtained?</h4>
             <p>All calculations are performed using simple algorithms for calculating the 
                 distance between points using javascript. The fact that the user 
-                previously marked each paw with its respective location, that is, 
-                front (red) or rear (blue), left or right, enables these calculations. 
+                previously marked each paw with its respective location (front/red or rear/blue, left or right), 
+                enables these calculations. 
                 Through the order of the footprints, the program will run a loop for each set 
                 of footprints and perform all the calculations programmed (it is important to 
                 emphasize that if the order is somehow changed, the program may not calculate 
                 the right measurements). Knowing the way this all works helps avoid wrong measurements.</p>
+                <ul>
+                    <li><a style="text-decoration: underline;" id="sllf">Stride length left front</a>: Uses only the red dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
+                    <li><a style="text-decoration: underline;" id="sllh">Stride length left hind</a>: Uses only the blue dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
+                    <li><a style="text-decoration: underline;" id="slrf">Stride length right front</a>: Uses only the red dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
+                    <li><a style="text-decoration: underline;" id="slrh">Stride length right hind</a>: Uses only the blue dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
+                    <li><a style="text-decoration: underline;" id="ol">Overlap Left</a>: It uses both the red and blue dots on the left side with equal index and calculates the distance between them.</li>
+                    <li><a style="text-decoration: underline;" id="or">Overlap Right</a>: It uses both the red and blue dots on the right side with equal index and calculates the distance between them.</li>
+                    <li><a style="text-decoration: underline;" id="swf">Stride Width Front</a>: It uses the red dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both red dots in where the measurement is being made. This method will be improved with time.</li>
+                    <li><a style="text-decoration: underline;" id="swh">Stride Width Hind</a>: It uses the blue dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both blue dots in where the measurement is being made. This method will be improved with time.</li>
+                </ul>
+                <figure><img src="{% static 'img/image-vector.png' %}">
+                    <figcaption style="font-size: 1.1em;"><b>Figure 1:</b> Every measurement calculated using this online tool. L stands for left side. R stands for right side. Vectors x and y are represented with its respective directions. The coordinates saved are according to its x and y values where the origin is always the top left corner of the images.</figcaption>
+                </figure>
         </div>
     <div class="home-page">
         <a href="{% url 'home' %}"><i class="fas fa-home"></i></a>

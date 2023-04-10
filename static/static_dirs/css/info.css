@@ -118,8 +118,25 @@ header h1{
     width: 85vw;
     left: 50%;
     transform: translateX(-50%);
-    border: 3px solid #727272;
-    border-radius: 2px; 
+    border: 3px double #727272;
+    border-radius: 2px;
+    background: #fff; 
+}
+
+.info-container h4{
+    padding-left: 10px;
+    font-size: 1.4em;
+}
+
+.info-container p{
+    padding: 0 10px;
+    font-size: 1.2em;
+}
+
+.info-container ul li{
+    margin: 30px 0;
+    font-size: 1.2em;
+    list-style-type: square;
 }
 
 .home-page{
@@ -133,14 +150,14 @@ header h1{
 .home-page a{
     text-decoration: none;
     padding: 10px;
-    border: 3px solid #000;
+    border: 3px solid #3d3d3d;
     border-radius: 10px;
     font-size: 3em;
     transition: all 0.3s;
 }
 
 .home-page a:hover{
-    background: #000;
+    background: #3d3d3d;
 }
 
 .home-page a:hover > i{
@@ -148,6 +165,6 @@ header h1{
 }
 
 .home-page a i{
-    color: #000;
+    color: #3d3d3d;
     transition: all 0.3s;
 }
