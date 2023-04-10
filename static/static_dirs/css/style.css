@@ -12,7 +12,7 @@ header{
     border-radius: 20px;
     position: relative;
     background-color: #b8b8b8;
-    margin: 20px 3em;
+    margin: 30px 3em 20px 3em;
 }
 
 header h1{
@@ -85,6 +85,12 @@ header h1{
     left: 4em;
     border: 3px double #000;
     margin-top: 1em; 
+}
+
+#version{
+    position: absolute;
+    top: -40px;
+    right: 0;
 }
 
 .logout-button{
