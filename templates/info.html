@@ -11,26 +11,50 @@
     <title>Mouse Frame - Info</title>
 </head>
 <body>
+    <p id="version">v1.0.0</p>
     <header>
-        <h1>Image Analysis - Important information</h1>
+        <h1>MOUSE FRAME - Tool Information </h1>
         <img src="{% static 'img/mouse.png' %}">
     </header>
     <div class="container">
         <h3>Information on mice walking behaviour analysis</h3>
-        <p>The front paws of the mice are marked in red and the hind paws in blue. 
-           This analysis goes through 8 different types of measurements that are all manually calculated using a ruler in the laboratory. 
-           The 8 measures are as follows</p>
+        <p>The front paws of the mice are marked in <a style="color:red; text-decoration:underline;">red</a> and the hind paws in <a style="color:blue;text-decoration:underline;">blue</a>. 
+           This analysis goes through 8 different types of measurements that are all manually calculated in the laboratory. 
+           The 8 measures are the following:</p>
         <ul>
-            <li>Stride length left front</li>
-            <li>Stride length left hind</li>
-            <li>Stride length right front</li>
-            <li>Stride length right hind</li>
-            <li>Overlap Left</li>
-            <li>Overlap Right</li>
-            <li>Stride Width Front</li>
-            <li>Stride Width Hind</li>
+            <li><a href="#sllf">Stride length left front</a></li>
+            <li><a href="#sllh">Stride length left hind</a></li>
+            <li><a href="#slrf">Stride length right front</a></li>
+            <li><a href="#slrh">Stride length right hind</a></li>
+            <li><a href="#ol">Overlap Left</a></li>
+            <li><a href="#or">Overlap Right</a></li>
+            <li><a href="#swf">Stride Width Front</a></li>
+            <li><a href="#swh">Stride Width Hind</a></li>
         </ul>
+        <p>The following image shows every measurement type and how it is calculated in simple terms:</p>
+        <div class="img-container">
+        <figure><img src="{% static 'img/image-vector.png' %}">
+        <figcaption style="font-size: 1.1em;"><b>Figure 1:</b> Every measurement calculated using this online tool. L stands for left side. R stands for right side. Vectors x and y are represented with its respective directions. The coordinates saved are according to its x and y values where the origin is always the top left corner of the images.</figcaption>
+        </figure>
+        </div>
     </div>
+        <div class="info-container">
+            <p>
+                The created application aims to minimize these exhaustive calculations, automating them to a certain extent. The paper tracks (where the mice are walking) are digitized and then used in the application. It is important that these sheets have a scale of 1 cm so that the application knows how many pixels are in a centimeter.
+            </p>
+            <p>
+                The application's main task is to transform the scanned sheets (in image format) into a canvas and therefore making it possible to add elements to the image and perform functions with these same elements. In the case of this application, it is possible to add points in each place where the paws are marked following an order.
+            </p>
+            <h4>How are the values obtained?</h4>
+            <p>All calculations are performed using simple algorithms for calculating the 
+                distance between points using javascript. The fact that the user 
+                previously marked each paw with its respective location, that is, 
+                front (red) or rear (blue), left or right, enables these calculations. 
+                Through the order of the footprints, the program will run a loop for each set 
+                of footprints and perform all the calculations programmed (it is important to 
+                emphasize that if the order is somehow changed, the program may not calculate 
+                the right measurements). Knowing the way this all works helps avoid wrong measurements.</p>
+        </div>
     <div class="home-page">
         <a href="{% url 'home' %}"><i class="fas fa-home"></i></a>
     </div>
