@@ -1525,6 +1525,7 @@ function removeByMeasurement(){
 // WORK IN PROGRESS -- ADD ALL ENTRIES WITH ONE CLICK
 
 function addEntriesAll(){
+  var distValuesSLLF = [];
   for (var i = 0; i < (pointsRedLeft.length-1); i++){
     var newRow = tbody.insertRow(-1);
     let indexRow = newRow.rowIndex;
@@ -1533,6 +1534,7 @@ function addEntriesAll(){
     var cellThree = newRow.insertCell();
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
+    // let distance = 0;
     cellOne.innerHTML = indexRow-1;
     cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Red L' + (i+2);
     cellThree.innerHTML = 'Stride length left front';
@@ -1540,10 +1542,19 @@ function addEntriesAll(){
     cellFour.innerHTML = distance;
     if (dist != 0){
       cellFive.innerHTML = (distance/dist).toFixed(2);
+      distValuesSLLF.push(distance/dist);
     } else{
       cellFive.innerHTML = 'Undefined';
     }
-} 
+}
+  console.log(distValuesSLLF);
+  var strideLeftFrontMeanRow = tbody.insertRow(-1);
+  var strideLeftFrontRowCellOne = strideLeftFrontMeanRow.insertCell();
+  var strideLeftFrontRowCellTwo = strideLeftFrontMeanRow.insertCell();
+  strideLeftFrontRowCellOne.colSpan = "4";
+  strideLeftFrontRowCellOne.innerHTML = "<b>Stride length left front average in cm:</b> ";
+  strideLeftFrontRowCellTwo.innerHTML = ((distValuesSLLF.reduce((a, b) => a + b))/distValuesSLLF.length).toFixed(2);
+  var distValuesSLRF = [];
   for (var i = 0; i < (pointsRedRight.length-1); i++){
     var newRow = tbody.insertRow(-1);
     let indexRow = newRow.rowIndex;
@@ -1559,10 +1570,19 @@ function addEntriesAll(){
     cellFour.innerHTML = distance;
     if (dist != 0){
       cellFive.innerHTML = (distance/dist).toFixed(2);
+      distValuesSLRF.push(distance/dist);
     } else{
       cellFive.innerHTML = 'Undefined';
     }
   }
+  console.log(distValuesSLRF);
+  var strideRightFrontMeanRow = tbody.insertRow(-1);
+  var strideRightFrontRowCellOne = strideRightFrontMeanRow.insertCell();
+  var strideRightFrontRowCellTwo = strideRightFrontMeanRow.insertCell();
+  strideRightFrontRowCellOne.colSpan = "4";
+  strideRightFrontRowCellOne.innerHTML = "<b>Stride length right front average in cm:</b> ";
+  strideRightFrontRowCellTwo.innerHTML = ((distValuesSLRF.reduce((a, b) => a + b))/distValuesSLRF.length).toFixed(2);
+  var distValuesSLLH = [];
   for (var i = 0; i < (pointsBlueLeft.length-1); i++){
     var newRow = tbody.insertRow(-1);
     let indexRow = newRow.rowIndex;
@@ -1578,10 +1598,19 @@ function addEntriesAll(){
     cellFour.innerHTML = distance;
     if (dist != 0){
       cellFive.innerHTML = (distance/dist).toFixed(2);
+      distValuesSLLH.push(distance/dist);
     } else{
       cellFive.innerHTML = 'Undefined';
     }
   }
+  console.log(distValuesSLLH);
+  var strideLeftHindMeanRow = tbody.insertRow(-1);
+  var strideLeftHindRowCellOne = strideLeftHindMeanRow.insertCell();
+  var strideLeftHindRowCellTwo = strideLeftHindMeanRow.insertCell();
+  strideLeftHindRowCellOne.colSpan = "4";
+  strideLeftHindRowCellOne.innerHTML = "<b>Stride length left hind average in cm:</b> ";
+  strideLeftHindRowCellTwo.innerHTML = ((distValuesSLLH.reduce((a, b) => a + b))/distValuesSLLH.length).toFixed(2);
+  var distValuesSLRH = [];
   for (var i = 0; i < (pointsBlueRight.length-1); i++){
     var newRow = tbody.insertRow(-1);
     let indexRow = newRow.rowIndex;
@@ -1597,10 +1626,19 @@ function addEntriesAll(){
     cellFour.innerHTML = distance;
     if (dist != 0){
       cellFive.innerHTML = (distance/dist).toFixed(2);
+      distValuesSLRH.push(distance/dist);
     } else{
       cellFive.innerHTML = 'Undefined';
     }
   }
+  console.log(distValuesSLRH);
+  var strideRightHindMeanRow = tbody.insertRow(-1);
+  var strideRightHindRowCellOne = strideRightHindMeanRow.insertCell();
+  var strideRightHindRowCellTwo = strideRightHindMeanRow.insertCell();
+  strideRightHindRowCellOne.colSpan = "4";
+  strideRightHindRowCellOne.innerHTML = "<b>Stride length right hind average in cm:</b> ";
+  strideRightHindRowCellTwo.innerHTML = ((distValuesSLRH.reduce((a, b) => a + b))/distValuesSLRH.length).toFixed(2);
+  var distValuesOL = [];
   for (var i= 0; i < pointsRedLeft.length; i++){
     for (var j = 0; j < pointsBlueLeft.length; j++){
       if (i == j){
@@ -1618,12 +1656,21 @@ function addEntriesAll(){
       cellFour.innerHTML = distance;
       if (dist != 0){
         cellFive.innerHTML = (distance/dist).toFixed(2);
+        distValuesOL.push(distance/dist);
       } else{
         cellFive.innerHTML = 'Undefined';
       }
    }
  }
  }
+ console.log(distValuesOL);
+  var overlapLeftMeanRow = tbody.insertRow(-1);
+  var overlapLeftRowCellOne = overlapLeftMeanRow.insertCell();
+  var overlapLeftRowCellTwo = overlapLeftMeanRow.insertCell();
+  overlapLeftRowCellOne.colSpan = "4";
+  overlapLeftRowCellOne.innerHTML = "<b>Overlap left average in cm:</b> ";
+  overlapLeftRowCellTwo.innerHTML = ((distValuesOL.reduce((a, b) => a + b))/distValuesOL.length).toFixed(2);
+  var distValuesOR = [];
  for (var i= 0; i < pointsRedRight.length; i++){
   for (var j = 0; j < pointsBlueRight.length; j++){
     if (i == j){
@@ -1641,12 +1688,21 @@ function addEntriesAll(){
     cellFour.innerHTML = distance;
     if (dist != 0){
       cellFive.innerHTML = (distance/dist).toFixed(2);
+      distValuesOR.push(distance/dist);
     } else{
       cellFive.innerHTML = 'Undefined';
     }
   }
 }
 }
+console.log(distValuesOR);
+var overlapRightMeanRow = tbody.insertRow(-1);
+var overlapRightRowCellOne = overlapRightMeanRow.insertCell();
+var overlapRightRowCellTwo = overlapRightMeanRow.insertCell();
+overlapRightRowCellOne.colSpan = "4";
+overlapRightRowCellOne.innerHTML = "<b>Overlap Right average in cm:</b> ";
+overlapRightRowCellTwo.innerHTML = ((distValuesOR.reduce((a, b) => a + b))/distValuesOR.length).toFixed(2);
+var distValuesSWFL = [];
 if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
     var indexImaginaryFrontLeft = 0;
     var indexImaginaryHindLeft = 0;
@@ -1672,6 +1728,7 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
+            distValuesSWFL.push(distance/dist);
           }else{
             cellFive.innerHTML = 'Undefined';
           }
@@ -1696,12 +1753,21 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
+            distValuesSWFL.push(distance/dist);
           }else{
             cellFive.innerHTML = 'Undefined';
           } 
       }
   }
 }
+console.log(distValuesSWFL);
+var strideWidthFrontLeftMeanRow = tbody.insertRow(-1);
+var strideWidthFrontLeftRowCellOne = strideWidthFrontLeftMeanRow.insertCell();
+var strideWidthFrontLeftRowCellTwo = strideWidthFrontLeftMeanRow.insertCell();
+strideWidthFrontLeftRowCellOne.colSpan = "4";
+strideWidthFrontLeftRowCellOne.innerHTML = "<b>Stride Width Front(L) average in cm:</b> ";
+strideWidthFrontLeftRowCellTwo.innerHTML = ((distValuesSWFL.reduce((a, b) => a + b))/distValuesSWFL.length).toFixed(2);
+var distValuesSWHL = [];
     for (var i = 0; i < pointsBlueLeft.length; i++){
       for (var j = 0; j < pointsBlueRight.length; j++){
         if (i == j){
@@ -1724,6 +1790,7 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
+            distValuesSWHL.push(distance/dist);
           } else{
             cellFive.innerHTML = 'Undefined';
           }
@@ -1748,6 +1815,7 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
+            distValuesSWHL.push(distance/dist);
           }else{
             cellFive.innerHTML = 'Undefined';
           } 
@@ -1755,6 +1823,14 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
     }
     }
 }
+console.log(distValuesSWHL);
+var strideWidthHindLeftMeanRow = tbody.insertRow(-1);
+var strideWidthHindLeftRowCellOne = strideWidthHindLeftMeanRow.insertCell();
+var strideWidthHindLeftRowCellTwo = strideWidthHindLeftMeanRow.insertCell();
+strideWidthHindLeftRowCellOne.colSpan = "4";
+strideWidthHindLeftRowCellOne.innerHTML = "<b>Stride width Hind(L) average in cm:</b> ";
+strideWidthHindLeftRowCellTwo.innerHTML = ((distValuesSWHL.reduce((a, b) => a + b))/distValuesSWHL.length).toFixed(2);
+var distValuesSWFR = [];
   if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
     var indexImaginaryFrontRight = 0;
     var indexImaginaryHindRight = 0;
@@ -1780,6 +1856,7 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
+            distValuesSWFR.push(distance/dist);
           } else{
             cellFive.innerHTML = 'Undefined';
           }
@@ -1803,12 +1880,21 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           cellFour.innerHTML = distance;
           if (dist != 0){
             cellFive.innerHTML = (distance/dist).toFixed(2);
+            distValuesSWFR.push(distance/dist);
           }else{
             cellFive.innerHTML = 'Undefined';
           } 
       }
     }
   }
+  console.log(distValuesSWFR);
+  var strideWidthFrontRightMeanRow = tbody.insertRow(-1);
+  var strideWidthFrontRightRowCellOne = strideWidthFrontRightMeanRow.insertCell();
+  var strideWidthFrontRightRowCellTwo = strideWidthFrontRightMeanRow.insertCell();
+  strideWidthFrontRightRowCellOne.colSpan = "4";
+  strideWidthFrontRightRowCellOne.innerHTML = "<b>Stride Width Front(R) average in cm:</b> ";
+  strideWidthFrontRightRowCellTwo.innerHTML = ((distValuesSWFR.reduce((a, b) => a + b))/distValuesSWFR.length).toFixed(2);
+  var distValuesSWHR = [];
   for (var i = 0; i < pointsBlueLeft.length; i++){
     for (var j = 0; j < pointsBlueRight.length; j++){
       if (i == j){
@@ -1831,6 +1917,7 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
         cellFour.innerHTML = distance;
         if (dist != 0){
           cellFive.innerHTML = (distance/dist).toFixed(2);
+          distValuesSWHR.push(distance/dist);
         } else{
           cellFive.innerHTML = 'Undefined';
         }
@@ -1854,12 +1941,20 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
         cellFour.innerHTML = distance;
         if (dist != 0){
           cellFive.innerHTML = (distance/dist).toFixed(2);
+          distValuesSWHR.push(distance/dist);
         }else{
           cellFive.innerHTML = 'Undefined';
         } 
       }
     }
-  } 
+  }
+  console.log(distValuesSWHR);
+  var strideWidthHindRightMeanRow = tbody.insertRow(-1);
+  var strideWidthHindRightRowCellOne = strideWidthHindRightMeanRow.insertCell();
+  var strideWidthHindRightRowCellTwo = strideWidthHindRightMeanRow.insertCell();
+  strideWidthHindRightRowCellOne.colSpan = "4";
+  strideWidthHindRightRowCellOne.innerHTML = "<b>Stride Width Hind(R) average in cm:</b> ";
+  strideWidthHindRightRowCellTwo.innerHTML = ((distValuesSWHR.reduce((a, b) => a + b))/distValuesSWHR.length).toFixed(2); 
 }
 if ((pointsRedLeft.length < 1) || (pointsRedRight.length < 1) || (pointsBlueLeft.length < 1) || (pointsBlueRight.length < 1)){
   alert('Points missing in some measurements.');
