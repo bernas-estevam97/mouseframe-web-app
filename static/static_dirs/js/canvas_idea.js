@@ -412,7 +412,7 @@ function resetCanvas(){
 
 function distanceMeasurePoint(){
   if (pointsMeasure.length != 0){
-    dist = (Math.hypot(pointsMeasure[1].x - pointsMeasure[0].x, pointsMeasure[1].y - pointsMeasure[0].y)).toFixed(2);
+    dist = (Math.hypot(pointsMeasure[1].x - pointsMeasure[0].x, pointsMeasure[1].y - pointsMeasure[0].y)).toFixed(3);
     console.log(dist);
     document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
     // if (imgSizeStatus == 1){
@@ -1539,9 +1539,9 @@ function addEntriesAll(){
     cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Red L' + (i+2);
     cellThree.innerHTML = 'Stride length left front';
     distance = Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i+1].x, pointsRedLeft[i].y - pointsRedLeft[i+1].y);
-    cellFour.innerHTML = distance.toFixed(2);
+    cellFour.innerHTML = distance.toFixed(3);
     if (dist != 0){
-      cellFive.innerHTML = (distance/dist).toFixed(2);
+      cellFive.innerHTML = (distance/dist).toFixed(3);
       distValuesSLLF.push(distance/dist);
     } else{
       cellFive.innerHTML = 'Undefined';
@@ -1554,7 +1554,7 @@ function addEntriesAll(){
   strideLeftFrontRowCellOne.colSpan = "4";
   strideLeftFrontRowCellOne.innerHTML = "<b>Stride length left front average in cm:</b> ";
   if (dist != 0){
-    strideLeftFrontRowCellTwo.innerHTML = ((distValuesSLLF.reduce((a, b) => a + b))/distValuesSLLF.length).toFixed(2);
+    strideLeftFrontRowCellTwo.innerHTML = ((distValuesSLLF.reduce((a, b) => a + b))/distValuesSLLF.length).toFixed(3);
   } else{
     strideLeftFrontRowCellTwo.innerHTML = "Undefined";
   }
@@ -1571,9 +1571,9 @@ function addEntriesAll(){
     cellTwo.innerHTML = 'Red R' + (i+1) + ' &#x2192 Red R' + (i+2);
     cellThree.innerHTML = 'Stride length right front';
     distance = Math.hypot(pointsRedRight[i].x - pointsRedRight[i+1].x, pointsRedRight[i].y - pointsRedRight[i+1].y);
-    cellFour.innerHTML = distance.toFixed(2);
+    cellFour.innerHTML = distance.toFixed(3);
     if (dist != 0){
-      cellFive.innerHTML = (distance/dist).toFixed(2);
+      cellFive.innerHTML = (distance/dist).toFixed(3);
       distValuesSLRF.push(distance/dist);
     } else{
       cellFive.innerHTML = 'Undefined';
@@ -1586,7 +1586,7 @@ function addEntriesAll(){
   strideRightFrontRowCellOne.colSpan = "4";
   strideRightFrontRowCellOne.innerHTML = "<b>Stride length right front average in cm:</b> ";
   if (dist != 0){
-    strideRightFrontRowCellTwo = ((distValuesSLLF.reduce((a, b) => a + b))/distValuesSLRF.length).toFixed(2);
+    strideRightFrontRowCellTwo = ((distValuesSLLF.reduce((a, b) => a + b))/distValuesSLRF.length).toFixed(3);
   } else{
       strideRightFrontRowCellTwo.innerHTML = "Undefined";
   }
@@ -1603,9 +1603,9 @@ function addEntriesAll(){
     cellTwo.innerHTML = 'Blue L' + (i+1) + ' &#x2192 Blue L' + (i+2);
     cellThree.innerHTML = 'Stride length left hind';
     distance = Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i+1].x, pointsBlueLeft[i].y - pointsBlueLeft[i+1].y);
-    cellFour.innerHTML = distance.toFixed(2);
+    cellFour.innerHTML = distance.toFixed(3);
     if (dist != 0){
-      cellFive.innerHTML = (distance/dist).toFixed(2);
+      cellFive.innerHTML = (distance/dist).toFixed(3);
       distValuesSLLH.push(distance/dist);
     } else{
       cellFive.innerHTML = 'Undefined';
@@ -1618,7 +1618,7 @@ function addEntriesAll(){
   strideLeftHindRowCellOne.colSpan = "4";
   strideLeftHindRowCellOne.innerHTML = "<b>Stride length left hind average in cm:</b> ";
   if (dist != 0){
-    strideLeftHindRowCellTwo = ((distValuesSLLH.reduce((a, b) => a + b))/distValuesSLLH.length).toFixed(2);
+    strideLeftHindRowCellTwo = ((distValuesSLLH.reduce((a, b) => a + b))/distValuesSLLH.length).toFixed(3);
   } else{
     strideLeftHindRowCellTwo.innerHTML = "Undefined";
   }
@@ -1635,9 +1635,9 @@ function addEntriesAll(){
     cellTwo.innerHTML = 'Blue R' + (i+1) + ' &#x2192 Blue R' + (i+2);
     cellThree.innerHTML = 'Stride length right hind';
     distance = Math.hypot(pointsBlueRight[i].x - pointsBlueRight[i+1].x, pointsBlueRight[i].y - pointsBlueRight[i+1].y);
-    cellFour.innerHTML = distance.toFixed(2);
+    cellFour.innerHTML = distance.toFixed(3);
     if (dist != 0){
-      cellFive.innerHTML = (distance/dist).toFixed(2);
+      cellFive.innerHTML = (distance/dist).toFixed(3);
       distValuesSLRH.push(distance/dist);
     } else{
       cellFive.innerHTML = 'Undefined';
@@ -1650,7 +1650,7 @@ function addEntriesAll(){
   strideRightHindRowCellOne.colSpan = "4";
   strideRightHindRowCellOne.innerHTML = "<b>Stride length right hind average in cm:</b> ";
   if (dist != 0){
-    strideRightHindRowCellTwo = ((distValuesSLRH.reduce((a, b) => a + b))/distValuesSLRH.length).toFixed(2);
+    strideRightHindRowCellTwo = ((distValuesSLRH.reduce((a, b) => a + b))/distValuesSLRH.length).toFixed(3);
   } else{
     strideRightHindRowCellTwo.innerHTML = "Undefined";
   }
@@ -1669,9 +1669,9 @@ function addEntriesAll(){
       cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Blue L' + (j+1);
       cellThree.innerHTML = 'Overlap Left';
       distance = Math.hypot(pointsRedLeft[i].x - pointsBlueLeft[j].x, pointsRedLeft[i].y - pointsBlueLeft[j].y);
-      cellFour.innerHTML = distance.toFixed(2);
+      cellFour.innerHTML = distance.toFixed(3);
       if (dist != 0){
-        cellFive.innerHTML = (distance/dist).toFixed(2);
+        cellFive.innerHTML = (distance/dist).toFixed(3);
         distValuesOL.push(distance/dist);
       } else{
         cellFive.innerHTML = 'Undefined';
@@ -1686,7 +1686,7 @@ function addEntriesAll(){
   overlapLeftRowCellOne.colSpan = "4";
   overlapLeftRowCellOne.innerHTML = "<b>Overlap left average in cm:</b> ";
   if (dist != 0){
-    overlapLeftRowCellTwo = ((distValuesOL.reduce((a, b) => a + b))/distValuesOL.length).toFixed(2);
+    overlapLeftRowCellTwo = ((distValuesOL.reduce((a, b) => a + b))/distValuesOL.length).toFixed(3);
   } else{
     overlapLeftRowCellTwo.innerHTML = "Undefined";
   }
@@ -1705,9 +1705,9 @@ function addEntriesAll(){
     cellTwo.innerHTML = 'Red R' + (i+1) + ' &#x2192 Blue R' + (j+1);
     cellThree.innerHTML = 'Overlap Right';
     distance = Math.hypot(pointsRedRight[i].x - pointsBlueRight[j].x, pointsRedRight[i].y - pointsBlueRight[j].y);
-    cellFour.innerHTML = distance.toFixed(2);
+    cellFour.innerHTML = distance.toFixed(3);
     if (dist != 0){
-      cellFive.innerHTML = (distance/dist).toFixed(2);
+      cellFive.innerHTML = (distance/dist).toFixed(3);
       distValuesOR.push(distance/dist);
     } else{
       cellFive.innerHTML = 'Undefined';
@@ -1722,7 +1722,7 @@ var overlapRightRowCellTwo = overlapRightMeanRow.insertCell();
 overlapRightRowCellOne.colSpan = "4";
 overlapRightRowCellOne.innerHTML = "<b>Overlap Right average in cm:</b> ";
 if (dist != 0){
-  overlapRightRowCellTwo = ((distValuesOR.reduce((a, b) => a + b))/distValuesOR.length).toFixed(2);
+  overlapRightRowCellTwo = ((distValuesOR.reduce((a, b) => a + b))/distValuesOR.length).toFixed(3);
 } else{
   overlapRightRowCellTwo.innerHTML = "Undefined";
 }
@@ -1749,9 +1749,9 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           }else{
           distance = Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y);
           }
-          cellFour.innerHTML = distance.toFixed(2);
+          cellFour.innerHTML = distance.toFixed(3);
           if (dist != 0){
-            cellFive.innerHTML = (distance/dist).toFixed(2);
+            cellFive.innerHTML = (distance/dist).toFixed(3);
             distValuesSWFL.push(distance/dist);
           }else{
             cellFive.innerHTML = 'Undefined';
@@ -1774,9 +1774,9 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
           else{
             distance = Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedLeft[i].y - pointsRedRight[j].y);
           }
-          cellFour.innerHTML = distance.toFixed(2);
+          cellFour.innerHTML = distance.toFixed(3);
           if (dist != 0){
-            cellFive.innerHTML = (distance/dist).toFixed(2);
+            cellFive.innerHTML = (distance/dist).toFixed(3);
             distValuesSWFL.push(distance/dist);
           }else{
             cellFive.innerHTML = 'Undefined';
@@ -1791,7 +1791,7 @@ var strideWidthFrontLeftRowCellTwo = strideWidthFrontLeftMeanRow.insertCell();
 strideWidthFrontLeftRowCellOne.colSpan = "4";
 strideWidthFrontLeftRowCellOne.innerHTML = "<b>Stride Width Front(L) average in cm:</b> ";
 if (dist != 0){
-  strideWidthFrontLeftRowCellTwo = ((distValuesSWFL.reduce((a, b) => a + b))/distValuesSWFL.length).toFixed(2);
+  strideWidthFrontLeftRowCellTwo = ((distValuesSWFL.reduce((a, b) => a + b))/distValuesSWFL.length).toFixed(3);
 } else{
   strideWidthFrontLeftRowCellTwo.innerHTML = "Undefined";
 }
@@ -1815,9 +1815,9 @@ var distValuesSWHL = [];
           }else{
             distance = Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y);
           }
-          cellFour.innerHTML = distance.toFixed(2);
+          cellFour.innerHTML = distance.toFixed(3);
           if (dist != 0){
-            cellFive.innerHTML = (distance/dist).toFixed(2);
+            cellFive.innerHTML = (distance/dist).toFixed(3);
             distValuesSWHL.push(distance/dist);
           } else{
             cellFive.innerHTML = 'Undefined';
@@ -1840,9 +1840,9 @@ var distValuesSWHL = [];
           else{
             distance = Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueLeft[i].y - pointsBlueRight[j].y);
           }
-          cellFour.innerHTML = distance.toFixed(2);
+          cellFour.innerHTML = distance.toFixed(3);
           if (dist != 0){
-            cellFive.innerHTML = (distance/dist).toFixed(2);
+            cellFive.innerHTML = (distance/dist).toFixed(3);
             distValuesSWHL.push(distance/dist);
           }else{
             cellFive.innerHTML = 'Undefined';
@@ -1858,7 +1858,7 @@ var strideWidthHindLeftRowCellTwo = strideWidthHindLeftMeanRow.insertCell();
 strideWidthHindLeftRowCellOne.colSpan = "4";
 strideWidthHindLeftRowCellOne.innerHTML = "<b>Stride width Hind(L) average in cm:</b> ";
 if (dist != 0){
-  strideWidthHindLeftRowCellTwo.innerHTML = ((distValuesSWHL.reduce((a, b) => a + b))/distValuesSWHL.length).toFixed(2);
+  strideWidthHindLeftRowCellTwo.innerHTML = ((distValuesSWHL.reduce((a, b) => a + b))/distValuesSWHL.length).toFixed(3);
 } else{
   strideWidthHindLeftRowCellTwo.innerHTML = "Undefined";
 }
@@ -1885,9 +1885,9 @@ var distValuesSWFR = [];
           } else{
             distance = Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedRight[j].y - pointsRedLeft[i].y);
           }
-          cellFour.innerHTML = distance.toFixed(2);
+          cellFour.innerHTML = distance.toFixed(3);
           if (dist != 0){
-            cellFive.innerHTML = (distance/dist).toFixed(2);
+            cellFive.innerHTML = (distance/dist).toFixed(3);
             distValuesSWFR.push(distance/dist);
           } else{
             cellFive.innerHTML = 'Undefined';
@@ -1909,9 +1909,9 @@ var distValuesSWFR = [];
           } else{
             distance = Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y);
           }
-          cellFour.innerHTML = distance.toFixed(2);
+          cellFour.innerHTML = distance.toFixed(3);
           if (dist != 0){
-            cellFive.innerHTML = (distance/dist).toFixed(2);
+            cellFive.innerHTML = (distance/dist).toFixed(3);
             distValuesSWFR.push(distance/dist);
           }else{
             cellFive.innerHTML = 'Undefined';
@@ -1926,7 +1926,7 @@ var distValuesSWFR = [];
   strideWidthFrontRightRowCellOne.colSpan = "4";
   strideWidthFrontRightRowCellOne.innerHTML = "<b>Stride Width Front(R) average in cm:</b> ";
   if (dist != 0){
-    strideWidthFrontRightRowCellTwo.innerHTML = ((distValuesSWFR.reduce((a, b) => a + b))/distValuesSWFR.length).toFixed(2);
+    strideWidthFrontRightRowCellTwo.innerHTML = ((distValuesSWFR.reduce((a, b) => a + b))/distValuesSWFR.length).toFixed(3);
   } else{
     strideWidthFrontRightRowCellTwo.innerHTML = "Undefined";
   }
@@ -1950,9 +1950,9 @@ var distValuesSWFR = [];
         } else{
           distance = Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueRight[j].y - pointsBlueLeft[i].y);
         }
-        cellFour.innerHTML = distance.toFixed(2);
+        cellFour.innerHTML = distance.toFixed(3);
         if (dist != 0){
-          cellFive.innerHTML = (distance/dist).toFixed(2);
+          cellFive.innerHTML = (distance/dist).toFixed(3);
           distValuesSWHR.push(distance/dist);
         } else{
           cellFive.innerHTML = 'Undefined';
@@ -1974,9 +1974,9 @@ var distValuesSWFR = [];
         } else{
           distance = Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y);
         }
-        cellFour.innerHTML = distance.toFixed(2);
+        cellFour.innerHTML = distance.toFixed(3);
         if (dist != 0){
-          cellFive.innerHTML = (distance/dist).toFixed(2);
+          cellFive.innerHTML = (distance/dist).toFixed(3);
           distValuesSWHR.push(distance/dist);
         }else{
           cellFive.innerHTML = 'Undefined';
@@ -1991,7 +1991,7 @@ var distValuesSWFR = [];
   strideWidthHindRightRowCellOne.colSpan = "4";
   strideWidthHindRightRowCellOne.innerHTML = "<b>Stride Width Hind(R) average in cm:</b> ";
   if (dist != 0){
-    strideWidthHindRightRowCellTwo.innerHTML = ((distValuesSWHR.reduce((a, b) => a + b))/distValuesSWHR.length).toFixed(2); 
+    strideWidthHindRightRowCellTwo.innerHTML = ((distValuesSWHR.reduce((a, b) => a + b))/distValuesSWHR.length).toFixed(3); 
   } else{
     strideWidthHindRightRowCellTwo.innerHTML = "Undefined";
   }
