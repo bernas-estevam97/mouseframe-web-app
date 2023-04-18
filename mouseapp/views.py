@@ -19,7 +19,12 @@ def info(request):
         return redirect('/authenticate/login')
    else:
         return render(request, 'info.html')
-        
+   
+# def notes(request):
+#      if not request.user.is_authenticated:
+#         return redirect('/authenticate/login')
+#      else:
+#           return render(request, 'notes.html')
 
     
 

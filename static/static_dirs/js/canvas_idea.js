@@ -1548,16 +1548,18 @@ function addEntriesAll(){
     }
 }
   console.log(distValuesSLLF);
-  var strideLeftFrontMeanRow = tbody.insertRow(-1);
-  var strideLeftFrontRowCellOne = strideLeftFrontMeanRow.insertCell();
-  var strideLeftFrontRowCellTwo = strideLeftFrontMeanRow.insertCell();
-  strideLeftFrontRowCellOne.colSpan = "4";
-  strideLeftFrontRowCellOne.innerHTML = "<b>Stride length left front average in cm:</b> ";
-  if (dist != 0){
-    strideLeftFrontRowCellTwo.innerHTML = ((distValuesSLLF.reduce((a, b) => a + b))/distValuesSLLF.length).toFixed(3);
-  } else{
-    strideLeftFrontRowCellTwo.innerHTML = "Undefined";
-  }
+  if (pointsRedLeft.length > 1){
+    var strideLeftFrontMeanRow = tbody.insertRow(-1);
+    var strideLeftFrontRowCellOne = strideLeftFrontMeanRow.insertCell();
+    var strideLeftFrontRowCellTwo = strideLeftFrontMeanRow.insertCell();
+    strideLeftFrontRowCellOne.colSpan = "4";
+    strideLeftFrontRowCellOne.innerHTML = "<b>Stride length left front average in cm:</b> ";
+    if (dist != 0){
+      strideLeftFrontRowCellTwo.innerHTML = ((distValuesSLLF.reduce((a, b) => a + b))/distValuesSLLF.length).toFixed(3);
+    } else{
+      strideLeftFrontRowCellTwo.innerHTML = "Undefined";
+    }
+  } 
   var distValuesSLRF = [];
   for (var i = 0; i < (pointsRedRight.length-1); i++){
     var newRow = tbody.insertRow(-1);
@@ -1580,6 +1582,7 @@ function addEntriesAll(){
     }
   }
   console.log(distValuesSLRF);
+  if (pointsRedRight.length > 1){
   var strideRightFrontMeanRow = tbody.insertRow(-1);
   var strideRightFrontRowCellOne = strideRightFrontMeanRow.insertCell();
   var strideRightFrontRowCellTwo = strideRightFrontMeanRow.insertCell();
@@ -1589,6 +1592,7 @@ function addEntriesAll(){
     strideRightFrontRowCellTwo = ((distValuesSLLF.reduce((a, b) => a + b))/distValuesSLRF.length).toFixed(3);
   } else{
       strideRightFrontRowCellTwo.innerHTML = "Undefined";
+  }
   }
   var distValuesSLLH = [];
   for (var i = 0; i < (pointsBlueLeft.length-1); i++){
@@ -1612,6 +1616,7 @@ function addEntriesAll(){
     }
   }
   console.log(distValuesSLLH);
+  if (pointsBlueLeft.length > 1){
   var strideLeftHindMeanRow = tbody.insertRow(-1);
   var strideLeftHindRowCellOne = strideLeftHindMeanRow.insertCell();
   var strideLeftHindRowCellTwo = strideLeftHindMeanRow.insertCell();
@@ -1622,6 +1627,7 @@ function addEntriesAll(){
   } else{
     strideLeftHindRowCellTwo.innerHTML = "Undefined";
   }
+}
   var distValuesSLRH = [];
   for (var i = 0; i < (pointsBlueRight.length-1); i++){
     var newRow = tbody.insertRow(-1);
@@ -1644,6 +1650,7 @@ function addEntriesAll(){
     }
   }
   console.log(distValuesSLRH);
+  if (pointsBlueRight.length > 1){
   var strideRightHindMeanRow = tbody.insertRow(-1);
   var strideRightHindRowCellOne = strideRightHindMeanRow.insertCell();
   var strideRightHindRowCellTwo = strideRightHindMeanRow.insertCell();
@@ -1654,6 +1661,7 @@ function addEntriesAll(){
   } else{
     strideRightHindRowCellTwo.innerHTML = "Undefined";
   }
+}
   var distValuesOL = [];
   for (var i= 0; i < pointsRedLeft.length; i++){
     for (var j = 0; j < pointsBlueLeft.length; j++){
@@ -1680,6 +1688,7 @@ function addEntriesAll(){
  }
  }
  console.log(distValuesOL);
+ if ((pointsRedLeft.length >= 1) && (pointsBlueLeft.length >= 1)){
   var overlapLeftMeanRow = tbody.insertRow(-1);
   var overlapLeftRowCellOne = overlapLeftMeanRow.insertCell();
   var overlapLeftRowCellTwo = overlapLeftMeanRow.insertCell();
@@ -1690,6 +1699,7 @@ function addEntriesAll(){
   } else{
     overlapLeftRowCellTwo.innerHTML = "Undefined";
   }
+}
   var distValuesOR = [];
  for (var i= 0; i < pointsRedRight.length; i++){
   for (var j = 0; j < pointsBlueRight.length; j++){
@@ -1716,6 +1726,7 @@ function addEntriesAll(){
 }
 }
 console.log(distValuesOR);
+if ((pointsRedRight.length >= 1) && (pointsBlueRight.length >= 1)){
 var overlapRightMeanRow = tbody.insertRow(-1);
 var overlapRightRowCellOne = overlapRightMeanRow.insertCell();
 var overlapRightRowCellTwo = overlapRightMeanRow.insertCell();
@@ -1725,6 +1736,7 @@ if (dist != 0){
   overlapRightRowCellTwo = ((distValuesOR.reduce((a, b) => a + b))/distValuesOR.length).toFixed(3);
 } else{
   overlapRightRowCellTwo.innerHTML = "Undefined";
+}
 }
 var distValuesSWFL = [];
 if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
@@ -1785,6 +1797,7 @@ if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
   }
 }
 console.log(distValuesSWFL);
+if ((pointsRedLeft.length >= 1) && (pointsRedRight.length >= 1)){
 var strideWidthFrontLeftMeanRow = tbody.insertRow(-1);
 var strideWidthFrontLeftRowCellOne = strideWidthFrontLeftMeanRow.insertCell();
 var strideWidthFrontLeftRowCellTwo = strideWidthFrontLeftMeanRow.insertCell();
@@ -1794,6 +1807,7 @@ if (dist != 0){
   strideWidthFrontLeftRowCellTwo = ((distValuesSWFL.reduce((a, b) => a + b))/distValuesSWFL.length).toFixed(3);
 } else{
   strideWidthFrontLeftRowCellTwo.innerHTML = "Undefined";
+}
 }
 var distValuesSWHL = [];
     for (var i = 0; i < pointsBlueLeft.length; i++){
@@ -1852,6 +1866,7 @@ var distValuesSWHL = [];
     }
 }
 console.log(distValuesSWHL);
+if ((pointsBlueLeft.length >= 1) && (pointsBlueRight.length >= 1)){
 var strideWidthHindLeftMeanRow = tbody.insertRow(-1);
 var strideWidthHindLeftRowCellOne = strideWidthHindLeftMeanRow.insertCell();
 var strideWidthHindLeftRowCellTwo = strideWidthHindLeftMeanRow.insertCell();
@@ -1861,6 +1876,7 @@ if (dist != 0){
   strideWidthHindLeftRowCellTwo.innerHTML = ((distValuesSWHL.reduce((a, b) => a + b))/distValuesSWHL.length).toFixed(3);
 } else{
   strideWidthHindLeftRowCellTwo.innerHTML = "Undefined";
+}
 }
 var distValuesSWFR = [];
   if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
@@ -1920,6 +1936,7 @@ var distValuesSWFR = [];
     }
   }
   console.log(distValuesSWFR);
+  if ((pointsRedLeft.length >= 1) && (pointsRedRight.length >= 1)){
   var strideWidthFrontRightMeanRow = tbody.insertRow(-1);
   var strideWidthFrontRightRowCellOne = strideWidthFrontRightMeanRow.insertCell();
   var strideWidthFrontRightRowCellTwo = strideWidthFrontRightMeanRow.insertCell();
@@ -1930,6 +1947,7 @@ var distValuesSWFR = [];
   } else{
     strideWidthFrontRightRowCellTwo.innerHTML = "Undefined";
   }
+}
   var distValuesSWHR = [];
   for (var i = 0; i < pointsBlueLeft.length; i++){
     for (var j = 0; j < pointsBlueRight.length; j++){
@@ -1985,6 +2003,7 @@ var distValuesSWFR = [];
     }
   }
   console.log(distValuesSWHR);
+  if ((pointsBlueLeft.length >= 1) && (pointsBlueRight.length >= 1))
   var strideWidthHindRightMeanRow = tbody.insertRow(-1);
   var strideWidthHindRightRowCellOne = strideWidthHindRightMeanRow.insertCell();
   var strideWidthHindRightRowCellTwo = strideWidthHindRightMeanRow.insertCell();

@@ -10,7 +10,7 @@
     <title>Mouse Frame - Analysis</title>
 </head>
 <body>
-  <p id="version">v1.0.0</p>
+  <p id="version">v1.0.2</p>
     <header>
         <h1>MOUSE FRAME - <i>mus musculus</i> walking behaviour analysis tool</h1>
         <img src="{% static 'img/mouse.png' %}">
@@ -22,9 +22,9 @@
             <ul>
                 <li>Only image file formats are supported.</li>
                 <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
-                <li>Make sure your image resolution fits your computer screen as the canvas will automatically adopt its dimensions.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
                 <li>Check <a href="{% url 'info' %}">this</a> page to see how the calculations are made for each measurement and other important information about the features.</li>
+                <!-- <li>Latest changes/patches are found <a href="{% url 'notes' %}">here</a></li> -->
             </ul>
             <p id="userResolution"></p>
             <p id="loginName">Welcome, you are logged as <b><u>{{ user.get_username }}</u></b>.</p><a class="logout-button" href="{% url 'logout' %}">Logout</a><br>
