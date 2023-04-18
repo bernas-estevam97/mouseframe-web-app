@@ -1438,85 +1438,119 @@ let removableRows = [];
 function removeByMeasurement(){
   if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Overlap Left'){
     $("#tbody").find("td:contains('Overlap Left')").closest('tr').remove();
+    $("#tbody").find("td:contains('Overlap left average in cm:')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       if (updatedCell.innerHTML === '------------------------------BREAK------------------------------'){
         updatedCell.innerHTML = '------------------------------BREAK------------------------------';
-      }else{
+      } else if (updatedCell.innerHTML.indexOf(":") != -1){
+        // pass
+      }
+      else{
         updatedCell.innerHTML = i+1;
       } 
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Overlap Right'){
     $("#tbody").find("td:contains('Overlap Right')").closest('tr').remove();
+    $("#tbody").find("td:contains('Overlap Right average in cm:')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       if (updatedCell.innerHTML === '------------------------------BREAK------------------------------'){
         updatedCell.innerHTML = '------------------------------BREAK------------------------------';
-      }else{
+      } else if (updatedCell.innerHTML.indexOf(":") != -1){
+        // pass
+      }
+      else{
         updatedCell.innerHTML = i+1;
-      } 
+      }
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length left front'){
     $("#tbody").find("td:contains('Stride length left front')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride length left front average in cm:')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       if (updatedCell.innerHTML === '------------------------------BREAK------------------------------'){
         updatedCell.innerHTML = '------------------------------BREAK------------------------------';
-      }else{
+      } else if (updatedCell.innerHTML.indexOf(":") != -1){
+        // pass
+      }
+      else{
         updatedCell.innerHTML = i+1;
-      } 
+      }
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length left hind'){
     $("#tbody").find("td:contains('Stride length left hind')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride length left hind average in cm:')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       if (updatedCell.innerHTML === '------------------------------BREAK------------------------------'){
         updatedCell.innerHTML = '------------------------------BREAK------------------------------';
-      }else{
+      } else if (updatedCell.innerHTML.indexOf(":") != -1){
+        // pass
+      }
+      else{
         updatedCell.innerHTML = i+1;
-      } 
+      }
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length right front'){
     $("#tbody").find("td:contains('Stride length right front')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride length right front average in cm:')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       if (updatedCell.innerHTML === '------------------------------BREAK------------------------------'){
         updatedCell.innerHTML = '------------------------------BREAK------------------------------';
-      }else{
+      } else if (updatedCell.innerHTML.indexOf(":") != -1){
+        // pass
+      }
+      else{
         updatedCell.innerHTML = i+1;
       } 
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride length right hind'){
     $("#tbody").find("td:contains('Stride length right hind')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride length right hind average in cm:')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       if (updatedCell.innerHTML === '------------------------------BREAK------------------------------'){
         updatedCell.innerHTML = '------------------------------BREAK------------------------------';
-      }else{
+      } else if (updatedCell.innerHTML.indexOf(":") != -1){
+        // pass
+      }
+      else{
         updatedCell.innerHTML = i+1;
-      } 
+      }
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride Width Front'){
     $("#tbody").find("td:contains('Stride Width Front(L)')").closest('tr').remove();
     $("#tbody").find("td:contains('Stride Width Front(R)')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Front(L) average in cm:')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Front(R) average in cm:')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       if (updatedCell.innerHTML === '------------------------------BREAK------------------------------'){
         updatedCell.innerHTML = '------------------------------BREAK------------------------------';
-      }else{
+      } else if (updatedCell.innerHTML.indexOf(":") != -1){
+        // pass
+      }
+      else{
         updatedCell.innerHTML = i+1;
-      } 
+      }
     }
   } if (removeMeasurement.options[removeMeasurement.selectedIndex].value == 'Stride Width Hind'){
     $("#tbody").find("td:contains('Stride Width Hind(L)')").closest('tr').remove();
     $("#tbody").find("td:contains('Stride Width Hind(R)')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Hind(L) average in cm:')").closest('tr').remove();
+    $("#tbody").find("td:contains('Stride Width Hind(R) average in cm:')").closest('tr').remove();
     for (var i = 0; i < tbody.rows.length; i++){
       let updatedCell = tbody.rows[i].cells[0];
       if (updatedCell.innerHTML === '------------------------------BREAK------------------------------'){
         updatedCell.innerHTML = '------------------------------BREAK------------------------------';
-      }else{
+      } else if (updatedCell.innerHTML.indexOf(":") != -1){
+        // pass
+      }
+      else{
         updatedCell.innerHTML = i+1;
-      } 
+      }
     }
   }
 }
@@ -1796,7 +1830,7 @@ strideWidthFrontLeftRowCellTwo.innerHTML = ((distValuesSWFL.reduce((a, b) => a +
     var strideWidthHindLeftRowCellOne = strideWidthHindLeftMeanRow.insertCell();
     var strideWidthHindLeftRowCellTwo = strideWidthHindLeftMeanRow.insertCell();
     strideWidthHindLeftRowCellOne.colSpan = "4";
-    strideWidthHindLeftRowCellOne.innerHTML = "<b>Stride width Hind(L) average in cm:</b> ";
+    strideWidthHindLeftRowCellOne.innerHTML = "<b>Stride Width Hind(L) average in cm:</b> ";
     strideWidthHindLeftRowCellTwo.innerHTML = ((distValuesSWHL.reduce((a, b) => a + b))/distValuesSWHL.length).toFixed(3);
 }
   if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
