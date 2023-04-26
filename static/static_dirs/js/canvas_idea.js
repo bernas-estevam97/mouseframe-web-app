@@ -1291,7 +1291,9 @@ function removeAllEntries(){
 }
 
 function updateTableID(){
+tableTitle.innerHTML = '<b>Table ID: <b>';
 tableTitle.innerHTML += ' ' + manualID.value;
+manualID.value = '';
 }
 
 function removeTableID(){
