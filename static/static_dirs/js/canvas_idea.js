@@ -323,12 +323,16 @@ function drawMeasureCoordinates(point, r){
 }
 
 function drawMeasurePoint(e){
+  if (pointsMeasure.length <= 1){
   var o = getPosition(e);
   drawMeasureCoordinates(o, pointSize);
   pointsMeasure.push(o);
   console.log(pointsMeasure);
   let index = pointsMeasure.indexOf(o);
   console.log("Measure Point:" + (index + 1));
+  } else{
+    return;
+  }
 }
 
 function drawMeasureCircle(){
@@ -414,7 +418,7 @@ function distanceMeasurePoint(){
   if (pointsMeasure.length != 0){
     dist = (Math.hypot(pointsMeasure[1].x - pointsMeasure[0].x, pointsMeasure[1].y - pointsMeasure[0].y)).toFixed(3);
     console.log(dist);
-    document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
+    document.getElementById("measureToCm").innerHTML ="&nbsp" + dist + "px equals 1 centimeter.";
     // if (imgSizeStatus == 1){
     //   document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter"; 
     // }
@@ -440,10 +444,10 @@ function manualInputMeasure(){
   if ((inputPixelsManually.value != '') && (savedChoices.options[savedChoices.selectedIndex].value == 'None')){
     dist = inputPixelsManually.value;
     savedChoices.value = 'None';
-    document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
+    document.getElementById("measureToCm").innerHTML ="&nbsp" + dist + "px equals 1 centimeter.";
   } if ((savedChoices.options[savedChoices.selectedIndex].value != 'None') && (inputPixelsManually.value == '')){
     dist = savedChoices[savedChoices.selectedIndex].value;
-    document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
+    document.getElementById("measureToCm").innerHTML ="&nbsp" + dist + "px equals 1 centimeter.";
   }
 }
 

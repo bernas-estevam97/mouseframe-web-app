@@ -20,7 +20,7 @@
         <div class="requirements">
             <h3>Brief information and requirements</h3>
             <ul>
-                <li>Only image file formats are supported.</li>
+                <li>Only image file formats are supported (.tiff formats are not yet supported).</li>
                 <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
                 <li>Check <a href="{% url 'info' %}">this</a> page to see how the calculations are made for each measurement and other important information about the features.</li>
@@ -113,7 +113,7 @@
     </select>
     <button onclick="manualInputMeasure();" id="manualUse">Use</button>
     <button onclick="resetInput();" id="resetManual">Reset</button>
-    <p id="measureToCm"></p>
+    <div class="measure-info"><div id="measureIntro">Measurement result:</div><div id="measureToCm"></div></div>
     <form action="" method="POST" id="savedDistancesForm">{% csrf_token %}
       <input type="text" name="saved_distance" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="6" placeholder="Save value...">
     <button class="save-button" type="submit">Save</button> 

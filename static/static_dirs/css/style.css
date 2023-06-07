@@ -394,6 +394,15 @@ header h1{
     background: rgb(155, 155, 155);
 }
 
+.measure-info{
+    display: flex;
+    position: relative;
+    margin: 10px 0;
+}
+ #measureIntro{
+    text-decoration: underline;
+ }
+
 .saved-distances h3{
     text-align: center;
 }
