@@ -57,7 +57,7 @@
          <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
          <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br>
          <!---<button class="button" type="button" id="resetCanvasNotIdx" onclick="clearCanvas()">Clear Canvas</button>-->
-         <button class="button" type="button" id="resetCanvas" onclick="resetCanvas();">Reset Canvas</button>
+         <button class="button" type="button" id="resetCanvas" onclick="resetCanvas();">Reset Canvas/Indexes</button>
          <button class="button" type="button" id="resetFile" onclick="resetFile();">Reset Image</button>
          <div class="point-removal">
          <h4>Remove a point of choice:</h4>
@@ -76,7 +76,8 @@
         </div>
        </div>
        <div class="image-resize" id="imageEdit">
-        <h3>Image resizing:</h3>
+        <h3>Image resizing(*):</h3>
+        <p style="font-size: 0.9em;">(*)By resizing you delete any progress done on the current image size!<br>(*)Be sure to resize to your ideal size before working on any measurements.</p>
         <button id="seventyFiveP" onclick="resizeSF();">75% Size</button>
         <button id="fiftyP" onclick="resizeFifty();">50% Size</button>
         <button id="fortyP" onclick="resizeForty();">40% Size</button>
@@ -104,7 +105,7 @@
     <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset points</button>
     <button onclick = "distanceMeasurePoint()" id="measureDistance">Measure</button>
     <p>Manually input known value of pixels in 1 cm or use saved values (choose only one value before clicking use):</p>
-    <input id="pixelsInCmMan" type="number" size="6" placeholder="Px in cm...">&nbspOR&nbsp
+    <input id="pixelsInCmMan" type="number" min="1" onkeypress="return /[1-9.]/i.test(event.key)" size="6" placeholder="Px in cm...">&nbspOR&nbsp
     <select id="savedChoices">
         <option value="None" selected>None</option>
       {% for distance in saved_distances %}
