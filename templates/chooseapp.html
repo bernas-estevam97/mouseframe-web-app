@@ -1,0 +1,18 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/chooseapp.css' %}">
+    <title>Choose App</title>
+</head>
+<body>
+    <p id="version">v1.0.2+roi-file-analyzer</p>
+    <h1>Choose the app you want to access from your options below</h1>
+    <div class="choose-app-container">
+        <div class="app"><a href="{% url 'walking_patter_analyzer' %}">Walking Pattern Analyzer</a></div>
+        <div class="app"><a href="{% url 'roi-file-analyzer' %}">ROI file analyzer</a></div>
+    </div>
+</body>
+</html>

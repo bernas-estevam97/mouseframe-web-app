@@ -4,7 +4,7 @@ $( "form" ).on( "submit", function(e) {
     // alert(dataString); return false; 
     $.ajax({
       type: "POST",
-      url: "saved",
+      url: "/walking-pattern-analyzer/saved",
       data: dataString,
       success: function () {
         alert(saveDistance.value + " saved! Reload the app to use it.");

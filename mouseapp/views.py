@@ -7,7 +7,13 @@ from django.template import RequestContext
 
 
 
-def home(request):
+def chooseapp(request):
+   if not request.user.is_authenticated:
+        return redirect('/authenticate/login')
+   else:
+        return render(request, 'chooseapp.html')
+
+def walking_pattern_analyzer(request):
    if not request.user.is_authenticated:
         return redirect('/authenticate/login')
    else:
@@ -19,6 +25,12 @@ def info(request):
         return redirect('/authenticate/login')
    else:
         return render(request, 'info.html')
+
+def roi_file_analyzer(request):
+     if not request.user.is_authenticated:
+          return redirect('/authenticate/login')
+     else:
+          return render(request, 'roi_analyzer.html')
    
 # def notes(request):
 #      if not request.user.is_authenticated:

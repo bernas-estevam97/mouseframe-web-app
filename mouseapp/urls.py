@@ -21,11 +21,13 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name="home"),
-    path('saved', saved_distance),
+    path('', chooseapp, name='chooseapp'),
+    path('roi-file-analyzer/', roi_file_analyzer, name='roi-file-analyzer'),
+    path('walking-pattern-analyzer/', walking_pattern_analyzer, name="walking_patter_analyzer"),
+    path('walking-pattern-analyzer/saved', saved_distance),
     path('authenticate/', include('django.contrib.auth.urls')),
     path('authenticate/', include('accounts.urls')),
-    path('info/', info, name="info"),
+    path('walking-pattern-analyzer/info/', info, name="info"),
     
     # path('canvas', canvas),
     # path('editor', image_editor),

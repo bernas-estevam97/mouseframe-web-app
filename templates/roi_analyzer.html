@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aggregate file analyzer</title>
+    <link rel="stylesheet" href="{% static 'css/style_roi.css' %}">
+    <link rel="shortcut icon" href="{% static 'img/cell.ico' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
+</head>
+<body>
+    <div class="top">
+    <h3>A simple application that analyzes aggregate ROI files obtained from ImageJ(Fiji) 
+        and returns any ROI that may be a result of 2 or more fused aggregates.</h3>
+    </div>
+    <div class="upload-section">
+        <h4>Upload your file here. Only xlsx, txt and csv formats are accepted.</h4>
+        <div class="upload-info">
+        <input type="file" id="uploadFile" name="file" alt="Upload" accept=".xlsx, .txt, .csv" style="display:none;">
+        <input class="upload-btn" type="button" value="Upload file" onclick="document.getElementById('uploadFile').click();" style="cursor: pointer;"/>
+        <p id="fileName"></p>
+        </div>
+        <div id="functionButtons">
+        <label for="areaInput">Input your area cutoff value:</label>
+        <input class="area-input" id="areaInput" type="number" min="1" onkeypress="return /[0-9.]/i.test(event.key)" size="6" placeholder="Area...">
+        <button value="Run" onclick="getPossibleFusedAggregateValues();">Run</button>
+        <button value="Reset values" onclick="resetValues();">Reset results</button>
+        <button value="Reset" onclick="resetFile();">Reset all</button><br>
+        </div>
+        <div class="select-options" id="selectOptions">
+        <select id="sheetSelect">
+            
+        </select>
+        <button id="changeSheet" onclick="changeSheet();">Change Sheet</button>
+        </div>
+        <!-- <button value="Export to table" onclick="ExportToTable();">Export to table</button> -->
+        <div id="my_file_output" class="text-area" style="white-space: pre-line;"></div>
+        <div class="table-area">
+        <table id="tblcsvdata" class="table-csv" border="1" style="border-collapse: collapse;">
+            
+            <tbody>
+   
+            </tbody>
+   
+       </table>
+        </div>
+        <div id="excel_data" class="excel-data"></div>
+        <!-- <table id="exceltable"></table> -->
+    </div>
+    <div class="results" id="resultsAllSection">
+    <h2>Results section</h2>
+    <p>Every area that may be of interest with respective index according to your area cutoff inputted above.</p>
+    <div class="results-section" id="resultsSection">
+        
+    </div>
+    </div>
+    <div class="choose-app-page">
+        <a href="{% url 'chooseapp' %}"><i class="fas fa-home"></i></a>
+    </div>
+
+
+<script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/functions.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/xlsx-full.min.js' %}"></script>
+</body>
+</html>
