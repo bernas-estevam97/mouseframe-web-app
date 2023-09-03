@@ -4,6 +4,7 @@ var sheetSelector = document.getElementById('sheetSelect');
 var sheetButton = document.getElementById('changeSheet');
 var results = document.getElementById('resultsSection');
 var resultsAllSection = document.getElementById('resultsAllSection');
+
 resultsAllSection.style.display = 'none';
 functionButtons.style.display = 'none';
 sheetButton.style.display = 'none';
@@ -11,6 +12,8 @@ sheetSelector.style.display = 'none';
 document.getElementById('tblcsvdata').style.display = 'none';
 document.getElementById('excel_data').style.display = 'none';
 document.getElementById('my_file_output').style.display = 'none';
+
+
 
 // localStorage.clear();
 

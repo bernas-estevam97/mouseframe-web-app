@@ -13,6 +13,15 @@
     <div class="top">
     <h3>A simple application that analyzes aggregate ROI files obtained from ImageJ(Fiji) 
         and returns any ROI that may be a result of 2 or more fused aggregates.</h3>
+    <h4>Instructions:</h4>
+    <div class="list">
+    <ul class="instructions-list">
+        <li>&#10022;&nbspFiles that can be used in this file analyzer are mostly from fiji and fiji batch processing macros.</li>
+        <li>&#10022;&nbspThis application returns all the area values within ROI files, in 3 different formats (txt, xlsx, csv), above the user inputted cutoff.</li>
+        <li>&#10022;&nbspThe results are shown after clicking the run button and the input box for the area cutoff is filled</li>
+        <li>&#10022;&nbspAll results shown comprise of the area value and the index in the file it appears.</li>
+    </ul>
+    </div>
     </div>
     <div class="upload-section">
         <h4>Upload your file here. Only xlsx, txt and csv formats are accepted.</h4>
@@ -21,7 +30,7 @@
         <input class="upload-btn" type="button" value="Upload file" onclick="document.getElementById('uploadFile').click();" style="cursor: pointer;"/>
         <p id="fileName"></p>
         </div>
-        <div id="functionButtons">
+        <div id="functionButtons" class="buttons">
         <label for="areaInput">Input your area cutoff value:</label>
         <input class="area-input" id="areaInput" type="number" min="1" onkeypress="return /[0-9.]/i.test(event.key)" size="6" placeholder="Area...">
         <button value="Run" onclick="getPossibleFusedAggregateValues();">Run</button>
