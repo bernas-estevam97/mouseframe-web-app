@@ -834,6 +834,8 @@ function resetImgDim() {
   // imgHeightInput.value = '';
   document.getElementById("currentImgSize").innerHTML =
     "<b>Current image size is:</b> " + img.width + "x" + img.height;
+  imgSizeStatus = 1;
+  warningResize();
 }
 
 function resizeFifty() {
@@ -867,6 +869,8 @@ function resizeFifty() {
     "x" +
     img.height * 0.5 +
     " (50% of size!)";
+  imgSizeStatus = 0.5;
+  warningResize();
 }
 
 function resizeSF() {
@@ -900,6 +904,8 @@ function resizeSF() {
     "x" +
     img.height * 0.75 +
     " (75% of size!)";
+  imgSizeStatus = 0.75;
+  warningResize();
 }
 
 function resizeForty() {
@@ -933,6 +939,8 @@ function resizeForty() {
     "x" +
     (img.height * 0.4).toFixed(0) +
     " (40% of size! Values are rounded)";
+  imgSizeStatus = 0.4;
+  warningResize();
 }
 
 function resizeTwentyF() {
@@ -966,6 +974,36 @@ function resizeTwentyF() {
     "x" +
     img.height * 0.25 +
     " (25% of size!)";
+  imgSizeStatus = 0.25;
+  warningResize();
+}
+
+// Warning message about resized images
+
+let tableDynamicValuePx = document.getElementById("valuePx");
+let tableDynamicValueCm = document.getElementById("valueCm");
+let tableOrignalValueCm = document.getElementById("valueCmOri");
+let tableWarning = document.getElementById("imageResizeTableWarning");
+
+function warningResize() {
+  if (imgSizeStatus == 0.5) {
+    tableWarning.innerHTML = `&#x26A0; Image was redimensioned to 50% of its original size!\n 
+      A new column with original image size values in cm added.`;
+  }
+  if (imgSizeStatus == 0.25) {
+    tableWarning.innerHTML = `&#x26A0; Image was redimensioned to 25% of its original size!\n 
+      A new column with original image size values in cm added.`;
+  }
+  if (imgSizeStatus == 0.4) {
+    tableWarning.innerHTML = `&#x26A0; Image was redimensioned to 50% of its original size!\n 
+      A new column with original image size values in cm added.`;
+  }
+  if (imgSizeStatus == 0.75) {
+    tableWarning.innerHTML = `&#x26A0; Image was redimensioned to 75% of its original size!\n 
+    A new column with original image size values in cm added.`;
+  } else {
+    tableWarning.remove();
+  }
 }
 
 // SLIDER IMAGE RESIZING IS STOPPING BUTTON EVENT LISTENERS --- WORK ON FIX
@@ -1048,6 +1086,7 @@ let resetFile = function (event) {
   tableTitle.innerHTML = "<b>Table ID: <b>";
   document.getElementById("measureToCm").innerHTML = "";
   dist = 0;
+  imgSizeStatus = 1;
 };
 
 //---------------------------------------------------------//
@@ -2115,6 +2154,9 @@ function addEntriesAllAverage() {
       var cellThree = newRow.insertCell();
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
+      if (imgSizeStatus != 1) {
+        var cellSix = newRow.insertCell();
+      }
       // let distance = 0;
       cellOne.innerHTML = indexRow - 1;
       cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
@@ -2125,6 +2167,8 @@ function addEntriesAllAverage() {
       ).toFixed(3);
       cellFour.innerHTML = distance;
       cellFive.innerHTML = (distance / dist).toFixed(3);
+      if (imgSizeStatus == 0.2) {
+      }
       distValuesSLLF.push(distance / dist);
     }
     console.log(distValuesSLLF);

@@ -169,21 +169,22 @@
     <div class="table-results">
     <h3>Data retrieved:</h3>
     <table id="table">
-      <thead>
+      <thead id="tableH">
       <tr>
         <td colspan="5" id="titleImage"><b>Table ID: </b></td>
       </tr>
-      <tr>
+      <tr id="idRow">
         <th>Entry Number</th>
         <th>Points</th>
         <th>Measurement type</th>
-        <th>Value(px)</th>
-        <th>Value(cm)</th>
+        <th id="valuePx">Value(px)</th>
+        <th id="valueCm">Value(cm)</th>
       </tr>
     </thead>
     <tbody id="tbody">
     </tbody>
     </table>
+    <div id="imageResizeTableWarning"></div>
     <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
   </div>
   <div class="select-options">
