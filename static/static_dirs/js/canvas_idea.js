@@ -3360,7 +3360,6 @@ function addEntriesAll() {
     if (imgSizeStatus != 100) {
       var cellSix = newRow.insertCell();
     } else {
-      return;
     }
     if (imgSizeStatus) cellOne.innerHTML = indexRow - 1;
     cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
@@ -3401,7 +3400,6 @@ function addEntriesAll() {
     if (imgSizeStatus != 100) {
       var cellSix = newRow.insertCell();
     } else {
-      return;
     }
     cellOne.innerHTML = indexRow - 1;
     cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
@@ -3442,7 +3440,6 @@ function addEntriesAll() {
     if (imgSizeStatus != 100) {
       var cellSix = newRow.insertCell();
     } else {
-      return;
     }
     cellOne.innerHTML = indexRow - 1;
     cellTwo.innerHTML = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
@@ -3483,7 +3480,6 @@ function addEntriesAll() {
     if (imgSizeStatus != 100) {
       var cellSix = newRow.insertCell();
     } else {
-      return;
     }
     cellOne.innerHTML = indexRow - 1;
     cellTwo.innerHTML = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
@@ -3526,7 +3522,6 @@ function addEntriesAll() {
         if (imgSizeStatus != 100) {
           var cellSix = newRow.insertCell();
         } else {
-          return;
         }
         cellOne.innerHTML = indexRow - 1;
         cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
@@ -3571,7 +3566,6 @@ function addEntriesAll() {
         if (imgSizeStatus != 100) {
           var cellSix = newRow.insertCell();
         } else {
-          return;
         }
         cellOne.innerHTML = indexRow - 1;
         cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
@@ -3619,7 +3613,6 @@ function addEntriesAll() {
           if (imgSizeStatus != 100) {
             var cellSix = newRow.insertCell();
           } else {
-            return;
           }
           indexImaginaryFrontLeft += 1;
           cellOne.innerHTML = indexRow - 1;
@@ -3673,7 +3666,6 @@ function addEntriesAll() {
           if (imgSizeStatus != 100) {
             var cellSix = newRow.insertCell();
           } else {
-            return;
           }
           indexImaginaryFrontLeft += 1;
           cellOne.innerHTML = indexRow - 1;
@@ -3731,7 +3723,6 @@ function addEntriesAll() {
           if (imgSizeStatus != 100) {
             var cellSix = newRow.insertCell();
           } else {
-            return;
           }
           indexImaginaryHindLeft += 1;
           cellOne.innerHTML = indexRow - 1;
@@ -3785,7 +3776,6 @@ function addEntriesAll() {
           if (imgSizeStatus != 100) {
             var cellSix = newRow.insertCell();
           } else {
-            return;
           }
           indexImaginaryHindLeft += 1;
           cellOne.innerHTML = indexRow - 1;
@@ -3847,7 +3837,6 @@ function addEntriesAll() {
           if (imgSizeStatus != 100) {
             var cellSix = newRow.insertCell();
           } else {
-            return;
           }
           indexImaginaryFrontRight += 1;
           cellOne.innerHTML = indexRow - 1;
@@ -3901,7 +3890,6 @@ function addEntriesAll() {
           if (imgSizeStatus != 100) {
             var cellSix = newRow.insertCell();
           } else {
-            return;
           }
           indexImaginaryFrontRight += 1;
           cellOne.innerHTML = indexRow - 1;
@@ -3959,7 +3947,6 @@ function addEntriesAll() {
           if (imgSizeStatus != 100) {
             var cellSix = newRow.insertCell();
           } else {
-            return;
           }
           indexImaginaryHindRight += 1;
           cellOne.innerHTML = indexRow - 1;
@@ -4013,7 +4000,6 @@ function addEntriesAll() {
           if (imgSizeStatus != 100) {
             var cellSix = newRow.insertCell();
           } else {
-            return;
           }
           indexImaginaryHindRight += 1;
           cellOne.innerHTML = indexRow - 1;
