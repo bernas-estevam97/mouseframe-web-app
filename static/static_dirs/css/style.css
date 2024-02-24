@@ -626,13 +626,12 @@ header h1 {
   justify-content: space-between;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #fff;
-  border: 5px double #c1c1c1;
-  padding: 10px;
   width: 70vw;
 }
 
 .data-management .table-results {
+  background-color: #fff;
+  border: 5px double #c1c1c1;
   padding: 5px 10px;
   margin: 5px;
 }
@@ -678,9 +677,10 @@ header h1 {
   position: relative;
   width: 50%;
   text-align: center;
-  padding: 5px;
-  margin: 5px;
+  padding: 0px 10px 5px 10px;
+  margin: 0px 5px 5px 5px;
   font-size: 1.2em;
+  height: 460px;
 }
 
 .select-options label {
@@ -694,6 +694,14 @@ header h1 {
   border: 3px ridge #c1c1c1;
   margin-bottom: 10px;
   padding: 10px 0;
+  background-color: #fff;
+}
+
+.select-options #footstepsBeginning p,
+.select-options .remove-by-entries p,
+.select-options .remove-by-measurement p,
+.select-options .table-id p {
+  margin: 5px 0px;
 }
 
 .select-options #addAll {

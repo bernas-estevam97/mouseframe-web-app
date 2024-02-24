@@ -1,4 +1,4 @@
 venv/
 db.sqlite3
-static/static_root
+static/static_root/
 .prettierignore

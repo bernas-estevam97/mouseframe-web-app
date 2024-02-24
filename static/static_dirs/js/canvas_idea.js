@@ -452,12 +452,46 @@ function removeAllBlueCircleRight() {
 let dist = 0;
 
 function drawMeasureCoordinates(point, r) {
-  ctx.fillStyle = "#000000"; // Black
+  ctx.fillStyle = "#000000"; // Black | New color grey: #525151
   ctx.beginPath();
   ctx.arc(point.x, point.y, r, 0, Math.PI * 2, true);
   ctx.fill();
 }
 
+// Function to draw line //
+
+// var coords = [];
+// function drawMeasureCoordinatesLine(event, r) {
+//   var coord = { x: event.x, y: event.y };
+//   coords.push(coord);
+//   var max = coords.length - 1;
+//   ctx.lineWidth = 3;
+//   if (typeof coords[max - 1] !== "undefined") {
+//     var curr = coords[max],
+//       prev = coords[max - 1];
+//     ctx.beginPath();
+//     ctx.moveTo(prev.x, prev.y);
+//     ctx.lineTo(curr.x, curr.y);
+//     ctx.stroke();
+//   }
+// }
+
+// function drawMeasurePoint(e) {
+//   if (coords.length <= 1 && pointsMeasure.length <= 1) {
+//     var o = getPosition(e);
+//     drawMeasureCoordinates(o, pointSize);
+//     drawMeasureCoordinatesLine(o, pointSize);
+//     pointsMeasure.push(o);
+//     console.log(pointsMeasure);
+//     console.log(coords.length);
+//     let index = pointsMeasure.indexOf(o);
+//     console.log("Measure Point:" + (index + 1));
+//   } else {
+//     return;
+//   }
+// }
+
+// ------------------------------------------------------------------------- //
 function drawMeasurePoint(e) {
   if (pointsMeasure.length <= 1) {
     var o = getPosition(e);
