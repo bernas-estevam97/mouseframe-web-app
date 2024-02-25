@@ -3418,9 +3418,12 @@ function addEntriesAll() {
         case 40:
           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
       }
-    } else {
+    }
+    if (dist == 0 && imgSizeStatus != 100) {
       cellFive.innerHTML = "Undefined";
       cellSix.innerHTML = "Undefined";
+    } else {
+      cellFive.innerHTML = "Undefined";
     }
   }
   for (var i = 0; i < pointsRedRight.length - 1; i++) {
@@ -3458,9 +3461,12 @@ function addEntriesAll() {
         case 40:
           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
       }
-    } else {
+    }
+    if (dist == 0 && imgSizeStatus != 100) {
       cellFive.innerHTML = "Undefined";
       cellSix.innerHTML = "Undefined";
+    } else {
+      cellFive.innerHTML = "Undefined";
     }
   }
   for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
@@ -3498,9 +3504,12 @@ function addEntriesAll() {
         case 40:
           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
       }
-    } else {
+    }
+    if (dist == 0 && imgSizeStatus != 100) {
       cellFive.innerHTML = "Undefined";
       cellSix.innerHTML = "Undefined";
+    } else {
+      cellFive.innerHTML = "Undefined";
     }
   }
   for (var i = 0; i < pointsBlueRight.length - 1; i++) {
@@ -3538,9 +3547,12 @@ function addEntriesAll() {
         case 40:
           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
       }
-    } else {
+    }
+    if (dist == 0 && imgSizeStatus != 100) {
       cellFive.innerHTML = "Undefined";
       cellSix.innerHTML = "Undefined";
+    } else {
+      cellFive.innerHTML = "Undefined";
     }
   }
   for (var i = 0; i < pointsRedLeft.length; i++) {
@@ -3580,9 +3592,12 @@ function addEntriesAll() {
             case 40:
               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
           }
-        } else {
+        }
+        if (dist == 0 && imgSizeStatus != 100) {
           cellFive.innerHTML = "Undefined";
           cellSix.innerHTML = "Undefined";
+        } else {
+          cellFive.innerHTML = "Undefined";
         }
       }
     }
@@ -3624,9 +3639,12 @@ function addEntriesAll() {
             case 40:
               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
           }
-        } else {
+        }
+        if (dist == 0 && imgSizeStatus != 100) {
           cellFive.innerHTML = "Undefined";
           cellSix.innerHTML = "Undefined";
+        } else {
+          cellFive.innerHTML = "Undefined";
         }
       }
     }
@@ -3684,9 +3702,12 @@ function addEntriesAll() {
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
             }
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
+          } else {
+            cellFive.innerHTML = "Undefined";
           }
         }
         if (i == j + 1) {
@@ -3737,9 +3758,12 @@ function addEntriesAll() {
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
             }
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
+          } else {
+            cellFive.innerHTML = "Undefined";
           }
         }
       }
@@ -3794,9 +3818,12 @@ function addEntriesAll() {
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
             }
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
+          } else {
+            cellFive.innerHTML = "Undefined";
           }
         }
         if (i == j + 1) {
@@ -3847,9 +3874,12 @@ function addEntriesAll() {
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
             }
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
+          } else {
+            cellFive.innerHTML = "Undefined";
           }
         }
       }
@@ -3908,9 +3938,12 @@ function addEntriesAll() {
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
             }
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
+          } else {
+            cellFive.innerHTML = "Undefined";
           }
         }
         if (j == i + 1) {
@@ -3961,9 +3994,12 @@ function addEntriesAll() {
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
             }
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
+          } else {
+            cellFive.innerHTML = "Undefined";
           }
         }
       }
@@ -4018,9 +4054,12 @@ function addEntriesAll() {
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
             }
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
+          } else {
+            cellFive.innerHTML = "Undefined";
           }
         }
         if (j == i + 1) {
@@ -4071,9 +4110,12 @@ function addEntriesAll() {
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
             }
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
+          } else {
+            cellFive.innerHTML = "Undefined";
           }
         }
       }
