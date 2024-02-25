@@ -732,14 +732,14 @@ let loadFile = function (event) {
         "x" +
         img.height * 0.25 +
         " (25% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 25% of the size.</i>";
-      tableDynamicValuePx.innerHTML = "Value(px) at 25%";
-      tableDynamicValueCm.innerHTML = "Value(cm) at 25%";
-      let originalValueCm = table.rows[1].insertCell();
-      originalValueCm.outerHTML =
-        '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!\n 
-      A new column with original image size values in cm added.`;
-      document.getElementById("titleImage").colSpan = "6";
+      // tableDynamicValuePx.innerHTML = "Value(px) at 25%";
+      // tableDynamicValueCm.innerHTML = "Value(cm) at 25%";
+      // let originalValueCm = table.rows[1].insertCell();
+      // originalValueCm.outerHTML =
+      //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
+      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
+      //A new column with original image size values in cm added.`;
+      // document.getElementById("titleImage").colSpan = "6";
     } else if (
       (img.width >= 1500 && img.width < 2000) ||
       (img.height >= 1500 && img.height < 2000)
@@ -757,14 +757,14 @@ let loadFile = function (event) {
         "x" +
         img.height * 0.75 +
         " (75% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 75% of the size.</i>";
-      tableDynamicValuePx.innerHTML = "Value(px) at 75%";
-      tableDynamicValueCm.innerHTML = "Value(cm) at 75%";
-      let originalValueCm = table.rows[1].insertCell();
-      originalValueCm.outerHTML =
-        '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!\n 
-      A new column with original image size values in cm added.`;
-      document.getElementById("titleImage").colSpan = "6";
+      // tableDynamicValuePx.innerHTML = "Value(px) at 75%";
+      // tableDynamicValueCm.innerHTML = "Value(cm) at 75%";
+      // let originalValueCm = table.rows[1].insertCell();
+      // originalValueCm.outerHTML =
+      //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
+      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
+      //A new column with original image size values in cm added.`;
+      // document.getElementById("titleImage").colSpan = "6";
     } else if (
       (img.width >= 2000 && img.width < 3000) ||
       (img.height >= 2000 && img.height < 3000)
@@ -784,12 +784,12 @@ let loadFile = function (event) {
         " (50% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 50% of the size.</i>";
       tableDynamicValuePx.innerHTML = "Value(px) at 50%";
       tableDynamicValueCm.innerHTML = "Value(cm) at 50%";
-      let originalValueCm = table.rows[1].insertCell();
-      originalValueCm.outerHTML =
-        '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-      document.getElementById("titleImage").colSpan = "6";
-      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!\n 
-      A new column with original image size values in cm added.`;
+      // let originalValueCm = table.rows[1].insertCell();
+      // originalValueCm.outerHTML =
+      //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
+      // document.getElementById("titleImage").colSpan = "6";
+      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
+      //A new column with original image size values in cm added.`;
     } else {
       imgSizeStatus = 100;
       imgContainer.style.width = img.width + "px";
@@ -914,11 +914,11 @@ function resetImgDim() {
   tableWarning.innerHTML = "";
   tableDynamicValuePx.innerHTML = "Value(px)";
   tableDynamicValueCm.innerHTML = "Value(cm)";
-  if (table.rows[1].cells.length == 6) {
-    table.rows[1].deleteCell(-1);
-  } else {
-    return;
-  }
+  // if (table.rows[1].cells.length == 6) {
+  //   table.rows[1].deleteCell(-1);
+  // } else {
+  //   return;
+  // }
   imgSizeStatus = 100;
   $("#tbody").empty();
 }
@@ -954,19 +954,19 @@ function resizeFifty() {
     "x" +
     img.height * 0.5 +
     " (50% of size!)";
-  tableDynamicValuePx.innerHTML = "Value(px) at 50%";
-  tableDynamicValueCm.innerHTML = "Value(cm) at 50%";
-  document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!\n 
-  A new column with original image size values in cm added.`;
+  // tableDynamicValuePx.innerHTML = "Value(px) at 50%";
+  // tableDynamicValueCm.innerHTML = "Value(cm) at 50%";
+  // document.getElementById("titleImage").colSpan = "6";
+  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
+  //A new column with original image size values in cm added.`;
   imgSizeStatus = 50;
-  if (table.rows[1].cells.length < 6) {
-    let originalValueCm = table.rows[1].insertCell();
-    originalValueCm.outerHTML =
-      '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-  } else {
-    return;
-  }
+  // if (table.rows[1].cells.length < 6) {
+  //   let originalValueCm = table.rows[1].insertCell();
+  //   originalValueCm.outerHTML =
+  //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
+  // } else {
+  //   return;
+  // }
   $("#tbody").empty();
 }
 
@@ -1001,19 +1001,19 @@ function resizeSF() {
     "x" +
     img.height * 0.75 +
     " (75% of size!)";
-  tableDynamicValuePx.innerHTML = "Value(px) at 75%";
-  tableDynamicValueCm.innerHTML = "Value(cm) at 75%";
-  document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!\n 
-  A new column with original image size values in cm added.`;
+  // tableDynamicValuePx.innerHTML = "Value(px) at 75%";
+  // tableDynamicValueCm.innerHTML = "Value(cm) at 75%";
+  // document.getElementById("titleImage").colSpan = "6";
+  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
+  //A new column with original image size values in cm added.`;
   imgSizeStatus = 75;
-  if (table.rows[1].cells.length < 6) {
-    let originalValueCm = table.rows[1].insertCell();
-    originalValueCm.outerHTML =
-      '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-  } else {
-    return;
-  }
+  // if (table.rows[1].cells.length < 6) {
+  //   let originalValueCm = table.rows[1].insertCell();
+  //   originalValueCm.outerHTML =
+  //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
+  // } else {
+  //   return;
+  // }
   $("#tbody").empty();
 }
 
@@ -1048,19 +1048,19 @@ function resizeForty() {
     "x" +
     (img.height * 0.4).toFixed(0) +
     " (40% of size! Values are rounded)";
-  tableDynamicValuePx.innerHTML = "Value(px) at 40%";
-  tableDynamicValueCm.innerHTML = "Value(cm) at 40%";
-  document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 40% of its original size!\n 
-A new column with original image size values in cm added.`;
+  // tableDynamicValuePx.innerHTML = "Value(px) at 40%";
+  // tableDynamicValueCm.innerHTML = "Value(cm) at 40%";
+  // document.getElementById("titleImage").colSpan = "6";
+  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 40% of its original size!`; //\n
+  //A new column with original image size values in cm added.`;
   imgSizeStatus = 40;
-  if (table.rows[1].cells.length < 6) {
-    let originalValueCm = table.rows[1].insertCell();
-    originalValueCm.outerHTML =
-      '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-  } else {
-    return;
-  }
+  // if (table.rows[1].cells.length < 6) {
+  //   let originalValueCm = table.rows[1].insertCell();
+  //   originalValueCm.outerHTML =
+  //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
+  // } else {
+  //   return;
+  // }
   $("#tbody").empty();
 }
 
@@ -1095,19 +1095,19 @@ function resizeTwentyF() {
     "x" +
     img.height * 0.25 +
     " (25% of size!)";
-  tableDynamicValuePx.innerHTML = "Value(px) at 25%";
-  tableDynamicValueCm.innerHTML = "Value(cm) at 25%";
-  document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!\n 
-A new column with original image size values in cm added.`;
+  // tableDynamicValuePx.innerHTML = "Value(px) at 25%";
+  // tableDynamicValueCm.innerHTML = "Value(cm) at 25%";
+  // document.getElementById("titleImage").colSpan = "6";
+  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
+  //A new column with original image size values in cm added.`;
   imgSizeStatus = 25;
-  if (table.rows[1].cells.length < 6) {
-    let originalValueCm = table.rows[1].insertCell();
-    originalValueCm.outerHTML =
-      '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-  } else {
-    return;
-  }
+  // if (table.rows[1].cells.length < 6) {
+  //   let originalValueCm = table.rows[1].insertCell();
+  //   originalValueCm.outerHTML =
+  //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
+  // } else {
+  //   return;
+  // }
   $("#tbody").empty();
 }
 
@@ -2250,7 +2250,1975 @@ function removeByMeasurement() {
   }
 }
 
-// WORK IN PROGRESS -- ADD ALL ENTRIES WITH ONE CLICK WITH AVERAGE FOR EACH MEASUREMENT
+// WORK IN PROGRESS -- ADD ALL ENTRIES WITH ONE CLICK WITH AVERAGE FOR EACH MEASUREMENT AND SENSIBLE TO RESIZING  (THIS IS NOT WORKING CORRECTLY!)
+
+// function addEntriesAllAverage() {
+//   var distValuesSLLF = [];
+//   var distValuesSLRF = [];
+//   var distValuesSLLH = [];
+//   var distValuesSLRH = [];
+//   var distValuesOL = [];
+//   var distValuesOR = [];
+//   var distValuesSWFL = [];
+//   var distValuesSWHL = [];
+//   var distValuesSWFR = [];
+//   var distValuesSWHR = [];
+//   if (dist == 0) {
+//     alert("Measure how many pixels are in a cm before using these option!");
+//     return;
+//   } else if (
+//     pointsRedLeft.length < 2 ||
+//     pointsRedRight.length < 2 ||
+//     pointsBlueLeft.length < 2 ||
+//     pointsBlueRight.length < 2
+//   ) {
+//     alert("Have enough points to perform at least one of each measurement.");
+//     return;
+//   } else {
+//     for (var i = 0; i < pointsRedLeft.length - 1; i++) {
+//       var newRow = tbody.insertRow(-1);
+//       let indexRow = newRow.rowIndex;
+//       var cellOne = newRow.insertCell();
+//       var cellTwo = newRow.insertCell();
+//       var cellThree = newRow.insertCell();
+//       var cellFour = newRow.insertCell();
+//       var cellFive = newRow.insertCell();
+//       if (imgSizeStatus != 100) {
+//         var cellSix = newRow.insertCell();
+//       } else {
+//       }
+//       // let distance = 0;
+//       cellOne.innerHTML = indexRow - 1;
+//       cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
+//       cellThree.innerHTML = "Stride length left front";
+//       distance = Math.hypot(
+//         pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
+//         pointsRedLeft[i].y - pointsRedLeft[i + 1].y
+//       ).toFixed(3);
+//       cellFour.innerHTML = distance;
+//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       distValuesSLLF.push(distance / dist);
+//       switch (imgSizeStatus) {
+//         case 50:
+//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           break;
+//         case 75:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           break;
+//         case 25:
+//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           break;
+//         case 40:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//       }
+//     }
+//     console.log(distValuesSLLF);
+//     var strideLeftFrontMeanRow = tbody.insertRow(-1);
+//     var strideLeftFrontRowCellOne = strideLeftFrontMeanRow.insertCell();
+//     var strideLeftFrontRowCellTwo = strideLeftFrontMeanRow.insertCell();
+//     strideLeftFrontRowCellOne.colSpan = "4";
+//     strideLeftFrontRowCellOne.innerHTML =
+//       "<b>Stride length left front average in cm:</b> ";
+//     strideLeftFrontRowCellTwo.innerHTML = (
+//       distValuesSLLF.reduce((a, b) => a + b, 0) / distValuesSLLF.length
+//     ).toFixed(3);
+//     if (imgSizeStatus != 100) {
+//       var strideLeftFrontRowCellThreeOriginal =
+//         strideLeftFrontMeanRow.insertCell();
+//       switch (imgSizeStatus) {
+//         case 50:
+//           strideLeftFrontRowCellThreeOriginal.innerHTML = (
+//             (distValuesSLLF.reduce((a, b) => a + b, 0) /
+//               distValuesSLLF.length) *
+//             2
+//           ).toFixed(3);
+//           break;
+//         case 75:
+//           strideLeftFrontRowCellThreeOriginal.innerHTML = (
+//             ((distValuesSLLF.reduce((a, b) => a + b, 0) /
+//               distValuesSLLF.length) *
+//               100) /
+//             75
+//           ).toFixed(3);
+//           break;
+//         case 25:
+//           strideLeftFrontRowCellThreeOriginal.innerHTML = (
+//             (distValuesSLLF.reduce((a, b) => a + b, 0) /
+//               distValuesSLLF.length) *
+//             4
+//           ).toFixed(3);
+//           break;
+//         case 40:
+//           strideLeftFrontRowCellThreeOriginal.innerHTML = (
+//             ((distValuesSLLF.reduce((a, b) => a + b, 0) /
+//               distValuesSLLF.length) *
+//               100) /
+//             40
+//           ).toFixed(3);
+//           break;
+//       }
+//     }
+//     for (var i = 0; i < pointsRedRight.length - 1; i++) {
+//       var newRow = tbody.insertRow(-1);
+//       let indexRow = newRow.rowIndex;
+//       var cellOne = newRow.insertCell();
+//       var cellTwo = newRow.insertCell();
+//       var cellThree = newRow.insertCell();
+//       var cellFour = newRow.insertCell();
+//       var cellFive = newRow.insertCell();
+//       if (imgSizeStatus != 100) {
+//         var cellSix = newRow.insertCell();
+//       } else {
+//       }
+//       cellOne.innerHTML = indexRow - 1;
+//       cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
+//       cellThree.innerHTML = "Stride length right front";
+//       distance = Math.hypot(
+//         pointsRedRight[i].x - pointsRedRight[i + 1].x,
+//         pointsRedRight[i].y - pointsRedRight[i + 1].y
+//       ).toFixed(3);
+//       cellFour.innerHTML = distance;
+//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       distValuesSLRF.push(distance / dist);
+//       switch (imgSizeStatus) {
+//         case 50:
+//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           break;
+//         case 75:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           break;
+//         case 25:
+//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           break;
+//         case 40:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//       }
+//     }
+//     console.log(distValuesSLRF);
+//     var strideRightFrontMeanRow = tbody.insertRow(-1);
+//     var strideRightFrontRowCellOne = strideRightFrontMeanRow.insertCell();
+//     var strideRightFrontRowCellTwo = strideRightFrontMeanRow.insertCell();
+//     strideRightFrontRowCellOne.colSpan = "4";
+//     strideRightFrontRowCellOne.innerHTML =
+//       "<b>Stride length right front average in cm:</b> ";
+//     strideRightFrontRowCellTwo.innerHTML = (
+//       distValuesSLRF.reduce((a, b) => a + b, 0) / distValuesSLRF.length
+//     ).toFixed(3);
+//     if (imgSizeStatus != 100) {
+//       var strideRightFrontRowCellThreeOriginal =
+//         strideRightFrontMeanRow.insertCell();
+//       switch (imgSizeStatus) {
+//         case 50:
+//           strideRightFrontRowCellThreeOriginal.innerHTML = (
+//             (distValuesSLRF.reduce((a, b) => a + b, 0) /
+//               distValuesSLRF.length) *
+//             2
+//           ).toFixed(3);
+//           break;
+//         case 75:
+//           strideRightFrontRowCellThreeOriginal.innerHTML = (
+//             ((distValuesSLRF.reduce((a, b) => a + b, 0) /
+//               distValuesSLRF.length) *
+//               100) /
+//             75
+//           ).toFixed(3);
+//           break;
+//         case 25:
+//           strideRightFrontRowCellThreeOriginal.innerHTML = (
+//             (distValuesSLRF.reduce((a, b) => a + b, 0) /
+//               distValuesSLRF.length) *
+//             4
+//           ).toFixed(3);
+//           break;
+//         case 40:
+//           strideRightFrontRowCellThreeOriginal.innerHTML = (
+//             ((distValuesSLRF.reduce((a, b) => a + b, 0) /
+//               distValuesSLRF.length) *
+//               100) /
+//             40
+//           ).toFixed(3);
+//           break;
+//       }
+//     }
+//     for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
+//       var newRow = tbody.insertRow(-1);
+//       let indexRow = newRow.rowIndex;
+//       var cellOne = newRow.insertCell();
+//       var cellTwo = newRow.insertCell();
+//       var cellThree = newRow.insertCell();
+//       var cellFour = newRow.insertCell();
+//       var cellFive = newRow.insertCell();
+//       if (imgSizeStatus != 100) {
+//         var cellSix = newRow.insertCell();
+//       } else {
+//       }
+//       cellOne.innerHTML = indexRow - 1;
+//       cellTwo.innerHTML = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
+//       cellThree.innerHTML = "Stride length left hind";
+//       distance = Math.hypot(
+//         pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
+//         pointsBlueLeft[i].y - pointsBlueLeft[i + 1].y
+//       ).toFixed(3);
+//       cellFour.innerHTML = distance;
+//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       distValuesSLLH.push(distance / dist);
+//       switch (imgSizeStatus) {
+//         case 50:
+//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           break;
+//         case 75:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           break;
+//         case 25:
+//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           break;
+//         case 40:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//       }
+//     }
+//     console.log(distValuesSLLH);
+//     var strideLeftHindMeanRow = tbody.insertRow(-1);
+//     var strideLeftHindRowCellOne = strideLeftHindMeanRow.insertCell();
+//     var strideLeftHindRowCellTwo = strideLeftHindMeanRow.insertCell();
+//     strideLeftHindRowCellOne.colSpan = "4";
+//     strideLeftHindRowCellOne.innerHTML =
+//       "<b>Stride length left hind average in cm:</b> ";
+//     strideLeftHindRowCellTwo.innerHTML = (
+//       distValuesSLLH.reduce((a, b) => a + b, 0) / distValuesSLLH.length
+//     ).toFixed(3);
+//     if (imgSizeStatus != 100) {
+//       var strideLeftHindRowCellThreeOriginal =
+//         strideLeftHindMeanRow.insertCell();
+//       switch (imgSizeStatus) {
+//         case 50:
+//           strideLeftHindRowCellThreeOriginal.innerHTML = (
+//             (distValuesSLLH.reduce((a, b) => a + b, 0) /
+//               distValuesSLLH.length) *
+//             2
+//           ).toFixed(3);
+//           break;
+//         case 75:
+//           strideLeftHindRowCellThreeOriginal.innerHTML = (
+//             ((distValuesSLLH.reduce((a, b) => a + b, 0) /
+//               distValuesSLLH.length) *
+//               100) /
+//             75
+//           ).toFixed(3);
+//           break;
+//         case 25:
+//           strideLeftHindRowCellThreeOriginal.innerHTML = (
+//             (distValuesSLLH.reduce((a, b) => a + b, 0) /
+//               distValuesSLLH.length) *
+//             4
+//           ).toFixed(3);
+//           break;
+//         case 40:
+//           strideLeftHindRowCellThreeOriginal.innerHTML = (
+//             ((distValuesSLLH.reduce((a, b) => a + b, 0) /
+//               distValuesSLLH.length) *
+//               100) /
+//             40
+//           ).toFixed(3);
+//           break;
+//       }
+//     }
+//     for (var i = 0; i < pointsBlueRight.length - 1; i++) {
+//       var newRow = tbody.insertRow(-1);
+//       let indexRow = newRow.rowIndex;
+//       var cellOne = newRow.insertCell();
+//       var cellTwo = newRow.insertCell();
+//       var cellThree = newRow.insertCell();
+//       var cellFour = newRow.insertCell();
+//       var cellFive = newRow.insertCell();
+//       if (imgSizeStatus != 100) {
+//         var cellSix = newRow.insertCell();
+//       } else {
+//       }
+//       cellOne.innerHTML = indexRow - 1;
+//       cellTwo.innerHTML = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
+//       cellThree.innerHTML = "Stride length right hind";
+//       distance = Math.hypot(
+//         pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
+//         pointsBlueRight[i].y - pointsBlueRight[i + 1].y
+//       ).toFixed(3);
+//       cellFour.innerHTML = distance;
+//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       distValuesSLRH.push(distance / dist);
+//       switch (imgSizeStatus) {
+//         case 50:
+//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           break;
+//         case 75:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           break;
+//         case 25:
+//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           break;
+//         case 40:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//       }
+//     }
+//     console.log(distValuesSLRH);
+//     var strideRightHindMeanRow = tbody.insertRow(-1);
+//     var strideRightHindRowCellOne = strideRightHindMeanRow.insertCell();
+//     var strideRightHindRowCellTwo = strideRightHindMeanRow.insertCell();
+//     strideRightHindRowCellOne.colSpan = "4";
+//     strideRightHindRowCellOne.innerHTML =
+//       "<b>Stride length right hind average in cm:</b> ";
+//     strideRightHindRowCellTwo.innerHTML = (
+//       distValuesSLRH.reduce((a, b) => a + b, 0) / distValuesSLRH.length
+//     ).toFixed(3);
+//     if (imgSizeStatus != 100) {
+//       var strideRightHindRowCellThreeOriginal =
+//         strideRightHindMeanRow.insertCell();
+//       switch (imgSizeStatus) {
+//         case 50:
+//           strideRightHindRowCellThreeOriginal.innerHTML = (
+//             (distValuesSLRH.reduce((a, b) => a + b, 0) /
+//               distValuesSLRH.length) *
+//             2
+//           ).toFixed(3);
+//           break;
+//         case 75:
+//           strideRightHindRowCellThreeOriginal.innerHTML = (
+//             ((distValuesSLRH.reduce((a, b) => a + b, 0) /
+//               distValuesSLRH.length) *
+//               100) /
+//             75
+//           ).toFixed(3);
+//           break;
+//         case 25:
+//           strideRightHindRowCellThreeOriginal.innerHTML = (
+//             (distValuesSLRH.reduce((a, b) => a + b, 0) /
+//               distValuesSLRH.length) *
+//             4
+//           ).toFixed(3);
+//           break;
+//         case 40:
+//           strideRightHindRowCellThreeOriginal.innerHTML = (
+//             ((distValuesSLRH.reduce((a, b) => a + b, 0) /
+//               distValuesSLRH.length) *
+//               100) /
+//             40
+//           ).toFixed(3);
+//           break;
+//       }
+//     }
+//     for (var i = 0; i < pointsRedLeft.length; i++) {
+//       for (var j = 0; j < pointsBlueLeft.length; j++) {
+//         if (i == j) {
+//           var newRow = tbody.insertRow(-1);
+//           let indexRow = newRow.rowIndex;
+//           var cellOne = newRow.insertCell();
+//           var cellTwo = newRow.insertCell();
+//           var cellThree = newRow.insertCell();
+//           var cellFour = newRow.insertCell();
+//           var cellFive = newRow.insertCell();
+//           if (imgSizeStatus != 100) {
+//             var cellSix = newRow.insertCell();
+//           } else {
+//           }
+//           cellOne.innerHTML = indexRow - 1;
+//           cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
+//           cellThree.innerHTML = "Overlap Left";
+//           distance = Math.hypot(
+//             pointsRedLeft[i].x - pointsBlueLeft[j].x,
+//             pointsRedLeft[i].y - pointsBlueLeft[j].y
+//           ).toFixed(3);
+//           cellFour.innerHTML = distance;
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           distValuesOL.push(distance / dist);
+//           switch (imgSizeStatus) {
+//             case 50:
+//               cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//               break;
+//             case 75:
+//               cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//               break;
+//             case 25:
+//               cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//               break;
+//             case 40:
+//               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//           }
+//         }
+//       }
+//     }
+//     console.log(distValuesOL);
+//     var overlapLeftMeanRow = tbody.insertRow(-1);
+//     var overlapLeftRowCellOne = overlapLeftMeanRow.insertCell();
+//     var overlapLeftRowCellTwo = overlapLeftMeanRow.insertCell();
+//     overlapLeftRowCellOne.colSpan = "4";
+//     overlapLeftRowCellOne.innerHTML = "<b>Overlap left average in cm:</b> ";
+//     overlapLeftRowCellTwo.innerHTML = (
+//       distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length
+//     ).toFixed(3);
+//     if (imgSizeStatus != 100) {
+//       var overlapLeftRowCellThreeOriginal = overlapLeftMeanRow.insertCell();
+//       switch (imgSizeStatus) {
+//         case 50:
+//           overlapLeftRowCellThreeOriginal.innerHTML = (
+//             (distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
+//             2
+//           ).toFixed(3);
+//           break;
+//         case 75:
+//           overlapLeftRowCellThreeOriginal.innerHTML = (
+//             ((distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
+//               100) /
+//             75
+//           ).toFixed(3);
+//           break;
+//         case 25:
+//           overlapLeftRowCellThreeOriginal.innerHTML = (
+//             (distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
+//             4
+//           ).toFixed(3);
+//           break;
+//         case 40:
+//           overlapLeftRowCellThreeOriginal.innerHTML = (
+//             ((distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
+//               100) /
+//             40
+//           ).toFixed(3);
+//           break;
+//       }
+//     }
+//     for (var i = 0; i < pointsRedRight.length; i++) {
+//       for (var j = 0; j < pointsBlueRight.length; j++) {
+//         if (i == j) {
+//           var newRow = tbody.insertRow(-1);
+//           let indexRow = newRow.rowIndex;
+//           var cellOne = newRow.insertCell();
+//           var cellTwo = newRow.insertCell();
+//           var cellThree = newRow.insertCell();
+//           var cellFour = newRow.insertCell();
+//           var cellFive = newRow.insertCell();
+//           if (imgSizeStatus != 100) {
+//             var cellSix = newRow.insertCell();
+//           } else {
+//           }
+//           cellOne.innerHTML = indexRow - 1;
+//           cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
+//           cellThree.innerHTML = "Overlap Right";
+//           distance = Math.hypot(
+//             pointsRedRight[i].x - pointsBlueRight[j].x,
+//             pointsRedRight[i].y - pointsBlueRight[j].y
+//           ).toFixed(3);
+//           cellFour.innerHTML = distance;
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           distValuesOR.push(distance / dist);
+//           switch (imgSizeStatus) {
+//             case 50:
+//               cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//               break;
+//             case 75:
+//               cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//               break;
+//             case 25:
+//               cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//               break;
+//             case 40:
+//               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//           }
+//         }
+//       }
+//     }
+//     console.log(distValuesOR);
+//     var overlapRightMeanRow = tbody.insertRow(-1);
+//     var overlapRightRowCellOne = overlapRightMeanRow.insertCell();
+//     var overlapRightRowCellTwo = overlapRightMeanRow.insertCell();
+//     overlapRightRowCellOne.colSpan = "4";
+//     overlapRightRowCellOne.innerHTML = "<b>Overlap Right average in cm:</b> ";
+//     overlapRightRowCellTwo.innerHTML = (
+//       distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length
+//     ).toFixed(3);
+//     if (imgSizeStatus != 100) {
+//       var overlapRightRowCellThreeOriginal = overlapRightMeanRow.insertCell();
+//       switch (imgSizeStatus) {
+//         case 50:
+//           overlapRightRowCellThreeOriginal.innerHTML = (
+//             (distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
+//             2
+//           ).toFixed(3);
+//           break;
+//         case 75:
+//           overlapRightRowCellThreeOriginal.innerHTML = (
+//             ((distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
+//               100) /
+//             75
+//           ).toFixed(3);
+//           break;
+//         case 25:
+//           overlapRightRowCellThreeOriginal.innerHTML = (
+//             (distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
+//             4
+//           ).toFixed(3);
+//           break;
+//         case 40:
+//           overlapRightRowCellThreeOriginal.innerHTML = (
+//             ((distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
+//               100) /
+//             40
+//           ).toFixed(3);
+//           break;
+//       }
+//     }
+//     if (footstepStart.options[footstepStart.selectedIndex].value == "Left") {
+//       var indexImaginaryFrontLeft = 0;
+//       var indexImaginaryHindLeft = 0;
+//       for (var i = 0; i < pointsRedLeft.length; i++) {
+//         for (var j = 0; j < pointsRedRight.length; j++) {
+//           if (i == j) {
+//             var newRow = tbody.insertRow(-1);
+//             let indexRow = newRow.rowIndex;
+//             var cellOne = newRow.insertCell();
+//             var cellTwo = newRow.insertCell();
+//             var cellThree = newRow.insertCell();
+//             var cellFour = newRow.insertCell();
+//             var cellFive = newRow.insertCell();
+//             if (imgSizeStatus != 100) {
+//               var cellSix = newRow.insertCell();
+//             } else {
+//             }
+//             indexImaginaryFrontLeft += 1;
+//             cellOne.innerHTML = indexRow - 1;
+//             cellTwo.innerHTML =
+//               "Imaginary Front " +
+//               indexImaginaryFrontLeft +
+//               " &#x2192 Red R" +
+//               (j + 1);
+//             cellThree.innerHTML = "Stride Width Front(L)";
+//             if (i < pointsRedLeft.length - 1) {
+//               distance = Math.hypot(
+//                 pointsRedRight[j].x - pointsRedRight[j].x,
+//                 (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
+//                   pointsRedRight[j].y
+//               ).toFixed(3);
+//             } else {
+//               distance = Math.hypot(
+//                 pointsRedRight[j].x - pointsRedRight[j].x,
+//                 pointsRedLeft[i].y - pointsRedRight[j].y
+//               ).toFixed(3);
+//             }
+//             cellFour.innerHTML = distance;
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             distValuesSWFL.push(distance / dist);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//             }
+//           }
+//           if (i == j + 1) {
+//             var newRow = tbody.insertRow(-1);
+//             let indexRow = newRow.rowIndex;
+//             var cellOne = newRow.insertCell();
+//             var cellTwo = newRow.insertCell();
+//             var cellThree = newRow.insertCell();
+//             var cellFour = newRow.insertCell();
+//             var cellFive = newRow.insertCell();
+//             if (imgSizeStatus != 100) {
+//               var cellSix = newRow.insertCell();
+//             } else {
+//             }
+//             indexImaginaryFrontLeft += 1;
+//             cellOne.innerHTML = indexRow - 1;
+//             cellTwo.innerHTML =
+//               "Imaginary Front " +
+//               indexImaginaryFrontLeft +
+//               " &#x2192 Red L" +
+//               (i + 1);
+//             cellThree.innerHTML = "Stride Width Front(L)";
+//             if (j < pointsRedRight.length - 1) {
+//               distance = Math.hypot(
+//                 pointsRedLeft[i].x - pointsRedLeft[i].x,
+//                 pointsRedLeft[i].y -
+//                   (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2
+//               ).toFixed(3);
+//             } else {
+//               distance = Math.hypot(
+//                 pointsRedLeft[i].x - pointsRedLeft[i].x,
+//                 pointsRedLeft[i].y - pointsRedRight[j].y
+//               ).toFixed(3);
+//             }
+//             cellFour.innerHTML = distance;
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             distValuesSWFL.push(distance / dist);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//             }
+//           }
+//         }
+//       }
+//       console.log(distValuesSWFL);
+//       var strideWidthFrontLeftMeanRow = tbody.insertRow(-1);
+//       var strideWidthFrontLeftRowCellOne =
+//         strideWidthFrontLeftMeanRow.insertCell();
+//       var strideWidthFrontLeftRowCellTwo =
+//         strideWidthFrontLeftMeanRow.insertCell();
+//       strideWidthFrontLeftRowCellOne.colSpan = "4";
+//       strideWidthFrontLeftRowCellOne.innerHTML =
+//         "<b>Stride Width Front(L) average in cm:</b> ";
+//       strideWidthFrontLeftRowCellTwo.innerHTML = (
+//         distValuesSWFL.reduce((a, b) => a + b, 0) / distValuesSWFL.length
+//       ).toFixed(3);
+//       if (imgSizeStatus != 100) {
+//         var strideWidthFrontLeftRowCellThreeOriginal =
+//           strideWidthFrontLeftMeanRow.insertCell();
+//         switch (imgSizeStatus) {
+//           case 50:
+//             strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
+//               (distValuesSWFL.reduce((a, b) => a + b, 0) /
+//                 distValuesSWFL.length) *
+//               2
+//             ).toFixed(3);
+//             break;
+//           case 75:
+//             strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
+//               ((distValuesSWFL.reduce((a, b) => a + b, 0) /
+//                 distValuesSWFL.length) *
+//                 100) /
+//               75
+//             ).toFixed(3);
+//             break;
+//           case 25:
+//             strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
+//               (distValuesSWFL.reduce((a, b) => a + b, 0) /
+//                 distValuesSWFL.length) *
+//               4
+//             ).toFixed(3);
+//             break;
+//           case 40:
+//             strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
+//               ((distValuesSWFL.reduce((a, b) => a + b, 0) /
+//                 distValuesSWFL.length) *
+//                 100) /
+//               40
+//             ).toFixed(3);
+//             break;
+//         }
+//       }
+//       for (var i = 0; i < pointsBlueLeft.length; i++) {
+//         for (var j = 0; j < pointsBlueRight.length; j++) {
+//           if (i == j) {
+//             var newRow = tbody.insertRow(-1);
+//             let indexRow = newRow.rowIndex;
+//             var cellOne = newRow.insertCell();
+//             var cellTwo = newRow.insertCell();
+//             var cellThree = newRow.insertCell();
+//             var cellFour = newRow.insertCell();
+//             var cellFive = newRow.insertCell();
+//             if (imgSizeStatus != 100) {
+//               var cellSix = newRow.insertCell();
+//             } else {
+//             }
+//             indexImaginaryHindLeft += 1;
+//             cellOne.innerHTML = indexRow - 1;
+//             cellTwo.innerHTML =
+//               "Imaginary Hind " +
+//               indexImaginaryHindLeft +
+//               " &#x2192 Blue R" +
+//               (j + 1);
+//             cellThree.innerHTML = "Stride Width Hind(L)";
+//             if (i < pointsBlueLeft.length - 1) {
+//               distance = Math.hypot(
+//                 pointsBlueRight[j].x - pointsBlueRight[j].x,
+//                 (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
+//                   pointsBlueRight[j].y
+//               ).toFixed(3);
+//             } else {
+//               distance = Math.hypot(
+//                 pointsBlueRight[j].x - pointsBlueRight[j].x,
+//                 pointsBlueLeft[i].y - pointsBlueRight[j].y
+//               ).toFixed(3);
+//             }
+//             cellFour.innerHTML = distance;
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             distValuesSWHL.push(distance / dist);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//             }
+//           }
+//           if (i == j + 1) {
+//             var newRow = tbody.insertRow(-1);
+//             let indexRow = newRow.rowIndex;
+//             var cellOne = newRow.insertCell();
+//             var cellTwo = newRow.insertCell();
+//             var cellThree = newRow.insertCell();
+//             var cellFour = newRow.insertCell();
+//             var cellFive = newRow.insertCell();
+//             if (imgSizeStatus != 100) {
+//               var cellSix = newRow.insertCell();
+//             } else {
+//             }
+//             indexImaginaryHindLeft += 1;
+//             cellOne.innerHTML = indexRow - 1;
+//             cellTwo.innerHTML =
+//               "Imaginary Hind " +
+//               indexImaginaryHindLeft +
+//               " &#x2192 Blue L" +
+//               (i + 1);
+//             cellThree.innerHTML = "Stride Width Hind(L)";
+//             if (j < pointsBlueRight.length - 1) {
+//               distance = Math.hypot(
+//                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
+//                 pointsBlueLeft[i].y -
+//                   (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2
+//               ).toFixed(3);
+//             } else {
+//               distance = Math.hypot(
+//                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
+//                 pointsBlueLeft[i].y - pointsBlueRight[j].y
+//               ).toFixed(3);
+//             }
+//             cellFour.innerHTML = distance;
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             distValuesSWHL.push(distance / dist);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//             }
+//           }
+//         }
+//       }
+//       console.log(distValuesSWHL);
+//       var strideWidthHindLeftMeanRow = tbody.insertRow(-1);
+//       var strideWidthHindLeftRowCellOne =
+//         strideWidthHindLeftMeanRow.insertCell();
+//       var strideWidthHindLeftRowCellTwo =
+//         strideWidthHindLeftMeanRow.insertCell();
+//       strideWidthHindLeftRowCellOne.colSpan = "4";
+//       strideWidthHindLeftRowCellOne.innerHTML =
+//         "<b>Stride Width Hind(L) average in cm:</b> ";
+//       strideWidthHindLeftRowCellTwo.innerHTML = (
+//         distValuesSWHL.reduce((a, b) => a + b, 0) / distValuesSWHL.length
+//       ).toFixed(3);
+//       if (imgSizeStatus != 100) {
+//         var strideWidthHindLeftRowCellThreeOriginal =
+//           strideWidthHindLeftMeanRow.insertCell();
+//         switch (imgSizeStatus) {
+//           case 50:
+//             strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
+//               (distValuesSWHL.reduce((a, b) => a + b, 0) /
+//                 distValuesSWHL.length) *
+//               2
+//             ).toFixed(3);
+//             break;
+//           case 75:
+//             strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
+//               ((distValuesSWHL.reduce((a, b) => a + b, 0) /
+//                 distValuesSWHL.length) *
+//                 100) /
+//               75
+//             ).toFixed(3);
+//             break;
+//           case 25:
+//             strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
+//               (distValuesSWHL.reduce((a, b) => a + b, 0) /
+//                 distValuesSWHL.length) *
+//               4
+//             ).toFixed(3);
+//             break;
+//           case 40:
+//             strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
+//               ((distValuesSWHL.reduce((a, b) => a + b, 0) /
+//                 distValuesSWHL.length) *
+//                 100) /
+//               40
+//             ).toFixed(3);
+//             break;
+//         }
+//       }
+//     }
+//     if (footstepStart.options[footstepStart.selectedIndex].value == "Right") {
+//       var indexImaginaryFrontRight = 0;
+//       var indexImaginaryHindRight = 0;
+//       for (var i = 0; i < pointsRedLeft.length; i++) {
+//         for (var j = 0; j < pointsRedRight.length; j++) {
+//           if (i == j) {
+//             var newRow = tbody.insertRow(-1);
+//             let indexRow = newRow.rowIndex;
+//             var cellOne = newRow.insertCell();
+//             var cellTwo = newRow.insertCell();
+//             var cellThree = newRow.insertCell();
+//             var cellFour = newRow.insertCell();
+//             var cellFive = newRow.insertCell();
+//             if (imgSizeStatus != 100) {
+//               var cellSix = newRow.insertCell();
+//             } else {
+//             }
+//             indexImaginaryFrontRight += 1;
+//             cellOne.innerHTML = indexRow - 1;
+//             cellTwo.innerHTML =
+//               "Imaginary Front " +
+//               indexImaginaryFrontRight +
+//               " &#x2192 Red L" +
+//               (i + 1);
+//             cellThree.innerHTML = "Stride Width Front(R)";
+//             if (j < pointsRedRight.length - 1) {
+//               distance = Math.hypot(
+//                 pointsRedLeft[i].x - pointsRedLeft[i].x,
+//                 (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2 -
+//                   pointsRedLeft[i].y
+//               ).toFixed(3);
+//             } else {
+//               distance = Math.hypot(
+//                 pointsRedLeft[i].x - pointsRedLeft[i].x,
+//                 pointsRedRight[j].y - pointsRedLeft[i].y
+//               ).toFixed(3);
+//             }
+//             cellFour.innerHTML = distance;
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             distValuesSWFR.push(distance / dist);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//             }
+//           }
+//           if (j == i + 1) {
+//             var newRow = tbody.insertRow(-1);
+//             let indexRow = newRow.rowIndex;
+//             var cellOne = newRow.insertCell();
+//             var cellTwo = newRow.insertCell();
+//             var cellThree = newRow.insertCell();
+//             var cellFour = newRow.insertCell();
+//             var cellFive = newRow.insertCell();
+//             if (imgSizeStatus != 100) {
+//               var cellSix = newRow.insertCell();
+//             } else {
+//             }
+//             indexImaginaryFrontRight += 1;
+//             cellOne.innerHTML = indexRow - 1;
+//             cellTwo.innerHTML =
+//               "Imaginary Front " +
+//               indexImaginaryFrontRight +
+//               " &#x2192 Red R" +
+//               (j + 1);
+//             cellThree.innerHTML = "Stride Width Front(R)";
+//             if (i < pointsRedLeft.length - 1) {
+//               distance = Math.hypot(
+//                 pointsRedRight[j].x - pointsRedRight[j].x,
+//                 (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
+//                   pointsRedRight[j].y
+//               ).toFixed(3);
+//             } else {
+//               distance = Math.hypot(
+//                 pointsRedRight[j].x - pointsRedRight[j].x,
+//                 pointsRedLeft[i].y - pointsRedRight[j].y
+//               ).toFixed(3);
+//             }
+//             cellFour.innerHTML = distance;
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             distValuesSWFR.push(distance / dist);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//             }
+//           }
+//         }
+//       }
+//       console.log(distValuesSWFR);
+//       var strideWidthFrontRightMeanRow = tbody.insertRow(-1);
+//       var strideWidthFrontRightRowCellOne =
+//         strideWidthFrontRightMeanRow.insertCell();
+//       var strideWidthFrontRightRowCellTwo =
+//         strideWidthFrontRightMeanRow.insertCell();
+//       strideWidthFrontRightRowCellOne.colSpan = "4";
+//       strideWidthFrontRightRowCellOne.innerHTML =
+//         "<b>Stride Width Front(R) average in cm:</b> ";
+//       strideWidthFrontRightRowCellTwo.innerHTML = (
+//         distValuesSWFR.reduce((a, b) => a + b, 0) / distValuesSWFR.length
+//       ).toFixed(3);
+//       if (imgSizeStatus != 100) {
+//         var strideWidthFrontRightRowCellThreeOriginal =
+//           strideWidthFrontRightMeanRow.insertCell();
+//         switch (imgSizeStatus) {
+//           case 50:
+//             strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
+//               (distValuesSWFR.reduce((a, b) => a + b, 0) /
+//                 distValuesSWFR.length) *
+//               2
+//             ).toFixed(3);
+//             break;
+//           case 75:
+//             strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
+//               ((distValuesSWFR.reduce((a, b) => a + b, 0) /
+//                 distValuesSWFR.length) *
+//                 100) /
+//               75
+//             ).toFixed(3);
+//             break;
+//           case 25:
+//             strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
+//               (distValuesSWFR.reduce((a, b) => a + b, 0) /
+//                 distValuesSWFR.length) *
+//               4
+//             ).toFixed(3);
+//             break;
+//           case 40:
+//             strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
+//               ((distValuesSWFR.reduce((a, b) => a + b, 0) /
+//                 distValuesSWFR.length) *
+//                 100) /
+//               40
+//             ).toFixed(3);
+//             break;
+//         }
+//       }
+//       for (var i = 0; i < pointsBlueLeft.length; i++) {
+//         for (var j = 0; j < pointsBlueRight.length; j++) {
+//           if (i == j) {
+//             var newRow = tbody.insertRow(-1);
+//             let indexRow = newRow.rowIndex;
+//             var cellOne = newRow.insertCell();
+//             var cellTwo = newRow.insertCell();
+//             var cellThree = newRow.insertCell();
+//             var cellFour = newRow.insertCell();
+//             var cellFive = newRow.insertCell();
+//             if (imgSizeStatus != 100) {
+//               var cellSix = newRow.insertCell();
+//             } else {
+//             }
+//             indexImaginaryHindRight += 1;
+//             cellOne.innerHTML = indexRow - 1;
+//             cellTwo.innerHTML =
+//               "Imaginary Hind " +
+//               indexImaginaryHindRight +
+//               " &#x2192 Blue L" +
+//               (i + 1);
+//             cellThree.innerHTML = "Stride Width Hind(R)";
+//             if (j < pointsBlueRight.length - 1) {
+//               distance = Math.hypot(
+//                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
+//                 (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2 -
+//                   pointsBlueLeft[i].y
+//               ).toFixed(3);
+//             } else {
+//               distance = Math.hypot(
+//                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
+//                 pointsBlueRight[j].y - pointsBlueLeft[i].y
+//               ).toFixed(3);
+//             }
+//             cellFour.innerHTML = distance;
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             distValuesSWHR.push(distance / dist);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//             }
+//           }
+//           if (j == i + 1) {
+//             var newRow = tbody.insertRow(-1);
+//             let indexRow = newRow.rowIndex;
+//             var cellOne = newRow.insertCell();
+//             var cellTwo = newRow.insertCell();
+//             var cellThree = newRow.insertCell();
+//             var cellFour = newRow.insertCell();
+//             var cellFive = newRow.insertCell();
+//             if (imgSizeStatus != 100) {
+//               var cellSix = newRow.insertCell();
+//             } else {
+//             }
+//             indexImaginaryHindRight += 1;
+//             cellOne.innerHTML = indexRow - 1;
+//             cellTwo.innerHTML =
+//               "Imaginary Hind " +
+//               indexImaginaryHindRight +
+//               " &#x2192 Blue R" +
+//               (j + 1);
+//             cellThree.innerHTML = "Stride Width Hind(R)";
+//             if (i < pointsBlueLeft.length - 1) {
+//               distance = Math.hypot(
+//                 pointsBlueRight[j].x - pointsBlueRight[j].x,
+//                 (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
+//                   pointsBlueRight[j].y
+//               ).toFixed(3);
+//             } else {
+//               distance = Math.hypot(
+//                 pointsBlueRight[j].x - pointsBlueRight[j].x,
+//                 pointsBlueLeft[i].y - pointsBlueRight[j].y
+//               ).toFixed(3);
+//             }
+//             cellFour.innerHTML = distance;
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             distValuesSWHR.push(distance / dist);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//             }
+//           }
+//         }
+//       }
+//       console.log(distValuesSWHR);
+//       var strideWidthHindRightMeanRow = tbody.insertRow(-1);
+//       var strideWidthHindRightRowCellOne =
+//         strideWidthHindRightMeanRow.insertCell();
+//       var strideWidthHindRightRowCellTwo =
+//         strideWidthHindRightMeanRow.insertCell();
+//       strideWidthHindRightRowCellOne.colSpan = "4";
+//       strideWidthHindRightRowCellOne.innerHTML =
+//         "<b>Stride Width Hind(R) average in cm:</b> ";
+//       strideWidthHindRightRowCellTwo.innerHTML = (
+//         distValuesSWHR.reduce((a, b) => a + b, 0) / distValuesSWHR.length
+//       ).toFixed(3);
+//       if (imgSizeStatus != 100) {
+//         var strideWidthHindRightRowCellThreeOriginal =
+//           strideWidthHindRightMeanRow.insertCell();
+//         switch (imgSizeStatus) {
+//           case 50:
+//             strideWidthHindRightRowCellThreeOriginal.innerHTML = (
+//               (distValuesSWHR.reduce((a, b) => a + b, 0) /
+//                 distValuesSWHR.length) *
+//               2
+//             ).toFixed(3);
+//             break;
+//           case 75:
+//             strideWidthHindRightRowCellThreeOriginal.innerHTML = (
+//               ((distValuesSWHR.reduce((a, b) => a + b, 0) /
+//                 distValuesSWHR.length) *
+//                 100) /
+//               75
+//             ).toFixed(3);
+//             break;
+//           case 25:
+//             strideWidthHindRightRowCellThreeOriginal.innerHTML = (
+//               (distValuesSWHR.reduce((a, b) => a + b, 0) /
+//                 distValuesSWHR.length) *
+//               4
+//             ).toFixed(3);
+//             break;
+//           case 40:
+//             strideWidthHindRightRowCellThreeOriginal.innerHTML = (
+//               ((distValuesSWHR.reduce((a, b) => a + b, 0) /
+//                 distValuesSWHR.length) *
+//                 100) /
+//               40
+//             ).toFixed(3);
+//             break;
+//         }
+//       }
+//     }
+//   }
+//   var lastRow = tbody.insertRow(-1);
+//   var lastCell = lastRow.insertCell();
+//   lastCell.innerHTML =
+//     "------------------------------BREAK------------------------------";
+//   if (imgSizeStatus != 100) {
+//     lastCell.colSpan = "6";
+//   } else {
+//     lastCell.colSpan = "5";
+//   }
+//   lastCell.style.textAlign = "center";
+// }
+
+// // FUNCTION TO ADD ALL ENTRIES IN ONE CLICK WITHOUT AVERAGE
+
+// function addEntriesAll() {
+//   for (var i = 0; i < pointsRedLeft.length - 1; i++) {
+//     var newRow = tbody.insertRow(-1);
+//     let indexRow = newRow.rowIndex;
+//     var cellOne = newRow.insertCell();
+//     var cellTwo = newRow.insertCell();
+//     var cellThree = newRow.insertCell();
+//     var cellFour = newRow.insertCell();
+//     var cellFive = newRow.insertCell();
+//     if (imgSizeStatus != 100) {
+//       var cellSix = newRow.insertCell();
+//     } else {
+//     }
+//     if (imgSizeStatus) cellOne.innerHTML = indexRow - 1;
+//     cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
+//     cellThree.innerHTML = "Stride length left front";
+//     distance = Math.hypot(
+//       pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
+//       pointsRedLeft[i].y - pointsRedLeft[i + 1].y
+//     ).toFixed(3);
+//     cellFour.innerHTML = distance;
+//     if (dist != 0 && imgSizeStatus == 100) {
+//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//     }
+//     if (dist != 0 && imgSizeStatus != 100) {
+//       switch (imgSizeStatus) {
+//         case 50:
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           break;
+//         case 75:
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           break;
+//         case 25:
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           break;
+//         case 40:
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//       }
+//     }
+//     if (dist == 0 && imgSizeStatus != 100) {
+//       cellFive.innerHTML = "Undefined";
+//       cellSix.innerHTML = "Undefined";
+//     }
+//     if (dist == 0 && imgSizeStatus == 100) {
+//       cellFive.innerHTML = "Undefined";
+//     }
+//   }
+//   for (var i = 0; i < pointsRedRight.length - 1; i++) {
+//     var newRow = tbody.insertRow(-1);
+//     let indexRow = newRow.rowIndex;
+//     var cellOne = newRow.insertCell();
+//     var cellTwo = newRow.insertCell();
+//     var cellThree = newRow.insertCell();
+//     var cellFour = newRow.insertCell();
+//     var cellFive = newRow.insertCell();
+//     if (imgSizeStatus != 100) {
+//       var cellSix = newRow.insertCell();
+//     } else {
+//     }
+//     cellOne.innerHTML = indexRow - 1;
+//     cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
+//     cellThree.innerHTML = "Stride length right front";
+//     distance = Math.hypot(
+//       pointsRedRight[i].x - pointsRedRight[i + 1].x,
+//       pointsRedRight[i].y - pointsRedRight[i + 1].y
+//     ).toFixed(3);
+//     cellFour.innerHTML = distance;
+//     if (dist != 0) {
+//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       switch (imgSizeStatus) {
+//         case 50:
+//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           break;
+//         case 75:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           break;
+//         case 25:
+//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           break;
+//         case 40:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//       }
+//     }
+//     if (dist == 0 && imgSizeStatus != 100) {
+//       cellFive.innerHTML = "Undefined";
+//       cellSix.innerHTML = "Undefined";
+//     }
+//     if (dist == 0 && imgSizeStatus == 100) {
+//       cellFive.innerHTML = "Undefined";
+//     }
+//   }
+//   for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
+//     var newRow = tbody.insertRow(-1);
+//     let indexRow = newRow.rowIndex;
+//     var cellOne = newRow.insertCell();
+//     var cellTwo = newRow.insertCell();
+//     var cellThree = newRow.insertCell();
+//     var cellFour = newRow.insertCell();
+//     var cellFive = newRow.insertCell();
+//     if (imgSizeStatus != 100) {
+//       var cellSix = newRow.insertCell();
+//     } else {
+//     }
+//     cellOne.innerHTML = indexRow - 1;
+//     cellTwo.innerHTML = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
+//     cellThree.innerHTML = "Stride length left hind";
+//     distance = Math.hypot(
+//       pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
+//       pointsBlueLeft[i].y - pointsBlueLeft[i + 1].y
+//     ).toFixed(3);
+//     cellFour.innerHTML = distance;
+//     if (dist != 0) {
+//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       switch (imgSizeStatus) {
+//         case 50:
+//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           break;
+//         case 75:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           break;
+//         case 25:
+//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           break;
+//         case 40:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//       }
+//     }
+//     if (dist == 0 && imgSizeStatus != 100) {
+//       cellFive.innerHTML = "Undefined";
+//       cellSix.innerHTML = "Undefined";
+//     }
+//     if (dist == 0 && imgSizeStatus == 100) {
+//       cellFive.innerHTML = "Undefined";
+//     }
+//   }
+//   for (var i = 0; i < pointsBlueRight.length - 1; i++) {
+//     var newRow = tbody.insertRow(-1);
+//     let indexRow = newRow.rowIndex;
+//     var cellOne = newRow.insertCell();
+//     var cellTwo = newRow.insertCell();
+//     var cellThree = newRow.insertCell();
+//     var cellFour = newRow.insertCell();
+//     var cellFive = newRow.insertCell();
+//     if (imgSizeStatus != 100) {
+//       var cellSix = newRow.insertCell();
+//     } else {
+//     }
+//     cellOne.innerHTML = indexRow - 1;
+//     cellTwo.innerHTML = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
+//     cellThree.innerHTML = "Stride length right hind";
+//     distance = Math.hypot(
+//       pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
+//       pointsBlueRight[i].y - pointsBlueRight[i + 1].y
+//     ).toFixed(3);
+//     cellFour.innerHTML = distance;
+//     if (dist != 0) {
+//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       switch (imgSizeStatus) {
+//         case 50:
+//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           break;
+//         case 75:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           break;
+//         case 25:
+//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           break;
+//         case 40:
+//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//       }
+//     }
+//     if (dist == 0 && imgSizeStatus != 100) {
+//       cellFive.innerHTML = "Undefined";
+//       cellSix.innerHTML = "Undefined";
+//     }
+//     if (dist == 0 && imgSizeStatus == 100) {
+//       cellFive.innerHTML = "Undefined";
+//     }
+//   }
+//   for (var i = 0; i < pointsRedLeft.length; i++) {
+//     for (var j = 0; j < pointsBlueLeft.length; j++) {
+//       if (i == j) {
+//         var newRow = tbody.insertRow(-1);
+//         let indexRow = newRow.rowIndex;
+//         var cellOne = newRow.insertCell();
+//         var cellTwo = newRow.insertCell();
+//         var cellThree = newRow.insertCell();
+//         var cellFour = newRow.insertCell();
+//         var cellFive = newRow.insertCell();
+//         if (imgSizeStatus != 100) {
+//           var cellSix = newRow.insertCell();
+//         } else {
+//         }
+//         cellOne.innerHTML = indexRow - 1;
+//         cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
+//         cellThree.innerHTML = "Overlap Left";
+//         distance = Math.hypot(
+//           pointsRedLeft[i].x - pointsBlueLeft[j].x,
+//           pointsRedLeft[i].y - pointsBlueLeft[j].y
+//         ).toFixed(3);
+//         cellFour.innerHTML = distance;
+//         if (dist != 0) {
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           switch (imgSizeStatus) {
+//             case 50:
+//               cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               break;
+//             case 75:
+//               cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               break;
+//             case 25:
+//               cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               break;
+//             case 40:
+//               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//           }
+//         }
+//         if (dist == 0 && imgSizeStatus != 100) {
+//           cellFive.innerHTML = "Undefined";
+//           cellSix.innerHTML = "Undefined";
+//         }
+//         if (dist == 0 && imgSizeStatus == 100) {
+//           cellFive.innerHTML = "Undefined";
+//         }
+//       }
+//     }
+//   }
+//   for (var i = 0; i < pointsRedRight.length; i++) {
+//     for (var j = 0; j < pointsBlueRight.length; j++) {
+//       if (i == j) {
+//         var newRow = tbody.insertRow(-1);
+//         let indexRow = newRow.rowIndex;
+//         var cellOne = newRow.insertCell();
+//         var cellTwo = newRow.insertCell();
+//         var cellThree = newRow.insertCell();
+//         var cellFour = newRow.insertCell();
+//         var cellFive = newRow.insertCell();
+//         if (imgSizeStatus != 100) {
+//           var cellSix = newRow.insertCell();
+//         } else {
+//         }
+//         cellOne.innerHTML = indexRow - 1;
+//         cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
+//         cellThree.innerHTML = "Overlap Right";
+//         distance = Math.hypot(
+//           pointsRedRight[i].x - pointsBlueRight[j].x,
+//           pointsRedRight[i].y - pointsBlueRight[j].y
+//         ).toFixed(3);
+//         cellFour.innerHTML = distance;
+//         if (dist != 0) {
+//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           switch (imgSizeStatus) {
+//             case 50:
+//               cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               break;
+//             case 75:
+//               cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               break;
+//             case 25:
+//               cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               break;
+//             case 40:
+//               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//           }
+//         }
+//         if (dist == 0 && imgSizeStatus != 100) {
+//           cellFive.innerHTML = "Undefined";
+//           cellSix.innerHTML = "Undefined";
+//         }
+//         if (dist == 0 && imgSizeStatus == 100) {
+//           cellFive.innerHTML = "Undefined";
+//         }
+//       }
+//     }
+//   }
+//   if (footstepStart.options[footstepStart.selectedIndex].value == "Left") {
+//     var indexImaginaryFrontLeft = 0;
+//     var indexImaginaryHindLeft = 0;
+//     for (var i = 0; i < pointsRedLeft.length; i++) {
+//       for (var j = 0; j < pointsRedRight.length; j++) {
+//         if (i == j) {
+//           var newRow = tbody.insertRow(-1);
+//           let indexRow = newRow.rowIndex;
+//           var cellOne = newRow.insertCell();
+//           var cellTwo = newRow.insertCell();
+//           var cellThree = newRow.insertCell();
+//           var cellFour = newRow.insertCell();
+//           var cellFive = newRow.insertCell();
+//           if (imgSizeStatus != 100) {
+//             var cellSix = newRow.insertCell();
+//           } else {
+//           }
+//           indexImaginaryFrontLeft += 1;
+//           cellOne.innerHTML = indexRow - 1;
+//           cellTwo.innerHTML =
+//             "Imaginary Front " +
+//             indexImaginaryFrontLeft +
+//             " &#x2192 Red R" +
+//             (j + 1);
+//           cellThree.innerHTML = "Stride Width Front(L)";
+//           if (i < pointsRedLeft.length - 1) {
+//             distance = Math.hypot(
+//               pointsRedRight[j].x - pointsRedRight[j].x,
+//               (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
+//                 pointsRedRight[j].y
+//             ).toFixed(3);
+//           } else {
+//             distance = Math.hypot(
+//               pointsRedRight[j].x - pointsRedRight[j].x,
+//               pointsRedLeft[i].y - pointsRedRight[j].y
+//             ).toFixed(3);
+//           }
+//           cellFour.innerHTML = distance;
+//           if (dist != 0) {
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//             }
+//           }
+//           if (dist == 0 && imgSizeStatus != 100) {
+//             cellFive.innerHTML = "Undefined";
+//             cellSix.innerHTML = "Undefined";
+//           }
+//           if (dist == 0 && imgSizeStatus == 100) {
+//             cellFive.innerHTML = "Undefined";
+//           }
+//         }
+//         if (i == j + 1) {
+//           var newRow = tbody.insertRow(-1);
+//           let indexRow = newRow.rowIndex;
+//           var cellOne = newRow.insertCell();
+//           var cellTwo = newRow.insertCell();
+//           var cellThree = newRow.insertCell();
+//           var cellFour = newRow.insertCell();
+//           var cellFive = newRow.insertCell();
+//           if (imgSizeStatus != 100) {
+//             var cellSix = newRow.insertCell();
+//           } else {
+//           }
+//           indexImaginaryFrontLeft += 1;
+//           cellOne.innerHTML = indexRow - 1;
+//           cellTwo.innerHTML =
+//             "Imaginary Front " +
+//             indexImaginaryFrontLeft +
+//             " &#x2192 Red L" +
+//             (i + 1);
+//           cellThree.innerHTML = "Stride Width Front(L)";
+//           if (j < pointsRedRight.length - 1) {
+//             distance = Math.hypot(
+//               pointsRedLeft[i].x - pointsRedLeft[i].x,
+//               pointsRedLeft[i].y -
+//                 (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2
+//             ).toFixed(3);
+//           } else {
+//             distance = Math.hypot(
+//               pointsRedLeft[i].x - pointsRedLeft[i].x,
+//               pointsRedLeft[i].y - pointsRedRight[j].y
+//             ).toFixed(3);
+//           }
+//           cellFour.innerHTML = distance;
+//           if (dist != 0) {
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//             }
+//           }
+//           if (dist == 0 && imgSizeStatus != 100) {
+//             cellFive.innerHTML = "Undefined";
+//             cellSix.innerHTML = "Undefined";
+//           }
+//           if (dist == 0 && imgSizeStatus == 100) {
+//             cellFive.innerHTML = "Undefined";
+//           }
+//         }
+//       }
+//     }
+//     for (var i = 0; i < pointsBlueLeft.length; i++) {
+//       for (var j = 0; j < pointsBlueRight.length; j++) {
+//         if (i == j) {
+//           var newRow = tbody.insertRow(-1);
+//           let indexRow = newRow.rowIndex;
+//           var cellOne = newRow.insertCell();
+//           var cellTwo = newRow.insertCell();
+//           var cellThree = newRow.insertCell();
+//           var cellFour = newRow.insertCell();
+//           var cellFive = newRow.insertCell();
+//           if (imgSizeStatus != 100) {
+//             var cellSix = newRow.insertCell();
+//           } else {
+//           }
+//           indexImaginaryHindLeft += 1;
+//           cellOne.innerHTML = indexRow - 1;
+//           cellTwo.innerHTML =
+//             "Imaginary Hind " +
+//             indexImaginaryHindLeft +
+//             " &#x2192 Blue R" +
+//             (j + 1);
+//           cellThree.innerHTML = "Stride Width Hind(L)";
+//           if (i < pointsBlueLeft.length - 1) {
+//             distance = Math.hypot(
+//               pointsBlueRight[j].x - pointsBlueRight[j].x,
+//               (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
+//                 pointsBlueRight[j].y
+//             ).toFixed(3);
+//           } else {
+//             distance = Math.hypot(
+//               pointsBlueRight[j].x - pointsBlueRight[j].x,
+//               pointsBlueLeft[i].y - pointsBlueRight[j].y
+//             ).toFixed(3);
+//           }
+//           cellFour.innerHTML = distance;
+//           if (dist != 0) {
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//             }
+//           }
+//           if (dist == 0 && imgSizeStatus != 100) {
+//             cellFive.innerHTML = "Undefined";
+//             cellSix.innerHTML = "Undefined";
+//           }
+//           if (dist == 0 && imgSizeStatus == 100) {
+//             cellFive.innerHTML = "Undefined";
+//           }
+//         }
+//         if (i == j + 1) {
+//           var newRow = tbody.insertRow(-1);
+//           let indexRow = newRow.rowIndex;
+//           var cellOne = newRow.insertCell();
+//           var cellTwo = newRow.insertCell();
+//           var cellThree = newRow.insertCell();
+//           var cellFour = newRow.insertCell();
+//           var cellFive = newRow.insertCell();
+//           if (imgSizeStatus != 100) {
+//             var cellSix = newRow.insertCell();
+//           } else {
+//           }
+//           indexImaginaryHindLeft += 1;
+//           cellOne.innerHTML = indexRow - 1;
+//           cellTwo.innerHTML =
+//             "Imaginary Hind " +
+//             indexImaginaryHindLeft +
+//             " &#x2192 Blue L" +
+//             (i + 1);
+//           cellThree.innerHTML = "Stride Width Hind(L)";
+//           if (j < pointsBlueRight.length - 1) {
+//             distance = Math.hypot(
+//               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
+//               pointsBlueLeft[i].y -
+//                 (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2
+//             ).toFixed(3);
+//           } else {
+//             distance = Math.hypot(
+//               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
+//               pointsBlueLeft[i].y - pointsBlueRight[j].y
+//             ).toFixed(3);
+//           }
+//           cellFour.innerHTML = distance;
+//           if (dist != 0) {
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//             }
+//           }
+//           if (dist == 0 && imgSizeStatus != 100) {
+//             cellFive.innerHTML = "Undefined";
+//             cellSix.innerHTML = "Undefined";
+//           }
+//           if (dist == 0 && imgSizeStatus == 100) {
+//             cellFive.innerHTML = "Undefined";
+//           }
+//         }
+//       }
+//     }
+//   }
+//   if (footstepStart.options[footstepStart.selectedIndex].value == "Right") {
+//     var indexImaginaryFrontRight = 0;
+//     var indexImaginaryHindRight = 0;
+//     for (var i = 0; i < pointsRedLeft.length; i++) {
+//       for (var j = 0; j < pointsRedRight.length; j++) {
+//         if (i == j) {
+//           var newRow = tbody.insertRow(-1);
+//           let indexRow = newRow.rowIndex;
+//           var cellOne = newRow.insertCell();
+//           var cellTwo = newRow.insertCell();
+//           var cellThree = newRow.insertCell();
+//           var cellFour = newRow.insertCell();
+//           var cellFive = newRow.insertCell();
+//           if (imgSizeStatus != 100) {
+//             var cellSix = newRow.insertCell();
+//           } else {
+//           }
+//           indexImaginaryFrontRight += 1;
+//           cellOne.innerHTML = indexRow - 1;
+//           cellTwo.innerHTML =
+//             "Imaginary Front " +
+//             indexImaginaryFrontRight +
+//             " &#x2192 Red L" +
+//             (i + 1);
+//           cellThree.innerHTML = "Stride Width Front(R)";
+//           if (j < pointsRedRight.length - 1) {
+//             distance = Math.hypot(
+//               pointsRedLeft[i].x - pointsRedLeft[i].x,
+//               (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2 -
+//                 pointsRedLeft[i].y
+//             ).toFixed(3);
+//           } else {
+//             distance = Math.hypot(
+//               pointsRedLeft[i].x - pointsRedLeft[i].x,
+//               pointsRedRight[j].y - pointsRedLeft[i].y
+//             ).toFixed(3);
+//           }
+//           cellFour.innerHTML = distance;
+//           if (dist != 0) {
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//             }
+//           }
+//           if (dist == 0 && imgSizeStatus != 100) {
+//             cellFive.innerHTML = "Undefined";
+//             cellSix.innerHTML = "Undefined";
+//           }
+//           if (dist == 0 && imgSizeStatus == 100) {
+//             cellFive.innerHTML = "Undefined";
+//           }
+//         }
+//         if (j == i + 1) {
+//           var newRow = tbody.insertRow(-1);
+//           let indexRow = newRow.rowIndex;
+//           var cellOne = newRow.insertCell();
+//           var cellTwo = newRow.insertCell();
+//           var cellThree = newRow.insertCell();
+//           var cellFour = newRow.insertCell();
+//           var cellFive = newRow.insertCell();
+//           if (imgSizeStatus != 100) {
+//             var cellSix = newRow.insertCell();
+//           } else {
+//           }
+//           indexImaginaryFrontRight += 1;
+//           cellOne.innerHTML = indexRow - 1;
+//           cellTwo.innerHTML =
+//             "Imaginary Front " +
+//             indexImaginaryFrontRight +
+//             " &#x2192 Red R" +
+//             (j + 1);
+//           cellThree.innerHTML = "Stride Width Front(R)";
+//           if (i < pointsRedLeft.length - 1) {
+//             distance = Math.hypot(
+//               pointsRedRight[j].x - pointsRedRight[j].x,
+//               (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
+//                 pointsRedRight[j].y
+//             ).toFixed(3);
+//           } else {
+//             distance = Math.hypot(
+//               pointsRedRight[j].x - pointsRedRight[j].x,
+//               pointsRedLeft[i].y - pointsRedRight[j].y
+//             ).toFixed(3);
+//           }
+//           cellFour.innerHTML = distance;
+//           if (dist != 0) {
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//             }
+//           }
+//           if (dist == 0 && imgSizeStatus != 100) {
+//             cellFive.innerHTML = "Undefined";
+//             cellSix.innerHTML = "Undefined";
+//           }
+//           if (dist == 0 && imgSizeStatus == 100) {
+//             cellFive.innerHTML = "Undefined";
+//           }
+//         }
+//       }
+//     }
+//     for (var i = 0; i < pointsBlueLeft.length; i++) {
+//       for (var j = 0; j < pointsBlueRight.length; j++) {
+//         if (i == j) {
+//           var newRow = tbody.insertRow(-1);
+//           let indexRow = newRow.rowIndex;
+//           var cellOne = newRow.insertCell();
+//           var cellTwo = newRow.insertCell();
+//           var cellThree = newRow.insertCell();
+//           var cellFour = newRow.insertCell();
+//           var cellFive = newRow.insertCell();
+//           if (imgSizeStatus != 100) {
+//             var cellSix = newRow.insertCell();
+//           } else {
+//           }
+//           indexImaginaryHindRight += 1;
+//           cellOne.innerHTML = indexRow - 1;
+//           cellTwo.innerHTML =
+//             "Imaginary Hind " +
+//             indexImaginaryHindRight +
+//             " &#x2192 Blue L" +
+//             (i + 1);
+//           cellThree.innerHTML = "Stride Width Hind(R)";
+//           if (j < pointsBlueRight.length - 1) {
+//             distance = Math.hypot(
+//               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
+//               (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2 -
+//                 pointsBlueLeft[i].y
+//             ).toFixed(3);
+//           } else {
+//             distance = Math.hypot(
+//               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
+//               pointsBlueRight[j].y - pointsBlueLeft[i].y
+//             ).toFixed(3);
+//           }
+//           cellFour.innerHTML = distance;
+//           if (dist != 0) {
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//             }
+//           }
+//           if (dist == 0 && imgSizeStatus != 100) {
+//             cellFive.innerHTML = "Undefined";
+//             cellSix.innerHTML = "Undefined";
+//           }
+//           if (dist == 0 && imgSizeStatus == 100) {
+//             cellFive.innerHTML = "Undefined";
+//           }
+//         }
+//         if (j == i + 1) {
+//           var newRow = tbody.insertRow(-1);
+//           let indexRow = newRow.rowIndex;
+//           var cellOne = newRow.insertCell();
+//           var cellTwo = newRow.insertCell();
+//           var cellThree = newRow.insertCell();
+//           var cellFour = newRow.insertCell();
+//           var cellFive = newRow.insertCell();
+//           if (imgSizeStatus != 100) {
+//             var cellSix = newRow.insertCell();
+//           } else {
+//           }
+//           indexImaginaryHindRight += 1;
+//           cellOne.innerHTML = indexRow - 1;
+//           cellTwo.innerHTML =
+//             "Imaginary Hind " +
+//             indexImaginaryHindRight +
+//             " &#x2192 Blue R" +
+//             (j + 1);
+//           cellThree.innerHTML = "Stride Width Hind(R)";
+//           if (i < pointsBlueLeft.length - 1) {
+//             distance = Math.hypot(
+//               pointsBlueRight[j].x - pointsBlueRight[j].x,
+//               (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
+//                 pointsBlueRight[j].y
+//             ).toFixed(3);
+//           } else {
+//             distance = Math.hypot(
+//               pointsBlueRight[j].x - pointsBlueRight[j].x,
+//               pointsBlueLeft[i].y - pointsBlueRight[j].y
+//             ).toFixed(3);
+//           }
+//           cellFour.innerHTML = distance;
+//           if (dist != 0) {
+//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             switch (imgSizeStatus) {
+//               case 50:
+//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 75:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 25:
+//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 break;
+//               case 40:
+//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//             }
+//           }
+//           if (dist == 0 && imgSizeStatus != 100) {
+//             cellFive.innerHTML = "Undefined";
+//             cellSix.innerHTML = "Undefined";
+//           }
+//           if (dist == 0 && imgSizeStatus == 100) {
+//             cellFive.innerHTML = "Undefined";
+//           }
+//         }
+//       }
+//     }
+//   }
+//   if (
+//     pointsRedLeft.length < 1 ||
+//     pointsRedRight.length < 1 ||
+//     pointsBlueLeft.length < 1 ||
+//     pointsBlueRight.length < 1
+//   ) {
+//     alert("Points missing in some measurements.");
+//   }
+//   var lastRow = tbody.insertRow(-1);
+//   var lastCell = lastRow.insertCell();
+//   lastCell.innerHTML =
+//     "------------------------------BREAK------------------------------";
+//   if (imgSizeStatus != 100) {
+//     lastCell.colSpan = "6";
+//   } else {
+//     lastCell.colSpan = "5";
+//   }
+//   lastCell.style.textAlign = "center";
+// }
+
+// ADD ALL ENTRIES WITH ONE CLICK WITH AVERAGE FOR EACH MEASUREMENT
 
 function addEntriesAllAverage() {
   var distValuesSLLF = [];
@@ -2283,10 +4251,6 @@ function addEntriesAllAverage() {
       var cellThree = newRow.insertCell();
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
-      if (imgSizeStatus != 100) {
-        var cellSix = newRow.insertCell();
-      } else {
-      }
       // let distance = 0;
       cellOne.innerHTML = indexRow - 1;
       cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
@@ -2298,19 +4262,6 @@ function addEntriesAllAverage() {
       cellFour.innerHTML = distance;
       cellFive.innerHTML = (distance / dist).toFixed(3);
       distValuesSLLF.push(distance / dist);
-      switch (imgSizeStatus) {
-        case 50:
-          cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-          break;
-        case 75:
-          cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-          break;
-        case 25:
-          cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-          break;
-        case 40:
-          cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-      }
     }
     console.log(distValuesSLLF);
     var strideLeftFrontMeanRow = tbody.insertRow(-1);
@@ -2320,44 +4271,8 @@ function addEntriesAllAverage() {
     strideLeftFrontRowCellOne.innerHTML =
       "<b>Stride length left front average in cm:</b> ";
     strideLeftFrontRowCellTwo.innerHTML = (
-      distValuesSLLF.reduce((a, b) => a + b, 0) / distValuesSLLF.length
+      distValuesSLLF.reduce((a, b) => a + b) / distValuesSLLF.length
     ).toFixed(3);
-    if (imgSizeStatus != 100) {
-      var strideLeftFrontRowCellThreeOriginal =
-        strideLeftFrontMeanRow.insertCell();
-      switch (imgSizeStatus) {
-        case 50:
-          strideLeftFrontRowCellThreeOriginal.innerHTML = (
-            (distValuesSLLF.reduce((a, b) => a + b, 0) /
-              distValuesSLLF.length) *
-            2
-          ).toFixed(3);
-          break;
-        case 75:
-          strideLeftFrontRowCellThreeOriginal.innerHTML = (
-            ((distValuesSLLF.reduce((a, b) => a + b, 0) /
-              distValuesSLLF.length) *
-              100) /
-            75
-          ).toFixed(3);
-          break;
-        case 25:
-          strideLeftFrontRowCellThreeOriginal.innerHTML = (
-            (distValuesSLLF.reduce((a, b) => a + b, 0) /
-              distValuesSLLF.length) *
-            4
-          ).toFixed(3);
-          break;
-        case 40:
-          strideLeftFrontRowCellThreeOriginal.innerHTML = (
-            ((distValuesSLLF.reduce((a, b) => a + b, 0) /
-              distValuesSLLF.length) *
-              100) /
-            40
-          ).toFixed(3);
-          break;
-      }
-    }
     for (var i = 0; i < pointsRedRight.length - 1; i++) {
       var newRow = tbody.insertRow(-1);
       let indexRow = newRow.rowIndex;
@@ -2366,10 +4281,6 @@ function addEntriesAllAverage() {
       var cellThree = newRow.insertCell();
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
-      if (imgSizeStatus != 100) {
-        var cellSix = newRow.insertCell();
-      } else {
-      }
       cellOne.innerHTML = indexRow - 1;
       cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
       cellThree.innerHTML = "Stride length right front";
@@ -2380,19 +4291,6 @@ function addEntriesAllAverage() {
       cellFour.innerHTML = distance;
       cellFive.innerHTML = (distance / dist).toFixed(3);
       distValuesSLRF.push(distance / dist);
-      switch (imgSizeStatus) {
-        case 50:
-          cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-          break;
-        case 75:
-          cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-          break;
-        case 25:
-          cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-          break;
-        case 40:
-          cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-      }
     }
     console.log(distValuesSLRF);
     var strideRightFrontMeanRow = tbody.insertRow(-1);
@@ -2402,44 +4300,8 @@ function addEntriesAllAverage() {
     strideRightFrontRowCellOne.innerHTML =
       "<b>Stride length right front average in cm:</b> ";
     strideRightFrontRowCellTwo.innerHTML = (
-      distValuesSLRF.reduce((a, b) => a + b, 0) / distValuesSLRF.length
+      distValuesSLRF.reduce((a, b) => a + b) / distValuesSLRF.length
     ).toFixed(3);
-    if (imgSizeStatus != 100) {
-      var strideRightFrontRowCellThreeOriginal =
-        strideRightFrontMeanRow.insertCell();
-      switch (imgSizeStatus) {
-        case 50:
-          strideRightFrontRowCellThreeOriginal.innerHTML = (
-            (distValuesSLRF.reduce((a, b) => a + b, 0) /
-              distValuesSLRF.length) *
-            2
-          ).toFixed(3);
-          break;
-        case 75:
-          strideRightFrontRowCellThreeOriginal.innerHTML = (
-            ((distValuesSLRF.reduce((a, b) => a + b, 0) /
-              distValuesSLRF.length) *
-              100) /
-            75
-          ).toFixed(3);
-          break;
-        case 25:
-          strideRightFrontRowCellThreeOriginal.innerHTML = (
-            (distValuesSLRF.reduce((a, b) => a + b, 0) /
-              distValuesSLRF.length) *
-            4
-          ).toFixed(3);
-          break;
-        case 40:
-          strideRightFrontRowCellThreeOriginal.innerHTML = (
-            ((distValuesSLRF.reduce((a, b) => a + b, 0) /
-              distValuesSLRF.length) *
-              100) /
-            40
-          ).toFixed(3);
-          break;
-      }
-    }
     for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
       var newRow = tbody.insertRow(-1);
       let indexRow = newRow.rowIndex;
@@ -2448,10 +4310,6 @@ function addEntriesAllAverage() {
       var cellThree = newRow.insertCell();
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
-      if (imgSizeStatus != 100) {
-        var cellSix = newRow.insertCell();
-      } else {
-      }
       cellOne.innerHTML = indexRow - 1;
       cellTwo.innerHTML = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
       cellThree.innerHTML = "Stride length left hind";
@@ -2462,19 +4320,6 @@ function addEntriesAllAverage() {
       cellFour.innerHTML = distance;
       cellFive.innerHTML = (distance / dist).toFixed(3);
       distValuesSLLH.push(distance / dist);
-      switch (imgSizeStatus) {
-        case 50:
-          cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-          break;
-        case 75:
-          cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-          break;
-        case 25:
-          cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-          break;
-        case 40:
-          cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-      }
     }
     console.log(distValuesSLLH);
     var strideLeftHindMeanRow = tbody.insertRow(-1);
@@ -2484,44 +4329,8 @@ function addEntriesAllAverage() {
     strideLeftHindRowCellOne.innerHTML =
       "<b>Stride length left hind average in cm:</b> ";
     strideLeftHindRowCellTwo.innerHTML = (
-      distValuesSLLH.reduce((a, b) => a + b, 0) / distValuesSLLH.length
+      distValuesSLLH.reduce((a, b) => a + b) / distValuesSLLH.length
     ).toFixed(3);
-    if (imgSizeStatus != 100) {
-      var strideLeftHindRowCellThreeOriginal =
-        strideLeftHindMeanRow.insertCell();
-      switch (imgSizeStatus) {
-        case 50:
-          strideLeftHindRowCellThreeOriginal.innerHTML = (
-            (distValuesSLLH.reduce((a, b) => a + b, 0) /
-              distValuesSLLH.length) *
-            2
-          ).toFixed(3);
-          break;
-        case 75:
-          strideLeftHindRowCellThreeOriginal.innerHTML = (
-            ((distValuesSLLH.reduce((a, b) => a + b, 0) /
-              distValuesSLLH.length) *
-              100) /
-            75
-          ).toFixed(3);
-          break;
-        case 25:
-          strideLeftHindRowCellThreeOriginal.innerHTML = (
-            (distValuesSLLH.reduce((a, b) => a + b, 0) /
-              distValuesSLLH.length) *
-            4
-          ).toFixed(3);
-          break;
-        case 40:
-          strideLeftHindRowCellThreeOriginal.innerHTML = (
-            ((distValuesSLLH.reduce((a, b) => a + b, 0) /
-              distValuesSLLH.length) *
-              100) /
-            40
-          ).toFixed(3);
-          break;
-      }
-    }
     for (var i = 0; i < pointsBlueRight.length - 1; i++) {
       var newRow = tbody.insertRow(-1);
       let indexRow = newRow.rowIndex;
@@ -2530,10 +4339,6 @@ function addEntriesAllAverage() {
       var cellThree = newRow.insertCell();
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
-      if (imgSizeStatus != 100) {
-        var cellSix = newRow.insertCell();
-      } else {
-      }
       cellOne.innerHTML = indexRow - 1;
       cellTwo.innerHTML = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
       cellThree.innerHTML = "Stride length right hind";
@@ -2544,19 +4349,6 @@ function addEntriesAllAverage() {
       cellFour.innerHTML = distance;
       cellFive.innerHTML = (distance / dist).toFixed(3);
       distValuesSLRH.push(distance / dist);
-      switch (imgSizeStatus) {
-        case 50:
-          cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-          break;
-        case 75:
-          cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-          break;
-        case 25:
-          cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-          break;
-        case 40:
-          cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-      }
     }
     console.log(distValuesSLRH);
     var strideRightHindMeanRow = tbody.insertRow(-1);
@@ -2566,44 +4358,8 @@ function addEntriesAllAverage() {
     strideRightHindRowCellOne.innerHTML =
       "<b>Stride length right hind average in cm:</b> ";
     strideRightHindRowCellTwo.innerHTML = (
-      distValuesSLRH.reduce((a, b) => a + b, 0) / distValuesSLRH.length
+      distValuesSLRH.reduce((a, b) => a + b) / distValuesSLRH.length
     ).toFixed(3);
-    if (imgSizeStatus != 100) {
-      var strideRightHindRowCellThreeOriginal =
-        strideRightHindMeanRow.insertCell();
-      switch (imgSizeStatus) {
-        case 50:
-          strideRightHindRowCellThreeOriginal.innerHTML = (
-            (distValuesSLRH.reduce((a, b) => a + b, 0) /
-              distValuesSLRH.length) *
-            2
-          ).toFixed(3);
-          break;
-        case 75:
-          strideRightHindRowCellThreeOriginal.innerHTML = (
-            ((distValuesSLRH.reduce((a, b) => a + b, 0) /
-              distValuesSLRH.length) *
-              100) /
-            75
-          ).toFixed(3);
-          break;
-        case 25:
-          strideRightHindRowCellThreeOriginal.innerHTML = (
-            (distValuesSLRH.reduce((a, b) => a + b, 0) /
-              distValuesSLRH.length) *
-            4
-          ).toFixed(3);
-          break;
-        case 40:
-          strideRightHindRowCellThreeOriginal.innerHTML = (
-            ((distValuesSLRH.reduce((a, b) => a + b, 0) /
-              distValuesSLRH.length) *
-              100) /
-            40
-          ).toFixed(3);
-          break;
-      }
-    }
     for (var i = 0; i < pointsRedLeft.length; i++) {
       for (var j = 0; j < pointsBlueLeft.length; j++) {
         if (i == j) {
@@ -2614,10 +4370,6 @@ function addEntriesAllAverage() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          if (imgSizeStatus != 100) {
-            var cellSix = newRow.insertCell();
-          } else {
-          }
           cellOne.innerHTML = indexRow - 1;
           cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
           cellThree.innerHTML = "Overlap Left";
@@ -2628,19 +4380,6 @@ function addEntriesAllAverage() {
           cellFour.innerHTML = distance;
           cellFive.innerHTML = (distance / dist).toFixed(3);
           distValuesOL.push(distance / dist);
-          switch (imgSizeStatus) {
-            case 50:
-              cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-              break;
-            case 75:
-              cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-              break;
-            case 25:
-              cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-              break;
-            case 40:
-              cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-          }
         }
       }
     }
@@ -2651,39 +4390,8 @@ function addEntriesAllAverage() {
     overlapLeftRowCellOne.colSpan = "4";
     overlapLeftRowCellOne.innerHTML = "<b>Overlap left average in cm:</b> ";
     overlapLeftRowCellTwo.innerHTML = (
-      distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length
+      distValuesOL.reduce((a, b) => a + b) / distValuesOL.length
     ).toFixed(3);
-    if (imgSizeStatus != 100) {
-      var overlapLeftRowCellThreeOriginal = overlapLeftMeanRow.insertCell();
-      switch (imgSizeStatus) {
-        case 50:
-          overlapLeftRowCellThreeOriginal.innerHTML = (
-            (distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
-            2
-          ).toFixed(3);
-          break;
-        case 75:
-          overlapLeftRowCellThreeOriginal.innerHTML = (
-            ((distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
-              100) /
-            75
-          ).toFixed(3);
-          break;
-        case 25:
-          overlapLeftRowCellThreeOriginal.innerHTML = (
-            (distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
-            4
-          ).toFixed(3);
-          break;
-        case 40:
-          overlapLeftRowCellThreeOriginal.innerHTML = (
-            ((distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
-              100) /
-            40
-          ).toFixed(3);
-          break;
-      }
-    }
     for (var i = 0; i < pointsRedRight.length; i++) {
       for (var j = 0; j < pointsBlueRight.length; j++) {
         if (i == j) {
@@ -2694,10 +4402,6 @@ function addEntriesAllAverage() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          if (imgSizeStatus != 100) {
-            var cellSix = newRow.insertCell();
-          } else {
-          }
           cellOne.innerHTML = indexRow - 1;
           cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
           cellThree.innerHTML = "Overlap Right";
@@ -2708,19 +4412,6 @@ function addEntriesAllAverage() {
           cellFour.innerHTML = distance;
           cellFive.innerHTML = (distance / dist).toFixed(3);
           distValuesOR.push(distance / dist);
-          switch (imgSizeStatus) {
-            case 50:
-              cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-              break;
-            case 75:
-              cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-              break;
-            case 25:
-              cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-              break;
-            case 40:
-              cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-          }
         }
       }
     }
@@ -2731,39 +4422,8 @@ function addEntriesAllAverage() {
     overlapRightRowCellOne.colSpan = "4";
     overlapRightRowCellOne.innerHTML = "<b>Overlap Right average in cm:</b> ";
     overlapRightRowCellTwo.innerHTML = (
-      distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length
+      distValuesOR.reduce((a, b) => a + b) / distValuesOR.length
     ).toFixed(3);
-    if (imgSizeStatus != 100) {
-      var overlapRightRowCellThreeOriginal = overlapRightMeanRow.insertCell();
-      switch (imgSizeStatus) {
-        case 50:
-          overlapRightRowCellThreeOriginal.innerHTML = (
-            (distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
-            2
-          ).toFixed(3);
-          break;
-        case 75:
-          overlapRightRowCellThreeOriginal.innerHTML = (
-            ((distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
-              100) /
-            75
-          ).toFixed(3);
-          break;
-        case 25:
-          overlapRightRowCellThreeOriginal.innerHTML = (
-            (distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
-            4
-          ).toFixed(3);
-          break;
-        case 40:
-          overlapRightRowCellThreeOriginal.innerHTML = (
-            ((distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
-              100) /
-            40
-          ).toFixed(3);
-          break;
-      }
-    }
     if (footstepStart.options[footstepStart.selectedIndex].value == "Left") {
       var indexImaginaryFrontLeft = 0;
       var indexImaginaryHindLeft = 0;
@@ -2777,10 +4437,6 @@ function addEntriesAllAverage() {
             var cellThree = newRow.insertCell();
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
-            if (imgSizeStatus != 100) {
-              var cellSix = newRow.insertCell();
-            } else {
-            }
             indexImaginaryFrontLeft += 1;
             cellOne.innerHTML = indexRow - 1;
             cellTwo.innerHTML =
@@ -2804,19 +4460,6 @@ function addEntriesAllAverage() {
             cellFour.innerHTML = distance;
             cellFive.innerHTML = (distance / dist).toFixed(3);
             distValuesSWFL.push(distance / dist);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-            }
           }
           if (i == j + 1) {
             var newRow = tbody.insertRow(-1);
@@ -2826,10 +4469,6 @@ function addEntriesAllAverage() {
             var cellThree = newRow.insertCell();
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
-            if (imgSizeStatus != 100) {
-              var cellSix = newRow.insertCell();
-            } else {
-            }
             indexImaginaryFrontLeft += 1;
             cellOne.innerHTML = indexRow - 1;
             cellTwo.innerHTML =
@@ -2853,19 +4492,6 @@ function addEntriesAllAverage() {
             cellFour.innerHTML = distance;
             cellFive.innerHTML = (distance / dist).toFixed(3);
             distValuesSWFL.push(distance / dist);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-            }
           }
         }
       }
@@ -2879,44 +4505,8 @@ function addEntriesAllAverage() {
       strideWidthFrontLeftRowCellOne.innerHTML =
         "<b>Stride Width Front(L) average in cm:</b> ";
       strideWidthFrontLeftRowCellTwo.innerHTML = (
-        distValuesSWFL.reduce((a, b) => a + b, 0) / distValuesSWFL.length
+        distValuesSWFL.reduce((a, b) => a + b) / distValuesSWFL.length
       ).toFixed(3);
-      if (imgSizeStatus != 100) {
-        var strideWidthFrontLeftRowCellThreeOriginal =
-          strideWidthFrontLeftMeanRow.insertCell();
-        switch (imgSizeStatus) {
-          case 50:
-            strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
-              (distValuesSWFL.reduce((a, b) => a + b, 0) /
-                distValuesSWFL.length) *
-              2
-            ).toFixed(3);
-            break;
-          case 75:
-            strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
-              ((distValuesSWFL.reduce((a, b) => a + b, 0) /
-                distValuesSWFL.length) *
-                100) /
-              75
-            ).toFixed(3);
-            break;
-          case 25:
-            strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
-              (distValuesSWFL.reduce((a, b) => a + b, 0) /
-                distValuesSWFL.length) *
-              4
-            ).toFixed(3);
-            break;
-          case 40:
-            strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
-              ((distValuesSWFL.reduce((a, b) => a + b, 0) /
-                distValuesSWFL.length) *
-                100) /
-              40
-            ).toFixed(3);
-            break;
-        }
-      }
       for (var i = 0; i < pointsBlueLeft.length; i++) {
         for (var j = 0; j < pointsBlueRight.length; j++) {
           if (i == j) {
@@ -2927,10 +4517,6 @@ function addEntriesAllAverage() {
             var cellThree = newRow.insertCell();
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
-            if (imgSizeStatus != 100) {
-              var cellSix = newRow.insertCell();
-            } else {
-            }
             indexImaginaryHindLeft += 1;
             cellOne.innerHTML = indexRow - 1;
             cellTwo.innerHTML =
@@ -2954,19 +4540,6 @@ function addEntriesAllAverage() {
             cellFour.innerHTML = distance;
             cellFive.innerHTML = (distance / dist).toFixed(3);
             distValuesSWHL.push(distance / dist);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-            }
           }
           if (i == j + 1) {
             var newRow = tbody.insertRow(-1);
@@ -2976,10 +4549,6 @@ function addEntriesAllAverage() {
             var cellThree = newRow.insertCell();
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
-            if (imgSizeStatus != 100) {
-              var cellSix = newRow.insertCell();
-            } else {
-            }
             indexImaginaryHindLeft += 1;
             cellOne.innerHTML = indexRow - 1;
             cellTwo.innerHTML =
@@ -3003,19 +4572,6 @@ function addEntriesAllAverage() {
             cellFour.innerHTML = distance;
             cellFive.innerHTML = (distance / dist).toFixed(3);
             distValuesSWHL.push(distance / dist);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-            }
           }
         }
       }
@@ -3029,44 +4585,8 @@ function addEntriesAllAverage() {
       strideWidthHindLeftRowCellOne.innerHTML =
         "<b>Stride Width Hind(L) average in cm:</b> ";
       strideWidthHindLeftRowCellTwo.innerHTML = (
-        distValuesSWHL.reduce((a, b) => a + b, 0) / distValuesSWHL.length
+        distValuesSWHL.reduce((a, b) => a + b) / distValuesSWHL.length
       ).toFixed(3);
-      if (imgSizeStatus != 100) {
-        var strideWidthHindLeftRowCellThreeOriginal =
-          strideWidthHindLeftMeanRow.insertCell();
-        switch (imgSizeStatus) {
-          case 50:
-            strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
-              (distValuesSWHL.reduce((a, b) => a + b, 0) /
-                distValuesSWHL.length) *
-              2
-            ).toFixed(3);
-            break;
-          case 75:
-            strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
-              ((distValuesSWHL.reduce((a, b) => a + b, 0) /
-                distValuesSWHL.length) *
-                100) /
-              75
-            ).toFixed(3);
-            break;
-          case 25:
-            strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
-              (distValuesSWHL.reduce((a, b) => a + b, 0) /
-                distValuesSWHL.length) *
-              4
-            ).toFixed(3);
-            break;
-          case 40:
-            strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
-              ((distValuesSWHL.reduce((a, b) => a + b, 0) /
-                distValuesSWHL.length) *
-                100) /
-              40
-            ).toFixed(3);
-            break;
-        }
-      }
     }
     if (footstepStart.options[footstepStart.selectedIndex].value == "Right") {
       var indexImaginaryFrontRight = 0;
@@ -3081,10 +4601,6 @@ function addEntriesAllAverage() {
             var cellThree = newRow.insertCell();
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
-            if (imgSizeStatus != 100) {
-              var cellSix = newRow.insertCell();
-            } else {
-            }
             indexImaginaryFrontRight += 1;
             cellOne.innerHTML = indexRow - 1;
             cellTwo.innerHTML =
@@ -3108,19 +4624,6 @@ function addEntriesAllAverage() {
             cellFour.innerHTML = distance;
             cellFive.innerHTML = (distance / dist).toFixed(3);
             distValuesSWFR.push(distance / dist);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-            }
           }
           if (j == i + 1) {
             var newRow = tbody.insertRow(-1);
@@ -3130,10 +4633,6 @@ function addEntriesAllAverage() {
             var cellThree = newRow.insertCell();
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
-            if (imgSizeStatus != 100) {
-              var cellSix = newRow.insertCell();
-            } else {
-            }
             indexImaginaryFrontRight += 1;
             cellOne.innerHTML = indexRow - 1;
             cellTwo.innerHTML =
@@ -3157,19 +4656,6 @@ function addEntriesAllAverage() {
             cellFour.innerHTML = distance;
             cellFive.innerHTML = (distance / dist).toFixed(3);
             distValuesSWFR.push(distance / dist);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-            }
           }
         }
       }
@@ -3183,44 +4669,8 @@ function addEntriesAllAverage() {
       strideWidthFrontRightRowCellOne.innerHTML =
         "<b>Stride Width Front(R) average in cm:</b> ";
       strideWidthFrontRightRowCellTwo.innerHTML = (
-        distValuesSWFR.reduce((a, b) => a + b, 0) / distValuesSWFR.length
+        distValuesSWFR.reduce((a, b) => a + b) / distValuesSWFR.length
       ).toFixed(3);
-      if (imgSizeStatus != 100) {
-        var strideWidthFrontRightRowCellThreeOriginal =
-          strideWidthFrontRightMeanRow.insertCell();
-        switch (imgSizeStatus) {
-          case 50:
-            strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
-              (distValuesSWFR.reduce((a, b) => a + b, 0) /
-                distValuesSWFR.length) *
-              2
-            ).toFixed(3);
-            break;
-          case 75:
-            strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
-              ((distValuesSWFR.reduce((a, b) => a + b, 0) /
-                distValuesSWFR.length) *
-                100) /
-              75
-            ).toFixed(3);
-            break;
-          case 25:
-            strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
-              (distValuesSWFR.reduce((a, b) => a + b, 0) /
-                distValuesSWFR.length) *
-              4
-            ).toFixed(3);
-            break;
-          case 40:
-            strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
-              ((distValuesSWFR.reduce((a, b) => a + b, 0) /
-                distValuesSWFR.length) *
-                100) /
-              40
-            ).toFixed(3);
-            break;
-        }
-      }
       for (var i = 0; i < pointsBlueLeft.length; i++) {
         for (var j = 0; j < pointsBlueRight.length; j++) {
           if (i == j) {
@@ -3231,10 +4681,6 @@ function addEntriesAllAverage() {
             var cellThree = newRow.insertCell();
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
-            if (imgSizeStatus != 100) {
-              var cellSix = newRow.insertCell();
-            } else {
-            }
             indexImaginaryHindRight += 1;
             cellOne.innerHTML = indexRow - 1;
             cellTwo.innerHTML =
@@ -3258,19 +4704,6 @@ function addEntriesAllAverage() {
             cellFour.innerHTML = distance;
             cellFive.innerHTML = (distance / dist).toFixed(3);
             distValuesSWHR.push(distance / dist);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-            }
           }
           if (j == i + 1) {
             var newRow = tbody.insertRow(-1);
@@ -3280,10 +4713,6 @@ function addEntriesAllAverage() {
             var cellThree = newRow.insertCell();
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
-            if (imgSizeStatus != 100) {
-              var cellSix = newRow.insertCell();
-            } else {
-            }
             indexImaginaryHindRight += 1;
             cellOne.innerHTML = indexRow - 1;
             cellTwo.innerHTML =
@@ -3307,19 +4736,6 @@ function addEntriesAllAverage() {
             cellFour.innerHTML = distance;
             cellFive.innerHTML = (distance / dist).toFixed(3);
             distValuesSWHR.push(distance / dist);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-            }
           }
         }
       }
@@ -3333,55 +4749,15 @@ function addEntriesAllAverage() {
       strideWidthHindRightRowCellOne.innerHTML =
         "<b>Stride Width Hind(R) average in cm:</b> ";
       strideWidthHindRightRowCellTwo.innerHTML = (
-        distValuesSWHR.reduce((a, b) => a + b, 0) / distValuesSWHR.length
+        distValuesSWHR.reduce((a, b) => a + b) / distValuesSWHR.length
       ).toFixed(3);
-      if (imgSizeStatus != 100) {
-        var strideWidthHindRightRowCellThreeOriginal =
-          strideWidthHindRightMeanRow.insertCell();
-        switch (imgSizeStatus) {
-          case 50:
-            strideWidthHindRightRowCellThreeOriginal.innerHTML = (
-              (distValuesSWHR.reduce((a, b) => a + b, 0) /
-                distValuesSWHR.length) *
-              2
-            ).toFixed(3);
-            break;
-          case 75:
-            strideWidthHindRightRowCellThreeOriginal.innerHTML = (
-              ((distValuesSWHR.reduce((a, b) => a + b, 0) /
-                distValuesSWHR.length) *
-                100) /
-              75
-            ).toFixed(3);
-            break;
-          case 25:
-            strideWidthHindRightRowCellThreeOriginal.innerHTML = (
-              (distValuesSWHR.reduce((a, b) => a + b, 0) /
-                distValuesSWHR.length) *
-              4
-            ).toFixed(3);
-            break;
-          case 40:
-            strideWidthHindRightRowCellThreeOriginal.innerHTML = (
-              ((distValuesSWHR.reduce((a, b) => a + b, 0) /
-                distValuesSWHR.length) *
-                100) /
-              40
-            ).toFixed(3);
-            break;
-        }
-      }
     }
   }
   var lastRow = tbody.insertRow(-1);
   var lastCell = lastRow.insertCell();
   lastCell.innerHTML =
     "------------------------------BREAK------------------------------";
-  if (imgSizeStatus != 100) {
-    lastCell.colSpan = "6";
-  } else {
-    lastCell.colSpan = "5";
-  }
+  lastCell.colSpan = "5";
   lastCell.style.textAlign = "center";
 }
 
@@ -3396,11 +4772,7 @@ function addEntriesAll() {
     var cellThree = newRow.insertCell();
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
-    if (imgSizeStatus != 100) {
-      var cellSix = newRow.insertCell();
-    } else {
-    }
-    if (imgSizeStatus) cellOne.innerHTML = indexRow - 1;
+    cellOne.innerHTML = indexRow - 1;
     cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
     cellThree.innerHTML = "Stride length left front";
     distance = Math.hypot(
@@ -3408,33 +4780,9 @@ function addEntriesAll() {
       pointsRedLeft[i].y - pointsRedLeft[i + 1].y
     ).toFixed(3);
     cellFour.innerHTML = distance;
-    if (dist != 0 && imgSizeStatus == 100) {
+    if (dist != 0) {
       cellFive.innerHTML = (distance / dist).toFixed(3);
-    }
-    if (dist != 0 && imgSizeStatus != 100) {
-      switch (imgSizeStatus) {
-        case 50:
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-          break;
-        case 75:
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-          break;
-        case 25:
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-          break;
-        case 40:
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-      }
-    }
-    if (dist == 0 && imgSizeStatus != 100) {
-      cellFive.innerHTML = "Undefined";
-      cellSix.innerHTML = "Undefined";
-    }
-    if (dist == 0 && imgSizeStatus == 100) {
+    } else {
       cellFive.innerHTML = "Undefined";
     }
   }
@@ -3446,10 +4794,6 @@ function addEntriesAll() {
     var cellThree = newRow.insertCell();
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
-    if (imgSizeStatus != 100) {
-      var cellSix = newRow.insertCell();
-    } else {
-    }
     cellOne.innerHTML = indexRow - 1;
     cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
     cellThree.innerHTML = "Stride length right front";
@@ -3460,29 +4804,7 @@ function addEntriesAll() {
     cellFour.innerHTML = distance;
     if (dist != 0) {
       cellFive.innerHTML = (distance / dist).toFixed(3);
-      switch (imgSizeStatus) {
-        case 50:
-          cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          break;
-        case 75:
-          cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          break;
-        case 25:
-          cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          break;
-        case 40:
-          cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-      }
-    }
-    if (dist == 0 && imgSizeStatus != 100) {
-      cellFive.innerHTML = "Undefined";
-      cellSix.innerHTML = "Undefined";
-    }
-    if (dist == 0 && imgSizeStatus == 100) {
+    } else {
       cellFive.innerHTML = "Undefined";
     }
   }
@@ -3494,10 +4816,6 @@ function addEntriesAll() {
     var cellThree = newRow.insertCell();
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
-    if (imgSizeStatus != 100) {
-      var cellSix = newRow.insertCell();
-    } else {
-    }
     cellOne.innerHTML = indexRow - 1;
     cellTwo.innerHTML = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
     cellThree.innerHTML = "Stride length left hind";
@@ -3508,29 +4826,7 @@ function addEntriesAll() {
     cellFour.innerHTML = distance;
     if (dist != 0) {
       cellFive.innerHTML = (distance / dist).toFixed(3);
-      switch (imgSizeStatus) {
-        case 50:
-          cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          break;
-        case 75:
-          cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          break;
-        case 25:
-          cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          break;
-        case 40:
-          cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-      }
-    }
-    if (dist == 0 && imgSizeStatus != 100) {
-      cellFive.innerHTML = "Undefined";
-      cellSix.innerHTML = "Undefined";
-    }
-    if (dist == 0 && imgSizeStatus == 100) {
+    } else {
       cellFive.innerHTML = "Undefined";
     }
   }
@@ -3542,10 +4838,6 @@ function addEntriesAll() {
     var cellThree = newRow.insertCell();
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
-    if (imgSizeStatus != 100) {
-      var cellSix = newRow.insertCell();
-    } else {
-    }
     cellOne.innerHTML = indexRow - 1;
     cellTwo.innerHTML = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
     cellThree.innerHTML = "Stride length right hind";
@@ -3556,29 +4848,7 @@ function addEntriesAll() {
     cellFour.innerHTML = distance;
     if (dist != 0) {
       cellFive.innerHTML = (distance / dist).toFixed(3);
-      switch (imgSizeStatus) {
-        case 50:
-          cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          break;
-        case 75:
-          cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          break;
-        case 25:
-          cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-          break;
-        case 40:
-          cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-          cellFive.innerHTML = (distance / dist).toFixed(3);
-      }
-    }
-    if (dist == 0 && imgSizeStatus != 100) {
-      cellFive.innerHTML = "Undefined";
-      cellSix.innerHTML = "Undefined";
-    }
-    if (dist == 0 && imgSizeStatus == 100) {
+    } else {
       cellFive.innerHTML = "Undefined";
     }
   }
@@ -3592,10 +4862,6 @@ function addEntriesAll() {
         var cellThree = newRow.insertCell();
         var cellFour = newRow.insertCell();
         var cellFive = newRow.insertCell();
-        if (imgSizeStatus != 100) {
-          var cellSix = newRow.insertCell();
-        } else {
-        }
         cellOne.innerHTML = indexRow - 1;
         cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
         cellThree.innerHTML = "Overlap Left";
@@ -3606,29 +4872,7 @@ function addEntriesAll() {
         cellFour.innerHTML = distance;
         if (dist != 0) {
           cellFive.innerHTML = (distance / dist).toFixed(3);
-          switch (imgSizeStatus) {
-            case 50:
-              cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-              cellFive.innerHTML = (distance / dist).toFixed(3);
-              break;
-            case 75:
-              cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-              cellFive.innerHTML = (distance / dist).toFixed(3);
-              break;
-            case 25:
-              cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-              cellFive.innerHTML = (distance / dist).toFixed(3);
-              break;
-            case 40:
-              cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-              cellFive.innerHTML = (distance / dist).toFixed(3);
-          }
-        }
-        if (dist == 0 && imgSizeStatus != 100) {
-          cellFive.innerHTML = "Undefined";
-          cellSix.innerHTML = "Undefined";
-        }
-        if (dist == 0 && imgSizeStatus == 100) {
+        } else {
           cellFive.innerHTML = "Undefined";
         }
       }
@@ -3644,10 +4888,6 @@ function addEntriesAll() {
         var cellThree = newRow.insertCell();
         var cellFour = newRow.insertCell();
         var cellFive = newRow.insertCell();
-        if (imgSizeStatus != 100) {
-          var cellSix = newRow.insertCell();
-        } else {
-        }
         cellOne.innerHTML = indexRow - 1;
         cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
         cellThree.innerHTML = "Overlap Right";
@@ -3658,29 +4898,7 @@ function addEntriesAll() {
         cellFour.innerHTML = distance;
         if (dist != 0) {
           cellFive.innerHTML = (distance / dist).toFixed(3);
-          switch (imgSizeStatus) {
-            case 50:
-              cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-              cellFive.innerHTML = (distance / dist).toFixed(3);
-              break;
-            case 75:
-              cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-              cellFive.innerHTML = (distance / dist).toFixed(3);
-              break;
-            case 25:
-              cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-              cellFive.innerHTML = (distance / dist).toFixed(3);
-              break;
-            case 40:
-              cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-              cellFive.innerHTML = (distance / dist).toFixed(3);
-          }
-        }
-        if (dist == 0 && imgSizeStatus != 100) {
-          cellFive.innerHTML = "Undefined";
-          cellSix.innerHTML = "Undefined";
-        }
-        if (dist == 0 && imgSizeStatus == 100) {
+        } else {
           cellFive.innerHTML = "Undefined";
         }
       }
@@ -3699,10 +4917,6 @@ function addEntriesAll() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          if (imgSizeStatus != 100) {
-            var cellSix = newRow.insertCell();
-          } else {
-          }
           indexImaginaryFrontLeft += 1;
           cellOne.innerHTML = indexRow - 1;
           cellTwo.innerHTML =
@@ -3726,29 +4940,7 @@ function addEntriesAll() {
           cellFour.innerHTML = distance;
           if (dist != 0) {
             cellFive.innerHTML = (distance / dist).toFixed(3);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-            }
-          }
-          if (dist == 0 && imgSizeStatus != 100) {
-            cellFive.innerHTML = "Undefined";
-            cellSix.innerHTML = "Undefined";
-          }
-          if (dist == 0 && imgSizeStatus == 100) {
+          } else {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -3760,10 +4952,6 @@ function addEntriesAll() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          if (imgSizeStatus != 100) {
-            var cellSix = newRow.insertCell();
-          } else {
-          }
           indexImaginaryFrontLeft += 1;
           cellOne.innerHTML = indexRow - 1;
           cellTwo.innerHTML =
@@ -3787,29 +4975,7 @@ function addEntriesAll() {
           cellFour.innerHTML = distance;
           if (dist != 0) {
             cellFive.innerHTML = (distance / dist).toFixed(3);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-            }
-          }
-          if (dist == 0 && imgSizeStatus != 100) {
-            cellFive.innerHTML = "Undefined";
-            cellSix.innerHTML = "Undefined";
-          }
-          if (dist == 0 && imgSizeStatus == 100) {
+          } else {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -3825,10 +4991,6 @@ function addEntriesAll() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          if (imgSizeStatus != 100) {
-            var cellSix = newRow.insertCell();
-          } else {
-          }
           indexImaginaryHindLeft += 1;
           cellOne.innerHTML = indexRow - 1;
           cellTwo.innerHTML =
@@ -3852,29 +5014,7 @@ function addEntriesAll() {
           cellFour.innerHTML = distance;
           if (dist != 0) {
             cellFive.innerHTML = (distance / dist).toFixed(3);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-            }
-          }
-          if (dist == 0 && imgSizeStatus != 100) {
-            cellFive.innerHTML = "Undefined";
-            cellSix.innerHTML = "Undefined";
-          }
-          if (dist == 0 && imgSizeStatus == 100) {
+          } else {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -3886,10 +5026,6 @@ function addEntriesAll() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          if (imgSizeStatus != 100) {
-            var cellSix = newRow.insertCell();
-          } else {
-          }
           indexImaginaryHindLeft += 1;
           cellOne.innerHTML = indexRow - 1;
           cellTwo.innerHTML =
@@ -3913,29 +5049,7 @@ function addEntriesAll() {
           cellFour.innerHTML = distance;
           if (dist != 0) {
             cellFive.innerHTML = (distance / dist).toFixed(3);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-            }
-          }
-          if (dist == 0 && imgSizeStatus != 100) {
-            cellFive.innerHTML = "Undefined";
-            cellSix.innerHTML = "Undefined";
-          }
-          if (dist == 0 && imgSizeStatus == 100) {
+          } else {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -3955,10 +5069,6 @@ function addEntriesAll() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          if (imgSizeStatus != 100) {
-            var cellSix = newRow.insertCell();
-          } else {
-          }
           indexImaginaryFrontRight += 1;
           cellOne.innerHTML = indexRow - 1;
           cellTwo.innerHTML =
@@ -3982,29 +5092,7 @@ function addEntriesAll() {
           cellFour.innerHTML = distance;
           if (dist != 0) {
             cellFive.innerHTML = (distance / dist).toFixed(3);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-            }
-          }
-          if (dist == 0 && imgSizeStatus != 100) {
-            cellFive.innerHTML = "Undefined";
-            cellSix.innerHTML = "Undefined";
-          }
-          if (dist == 0 && imgSizeStatus == 100) {
+          } else {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -4016,10 +5104,6 @@ function addEntriesAll() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          if (imgSizeStatus != 100) {
-            var cellSix = newRow.insertCell();
-          } else {
-          }
           indexImaginaryFrontRight += 1;
           cellOne.innerHTML = indexRow - 1;
           cellTwo.innerHTML =
@@ -4043,29 +5127,7 @@ function addEntriesAll() {
           cellFour.innerHTML = distance;
           if (dist != 0) {
             cellFive.innerHTML = (distance / dist).toFixed(3);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-            }
-          }
-          if (dist == 0 && imgSizeStatus != 100) {
-            cellFive.innerHTML = "Undefined";
-            cellSix.innerHTML = "Undefined";
-          }
-          if (dist == 0 && imgSizeStatus == 100) {
+          } else {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -4081,10 +5143,6 @@ function addEntriesAll() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          if (imgSizeStatus != 100) {
-            var cellSix = newRow.insertCell();
-          } else {
-          }
           indexImaginaryHindRight += 1;
           cellOne.innerHTML = indexRow - 1;
           cellTwo.innerHTML =
@@ -4108,29 +5166,7 @@ function addEntriesAll() {
           cellFour.innerHTML = distance;
           if (dist != 0) {
             cellFive.innerHTML = (distance / dist).toFixed(3);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-            }
-          }
-          if (dist == 0 && imgSizeStatus != 100) {
-            cellFive.innerHTML = "Undefined";
-            cellSix.innerHTML = "Undefined";
-          }
-          if (dist == 0 && imgSizeStatus == 100) {
+          } else {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -4142,10 +5178,6 @@ function addEntriesAll() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          if (imgSizeStatus != 100) {
-            var cellSix = newRow.insertCell();
-          } else {
-          }
           indexImaginaryHindRight += 1;
           cellOne.innerHTML = indexRow - 1;
           cellTwo.innerHTML =
@@ -4169,29 +5201,7 @@ function addEntriesAll() {
           cellFour.innerHTML = distance;
           if (dist != 0) {
             cellFive.innerHTML = (distance / dist).toFixed(3);
-            switch (imgSizeStatus) {
-              case 50:
-                cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 75:
-                cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 25:
-                cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-                break;
-              case 40:
-                cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-                cellFive.innerHTML = (distance / dist).toFixed(3);
-            }
-          }
-          if (dist == 0 && imgSizeStatus != 100) {
-            cellFive.innerHTML = "Undefined";
-            cellSix.innerHTML = "Undefined";
-          }
-          if (dist == 0 && imgSizeStatus == 100) {
+          } else {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -4210,10 +5220,6 @@ function addEntriesAll() {
   var lastCell = lastRow.insertCell();
   lastCell.innerHTML =
     "------------------------------BREAK------------------------------";
-  if (imgSizeStatus != 100) {
-    lastCell.colSpan = "6";
-  } else {
-    lastCell.colSpan = "5";
-  }
+  lastCell.colSpan = "5";
   lastCell.style.textAlign = "center";
 }
