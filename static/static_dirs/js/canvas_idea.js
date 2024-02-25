@@ -920,6 +920,7 @@ function resetImgDim() {
     return;
   }
   imgSizeStatus = 100;
+  $("#tbody").empty();
 }
 
 function resizeFifty() {
@@ -966,6 +967,7 @@ function resizeFifty() {
   } else {
     return;
   }
+  $("#tbody").empty();
 }
 
 function resizeSF() {
@@ -1012,6 +1014,7 @@ function resizeSF() {
   } else {
     return;
   }
+  $("#tbody").empty();
 }
 
 function resizeForty() {
@@ -1058,6 +1061,7 @@ A new column with original image size values in cm added.`;
   } else {
     return;
   }
+  $("#tbody").empty();
 }
 
 function resizeTwentyF() {
@@ -1104,6 +1108,7 @@ A new column with original image size values in cm added.`;
   } else {
     return;
   }
+  $("#tbody").empty();
 }
 
 // Warning message about resized images
@@ -3403,26 +3408,33 @@ function addEntriesAll() {
       pointsRedLeft[i].y - pointsRedLeft[i + 1].y
     ).toFixed(3);
     cellFour.innerHTML = distance;
-    if (dist != 0) {
+    if (dist != 0 && imgSizeStatus == 100) {
       cellFive.innerHTML = (distance / dist).toFixed(3);
+    }
+    if (dist != 0 && imgSizeStatus != 100) {
       switch (imgSizeStatus) {
         case 50:
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
           break;
         case 75:
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
           break;
         case 25:
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
           break;
         case 40:
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
       }
     }
     if (dist == 0 && imgSizeStatus != 100) {
       cellFive.innerHTML = "Undefined";
       cellSix.innerHTML = "Undefined";
-    } else {
+    }
+    if (dist == 0 && imgSizeStatus == 100) {
       cellFive.innerHTML = "Undefined";
     }
   }
@@ -3451,21 +3463,26 @@ function addEntriesAll() {
       switch (imgSizeStatus) {
         case 50:
           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           break;
         case 75:
           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           break;
         case 25:
           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           break;
         case 40:
           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
       }
     }
     if (dist == 0 && imgSizeStatus != 100) {
       cellFive.innerHTML = "Undefined";
       cellSix.innerHTML = "Undefined";
-    } else {
+    }
+    if (dist == 0 && imgSizeStatus == 100) {
       cellFive.innerHTML = "Undefined";
     }
   }
@@ -3494,21 +3511,26 @@ function addEntriesAll() {
       switch (imgSizeStatus) {
         case 50:
           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           break;
         case 75:
           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           break;
         case 25:
           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           break;
         case 40:
           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
       }
     }
     if (dist == 0 && imgSizeStatus != 100) {
       cellFive.innerHTML = "Undefined";
       cellSix.innerHTML = "Undefined";
-    } else {
+    }
+    if (dist == 0 && imgSizeStatus == 100) {
       cellFive.innerHTML = "Undefined";
     }
   }
@@ -3537,21 +3559,26 @@ function addEntriesAll() {
       switch (imgSizeStatus) {
         case 50:
           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           break;
         case 75:
           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           break;
         case 25:
           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
           break;
         case 40:
           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+          cellFive.innerHTML = (distance / dist).toFixed(3);
       }
     }
     if (dist == 0 && imgSizeStatus != 100) {
       cellFive.innerHTML = "Undefined";
       cellSix.innerHTML = "Undefined";
-    } else {
+    }
+    if (dist == 0 && imgSizeStatus == 100) {
       cellFive.innerHTML = "Undefined";
     }
   }
@@ -3582,21 +3609,26 @@ function addEntriesAll() {
           switch (imgSizeStatus) {
             case 50:
               cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+              cellFive.innerHTML = (distance / dist).toFixed(3);
               break;
             case 75:
               cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+              cellFive.innerHTML = (distance / dist).toFixed(3);
               break;
             case 25:
               cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+              cellFive.innerHTML = (distance / dist).toFixed(3);
               break;
             case 40:
               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+              cellFive.innerHTML = (distance / dist).toFixed(3);
           }
         }
         if (dist == 0 && imgSizeStatus != 100) {
           cellFive.innerHTML = "Undefined";
           cellSix.innerHTML = "Undefined";
-        } else {
+        }
+        if (dist == 0 && imgSizeStatus == 100) {
           cellFive.innerHTML = "Undefined";
         }
       }
@@ -3629,21 +3661,26 @@ function addEntriesAll() {
           switch (imgSizeStatus) {
             case 50:
               cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+              cellFive.innerHTML = (distance / dist).toFixed(3);
               break;
             case 75:
               cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+              cellFive.innerHTML = (distance / dist).toFixed(3);
               break;
             case 25:
               cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+              cellFive.innerHTML = (distance / dist).toFixed(3);
               break;
             case 40:
               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+              cellFive.innerHTML = (distance / dist).toFixed(3);
           }
         }
         if (dist == 0 && imgSizeStatus != 100) {
           cellFive.innerHTML = "Undefined";
           cellSix.innerHTML = "Undefined";
-        } else {
+        }
+        if (dist == 0 && imgSizeStatus == 100) {
           cellFive.innerHTML = "Undefined";
         }
       }
@@ -3692,21 +3729,26 @@ function addEntriesAll() {
             switch (imgSizeStatus) {
               case 50:
                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 75:
                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 25:
                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
             }
           }
           if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus == 100) {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -3748,21 +3790,26 @@ function addEntriesAll() {
             switch (imgSizeStatus) {
               case 50:
                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 75:
                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 25:
                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
             }
           }
           if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus == 100) {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -3808,21 +3855,26 @@ function addEntriesAll() {
             switch (imgSizeStatus) {
               case 50:
                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 75:
                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 25:
                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
             }
           }
           if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus == 100) {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -3864,21 +3916,26 @@ function addEntriesAll() {
             switch (imgSizeStatus) {
               case 50:
                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 75:
                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 25:
                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
             }
           }
           if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus == 100) {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -3928,21 +3985,26 @@ function addEntriesAll() {
             switch (imgSizeStatus) {
               case 50:
                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 75:
                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 25:
                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
             }
           }
           if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus == 100) {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -3984,21 +4046,26 @@ function addEntriesAll() {
             switch (imgSizeStatus) {
               case 50:
                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 75:
                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 25:
                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
             }
           }
           if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus == 100) {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -4044,21 +4111,26 @@ function addEntriesAll() {
             switch (imgSizeStatus) {
               case 50:
                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 75:
                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 25:
                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
             }
           }
           if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus == 100) {
             cellFive.innerHTML = "Undefined";
           }
         }
@@ -4100,21 +4172,26 @@ function addEntriesAll() {
             switch (imgSizeStatus) {
               case 50:
                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 75:
                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 25:
                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
                 break;
               case 40:
                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+                cellFive.innerHTML = (distance / dist).toFixed(3);
             }
           }
           if (dist == 0 && imgSizeStatus != 100) {
             cellFive.innerHTML = "Undefined";
             cellSix.innerHTML = "Undefined";
-          } else {
+          }
+          if (dist == 0 && imgSizeStatus == 100) {
             cellFive.innerHTML = "Undefined";
           }
         }
