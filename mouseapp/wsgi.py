@@ -14,6 +14,7 @@ import signal
 import sys
 
 from django.core.wsgi import get_wsgi_application
+#from whitenoise.django import DjangoWhiteNoise
 
 sys.path.append('/var/www/mouseframe')
 # adjust the Python version in the line below as needed
@@ -23,6 +24,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mouseapp.settings')
 
 try:
     application = get_wsgi_application()
+#    application = DjangoWhiteNoise(application)
 except Exception:
     if 'mod_wsgi' in sys.modules:
         traceback.print_exc()
