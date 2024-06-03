@@ -592,7 +592,7 @@ function distanceMeasurePoint() {
     ).toFixed(3);
     console.log(dist);
     document.getElementById("measureToCm").innerHTML =
-      "&nbsp" + dist + "px equals 1 centimeter.";
+      "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
     // if (imgSizeStatus == 1){
     //   document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
     // }
@@ -621,7 +621,7 @@ function manualInputMeasure() {
     dist = inputPixelsManually.value;
     savedChoices.value = "None";
     document.getElementById("measureToCm").innerHTML =
-      "&nbsp" + dist + "px equals 1 centimeter.";
+      "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
   }
   if (
     savedChoices.options[savedChoices.selectedIndex].value != "None" &&
@@ -629,7 +629,7 @@ function manualInputMeasure() {
   ) {
     dist = savedChoices[savedChoices.selectedIndex].value;
     document.getElementById("measureToCm").innerHTML =
-      "&nbsp" + dist + "px equals 1 centimeter.";
+      "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
   }
 }
 

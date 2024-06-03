@@ -77,13 +77,17 @@
        </div>
        <div class="image-resize" id="imageEdit">
         <h3>Image resizing(*):</h3>
-        <p style="font-size: 0.9em;">(*)Be sure to resize to your ideal size before working on any measurements.<br>(*)By resizing you delete any progress done on the current image size. <br><span style="color:red;"><b>&#9888;</b></span> <b><u>Caution:</u></b>&nbspAny data in the table below will be removed along with the dots marked<br> in the image when resizing!</p>
+        <p style="font-size: 0.9em;">(*)Be sure to resize to your ideal size before working on any measurements.
+          <br>(*)By resizing you delete any progress done on the current image size.
+          <br>(*)When changing image original size make sure that image has a 1 cm scale to be <br>converted to pixels. <br>(*)Do not work with different image sizes if you can't get a 1 cm value in pixels<br> for all sizes. And do not use saved values acquired from images with sizes different<br> from the one you are working on. 
+          <br><span style="color:red;"><b>&#9888;</b></span> <b><u>Caution:</u></b>&nbspAny data in the table below will be removed along with the dots marked
+          <br> in the image when resizing!</p>
         <button id="seventyFiveP" onclick="resizeSF();">75% Size</button>
         <button id="fiftyP" onclick="resizeFifty();">50% Size</button>
         <button id="fortyP" onclick="resizeForty();">40% Size</button>
         <button id="twentyFiveP" onclick="resizeTwentyF();">25% Size</button>
         <button id="resetImgDim" onclick="resetImgDim();">Reset Dimensions</button><br><br>
-        <p id="currentImgSize"></p>
+        <p id="currentImgSize" name="image_size"></p>
         <!-- <br><br><h3>Image resizing slider:</h3>
         <input type="range" min="1" max="20" value="1" class="slider" id="Slider">
         <p><output id="value"></output></p> -->
@@ -105,19 +109,24 @@
     <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset points</button>
     <button onclick = "distanceMeasurePoint()" id="measureDistance">Measure</button>
     <p>Manually input known value of pixels in 1 cm or use saved values (choose only one value before clicking use):</p>
-    <input id="pixelsInCmMan" type="number" min="1" onkeypress="return /[1-9.]/i.test(event.key)" size="6" placeholder="Px in cm...">&nbspOR&nbsp
-    <select id="savedChoices">
+    <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" onKeyPress="if(this.value.length==8) return false;" placeholder="Px in cm...">&nbspOR&nbsp
+    <select id="savedChoices" name="saved_choices">
         <option value="None" selected>None</option>
       {% for distance in saved_distances %}
-        <option value="{{distance}}">{{distance}}</option>
+        <option value="{{distance.conversion_value}}">{{distance.conversion_value}} - {{distance.image_size}}</option>
       {% endfor %}
     </select>
     <button onclick="manualInputMeasure();" id="manualUse">Use</button>
     <button onclick="resetInput();" id="resetManual">Reset</button>
     <div class="measure-info"><div id="measureIntro">Measurement result:</div><div id="measureToCm"></div></div>
-    <form action="" method="POST" id="savedDistancesForm">{% csrf_token %}
-      <input type="text" name="saved_distance" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="6" placeholder="Save value...">
-    <button class="save-button" type="submit">Save</button> 
+    <h4 style="font-size: 1.5em;">Save section</h4>
+    <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from.</p>
+    <p style="font-size: 0.9em">(!) Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
+    <form action="saved" method="POST" id="savedDistancesForm">{% csrf_token %}
+      Value in pixels:&nbsp
+      <input type="text" name="saved_distance_value" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="8" placeholder="Save value..." required>
+      <br><br>&nbspImage Size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required>
+    <br><br><button class="save-button" id="saveDistanceButton" type="submit">Save</button> 
     </form>
     <div id="messageSave"></div>
    </div>

@@ -3,3 +3,4 @@ mouseframe_venv/
 db.sqlite3
 staticfiles/
 .prettierignore
+

@@ -3,12 +3,14 @@ from django import forms
 
 
 class SavedDistances(models.Model):
-    saved_distance = models.DecimalField(max_digits=6, decimal_places=3, unique=True)
+    id = models.IntegerField(primary_key=True)
+    conversion_value = models.FloatField(max_length= 8, blank=False, unique=True)
+    image_size = models.CharField(max_length=10, blank=False)
     class Meta:
-        ordering = ['saved_distance']
+        ordering = ['id']
 
     def __str__(self):
-        return f'{self.saved_distance}'
+        return f'{str(self.conversion_value) + " - " + self.image_size}'
 
 
 # class SavedDistancesForm(forms.ModelForm):
