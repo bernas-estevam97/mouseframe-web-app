@@ -74,6 +74,15 @@
          </select>
          &nbsp<button id="removePoint" onclick="removeChosenPoint();">Remove Point</button>
         </div>
+        <div class="point-size">
+          <h2>Change dimensions of your marking points:</h2>
+          <input id="sizeInput" type="number" placeholder="Dot Size">
+          <button id="changeS" onclick="changeSize();">Change point size</button>
+          <button id="resetS" onclick="resetSize();">Reset point size</button>
+          <p> Default point radius size is set to 4px</p>
+          <p id="dynamicSize"></p>
+          <p><strong>Note:</strong>When deleting buttons make sure you don't change radius size. Only delete points when working with a fixed size</p>
+          </div>
        </div>
        <div class="image-resize" id="imageEdit">
         <h3>Image resizing(*):</h3>
@@ -152,15 +161,7 @@
     <!-- <button id="resetImgW" onclick="resetImgW();">Reset Image Width</button> -->
     <!-- <input id="containerHeight" type="number" placeholder="Image Height"> -->
     <!-- <button id="changeImgDim" onclick="changeImgDim();">Change Image dimensions</button> -->
-    <div class="point-size">
-    <h2>Change dimensions of your marking points:</h2>
-    <input id="sizeInput" type="number" placeholder="Dot Size">
-    <button id="changeS" onclick="changeSize();">Change point size</button>
-    <button id="resetS" onclick="resetSize();">Reset point size</button>
-    <p> Default point radius size is set to 4px</p>
-    <p id="dynamicSize"></p>
-    <p><strong>Note:</strong>When deleting buttons make sure you don't change radius size. Only delete points when working with a fixed size</p>
-    </div>
+    
    </div>
    <!-- <div class="saved-distances" id="savedDistance">
     <h2>Define how many pixels are in a centimeter.</h2>

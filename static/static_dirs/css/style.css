@@ -140,7 +140,7 @@ header h1 {
   position: relative;
   display: grid;
   gap: 5px;
-  margin: 0 5% 0 5%;
+  margin: 0 3% 3% 3%;
 }
 
 .buttons {
@@ -149,7 +149,7 @@ header h1 {
   text-align: center;
   background: #fff;
   border: 3px solid #c1c1c1;
-  max-height: 500px;
+  max-height: 680px;
 }
 
 .point-removal {
@@ -157,6 +157,16 @@ header h1 {
   text-align: left;
   font-size: 1em;
   border-top-style: double;
+  padding-bottom: 10px;
+}
+
+.point-size {
+  padding-top: 10px;
+  border-top-style: double;
+}
+
+.point-size p {
+  margin: 10px;
 }
 
 .image-resize {
@@ -480,17 +490,17 @@ header h1 {
 
 /* ----------- */
 
-.buttons-change {
-  position: relative;
-  /* display: flex;
+/* .buttons-change {
+  position: relative; */
+/* display: flex;
     justify-content: space-evenly; */
-  display: block;
+/* display: block;
   margin: 10px auto;
   max-width: 60vw;
   background-color: #fff;
   border: 3px double #c1c1c1;
   padding: 10px;
-}
+} */
 
 /* #canvasWidth, #canvasHeight{
     padding: 5px;
@@ -573,15 +583,6 @@ header h1 {
 } */
 
 /* Change point dimensions section */
-
-.point-size {
-  background-color: #fff;
-  padding: 5px;
-}
-
-.point-size p {
-  margin-left: 10px;
-}
 
 #sizeInput {
   margin-top: 10px;
@@ -743,11 +744,13 @@ header h1 {
   .bottom-functions {
     grid-template-areas:
       "header header main right"
+      "header header footer footer"
       "header header footer footer";
   }
 
   .buttons {
     grid-area: header;
+    max-height: 720px;
   }
 
   .image-resize {
@@ -789,7 +792,7 @@ header h1 {
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1171px) {
   .saved-distances {
     width: auto;
   }
@@ -818,8 +821,38 @@ header h1 {
   }
 }
 
-@media (min-width: 1101px) and (max-width: 1569px) {
+@media (min-width: 1172px) and (max-width: 1569px) {
+  .bottom-functions {
+    grid-template-areas:
+      "header header a a"
+      "header header a a"
+      "header header footer footer"
+      "b b footer footer";
+  }
+
   .saved-distances {
     width: auto;
+  }
+
+  .buttons {
+    font-size: 0.9em;
+    grid-area: header;
+  }
+
+  .image-resize {
+    grid-area: a;
+  }
+
+  .buttons button {
+    font-size: 0.9em;
+  }
+
+  .image-info {
+    grid-area: b;
+    height: 160px;
+  }
+
+  .saved-distances {
+    grid-area: footer;
   }
 }

@@ -3,16 +3,16 @@ $("form").on("submit", function (e) {
 
   // console.log(dataString);
 
-  var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+  // var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
   // alert(dataString); return false;
 
   $.ajax({
     type: "POST",
     url: "saved",
     data: dataString,
-    headers: {
-      "X-CSRFToken": csrfToken,
-    },
+    // headers: {
+    //   "X-CSRFToken": csrfToken,
+    // },
     success: function () {
       savedChoices = document.getElementById("savedChoices");
       savedChoices.options[savedChoices.options.length] = new Option(
