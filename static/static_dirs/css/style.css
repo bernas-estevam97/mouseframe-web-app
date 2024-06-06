@@ -1,7 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&display=swap");
+
+html{
+  visibility: hidden;
+}
+
 body {
   position: relative;
   background-color: #f3f3f3;
+}
+
+.hidden{
+  display: none;
 }
 
 header {
@@ -21,6 +30,49 @@ header h1 {
   font-weight: 400;
   padding: 30px;
   text-align: center;
+}
+
+.modal{
+  border: 3px solid black;
+  background: #ffff;
+  position: fixed;
+  left:50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  padding: 0 20px;
+  border-radius: 3px;
+}
+
+.modal ul li{
+  padding: 10px 0 10px 0; 
+}
+
+.modal .btn-close{
+  padding: 10px;
+  margin:10px 0;
+  float: right;
+  background: rgb(210, 96, 96);
+  border: 1px solid #0000;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal .btn-close:hover{
+  background:#dc3545;
+  border: 3px solid #0000;
+}
+
+.show-updates{
+  cursor: pointer;
+  padding: 5px;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 2px;
+  transition: background 0.5s;
+}
+
+.show-updates:hover{
+  background: rgb(223, 223, 223);
 }
 
 /* .container-full{
