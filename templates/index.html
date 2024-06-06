@@ -10,11 +10,24 @@
     <title>Mouse Frame - Analysis</title>
 </head>
 <body>
-  <p id="version">v1.1.0</p>
+  <p id="version">v1.0.2</p>
     <header>
         <h1>MOUSE FRAME - <i>mus musculus</i> walking behaviour analysis tool</h1>
         <img src="{% static 'img/mouse.png' %}">
     </header>
+    <section class="modal" id="modalNews">
+      <h2>Notices and updates Version 1.0.2</h2>
+      <ul>
+        <li>Fixed visual bugs for most resolutions.</li>
+        <li>Added compatibility for most resolutions but this app isn't supposed to be used on mobile.</li>
+        <li>Added function to save values and use them without app refresh, this way not restarting your progress.</li>
+        <li>The saved values require an image size of which the measurement was saved in order to keep track of right
+          cm to pixel conversions and avoid measurement usage in wrong resolutions.</li>
+      </ul>
+      <btn class="btn-close" id="closeModal">Close</btn>
+    </section>
+    <!-- <div class="overlay hidden"></div> -->
+    
     <div class="container-full">
         <!-- <div class="left-part"> -->
         <div class="requirements">
@@ -24,6 +37,7 @@
                 <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
                 <li>Check <a href="{% url 'info' %}">this</a> page to see how the calculations are made for each measurement and other important information about the features.</li>
+                <li>Check news for this version ---> <btn class="show-updates" id="showNews">News and updates</btn></li>
             </ul>
             <p id="userResolution"></p>
             <p id="loginName">Welcome, you are logged as <b><u>{{ user.get_username }}</u></b>.</p><a class="logout-button" href="{% url 'logout' %}">Logout</a><br>
@@ -262,6 +276,9 @@
 <script type="text/javascript" src="{% static 'js/canvas_idea.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/xlsx-full.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/effects.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/notices_updates_modal.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/js-cookie.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
 <!-- <script type="text/javascript" src="{% static 'js/canvasjs.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.canvasjs.min.js' %}"></script> -->
 <script>
