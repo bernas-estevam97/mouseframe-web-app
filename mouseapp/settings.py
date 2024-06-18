@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'rest_framework',
     'mouseapp',
     'accounts',
 ]

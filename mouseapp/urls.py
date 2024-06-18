@@ -26,8 +26,7 @@ urlpatterns = [
     # path('deleted', delete_distance, name="delete_entry"),
     path('authenticate/', include('django.contrib.auth.urls')),
     path('authenticate/', include('accounts.urls')),
-    path('info/', info, name="info"),
-    path('api/', include('saved_distances.urls'))
+    path('info/', info, name="info")
     
     # path('canvas', canvas),
     # path('editor', image_editor),
