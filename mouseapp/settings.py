@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'mouseapp',
+    'import_export',
     'accounts',
 ]
 
