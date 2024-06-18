@@ -1,7 +1,7 @@
-$("form").on("submit", function (e) {
-  var dataString = $(this).serializeArray();
-
-  // console.log(dataString);
+$("#savedDistancesForm").on("submit", function (e) {
+  e.preventDefault();
+  let dataString = $(this).serializeArray();
+  
 
   // var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
   // alert(dataString); return false;
@@ -19,6 +19,7 @@ $("form").on("submit", function (e) {
         dataString[1].value + " - " + dataString[2].value,
         dataString[1].value
       );
+      console.log(dataString);
       alert(
         saveDistance.value +
           " saved! If you want to use it you can select it on the option box above."
@@ -30,46 +31,31 @@ $("form").on("submit", function (e) {
       alert("Value already in the database or of invalid input.");
     },
   });
-  e.preventDefault();
+  
 });
 
-// $(document).ready(function () {
-//   $("#saveDistanceButton").on("click", function () {
-//     // Obtain the CSRF token from the hidden input field
-//     var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
-//     // Get the data from the form
-//     var formData = {
-//       conversion_value: $("#saveDistance").val(),
-//       image_size: $("#imgSizeInfo").val(),
-//     };
-//     // Send AJAX request
-//     $.ajax({
-//       type: "POST",
-//       url: "saved", // Adjust the URL as per your project structure
-//       data: formData,
-//       headers: {
+// This functon is for dynamic deletion of options ---- NOT WORKING YET
+
+// $('#removeOption').on('click', function(e){
+//   var savedChoices = document.getElementById("savedChoices");
+//   var dataStringtoDelete = savedChoices.options[savedChoices.selectedIndex].value;
+//   var csrfToken = $('[name="csrfmiddlewaretoken"]').val();
+//   $.ajax({
+//     type: 'GET',
+//     url: "deleted",
+//     data: dataStringtoDelete,
+//     processData: false,
+//     headers: {
 //         "X-CSRFToken": csrfToken,
 //       },
-//       success: function (response) {
-//         if (response.status === "success") {
-//           console.log(formData);
-//           // Clear the form
-//           $("#saveDistance").val("");
-//           $("#imgSizeInfo").val("");
-
-//           // Update the table
-//           savedChoices = document.getElementById("savedChoices");
-//           savedChoices.options[savedChoices.options.length] = new Option(
-//             "conversion_value",
-//             "image_size"
-//           );
-//         } else {
-//           alert("Error adding distance value");
-//         }
-//       },
-//       error: function () {
-//         alert("Error adding distance value");
-//       },
-//     });
+//     success: function() {
+//         alert('Entry deleted successfully!');
+//         savedChoices.options[savedChoices.selectedIndex].remove();
+//         console.log(dataStringtoDelete)
+//     },
+//     error: function(){
+//       alert("Something went wrong!");
+//     }
 //   });
-// });
+
+// })

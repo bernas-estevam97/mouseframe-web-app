@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'rest_framework',
     'mouseapp',
     'accounts',
 ]
@@ -77,12 +78,24 @@ WSGI_APPLICATION = 'mouseapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# if DEBUG:
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
+'default': {
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
     }
-}
+} 
+# else:
+#     DATABASES: {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'mydatabase', #change it databasename
+#         'USER': 'mydatabaseuser', #change it database user name
+#         'PASSWORD': 'mypassword', # change user database password
+#         'HOST': 'localhost',  
+#         'PORT': '5432',           
+#         },
+#     }
 
 
 # Password validation

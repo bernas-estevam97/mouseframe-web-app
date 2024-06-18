@@ -1,13 +1,15 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from mouseapp.models import SavedDistances
+from .models import SavedDistances
 from django.contrib import messages
 from django.core.management import CommandError
 from django.template import RequestContext
 from django.http import JsonResponse
 from django.views.generic import View
-import json
+from rest_framework import generics
+from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
+import sys
 
 
 
@@ -37,20 +39,14 @@ def saved_distance(request):
      #  print(conversion, image_size)
           new = SavedDistances(conversion_value=conversion,image_size = image_size)
           new.save()
-     #  messages.success(request, ('Saved successfully'))
           saved_distances = SavedDistances.objects.all()
-          return render(request, 'index.html', {'saved_distances': saved_distances})
-               #  return HttpResponse(saved_distances)
+          # return render(request, 'index.html', {'saved_distances': saved_distances})
+          return HttpResponse(saved_distances)
 
-# @csrf_exempt
-# def add_saved_distances(request):
-#     if request.method == 'POST':
-#         conversion = request.POST.get('saved_distance_value')
-#         print(conversion)
-#         image_size = request.POST.get('image_size')
-#         new = SavedDistances(conversion_value=conversion,image_size = image_size)
-#         new.save()
-#         return JsonResponse({'status': 'success'})
-#     return JsonResponse({'status': 'error'})
 
+# def delete_distance(request):
+#     deleted_entry=request.GET.get('removable_choices')
+#     remove_entry = SavedDistances.objects.filter(conversion_value=float(deleted_entry))
+#     remove_entry.delete()
+#     return HttpResponse(remove_entry)
 

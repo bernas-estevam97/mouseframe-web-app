@@ -23,9 +23,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name="home"),
     path('saved', saved_distance),
+    # path('deleted', delete_distance, name="delete_entry"),
     path('authenticate/', include('django.contrib.auth.urls')),
     path('authenticate/', include('accounts.urls')),
     path('info/', info, name="info"),
+    path('api/', include('saved_distances.urls'))
     
     # path('canvas', canvas),
     # path('editor', image_editor),

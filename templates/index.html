@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
     <title>Mouse Frame - Analysis</title>
 </head>
 <body>
@@ -16,7 +17,7 @@
         <img src="{% static 'img/mouse.png' %}">
     </header>
     <section class="modal" id="modalNews">
-      <h2>Notices and updates Version 1.0.2</h2>
+      <h2>Notices and updates - Version 1.0.2</h2>
       <ul>
         <li>Fixed visual bugs for most resolutions.</li>
         <li>Added compatibility for most resolutions but this app isn't supposed to be used on mobile.</li>
@@ -36,8 +37,8 @@
                 <li>Only image file formats are supported (.tiff formats are not yet supported).</li>
                 <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
-                <li>Check <a href="{% url 'info' %}">this</a> page to see how the calculations are made for each measurement and other important information about the features.</li>
-                <li>Check news for this version ---> <btn class="show-updates" id="showNews">News and updates</btn></li>
+                <li>For more information on this application and to see how the calculations are made for each measurement, check this <a class="info-page" href="{% url 'info' %}">link</a>.</li>
+                <li>Check news for this version <i class="fa-solid fa-arrow-right"></i> <btn class="show-updates" id="showNews">News and updates</btn></li>
             </ul>
             <p id="userResolution"></p>
             <p id="loginName">Welcome, you are logged as <b><u>{{ user.get_username }}</u></b>.</p><a class="logout-button" href="{% url 'logout' %}">Logout</a><br>
@@ -133,14 +134,15 @@
     <button onclick = "distanceMeasurePoint()" id="measureDistance">Measure</button>
     <p>Manually input known value of pixels in 1 cm or use saved values (choose only one value before clicking use):</p>
     <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" onKeyPress="if(this.value.length==8) return false;" placeholder="Px in cm...">&nbspOR&nbsp
-    <select id="savedChoices" name="saved_choices">
-        <option value="None" selected>None</option>
+    <select id="savedChoices" form="savedDistancesForm">
+        <option value="None" selected>-- Select value --</option>
       {% for distance in saved_distances %}
-        <option value="{{distance.conversion_value}}">{{distance.conversion_value}} - {{distance.image_size}}</option>
+        <option id="{{forloop.counter}}" value="{{distance.conversion_value}}">{{distance.conversion_value}} - {{distance.image_size}}</option>
       {% endfor %}
     </select>
     <button onclick="manualInputMeasure();" id="manualUse">Use</button>
     <button onclick="resetInput();" id="resetManual">Reset</button>
+    <!-- <button id="removeOption" type="submit">Delete</button> -->
     <div class="measure-info"><div id="measureIntro">Measurement result:</div><div id="measureToCm"></div></div>
     <h4 style="font-size: 1.5em;">Save section</h4>
     <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from.</p>
@@ -149,7 +151,7 @@
       Value in pixels:&nbsp
       <input type="text" name="saved_distance_value" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="8" placeholder="Save value..." required>
       <br><br>&nbspImage Size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required>
-    <br><br><button class="save-button" id="saveDistanceButton" type="submit">Save</button> 
+      <br><br><button class="save-button" id="saveDistanceButton" type="submit">Save</button> 
     </form>
     <div id="messageSave"></div>
    </div>

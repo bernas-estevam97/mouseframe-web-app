@@ -32,6 +32,15 @@ header h1 {
   text-align: center;
 }
 
+.info-page{
+  text-decoration: none;
+  padding: 3px;
+}
+
+.info-page:hover{
+  text-decoration: underline;
+}
+
 .modal{
   border: 3px solid black;
   background: #ffff;
@@ -131,7 +140,7 @@ header h1 {
 #userResolution {
   position: relative;
   background: #fff;
-  width: 14em;
+  width: 230px;
   padding: 10px;
   left: 4em;
   border: 3px double #000;
@@ -445,7 +454,8 @@ header h1 {
 }
 
 #manualUse,
-#resetManual {
+#resetManual,
+#removeOption {
   padding: 3px 10px;
   border-radius: 1px;
 }
@@ -454,7 +464,8 @@ header h1 {
 #resetMeasure:hover,
 #measureDistance:hover,
 #manualUse:hover,
-#resetManual:hover {
+#resetManual:hover,
+#removeOption:hover {
   background: rgb(184, 184, 184);
 }
 
