@@ -6,8 +6,8 @@ from django.core.management import CommandError
 from django.template import RequestContext
 from django.http import JsonResponse
 from django.views.generic import View
-from rest_framework import generics
-from rest_framework.response import Response
+# from rest_framework import generics
+# from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 import sys
 
