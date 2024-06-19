@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'mouseapp',
-    'import_export',
     'accounts',
 ]
 
@@ -78,24 +77,12 @@ WSGI_APPLICATION = 'mouseapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# if DEBUG:
 DATABASES = {
-'default': {
-    'ENGINE': 'django.db.backends.sqlite3',
-    'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
     }
-} 
-# else:
-#     DATABASES: {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'mydatabase', #change it databasename
-#         'USER': 'mydatabaseuser', #change it database user name
-#         'PASSWORD': 'mypassword', # change user database password
-#         'HOST': 'localhost',  
-#         'PORT': '5432',           
-#         },
-#     }
+}
 
 
 # Password validation
@@ -132,10 +119,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static', 'static_dirs'),)
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 #STATICFILES_DIRS = (
 #    os.path.join(BASE_DIR, 'static', 'static_dirs'),
