@@ -10,27 +10,30 @@ from django.views.generic import View
 # from rest_framework.response import Response
 from django.views.decorators.csrf import csrf_exempt
 import sys
+from django.contrib.auth.decorators import login_required
+from . import settings
 
 
-
+@login_required(login_url=settings.LOGIN_URL)
 def home(request):
-   if not request.user.is_authenticated:
-        return redirect('/authenticate/login')
-   else:
-        saved_distances = SavedDistances.objects.all()
-        return render(request, 'index.html', {'saved_distances': saved_distances})
+#    if not request.user.is_authenticated:
+#         return redirect('/authenticate/login')
+#    else:
+     saved_distances = SavedDistances.objects.all()
+     return render(request, 'index.html', {'saved_distances': saved_distances})
 
+@login_required(login_url=settings.LOGIN_URL)
 def info(request):
-   if not request.user.is_authenticated:
-        return redirect('/authenticate/login')
-   else:
-        return render(request, 'info.html')
+#    if not request.user.is_authenticated:
+#         return redirect('/authenticate/login')
+#    else:
+     return render(request, 'info.html')
    
-
+@login_required(login_url=settings.LOGIN_URL)
 def saved_distance(request):
-      if not request.user.is_authenticated:
-        return redirect('/authenticate/login')
-      if request.method == 'POST':
+     #  if not request.user.is_authenticated:
+     #    return redirect('/authenticate/login')
+     if request.method == 'POST':
           conversion = request.POST.get('saved_distance_value')
           if (request.POST.get('image_size').count(("X").lower())) == 1:
                image_size = request.POST.get('image_size')

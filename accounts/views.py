@@ -1,11 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 
 # Create your views here.
 
-
-def login_user(request):
+def login_user(request: HttpRequest):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -14,7 +14,8 @@ def login_user(request):
             login(request, user)
             return redirect('/')
         else:
-            messages.success(request, ("Invalid login"))
+            HttpResponse.status_code = 401
+            messages.error(request, ("Invalid login"))
             return render(request, 'authenticate/login.html', {})
     else:
         return render(request, 'authenticate/login.html', {})

@@ -20,7 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('access-adm-obliviouz/', admin.site.urls),
     path('', home, name="home"),
     path('saved', saved_distance),
     # path('deleted', delete_distance, name="delete_entry"),

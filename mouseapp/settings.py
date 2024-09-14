@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,13 +21,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#_m)bh%!^jnc1v!#3^8s74ndbyi6cm131hovjqz7+%zj54(cpm'
+load_dotenv()
+key = os.environ.get('S_KEY')
+SECRET_KEY = key
+#For ubuntu provide full path
+#load_dotenv('var/www/mouseframe/.env')
+#key = os.environ.get('S_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
-
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', ' 94.46.171.187', 'mouseframe.pt']
 
 # Application definition
 
@@ -52,7 +58,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'mouseapp.middleware.BruteForceProtectionMiddleware',
 ]
+
+# CACHES = { 
+#   'default' : { 
+#      "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache", 
+#      'LOCATION' : '127.0.0.1:11211',
+#   }
+# }
+
+#Brute force 
+LOGIN_URL = '/authenticate/login'
+
 
 ROOT_URLCONF = 'mouseapp.urls'
 
@@ -147,6 +165,19 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ------------------------- SECURITY CHECKS ---------------------------#
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# SECURE_BROWSER_XSS_FILTER = True
+# X_FRAME_OPTIONS = 'DENY'
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# USE_X_FORWARDED_HOST = True
+# SECURE_HSTS_SECONDS = 86400
+# SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 120 * 60
