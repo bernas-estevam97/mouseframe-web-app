@@ -1,2 +1,5 @@
 venv/
 db.sqlite3
+mouseframe_venv_310/
+mouseframe_venv/
+staticfiles/
