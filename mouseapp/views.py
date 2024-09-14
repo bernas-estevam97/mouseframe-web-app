@@ -11,7 +11,9 @@ from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 import sys
 from django.contrib.auth.decorators import login_required
-from . import settings
+from django.conf import settings
+# from django.core.cache import cache
+# from accounts.views import get_client_ip
 
 
 @login_required(login_url=settings.LOGIN_URL)
@@ -53,3 +55,6 @@ def saved_distance(request):
 #     remove_entry.delete()
 #     return HttpResponse(remove_entry)
 
+
+def error_403(request, exception):
+     return render(request, 'authenticate/blocked.html')

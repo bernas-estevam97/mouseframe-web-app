@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'mouseapp.middleware.BruteForceProtectionMiddleware',
+    'mouseapp.middleware.IPLockMiddleware',
 ]
 
 # CACHES = { 
@@ -70,7 +70,8 @@ MIDDLEWARE = [
 
 #Brute force 
 LOGIN_URL = '/authenticate/login'
-
+MAX_FAILED_LOGIN_ATTEMPTS = 3
+FAILED_LOGIN_LOCK_DURATION = 30  # 1 hour is 3600s. Currently set to 30 seconds only for testing purposes, change in prod 
 
 ROOT_URLCONF = 'mouseapp.urls'
 
@@ -180,4 +181,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-SESSION_COOKIE_AGE = 120 * 60
+SESSION_COOKIE_AGE = 180 * 60  #3 hours
