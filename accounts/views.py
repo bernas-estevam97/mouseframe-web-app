@@ -8,6 +8,8 @@ from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 
+#LOGIN VIEW FOR IPLOCKOUTMIDDLEWARE
+
 def login_user(request: HttpRequest):
     if request.method == 'POST':
         username = request.POST['username']
@@ -17,29 +19,29 @@ def login_user(request: HttpRequest):
             login(request, user)
             ip = get_client_ip(request)
             if ip:
-                key = f'failed_login_attempts_{ip}'
+                key = f'defender:failed:ip:{ip}'
                 cache.delete(key)
             return redirect('/')
         else:
             ip = get_client_ip(request)
             if ip:
-                key = f'failed_login_attempts_{ip}'
+                key = f'defender:failed:ip:{ip}'
                 attempts = cache.get(key, 0)
                 attempts += 1
-                cache.set(key, attempts, timeout=settings.FAILED_LOGIN_LOCK_DURATION)
-                if attempts >= settings.MAX_FAILED_LOGIN_ATTEMPTS:
+                cache.set(key, attempts, timeout=settings.FAILED_LOGIN_LOCK_DURATION) #IPLockOutMiddleWare         
+                if attempts >= settings.MAX_FAILED_LOGIN_ATTEMPTS: #IpLockOutMiddleware
                     # return render(request, 'authenticate/blocked.html', {})
+                    messages.error(request, (f"You have been blocked for several failed login attempts."))
                     raise PermissionDenied()
                 else:
                     messages.error(request, (f"Invalid login. {attempts} of {settings.MAX_FAILED_LOGIN_ATTEMPTS} attempts left"))
-                    
                     #cache._cache.keys() cache._cache.values()
                     # print(cache._cache.keys())
                     return render(request, 'authenticate/login.html', {})
     else:
         return render(request, 'authenticate/login.html', {})
-    
-    
+
+
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')

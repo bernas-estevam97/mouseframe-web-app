@@ -58,3 +58,7 @@ def saved_distance(request):
 
 def error_403(request, exception):
      return render(request, 'authenticate/blocked.html')
+
+
+def error_404(request, exception):
+     return render(request, 'authenticate/not-found.html')

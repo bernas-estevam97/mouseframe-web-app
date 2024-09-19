@@ -4,7 +4,8 @@ from django.core.cache import cache
 from django.http import HttpResponseForbidden
 from django.core.exceptions import PermissionDenied
 
-# THIS MIDDLEWARE USES LOCMEMCACHE
+# THIS MIDDLEWARE IS USING LOCMEMCACHE BY DEFAULT. IF NO CACHE MECHANISM IS PROVIDED IN SETTINGS, LOCMEMCACHE WILL BE USED
+# DO NOT USE LOCMEMCACHE IN PRODUCTION.
 
 
 class IPLockMiddleware:

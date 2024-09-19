@@ -29,10 +29,10 @@ SECRET_KEY = key
 #key = os.environ.get('S_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', ' 94.46.171.187', 'mouseframe.pt']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '94.46.171.187', 'mouseframe.pt']
 
 # Application definition
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'mouseapp',
     'import_export',
     'accounts',
+    # 'defender',
 ]
 
 MIDDLEWARE = [
@@ -59,16 +60,71 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'mouseapp.middleware.IPLockMiddleware',
+    # 'defender.middleware.FailedLoginMiddleware',
 ]
 
-# CACHES = { 
-#   'default' : { 
-#      "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache", 
-#      'LOCATION' : '127.0.0.1:11211',
-#   }
+# ----------------------------------------------------------------------------#
+
+#CACHE EXAMPLE USING DATABASE CACHE
+
+# Django can store its cached data in your database. This works best if you’ve got a fast, well-indexed database server.
+
+#To use a database table as your cache backend:
+
+#Set BACKEND to django.core.cache.backends.db.DatabaseCache
+#Set LOCATION to tablename, the name of the database table. This name can be whatever you want, as long as it’s a valid table name that’s not already being used in your database.
+#In this example, the cache table’s name is my_cache_table:
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "cache_table",
+    }
+}
+
+# CREATE CACHE TABLE ----> python manage.py createcachetable
+
+#------------------------------------------------------------------------------#
+
+#Redis cache configuration
+
+    # 1 - PASS CONFIG in docker redis
+    # docker exec -it <container_name> redis-cli
+    # config set requirepass <yourpassword>
+
+# redis_pass_dev = os.environ.get('REDIS_PASS')
+# DEFENDER_REDIS_URL = f"redis://:{redis_pass_dev}@127.0.0.1:6379/0"
+
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#         'LOCATION': 'my_cache_table',
+#     },
+#     'redis': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': DEFENDER_REDIS_URL,  # Replace with your Redis server info
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#         }
+#     }
 # }
 
-#Brute force 
+
+
+# Use the Redis cache as the default cache
+
+# CACHES['default'] = CACHES['redis']
+# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+# SESSION_CACHE_ALIAS = "default"
+
+# DEFENDER SETTINGS
+
+# DEFENDER_LOGIN_FAILURE_LIMIT = 3
+# DEFENDER_COOLOFF_TIME = 30
+
+
+
+# #Brute force for IPLockoutMiddleWare
 LOGIN_URL = '/authenticate/login'
 MAX_FAILED_LOGIN_ATTEMPTS = 3
 FAILED_LOGIN_LOCK_DURATION = 30  # 1 hour is 3600s. Currently set to 30 seconds only for testing purposes, change in prod 
@@ -168,6 +224,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ------------------------- SECURITY CHECKS ---------------------------#
+
 # SECURE_CONTENT_TYPE_NOSNIFF = True
 # SECURE_BROWSER_XSS_FILTER = True
 # X_FRAME_OPTIONS = 'DENY'

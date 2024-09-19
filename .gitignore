@@ -4,4 +4,5 @@ mouseframe_venv_310/
 db.sqlite3
 staticfiles/
 .prettierignore
-
+.env
+dbbk.sqlite3

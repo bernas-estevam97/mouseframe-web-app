@@ -25,9 +25,13 @@
                    
 
                     <h2 class="fw-bold mb-2 text-uppercase">Mouseframe has blocked you</h2>
-                    <p class="text-white-50 mb-5">Motive: Several failed login attempts</p>
+                    {% if messages %}
+                    {% for message in messages %}
+                    <p class="text-white-50 mb-5"><u><b>Motive:</u></b> {{message}}</p>
+                    {% endfor %}
+                    {% endif %}
                     <div class="form-outline form-white mb-4">
-                    <img src="{% static 'img/prohibited.png' %}" style="height: 200px; width: 200px;">
+                    <img src="{% static 'img/prohibited.png' %}" style="height: 200px; width: 200px; margin-top: 50px;">
                     </div>
                     <!-- {% if messages %}
                       {% for message in messages %}

@@ -12,7 +12,7 @@
     <title>Mouse Frame - Auth</title>
 </head>
 <body>
-  {% block content %}
+    {% block content %}
     <section class="vh-100 gradient-custom">
         
         <div class="container py-5 h-100">
@@ -22,23 +22,17 @@
                 <div class="card-body p-5 text-center">
       
                   <div class="mb-md-5 mt-md-4">
-                    <form action="" method="POST">
-                    {% csrf_token %}
+                   
 
-                    <h2 class="fw-bold mb-2 text-uppercase">APP Login</h2>
-                    <p class="text-white-50 mb-5">Please enter your given login credentials</p>
+                    <h2 class="fw-bold mb-2 text-uppercase">404 Page not found</h2>
+                    
+                    <p class="text-white-50 mb-5">This page does not exist</p>
+                    
                     <div class="form-outline form-white mb-4">
-                      <input type="user" id="username" class="form-control form-control-lg" name="username" required/>
-                      <label class="form-label" for="username">User</label>
+                    <img src="{% static 'img/notfound.png' %}" style="height: 200px; width: 200px;">
                     </div>
-      
-                    <div class="form-outline form-white mb-4">
-                      <input type="password" id="password" class="form-control form-control-lg" name="password" required/>
-                      <label class="form-label" for="password">Password</label>
-                    </div>
-      
-                    <button class="btn btn-outline-info px-5" data-mdb-ripple-color="dark" type="submit">Login</button><br><br>
-                    {% if messages %}
+                    <p class="text-white-50 mb-5">Follow this <a href="{% url 'home' %}">link</a> to go to the home page</p>
+                    <!-- {% if messages %}
                       {% for message in messages %}
                       <div class="alert alert-warning alert-dismissible fade show" role="alert">
                         {{message}}
@@ -46,8 +40,7 @@
                       </div>
                       {% endfor %}
                     <p style="margin-top: 10px; color: red;">{{error}}</p>
-                    {% endif %}
-                    </form>
+                    {% endif %} -->
                   </div>
       
                 </div>
@@ -58,5 +51,5 @@
         
       </section>
       {% endblock %}
+
 </body>
-</html>

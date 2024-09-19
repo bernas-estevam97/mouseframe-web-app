@@ -20,14 +20,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    # path('access-adm-obliviouz/defender/', include('defender.urls')),
     path('access-adm-obliviouz/', admin.site.urls),
     path('', home, name="home"),
     path('saved', saved_distance),
     # path('deleted', delete_distance, name="delete_entry"),
     path('authenticate/', include('django.contrib.auth.urls')),
     path('authenticate/', include('accounts.urls')),
-    path('info/', info, name="info")
-    
+    path('info', info, name="info"),
     # path('canvas', canvas),
     # path('editor', image_editor),
     # path('image_dim', img_dim),
@@ -35,4 +35,5 @@ urlpatterns = [
            document_root=settings.MEDIA_ROOT)
 
 
-handler403 = 'mouseapp.views.error_403' 
+handler403 = 'mouseapp.views.error_403'
+handler404 = 'mouseapp.views.error_404' 
