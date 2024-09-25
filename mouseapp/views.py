@@ -1,19 +1,17 @@
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from .models import SavedDistances
-from django.contrib import messages
-from django.core.management import CommandError
-from django.template import RequestContext
-from django.http import JsonResponse
-from django.views.generic import View
-# from rest_framework import generics
-# from rest_framework.response import Response
-from django.views.decorators.csrf import csrf_exempt
-import sys
+# from django.contrib import messages
+# from django.core.management import CommandError
+# from django.template import RequestContext
+# from django.http import JsonResponse
+# from django.views.generic import View
+# # from rest_framework import generics
+# # from rest_framework.response import Response
+# from django.views.decorators.csrf import csrf_exempt, csrf_protect
+# import sys
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
-# from django.core.cache import cache
-# from accounts.views import get_client_ip
 
 
 @login_required(login_url=settings.LOGIN_URL)

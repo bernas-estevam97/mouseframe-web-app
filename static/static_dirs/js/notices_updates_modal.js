@@ -12,13 +12,17 @@ if (modalStorage){
 
 // console.log(modalStorage);
 
+// MODAL FOR NEWS AND VERSION UPDATES
+
 closeBtn.onclick = function displayNone(){
     modalNews.classList.add("hidden");
 };
 
 showNews.onclick = function displayNews(){
     modalNews.classList.remove("hidden");
-}
+};
+
+
 
 // function to give time for all initial functions to load without flashing any element.
 

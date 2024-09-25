@@ -53,12 +53,12 @@ function getPosition(event) {
 
 function printMousePos(event) {
   var rect = event.target.getBoundingClientRect();
-  console.log(
-    "x:" +
-      Math.round(event.clientX - rect.left) +
-      " y:" +
-      Math.round(event.clientY - rect.top)
-  );
+  // console.log(
+  //   "x:" +
+  //     Math.round(event.clientX - rect.left) +
+  //     " y:" +
+  //     Math.round(event.clientY - rect.top)
+  // );
 }
 
 // DRAW RED - ALL EVENTS
@@ -499,7 +499,7 @@ function drawMeasurePoint(e) {
     pointsMeasure.push(o);
     console.log(pointsMeasure);
     let index = pointsMeasure.indexOf(o);
-    console.log("Measure Point:" + (index + 1));
+    // console.log("Measure Point:" + (index + 1));
   } else {
     return;
   }
@@ -555,7 +555,11 @@ function resetCanvas() {
   pointsMeasure.length = 0;
   canvas.style.cursor = "auto";
   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize;
+  showSize.innerHTML = "Current point size is: " + pointSize +"px";
+  var elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, function (el) {
+    el.classList.remove("active");
+  });
 }
 
 //function clearCanvas(){
@@ -647,31 +651,32 @@ function resetInput() {
 let imgSizeStatus = 0;
 let imgWidth = document.getElementById("imageUploadedWidth");
 let imgHeight = document.getElementById("imageUploadedHeight");
-let imgSize = document.getElementById("imageUploadedSize");
+// let imgSize = document.getElementById("imageUploadedSize");
 let imgInfo = document.getElementById("imageInfo");
 let imgEdit = document.getElementById("imageEdit");
 let results = document.querySelector(".data-results");
-let buttons = document.querySelector(".buttons");
-let chButtons = document.querySelector(".buttons-change");
+let buttons = document.querySelector(".buttons-plus-options");
+// let chButtons = document.querySelector(".buttons-change");
 // let canvasInfo = document.getElementById("canvasInfo");
 let canvasUpload = document.getElementById("canvasUpload");
 let imgName = document.getElementById("imageName");
 let tableTitle = document.getElementById("titleImage");
 let manualID = document.getElementById("entryTableID");
 let tableWarning = document.getElementById("imageResizeTableWarning");
-document.getElementById("inputScreenInches").style.display = "none";
-document.getElementById("screenPPI").style.display = "none";
-document.getElementById("imageDimInches").style.display = "none";
-document.getElementById("imageDimCm").style.display = "none";
-document.getElementById("labelInput").style.display = "none";
-document.getElementById("ppiCalculus").style.display = "none";
+// document.getElementById("inputScreenInches").style.display = "none";
+// document.getElementById("screenPPI").style.display = "none";
+// document.getElementById("imageDimInches").style.display = "none";
+// document.getElementById("imageDimCm").style.display = "none";
+// document.getElementById("labelInput").style.display = "none";
+// document.getElementById("ppiCalculus").style.display = "none";
 document.getElementById("savedDistance").style.display = "none";
 document.getElementById("showData").style.display = "none";
+document.getElementById('removeImage').style.display = "none";
 canvasUpload.style.display = "none";
 buttons.style.display = "none";
 canvas.style.display = "none";
 //  results.style.display = "none";
-chButtons.style.display = "none";
+// chButtons.style.display = "none";
 let imgContainer = document.getElementById("imgContainer");
 let img = new Image();
 let loadFile = function (event) {
@@ -681,26 +686,26 @@ let loadFile = function (event) {
     imgContainer.style.backgroundImage = "url(" + blob + ")";
     buttons.style.display = "block";
     // results.style.display = "inline-block";
-    chButtons.style.display = "block";
-    imgInfo.style.display = "block";
+    // chButtons.style.display = "block";
+    // imgInfo.style.display = "block";
     imgEdit.style.display = "block";
     savedDistance.style.display = "";
     showData.style.display = "";
     // canvasInfo.style.display = "none";
     canvasUpload.style.display = "";
-    imgSize.innerHTML =
-      "<strong>Uploaded image size:</strong> " +
-      (event.target.files[0].size / 1024).toFixed(2) +
-      " kb";
+    // imgSize.innerHTML =
+    //   "<strong>Uploaded image size:</strong> " +
+    //   (event.target.files[0].size / 1024).toFixed(2) +
+    //   " kb";
     if (event.target.files[0].name.length > 30) {
       imgName.innerHTML =
-        "<b>Image name:</b> " +
+        "<b><i class='fa-regular fa-image'></i> name:</b> " +
         event.target.files[0].name.slice(
           event.target.files[0].name.length / 2,
           event.target.files[0].name.length + 1
         );
     } else {
-      imgName.innerHTML = "<b>Image name:</b> " + event.target.files[0].name;
+      imgName.innerHTML = "<b><i class='fa-regular fa-image'></i> name:</b> " + event.target.files[0].name;
     }
 
     canvas.style.display = "";
@@ -710,13 +715,31 @@ let loadFile = function (event) {
     alert("Please enter a valid image format!");
     event.target.value = null;
   }
+  // ON LOAD OF NEW IMAGE RESET ALL
+  canvas.removeEventListener("click", drawBlueLeft);
+  canvas.removeEventListener("click", drawBlueRight);
+  canvas.removeEventListener("click", drawRedLeft);
+  canvas.removeEventListener("click", drawRedRight);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.removeEventListener("click", drawMeasurePoint);
+  pointsRedLeft.length = 0;
+  pointsRedRight.length = 0;
+  pointsBlueLeft.length = 0;
+  pointsBlueRight.length = 0;
+  pointsMeasure.length = 0;
+  canvas.style.cursor = "auto";
+  var elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, function (el) {
+    el.classList.remove("active");
+  });
+
   // IMAGE ONLOAD SECTION - //
   img.onload = () => {
     event.target.value = null;
     imgWidth.innerHTML =
-      "<strong>Uploaded image default width:</strong> " + img.width + "px";
+      "<b><i class='fa-solid fa-image'></i> size:</b> " + img.width;
     imgHeight.innerHTML =
-      "<strong>Uploaded image default height:</strong> " + img.height + "px";
+      img.height;
     imgContainer.style.border = "2px solid black";
     if (img.width >= 3000 || img.height >= 3000) {
       imgSizeStatus = 25;
@@ -740,6 +763,7 @@ let loadFile = function (event) {
       tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
       //A new column with original image size values in cm added.`;
       // document.getElementById("titleImage").colSpan = "6";
+      slider.value = 5;
     } else if (
       (img.width >= 1500 && img.width < 2000) ||
       (img.height >= 1500 && img.height < 2000)
@@ -765,6 +789,7 @@ let loadFile = function (event) {
       tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
       //A new column with original image size values in cm added.`;
       // document.getElementById("titleImage").colSpan = "6";
+      slider.value = 15;
     } else if (
       (img.width >= 2000 && img.width < 3000) ||
       (img.height >= 2000 && img.height < 3000)
@@ -790,6 +815,7 @@ let loadFile = function (event) {
       // document.getElementById("titleImage").colSpan = "6";
       tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
       //A new column with original image size values in cm added.`;
+      slider.value = 10;
     } else {
       imgSizeStatus = 100;
       imgContainer.style.width = img.width + "px";
@@ -802,16 +828,18 @@ let loadFile = function (event) {
       tableWarning.innerHTML = "";
     }
     // canvasInfo.innerHTML = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
-    document.getElementById("inputScreenInches").style.display = "";
-    document.getElementById("screenPPI").style.display = "";
-    document.getElementById("imageDimInches").style.display = "";
-    document.getElementById("imageDimCm").style.display = "";
-    document.getElementById("labelInput").style.display = "";
-    document.getElementById("ppiCalculus").style.display = "";
+    // document.getElementById("inputScreenInches").style.display = "";
+    // document.getElementById("screenPPI").style.display = "";
+    // document.getElementById("imageDimInches").style.display = "";
+    // document.getElementById("imageDimCm").style.display = "";
+    // document.getElementById("labelInput").style.display = "";
+    // document.getElementById("ppiCalculus").style.display = "";
+    document.getElementById('removeImage').style.display = "";
+    // ------------------------------------------------------ //
   };
 };
 
-// FUNCTIONS TO CHANGE CANVAS DIMENSIONS //
+// FUNCTIONS TO CHANGE CANVAS DIMENSIONS // --------------------------------------------------------------------------------------
 
 //     let canvasWidth = document.getElementById("canvasWidth");
 //     let canvasHeight = document.getElementById("canvasHeight");
@@ -869,7 +897,25 @@ let loadFile = function (event) {
 //   } else{
 //     alert("Give both dimensions to change!");
 //   }
-// }
+// } ---------------------------------------------------------------------------------------------------------------------------
+
+// TOGGLE INACTIVE FUNCTION
+
+let toggleInactive = document.getElementById('toggleInactive');
+toggleInactive.onclick = function toggleInactive(){
+  canvas.removeEventListener("click", drawBlueLeft);
+  canvas.removeEventListener("click", drawBlueRight);
+  canvas.removeEventListener("click", drawRedLeft);
+  canvas.removeEventListener("click", drawRedRight);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.removeEventListener("click", drawMeasurePoint);
+  canvas.style.cursor = "auto";
+  var elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, function (el) {
+    el.classList.remove("active");
+  });
+}
+
 
 // Image resizing section
 
@@ -884,232 +930,232 @@ let tableDynamicValueCm = document.getElementById("valueCm");
 // let tableOrignalValueCm = document.getElementById("valueCmOri");
 let originalValueCell = document.getElementById("originalValueCell");
 
-function resetImgDim() {
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
-  });
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener("click", drawMeasurePoint);
-  pointsRedLeft.length = 0;
-  pointsRedRight.length = 0;
-  pointsBlueLeft.length = 0;
-  pointsBlueRight.length = 0;
-  pointsMeasure.length = 0;
-  canvas.style.cursor = "auto";
-  imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
-  canvas.width = img.width;
-  canvas.height = img.height;
-  imgContainer.style.width = img.width + "px";
-  imgContainer.style.height = img.height + "px";
-  // imgWidthInput.value = '';
-  // imgHeightInput.value = '';
-  document.getElementById("currentImgSize").innerHTML =
-    "<b>Current image size is:</b> " + img.width + "x" + img.height;
-  document.getElementById("titleImage").colSpan = "5";
-  tableWarning.innerHTML = "";
-  tableDynamicValuePx.innerHTML = "Value(px)";
-  tableDynamicValueCm.innerHTML = "Value(cm)";
-  // if (table.rows[1].cells.length == 6) {
-  //   table.rows[1].deleteCell(-1);
-  // } else {
-  //   return;
-  // }
-  imgSizeStatus = 100;
-  $("#tbody").empty();
-}
+// function resetImgDim() {
+//   var elems = document.querySelectorAll(".active");
+//   [].forEach.call(elems, function (el) {
+//     el.classList.remove("active");
+//   });
+//   canvas.removeEventListener("click", drawBlueLeft);
+//   canvas.removeEventListener("click", drawBlueRight);
+//   canvas.removeEventListener("click", drawRedLeft);
+//   canvas.removeEventListener("click", drawRedRight);
+//   canvas.removeEventListener("click", printMousePos);
+//   canvas.removeEventListener("click", drawMeasurePoint);
+//   pointsRedLeft.length = 0;
+//   pointsRedRight.length = 0;
+//   pointsBlueLeft.length = 0;
+//   pointsBlueRight.length = 0;
+//   pointsMeasure.length = 0;
+//   canvas.style.cursor = "auto";
+//   imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
+//   canvas.width = img.width;
+//   canvas.height = img.height;
+//   imgContainer.style.width = img.width + "px";
+//   imgContainer.style.height = img.height + "px";
+//   // imgWidthInput.value = '';
+//   // imgHeightInput.value = '';
+//   document.getElementById("currentImgSize").innerHTML =
+//     "<b>Current image size is:</b> " + img.width + "x" + img.height;
+//   document.getElementById("titleImage").colSpan = "5";
+//   tableWarning.innerHTML = "";
+//   tableDynamicValuePx.innerHTML = "Value(px)";
+//   tableDynamicValueCm.innerHTML = "Value(cm)";
+//   // if (table.rows[1].cells.length == 6) {
+//   //   table.rows[1].deleteCell(-1);
+//   // } else {
+//   //   return;
+//   // }
+//   imgSizeStatus = 100;
+//   $("#tbody").empty();
+// }
 
-function resizeFifty() {
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
-  });
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener("click", drawMeasurePoint);
-  pointsRedLeft.length = 0;
-  pointsRedRight.length = 0;
-  pointsBlueLeft.length = 0;
-  pointsBlueRight.length = 0;
-  pointsMeasure.length = 0;
-  canvas.style.cursor = "auto";
-  pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize;
-  imgContainer.style.backgroundSize =
-    img.width * 0.5 + "px " + img.height * 0.5 + "px";
-  imgContainer.style.width = img.width * 0.5 + "px";
-  imgContainer.style.height = img.height * 0.5 + "px";
-  canvas.width = img.width * 0.5;
-  canvas.height = img.height * 0.5;
-  document.getElementById("currentImgSize").innerHTML =
-    "<b>Current image size is:</b> " +
-    img.width * 0.5 +
-    "x" +
-    img.height * 0.5 +
-    " (50% of size!)";
-  // tableDynamicValuePx.innerHTML = "Value(px) at 50%";
-  // tableDynamicValueCm.innerHTML = "Value(cm) at 50%";
-  // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
-  //A new column with original image size values in cm added.`;
-  imgSizeStatus = 50;
-  // if (table.rows[1].cells.length < 6) {
-  //   let originalValueCm = table.rows[1].insertCell();
-  //   originalValueCm.outerHTML =
-  //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-  // } else {
-  //   return;
-  // }
-  $("#tbody").empty();
-}
+// function resizeFifty() {
+//   var elems = document.querySelectorAll(".active");
+//   [].forEach.call(elems, function (el) {
+//     el.classList.remove("active");
+//   });
+//   canvas.removeEventListener("click", drawBlueLeft);
+//   canvas.removeEventListener("click", drawBlueRight);
+//   canvas.removeEventListener("click", drawRedLeft);
+//   canvas.removeEventListener("click", drawRedRight);
+//   canvas.removeEventListener("click", printMousePos);
+//   canvas.removeEventListener("click", drawMeasurePoint);
+//   pointsRedLeft.length = 0;
+//   pointsRedRight.length = 0;
+//   pointsBlueLeft.length = 0;
+//   pointsBlueRight.length = 0;
+//   pointsMeasure.length = 0;
+//   canvas.style.cursor = "auto";
+//   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
+//   showSize.innerHTML = "Current point size is: " + pointSize;
+//   imgContainer.style.backgroundSize =
+//     img.width * 0.5 + "px " + img.height * 0.5 + "px";
+//   imgContainer.style.width = img.width * 0.5 + "px";
+//   imgContainer.style.height = img.height * 0.5 + "px";
+//   canvas.width = img.width * 0.5;
+//   canvas.height = img.height * 0.5;
+//   document.getElementById("currentImgSize").innerHTML =
+//     "<b>Current image size is:</b> " +
+//     img.width * 0.5 +
+//     "x" +
+//     img.height * 0.5 +
+//     " (50% of size!)";
+//   // tableDynamicValuePx.innerHTML = "Value(px) at 50%";
+//   // tableDynamicValueCm.innerHTML = "Value(cm) at 50%";
+//   // document.getElementById("titleImage").colSpan = "6";
+//   tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
+//   //A new column with original image size values in cm added.`;
+//   imgSizeStatus = 50;
+//   // if (table.rows[1].cells.length < 6) {
+//   //   let originalValueCm = table.rows[1].insertCell();
+//   //   originalValueCm.outerHTML =
+//   //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
+//   // } else {
+//   //   return;
+//   // }
+//   $("#tbody").empty();
+// }
 
-function resizeSF() {
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
-  });
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener("click", drawMeasurePoint);
-  pointsRedLeft.length = 0;
-  pointsRedRight.length = 0;
-  pointsBlueLeft.length = 0;
-  pointsBlueRight.length = 0;
-  pointsMeasure.length = 0;
-  canvas.style.cursor = "auto";
-  pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize;
-  imgContainer.style.backgroundSize =
-    img.width * 0.75 + "px " + img.height * 0.75 + "px";
-  imgContainer.style.width = img.width * 0.75 + "px";
-  imgContainer.style.height = img.height * 0.75 + "px";
-  canvas.width = img.width * 0.75;
-  canvas.height = img.height * 0.75;
-  document.getElementById("currentImgSize").innerHTML =
-    "<b>Current image size is:</b> " +
-    img.width * 0.75 +
-    "x" +
-    img.height * 0.75 +
-    " (75% of size!)";
-  // tableDynamicValuePx.innerHTML = "Value(px) at 75%";
-  // tableDynamicValueCm.innerHTML = "Value(cm) at 75%";
-  // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
-  //A new column with original image size values in cm added.`;
-  imgSizeStatus = 75;
-  // if (table.rows[1].cells.length < 6) {
-  //   let originalValueCm = table.rows[1].insertCell();
-  //   originalValueCm.outerHTML =
-  //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-  // } else {
-  //   return;
-  // }
-  $("#tbody").empty();
-}
+// function resizeSF() {
+//   var elems = document.querySelectorAll(".active");
+//   [].forEach.call(elems, function (el) {
+//     el.classList.remove("active");
+//   });
+//   canvas.removeEventListener("click", drawBlueLeft);
+//   canvas.removeEventListener("click", drawBlueRight);
+//   canvas.removeEventListener("click", drawRedLeft);
+//   canvas.removeEventListener("click", drawRedRight);
+//   canvas.removeEventListener("click", printMousePos);
+//   canvas.removeEventListener("click", drawMeasurePoint);
+//   pointsRedLeft.length = 0;
+//   pointsRedRight.length = 0;
+//   pointsBlueLeft.length = 0;
+//   pointsBlueRight.length = 0;
+//   pointsMeasure.length = 0;
+//   canvas.style.cursor = "auto";
+//   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
+//   showSize.innerHTML = "Current point size is: " + pointSize;
+//   imgContainer.style.backgroundSize =
+//     img.width * 0.75 + "px " + img.height * 0.75 + "px";
+//   imgContainer.style.width = img.width * 0.75 + "px";
+//   imgContainer.style.height = img.height * 0.75 + "px";
+//   canvas.width = img.width * 0.75;
+//   canvas.height = img.height * 0.75;
+//   document.getElementById("currentImgSize").innerHTML =
+//     "<b>Current image size is:</b> " +
+//     img.width * 0.75 +
+//     "x" +
+//     img.height * 0.75 +
+//     " (75% of size!)";
+//   // tableDynamicValuePx.innerHTML = "Value(px) at 75%";
+//   // tableDynamicValueCm.innerHTML = "Value(cm) at 75%";
+//   // document.getElementById("titleImage").colSpan = "6";
+//   tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
+//   //A new column with original image size values in cm added.`;
+//   imgSizeStatus = 75;
+//   // if (table.rows[1].cells.length < 6) {
+//   //   let originalValueCm = table.rows[1].insertCell();
+//   //   originalValueCm.outerHTML =
+//   //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
+//   // } else {
+//   //   return;
+//   // }
+//   $("#tbody").empty();
+// }
 
-function resizeForty() {
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
-  });
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener("click", drawMeasurePoint);
-  pointsRedLeft.length = 0;
-  pointsRedRight.length = 0;
-  pointsBlueLeft.length = 0;
-  pointsBlueRight.length = 0;
-  pointsMeasure.length = 0;
-  canvas.style.cursor = "auto";
-  pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize;
-  imgContainer.style.backgroundSize =
-    img.width * 0.4 + "px " + img.height * 0.4 + "px";
-  imgContainer.style.width = img.width * 0.4 + "px";
-  imgContainer.style.height = img.height * 0.4 + "px";
-  canvas.width = img.width * 0.4;
-  canvas.height = img.height * 0.4;
-  document.getElementById("currentImgSize").innerHTML =
-    "<b>Current image size is:</b> " +
-    (img.width * 0.4).toFixed(0) +
-    "x" +
-    (img.height * 0.4).toFixed(0) +
-    " (40% of size! Values are rounded)";
-  // tableDynamicValuePx.innerHTML = "Value(px) at 40%";
-  // tableDynamicValueCm.innerHTML = "Value(cm) at 40%";
-  // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 40% of its original size!`; //\n
-  //A new column with original image size values in cm added.`;
-  imgSizeStatus = 40;
-  // if (table.rows[1].cells.length < 6) {
-  //   let originalValueCm = table.rows[1].insertCell();
-  //   originalValueCm.outerHTML =
-  //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-  // } else {
-  //   return;
-  // }
-  $("#tbody").empty();
-}
+// function resizeForty() {
+//   var elems = document.querySelectorAll(".active");
+//   [].forEach.call(elems, function (el) {
+//     el.classList.remove("active");
+//   });
+//   canvas.removeEventListener("click", drawBlueLeft);
+//   canvas.removeEventListener("click", drawBlueRight);
+//   canvas.removeEventListener("click", drawRedLeft);
+//   canvas.removeEventListener("click", drawRedRight);
+//   canvas.removeEventListener("click", printMousePos);
+//   canvas.removeEventListener("click", drawMeasurePoint);
+//   pointsRedLeft.length = 0;
+//   pointsRedRight.length = 0;
+//   pointsBlueLeft.length = 0;
+//   pointsBlueRight.length = 0;
+//   pointsMeasure.length = 0;
+//   canvas.style.cursor = "auto";
+//   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
+//   showSize.innerHTML = "Current point size is: " + pointSize;
+//   imgContainer.style.backgroundSize =
+//     img.width * 0.4 + "px " + img.height * 0.4 + "px";
+//   imgContainer.style.width = img.width * 0.4 + "px";
+//   imgContainer.style.height = img.height * 0.4 + "px";
+//   canvas.width = img.width * 0.4;
+//   canvas.height = img.height * 0.4;
+//   document.getElementById("currentImgSize").innerHTML =
+//     "<b>Current image size is:</b> " +
+//     (img.width * 0.4).toFixed(0) +
+//     "x" +
+//     (img.height * 0.4).toFixed(0) +
+//     " (40% of size! Values are rounded)";
+//   // tableDynamicValuePx.innerHTML = "Value(px) at 40%";
+//   // tableDynamicValueCm.innerHTML = "Value(cm) at 40%";
+//   // document.getElementById("titleImage").colSpan = "6";
+//   tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 40% of its original size!`; //\n
+//   //A new column with original image size values in cm added.`;
+//   imgSizeStatus = 40;
+//   // if (table.rows[1].cells.length < 6) {
+//   //   let originalValueCm = table.rows[1].insertCell();
+//   //   originalValueCm.outerHTML =
+//   //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
+//   // } else {
+//   //   return;
+//   // }
+//   $("#tbody").empty();
+// }
 
-function resizeTwentyF() {
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
-  });
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener("click", drawMeasurePoint);
-  pointsRedLeft.length = 0;
-  pointsRedRight.length = 0;
-  pointsBlueLeft.length = 0;
-  pointsBlueRight.length = 0;
-  pointsMeasure.length = 0;
-  canvas.style.cursor = "auto";
-  pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize;
-  imgContainer.style.backgroundSize =
-    img.width * 0.25 + "px " + img.height * 0.25 + "px";
-  imgContainer.style.width = img.width * 0.25 + "px";
-  imgContainer.style.height = img.height * 0.25 + "px";
-  canvas.width = img.width * 0.25;
-  canvas.height = img.height * 0.25;
-  document.getElementById("currentImgSize").innerHTML =
-    "<b>Current image size is:</b> " +
-    img.width * 0.25 +
-    "x" +
-    img.height * 0.25 +
-    " (25% of size!)";
-  // tableDynamicValuePx.innerHTML = "Value(px) at 25%";
-  // tableDynamicValueCm.innerHTML = "Value(cm) at 25%";
-  // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
-  //A new column with original image size values in cm added.`;
-  imgSizeStatus = 25;
-  // if (table.rows[1].cells.length < 6) {
-  //   let originalValueCm = table.rows[1].insertCell();
-  //   originalValueCm.outerHTML =
-  //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-  // } else {
-  //   return;
-  // }
-  $("#tbody").empty();
-}
+// function resizeTwentyF() {
+//   var elems = document.querySelectorAll(".active");
+//   [].forEach.call(elems, function (el) {
+//     el.classList.remove("active");
+//   });
+//   canvas.removeEventListener("click", drawBlueLeft);
+//   canvas.removeEventListener("click", drawBlueRight);
+//   canvas.removeEventListener("click", drawRedLeft);
+//   canvas.removeEventListener("click", drawRedRight);
+//   canvas.removeEventListener("click", printMousePos);
+//   canvas.removeEventListener("click", drawMeasurePoint);
+//   pointsRedLeft.length = 0;
+//   pointsRedRight.length = 0;
+//   pointsBlueLeft.length = 0;
+//   pointsBlueRight.length = 0;
+//   pointsMeasure.length = 0;
+//   canvas.style.cursor = "auto";
+//   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
+//   showSize.innerHTML = "Current point size is: " + pointSize;
+//   imgContainer.style.backgroundSize =
+//     img.width * 0.25 + "px " + img.height * 0.25 + "px";
+//   imgContainer.style.width = img.width * 0.25 + "px";
+//   imgContainer.style.height = img.height * 0.25 + "px";
+//   canvas.width = img.width * 0.25;
+//   canvas.height = img.height * 0.25;
+//   document.getElementById("currentImgSize").innerHTML =
+//     "<b>Current image size is:</b> " +
+//     img.width * 0.25 +
+//     "x" +
+//     img.height * 0.25 +
+//     " (25% of size!)";
+//   // tableDynamicValuePx.innerHTML = "Value(px) at 25%";
+//   // tableDynamicValueCm.innerHTML = "Value(cm) at 25%";
+//   // document.getElementById("titleImage").colSpan = "6";
+//   tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
+//   //A new column with original image size values in cm added.`;
+//   imgSizeStatus = 25;
+//   // if (table.rows[1].cells.length < 6) {
+//   //   let originalValueCm = table.rows[1].insertCell();
+//   //   originalValueCm.outerHTML =
+//   //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
+//   // } else {
+//   //   return;
+//   // }
+//   $("#tbody").empty();
+// }
 
 // Warning message about resized images
 
@@ -1135,24 +1181,57 @@ function resizeTwentyF() {
 //   }
 // }
 
-// SLIDER IMAGE RESIZING IS STOPPING BUTTON EVENT LISTENERS --- WORK ON FIX
+// IMAGE RESIZE SECTION
+// SLIDER IMAGE RESIZING IS STOPPING BUTTON EVENT LISTENERS --- WORK ON FIX 
 
-//  const value = document.querySelector("#value");
-//  const slider = document.getElementById('Slider');
-//  slider.addEventListener('input', handleChange);
-//  slider.addEventListener("input", (e) => {
-//   value.textContent = 'Value: ' + Math.round((slider.value)/20*100) + '% of image size';
-// });
+const slider = document.getElementById('mySlider');
+slider.addEventListener('input', handleChange);
 
-//  function handleChange(drag) {
-//   const {value} = drag.target;
-//   imgContainer.style.backgroundSize = img.width*(value/20) + "px " + img.height*(value/20) + "px";
-//   imgContainer.style.width = img.width*(value/20) + "px";
-//   imgContainer.style.height = img.height*(value/20) + "px";
-//   canvas.width = img.width*(value/20) + "px";
-//   canvas.height = img.height*(value/20) + "px";
-//   document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*(value/20) + "x" + img.height*(value/20) + " (" +Math.round((value/20*100))+ "% of size!)";
-// }
+
+function handleChange(drag) {
+  // remove all listeners and reset canvas on resize
+  canvas.removeEventListener("click", drawBlueLeft);
+  canvas.removeEventListener("click", drawBlueRight);
+  canvas.removeEventListener("click", drawRedLeft);
+  canvas.removeEventListener("click", drawRedRight);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.removeEventListener("click", drawMeasurePoint);
+  var elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, function (el) {
+    el.classList.remove("active");
+  });
+  pointsRedLeft.length = 0;
+  pointsRedRight.length = 0;
+  pointsBlueLeft.length = 0;
+  pointsBlueRight.length = 0;
+  pointsMeasure.length = 0;
+  canvas.style.cursor = "auto";
+  pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
+  showSize.innerHTML = "Current point size is: " + pointSize+"px";
+  const {value} = drag.target;
+  imgContainer.style.backgroundSize = img.width*(value/20) + "px " + img.height*(value/20) + "px";
+  imgContainer.style.width = img.width*(value/20) + "px";
+  imgContainer.style.height = img.height*(value/20) + "px";
+  canvas.width = img.width*(value/20);
+  canvas.height = img.height*(value/20);
+  document.getElementById("currentImgSize").innerHTML = document.getElementById('currentImgSize').innerHTML = "<b>Current image size is:</b> " +
+  Math.round((img.width*(value*100/20))/100)+
+  "x" +
+  Math.round((img.height*(value*100/20))/100)+
+  " ("+ Math.round((value)*5)+ "% of size!)";
+  if (value==20){
+    tableWarning.style.display = 'none';
+    document.getElementById("currentImgSize").innerHTML = document.getElementById('currentImgSize').innerHTML = "<b>Current image size is:</b> " +
+    Math.round((img.width*(value*100/20))/100)+
+    "x" +
+    Math.round((img.height*(value*100/20))/100);
+  } else{
+    tableWarning.style.display = '';
+    tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to ` + Math.round((value)*5)+ `% of its original size!`;
+  }
+}
+
+
 
 //-------------------------------------------------------------------------------------//
 
@@ -1169,12 +1248,15 @@ function resizeTwentyF() {
 
 // ------------------- RESET FILE SECTION ===> RESET IMAGE AND FUNCTIONS -------------- //
 
+
+
+
 let resetFile = function (event) {
   imgContainer.style.backgroundImage = "";
   buttons.style.display = "none";
   // results.style.display = "none";
-  chButtons.style.display = "none";
-  imgInfo.style.display = "none";
+  // chButtons.style.display = "none";
+  // imgInfo.style.display = "none";
   imgEdit.style.display = "none";
   canvas.style.cursor = "auto";
   canvas.removeEventListener("click", drawBlueLeft);
@@ -1195,13 +1277,13 @@ let resetFile = function (event) {
   pointsMeasure.length = 0;
   imgContainer.style.width = "0";
   imgContainer.style.height = "0";
-  document.getElementById("inputScreenInches").value = "";
-  document.getElementById("inputScreenInches").style.display = "none";
-  document.getElementById("screenPPI").innerHTML = "";
-  document.getElementById("imageDimInches").innerHTML = "";
-  document.getElementById("imageDimCm").innerHTML = "";
-  document.getElementById("labelInput").style.display = "none";
-  document.getElementById("ppiCalculus").style.display = "none";
+  // document.getElementById("inputScreenInches").value = "";
+  // document.getElementById("inputScreenInches").style.display = "none";
+  // document.getElementById("screenPPI").innerHTML = "";
+  // document.getElementById("imageDimInches").innerHTML = "";
+  // document.getElementById("imageDimCm").innerHTML = "";
+  // document.getElementById("labelInput").style.display = "none";
+  // document.getElementById("ppiCalculus").style.display = "none";
   document.getElementById("savedDistance").style.display = "none";
   document.getElementById("showData").style.display = "none";
   imgContainer.style.border = "none";
@@ -1216,6 +1298,11 @@ let resetFile = function (event) {
   document.getElementById("measureToCm").innerHTML = "";
   dist = 0;
   imgSizeStatus = 0;
+  document.getElementById('removeImage').style.display = "none";
+  var elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, function (el) {
+    el.classList.remove("active");
+  });
 };
 
 //---------------------------------------------------------//
@@ -1339,17 +1426,59 @@ let pixelsManual = document.getElementById("pixelsInCmMan");
 let footstepsBeginning = document.getElementById("footstepsBeginning");
 let footstepStart = document.getElementById("footstepStart");
 let measurementType = document.getElementById("measurement");
+let addButton = document.getElementById('addAll'), addButtonAverage = document.getElementById('addAllAverage');
+let removeByEntriesOption = document.getElementById('removeByEntries');
+let removeByMeasurementsOption = document.getElementById('removeByMeasurement');
+let modalHelpAe = document.getElementById('modalHelpAddEntries');
+let closeModalHelpAe = document.getElementById('closeModalHelpAddEntries');
+let openAeModal = document.getElementById('openAe');
+let modalHelpAea = document.getElementById('modalHelpAddEntriesAverage');
+let closeModalHelpAea = document.getElementById('closeModalHelpAddEntriesAverage');
+let openAeaModal = document.getElementById('openAea');
 
-// SHOW OPTIONS OF RIGHT AND LEFT WHEN CHOOSING THE STRIDE WIDTH MEASUREMENT
 
-// measurementType.addEventListener("change", function(){
-// var options = measurementType.querySelectorAll('option');
-// if (measurementType.value == "Stride Width Front" || measurementType.value == "Stride Width Hind"){
-//  footstepsBeginning.style.display = '';
-// } else{
-//  footstepsBeginning.style.display = 'none';
-// }
-// })
+// SHOW ADD VALUES OPTIONS ONLY IF RIGHT OR LEFT ARE SELECTED IN THE SELECT TAG
+
+addButton.style.display = 'none', addButtonAverage.style.display = 'none';
+openAeModal.style.display = 'none', openAeaModal.style.display = 'none';
+
+footstepStart.addEventListener("change", function(){
+if (footstepStart.value == "Left" || footstepStart.value == "Right"){
+ addButton.style.display = '', addButtonAverage.style.display = '';
+ openAeModal.style.display = '', openAeaModal.style.display = '';
+} else{
+ addButton.style.display = 'none', addButtonAverage.style.display = 'none';
+ openAeModal.style.display = 'none', openAeaModal.style.display = 'none';
+}
+})
+
+
+// HELP MODALS
+
+modalHelpAe.classList.add('hidden'), modalHelpAea.classList.add('hidden');
+
+closeModalHelpAe.onclick = function displayNoneModalAe(){
+    modalHelpAe.classList.add("hidden");
+};
+
+openAeModal.onclick = function displayModalAe(){
+    modalHelpAe.classList.remove('hidden');
+}
+
+closeModalHelpAea.onclick = function displayNoneModalAea(){
+    modalHelpAea.classList.add("hidden");
+};
+
+openAeaModal.onclick = function displayModalAea(){
+    modalHelpAea.classList.remove('hidden');
+}
+
+
+// SHOW REMOVE OPTIONS ONLY IF THE TABLE IS POPULATED
+removeByEntriesOption.style.display = 'none', removeByMeasurementsOption.style.display = 'none'
+
+
+
 
 // function addEntry(){
 // if (measurementType.options[measurementType.selectedIndex].value == 'Stride length left front'){
@@ -1739,10 +1868,16 @@ function removeEntry() {
       tbody.deleteRow(-1);
     }
   }
+  if (tbody.rows.length >= 1){
+    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
+  } else{
+    removeByEntriesOption.style.display = 'none', removeByMeasurementsOption.style.display = 'none'
+  }
 }
 
 function removeAllEntries() {
   $("#tbody").empty();
+  removeByEntriesOption.style.display = 'none', removeByMeasurementsOption.style.display = 'none';
 }
 
 function updateTableID() {
@@ -2247,6 +2382,11 @@ function removeByMeasurement() {
         updatedCell.innerHTML = i + 1;
       }
     }
+  }
+  if (tbody.rows.length >= 1){
+    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
+  } else{
+    removeByEntriesOption.style.display = 'none', removeByMeasurementsOption.style.display = 'none'
   }
 }
 
@@ -4759,6 +4899,10 @@ function addEntriesAllAverage() {
     "------------------------------BREAK------------------------------";
   lastCell.colSpan = "5";
   lastCell.style.textAlign = "center";
+  if (tbody.rows.length >= 1){
+    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
+  } else{
+  }
 }
 
 // FUNCTION TO ADD ALL ENTRIES IN ONE CLICK WITHOUT AVERAGE
@@ -5222,4 +5366,8 @@ function addEntriesAll() {
     "------------------------------BREAK------------------------------";
   lastCell.colSpan = "5";
   lastCell.style.textAlign = "center";
+  if (tbody.rows.length >= 1){
+    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
+  } else{
+  }
 }

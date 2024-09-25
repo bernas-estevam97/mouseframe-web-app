@@ -10,6 +10,7 @@ from django.core.exceptions import PermissionDenied
 
 #LOGIN VIEW FOR IPLOCKOUTMIDDLEWARE
 
+
 def login_user(request: HttpRequest):
     if request.method == 'POST':
         username = request.POST['username']
@@ -19,13 +20,13 @@ def login_user(request: HttpRequest):
             login(request, user)
             ip = get_client_ip(request)
             if ip:
-                key = f'defender:failed:ip:{ip}'
+                key = f'failed_login_attempts_{ip}'
                 cache.delete(key)
             return redirect('/')
         else:
             ip = get_client_ip(request)
             if ip:
-                key = f'defender:failed:ip:{ip}'
+                key = f'failed_login_attempts_{ip}'
                 attempts = cache.get(key, 0)
                 attempts += 1
                 cache.set(key, attempts, timeout=settings.FAILED_LOGIN_LOCK_DURATION) #IPLockOutMiddleWare         

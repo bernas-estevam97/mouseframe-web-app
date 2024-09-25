@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'mouseapp',
     'import_export',
     'accounts',
+    'cache_cleaner',
     # 'defender',
 ]
 
@@ -98,7 +99,7 @@ CACHES = {
 # CACHES = {
 #     'default': {
 #         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-#         'LOCATION': 'my_cache_table',
+#         'LOCATION': 'cache_table',
 #     },
 #     'redis': {
 #         'BACKEND': 'django_redis.cache.RedisCache',
@@ -114,7 +115,7 @@ CACHES = {
 # Use the Redis cache as the default cache
 
 # CACHES['default'] = CACHES['redis']
-# SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 # SESSION_CACHE_ALIAS = "default"
 
 # DEFENDER SETTINGS
@@ -154,12 +155,20 @@ WSGI_APPLICATION = 'mouseapp.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 # if DEBUG:
+
+# Running sqlite3 in django:
+# python manage.py dbshell ----> Opens sqlite3 CLI
+# SELECT * FROM sqlite_master WHERE type='table';
+# DROP TABLE appname_modelname;
+# python manage.py migrate --run-syncdb -----> Sync your changes done in sqlite3 CLI with your django app
+
 DATABASES = {
 'default': {
     'ENGINE': 'django.db.backends.sqlite3',
     'NAME': str(os.path.join(BASE_DIR, "db.sqlite3"))
     }
 } 
+
 # else:
 #     DATABASES: {
 #     'default': {
@@ -212,6 +221,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static', 'static_dirs'),)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 #STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+#STORAGES = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 #STATICFILES_DIRS = (
 #    os.path.join(BASE_DIR, 'static', 'static_dirs'),
 #)

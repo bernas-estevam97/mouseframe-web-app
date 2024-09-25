@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <title>Mouse Frame - Analysis</title>
 </head>
 <body>
@@ -17,10 +18,10 @@
         <img src="{% static 'img/mouse.png' %}">
     </header>
     <section class="modal" id="modalNews">
-      <h2>Notices and updates - Version 1.0.2</h2>
+      <h2>Notices and updates - Version 0.8.2</h2>
       <ul>
         <li>Fixed visual bugs for most resolutions.</li>
-        <li>Added compatibility for most resolutions but this app isn't supposed to be used on mobile.</li>
+        <li>Added compatibility for most resolutions but this app is not a mobile app. Don't expect it to function on mobile phones (may work on tablets with big resolutions).</li>
         <li>Added function to save values and use them without app refresh, this way not restarting your progress.</li>
         <li>The saved values require an image size of which the measurement was saved in order to keep track of right
           cm to pixel conversions and avoid measurement usage in wrong resolutions.</li>
@@ -45,35 +46,71 @@
         </div>
     <!-- </div> -->
     <!-- <div class="right-part"> -->
+      
       <div class="img-selection">
         <div class="img-upload">
             <label for="img" style="font-size: 1.1em;">Upload your image here:</label>
-            <p id="canvasUpload">Canvas starts with same size as the image uploaded. Change below if necessary.</p>
+            
             <input type="file" id="uploadImage" name="img" alt="Upload" accept="image/*" onchange="loadFile(event);" style="display:none;">
             <!-- <input type="file" onchange="previewFile();"> -->
             <input class="upload-btn" type="button" value="Select Image" onclick="document.getElementById('uploadImage').click();" style="cursor: pointer;"/>
+            <button class="reset-button" type="button" id="removeImage" onclick="resetFile();"><i class="fa-solid fa-trash-can"></i></button>
+
+            
+            
+            <!-- <span id="imageUploadedSize"></span> -->
         </div>
         <div id="imgContainer" class="image-container">
           <canvas id="canvas"></canvas>
         </div>
+
       </div>
+      <div id="canvasUpload" class="image-info"><span id="imageName"></span>&nbsp&nbsp&nbsp&nbsp&nbsp<span id="imageUploadedWidth"></span>x<span id="imageUploadedHeight"></span></div>
     <div class="bottom-functions">
-      <div class="buttons">
-         <button class="marker" type="button" id="redCircleLeft" onclick="drawRedCircleLeft();">Red (front) - Left</button>
-         <button class="button" type="button" id="deleteCircleRedLeft" onclick="removeRedCircleLeft();">Delete last added left red dot</button>
-         <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete all left red dots</button><br>
-         <button class="marker" type="button" id="redCircleRight" onclick="drawRedCircleRight();">Red (front) - Right</button>
-         <button class="button" type="button" id="deleteCircleRedRight" onclick="removeRedCircleRight();">Delete last added right red dot</button>
-         <button class="button" type="button" id="deleteAllCircleRedRight" onclick="removeAllRedCircleRight();">Delete all right red dots</button><br>
-         <button class="marker" type="button" id="blueCircleLeft" onclick="drawBlueCircleLeft();">Blue (hind) - Left</button>
-         <button class="button" type="button" id="deleteCircleBlueLeft" onclick="removeBlueCircleLeft();">Delete last added left blue dot</button>
-         <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllBlueCircleLeft();">Delete all left blue dots</button><br>
-         <button class="marker" type="button" id="blueCircleRight" onclick="drawBlueCircleRight();">Blue (hind) - Right</button>
-         <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
-         <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br>
-         <!---<button class="button" type="button" id="resetCanvasNotIdx" onclick="clearCanvas()">Clear Canvas</button>-->
-         <button class="button" type="button" id="resetCanvas" onclick="resetCanvas();">Reset Canvas/Indexes</button>
-         <button class="button" type="button" id="resetFile" onclick="resetFile();">Reset Image</button>
+      <div class="image-resize" id="imageEdit">
+        <h3 style="font-size: 2rem; margin:0 0 10px 0;">Image resizing<button id="collapseButton" class="collapse-btn" type="button" data-toggle="collapse" data-target="#collapseContent">
+          <!-- <i class="fa-solid fa-caret-down"></i> -->(?)
+        </button>:</h3>
+        <div class="collapse" id="collapseContent">
+        <p style="font-size: 1.2rem; text-align: left;">(*)Be sure to resize to your ideal size before working on any measurements.
+          <br>(*)By resizing you delete any progress done on the current image size.
+          <br>(*)When changing image original size make sure that image has a 1 cm scale to be converted to pixels. 
+          <br>(*)Do not work with different image sizes if you can't get a 1 cm value in pixels for all sizes. And do not use saved values acquired from images with sizes different from the one you are working on. 
+          <br><span style="color:red;"><b>&#9888;</b></span> <b><u>Caution:</u></b>&nbspAny data in the table below will be removed along with the dots marked in the image when resizing!</p>
+        </div>
+        <div class="slider-container">
+        <input type="range" min="1" max="20" value="20" id="mySlider" class="slider" style="padding:0;">
+        </div>
+        <!-- <button id="seventyFiveP" onclick="resizeSF();">75% Size</button>
+        <button id="fiftyP" onclick="resizeFifty();">50% Size</button>
+        <button id="fortyP" onclick="resizeForty();">40% Size</button>
+        <button id="twentyFiveP" onclick="resizeTwentyF();">25% Size</button>
+        <button id="resetImgDim" onclick="resetImgDim();">&#x21ba;</button><br><br> -->
+        <p id="currentImgSize" name="image_size"></p>
+        <!-- <br><br><h3>Image resizing slider:</h3>
+        <input type="range" min="1" max="20" value="1" class="slider" id="Slider">
+        <p><output id="value"></output></p> -->
+       </div>  
+      <div class="buttons-plus-options">
+        <div class="mouse-scheme"><img src="{% static 'img/mouse-scheme-new.png' %}">
+         <button class="marker" type="button" id="redCircleLeft" onclick="drawRedCircleLeft();"></button>
+         <!-- <button class="button" type="button" id="deleteCircleRedLeft" onclick="removeRedCircleLeft();">Delete last added left red dot</button>
+         <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete all left red dots</button><br> -->
+         <button class="marker" type="button" id="redCircleRight" onclick="drawRedCircleRight();"></button>
+         <!-- <button class="button" type="button" id="deleteCircleRedRight" onclick="removeRedCircleRight();">Delete last added right red dot</button>
+         <button class="button" type="button" id="deleteAllCircleRedRight" onclick="removeAllRedCircleRight();">Delete all right red dots</button><br> -->
+         <button class="marker" type="button" id="blueCircleLeft" onclick="drawBlueCircleLeft();"></button>
+         <!-- <button class="button" type="button" id="deleteCircleBlueLeft" onclick="removeBlueCircleLeft();">Delete last added left blue dot</button>
+         <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllBlueCircleLeft();">Delete all left blue dots</button><br> -->
+         <button class="marker" type="button" id="blueCircleRight" onclick="drawBlueCircleRight();"></button>
+         <!-- <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
+         <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br> -->
+         <!-- <button class="button" type="button" id="resetCanvasNotIdx" onclick="clearCanvas()">Clear Canvas</button> -->
+         <div class="btn-toggle">Stop functions:&nbsp<button class="btn-tg" type="button" id="toggleInactive"><i class="fa-solid fa-circle-stop"></i></button></div>
+         <div class="btn-reset">Reset all:&nbsp<button class="btn-rs" type="button" id="resetCanvas" onclick="resetCanvas();"><i class="fa-solid fa-eraser"></i></button></div>
+        </div>
+         
+         <div class="right-side-options">
          <div class="point-removal">
          <h4>Remove a point of choice:</h4>
          <p>Instructions for manual removal:</p>
@@ -85,7 +122,7 @@
          </ul>
          <button id="refreshButton" onclick="refreshRemoveList();">Refresh</button>
          <button id="emptyListRemoval" onclick="emptyRemoveList();">Empty</button>
-         <select id="selectPoint">
+         <select id="selectPoint" class="custom-select">
          </select>
          &nbsp<button id="removePoint" onclick="removeChosenPoint();">Remove Point</button>
         </div>
@@ -98,65 +135,140 @@
           <p id="dynamicSize"></p>
           <p><strong>Note:</strong>When deleting buttons make sure you don't change radius size. Only delete points when working with a fixed size</p>
           </div>
+        </div>
        </div>
-       <div class="image-resize" id="imageEdit">
-        <h3>Image resizing(*):</h3>
-        <p style="font-size: 0.9em;">(*)Be sure to resize to your ideal size before working on any measurements.
-          <br>(*)By resizing you delete any progress done on the current image size.
-          <br>(*)When changing image original size make sure that image has a 1 cm scale to be <br>converted to pixels. <br>(*)Do not work with different image sizes if you can't get a 1 cm value in pixels<br> for all sizes. And do not use saved values acquired from images with sizes different<br> from the one you are working on. 
-          <br><span style="color:red;"><b>&#9888;</b></span> <b><u>Caution:</u></b>&nbspAny data in the table below will be removed along with the dots marked
-          <br> in the image when resizing!</p>
-        <button id="seventyFiveP" onclick="resizeSF();">75% Size</button>
-        <button id="fiftyP" onclick="resizeFifty();">50% Size</button>
-        <button id="fortyP" onclick="resizeForty();">40% Size</button>
-        <button id="twentyFiveP" onclick="resizeTwentyF();">25% Size</button>
-        <button id="resetImgDim" onclick="resetImgDim();">Reset Dimensions</button><br><br>
-        <p id="currentImgSize" name="image_size"></p>
-        <!-- <br><br><h3>Image resizing slider:</h3>
-        <input type="range" min="1" max="20" value="1" class="slider" id="Slider">
-        <p><output id="value"></output></p> -->
+       <div class="saved-distances" id="savedDistance">
+        <h3>Define how many pixels are in a centimeter.</h3>
+        <p>If there is a drawn line with the length of 1cm, measure it in pixels here:</p>
+        <p id="scaleDistance"></p>
+        <button id="measureButton" class="measure" onclick="drawMeasureCircle();">Add measuring points</button>
+        <button id="resetMeasure" onclick="removeAllMeasurePoints();">&#x21ba;</button>
+        <button onclick = "distanceMeasurePoint()" id="measureDistance">Measure</button>
+        <p>Manually input known value of pixels in 1 cm or use saved values (choose only one value before clicking use):</p>
+        <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" onKeyPress="if(this.value.length==8) return false;" placeholder="Px in cm...">&nbspOR&nbsp
+        <select id="savedChoices" form="savedDistancesForm" class="custom-select">
+            <option value="None" disabled selected>Select a value</option>
+          {% for distance in saved_distances %}
+            <option id="{{forloop.counter}}" value="{{distance.conversion_value}}">{{distance.conversion_value}} - {{distance.image_size}}</option>
+          {% endfor %}
+        </select>
+        <button onclick="manualInputMeasure();" id="manualUse">Use</button>
+        <button onclick="resetInput();" id="resetManual">Reset</button>
+        <!-- <button id="removeOption" type="submit">Delete</button> -->
+        <div class="measure-info"><div id="measureIntro">Measurement result:</div><div id="measureToCm"></div></div>
+        <h4 style="font-size: 1.5em;">Save section</h4>
+        <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from.</p>
+        <p style="font-size: 0.9em">(!) Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
+        <form action="saved" method="POST" id="savedDistancesForm">{% csrf_token %}
+          Value in pixels:
+          <input type="text" name="saved_distance_value" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="8" placeholder="Save value..." required>
+          <br><br>&nbspImage Size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required>
+          <br><br><button class="save-button" id="saveDistanceButton" type="submit">Save</button> 
+        </form>
+        <div id="messageSave"></div>
        </div>
-
-       <div id="imageInfo" class="image-info">
-        <p id="imageName"></p>
-        <p id="imageUploadedWidth"></p>
-        <p id="imageUploadedHeight"></p>
-        <p id="imageUploadedSize"></p>
-        <!-- <p id="canvasInfo"></p> -->
+       <div class="data-management" id="showData">
+        <div class="table-results">
+        <h3 style="text-decoration: underline;">Data results Table</h3>
+        <table id="table">
+          <thead id="tableH">
+          <tr>
+            <td colspan="5" id="titleImage"><b>Table ID: </b></td>
+          </tr>
+          <tr id="idRow">
+            <th>Entry Number</th>
+            <th>Points</th>
+            <th>Measurement type</th>
+            <th id="valuePx">Value(px)</th>
+            <th id="valueCm">Value(cm)</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+        </table>
+        <div id="imageResizeTableWarning"></div>
+        <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
+      </div>
+      <div class="select-options">
+        <!-- <form action="/"> -->
+          <!-- <label for="point">Select point 1:</label>
+            <select name="point" id="pointChosen1">
+            </select>
+          <label for="point">Select point 2:</label>
+          <select name="point" id="pointChosen2">
+          </select> -->
+          <!-- <label for="measurement">Measurement:</label>
+          <select name="measurement" id="measurement">
+            <option value="Overlap Left" selected>Overlap Left</option>
+            <option value="Overlap Right" selected>Overlap Right</option>
+            <option value="Stride length left front">Stride length left front</option>
+            <option value="Stride length left hind">Stride length left hind</option>
+            <option value="Stride length right front">Stride length right front</option>
+            <option value="Stride length right hind">Stride length right hind</option>
+            <option value="Stride Width Front">Stride Width Front</option>
+            <option value="Stride Width Hind">Stride Width Hind</option>
+          </select> -->
+          <div class="table-id">
+            <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()">Submit</button>&nbsp<button onclick="removeTableID();">Remove</button>
+          </div>
+          <div id="footstepsBeginning">
+          <label for="beginning">First set of footsteps:</label>
+          <select name="beginning" id="footstepStart" class="custom-select">
+            <option value="None" selected>Select one</option>
+            <option value="Left">Left</option>
+            <option value="Right">Right</option>
+          </select><br>
+          <section class="modal-help-ae" id="modalHelpAddEntries">
+            <h2><b><u>Help</u></b> - What does Add Entries option do?</h2>
+            <ul>
+              <li>&#x27A3; &nbsp This function allows users to calculate distances between the points marked above.</li>
+              <li>&#x27A3; &nbsp In contrast with the "Add entries with average" function, this option does not require the pixels in 1 cm measurement (if the value is available it will still convert px to cm). If the user only wants to know the distance in pixels this option may suffice.</li>
+              <li>&#x27A3; &nbsp This function does not require a full set of marked dots to perform all available measurements, but it will throw an alert that some measurements could not be measured for the lack of certain dots.</li>
+              <li>&#x27A3; &nbsp Overall, this measurement type is less sensitive and great for when the user only wants a few set of measurements and not all.</li>
+            </ul>
+            <btn class="btn-close" id="closeModalHelpAddEntries">Close</btn>
+          </section>
+          <section class="modal-help-aea" id="modalHelpAddEntriesAverage">
+            <h2><b><u>Help</u></b> - What does Add Entries with Average do?</h2>
+            <ul>
+              <li>&#x27A2; &nbsp This function calculates a complete set of measurements, converts the values to cm and displays mean values for each measurement in cm.</li>
+              <li>&#x27A2; &nbsp "Add entries with average" requires the px in 1 cm measurement beforehand.</li>
+              <li>&#x27A2; &nbsp It also needs all marked dots in the correct spots to perform all the available calculations.</li>
+              <li>&#x27A2; &nbsp This method/function is the most complete and sensitive when it comes to data retrieval.</li>
+            </ul>
+            <btn class="btn-close" id="closeModalHelpAddEntriesAverage">Close</btn>
+          </section>
+          <button id="addAll" type="submit" onclick="addEntriesAll()">Add Entries</button><span class="open-help-ae" id="openAe">?</span>&nbsp&nbsp&nbsp<button id="addAllAverage" type="submit" onclick="addEntriesAllAverage()">Add Entries with average</button><span class="open-help-aea" id="openAea">?</span><br>
+          </div>
+          <!-- <input type="submit" onclick="addEntry();" value="Add Entries"><br> -->
+          <!-- <br><p id="entryPreview"></p> -->
+          <!-- <button id="refreshList" onclick="refreshList();">Refresh</button>
+          <button id="empty" onclick="emptyList();">Empty</button> -->
+          <div class="remove-by-entries" id="removeByEntries">
+          <p>Remove by entries &#8628;</p>
+          <input id="entryNumber" placeholder="Entry nº" size="3" maxlength="3">
+          <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
+          <button id="removeAllEntries" onclick="removeAllEntries();">Remove All Entries</button>
+          </div>
+          <div class="remove-by-measurement" id="removeByMeasurement">
+          <p>Remove by measurement type &#8628;</p>
+          <select name="measurement" id="removeMeasurement" class="custom-select">
+            <option value="Overlap Left" selected>Overlap Left</option>
+            <option value="Overlap Right" selected>Overlap Right</option>
+            <option value="Stride length left front">Stride length left front</option>
+            <option value="Stride length left hind">Stride length left hind</option>
+            <option value="Stride length right front">Stride length right front</option>
+            <option value="Stride length right hind">Stride length right hind</option>
+            <option value="Stride Width Front">Stride Width Front</option>
+            <option value="Stride Width Hind">Stride Width Hind</option>
+          </select>
+          <button onclick="removeByMeasurement();">Remove</button>
+          </div>
       </div>
    
-   <div class="saved-distances" id="savedDistance">
-    <h3>Define how many pixels are in a centimeter.</h3>
-    <p>If there is a drawn line with the length of 1cm, measure it in pixels here:</p>
-    <p id="scaleDistance"></p>
-    <button id="measureButton" class="measure" onclick="drawMeasureCircle();">Add measuring points</button>
-    <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset points</button>
-    <button onclick = "distanceMeasurePoint()" id="measureDistance">Measure</button>
-    <p>Manually input known value of pixels in 1 cm or use saved values (choose only one value before clicking use):</p>
-    <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" onKeyPress="if(this.value.length==8) return false;" placeholder="Px in cm...">&nbspOR&nbsp
-    <select id="savedChoices" form="savedDistancesForm">
-        <option value="None" selected>-- Select value --</option>
-      {% for distance in saved_distances %}
-        <option id="{{forloop.counter}}" value="{{distance.conversion_value}}">{{distance.conversion_value}} - {{distance.image_size}}</option>
-      {% endfor %}
-    </select>
-    <button onclick="manualInputMeasure();" id="manualUse">Use</button>
-    <button onclick="resetInput();" id="resetManual">Reset</button>
-    <!-- <button id="removeOption" type="submit">Delete</button> -->
-    <div class="measure-info"><div id="measureIntro">Measurement result:</div><div id="measureToCm"></div></div>
-    <h4 style="font-size: 1.5em;">Save section</h4>
-    <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from.</p>
-    <p style="font-size: 0.9em">(!) Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
-    <form action="saved" method="POST" id="savedDistancesForm">{% csrf_token %}
-      Value in pixels:&nbsp
-      <input type="text" name="saved_distance_value" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="8" placeholder="Save value..." required>
-      <br><br>&nbspImage Size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required>
-      <br><br><button class="save-button" id="saveDistanceButton" type="submit">Save</button> 
-    </form>
-    <div id="messageSave"></div>
-   </div>
+   
   </div>
-   <div class="resolution-info">
+   <!-- <div class="resolution-info">
     <label id="labelInput" for="inches">Your screen size in inches(in):</label>
     <input name="inches" class="input-inches" id="inputScreenInches" type="text" maxlength="4" size="4" onkeypress="if(!event.key.match(/[1-9.]/)) event.preventDefault()">
     <button class="ppi-calc" id="ppiCalculus" onclick="getScreenPPI();">Get Screen PPI</button>
@@ -164,8 +276,8 @@
     <p id="imageUploadedDPI"></p>
     <p id="imageDimInches"></p>
     <p id="imageDimCm"></p>
-   </div>
-   <div class="buttons-change">
+   </div> -->
+   <!-- <div class="buttons-change"> -->
     <!-- <input id="canvasWidth" type="number" placeholder="Canvas Width">
     <button id="changeW" onclick="changeWidth();">Change canvas width</button>
     <button id="resetW" onclick="resetWidth();">Reset Width</button>
@@ -178,7 +290,7 @@
     <!-- <input id="containerHeight" type="number" placeholder="Image Height"> -->
     <!-- <button id="changeImgDim" onclick="changeImgDim();">Change Image dimensions</button> -->
     
-   </div>
+   <!-- </div> -->
    <!-- <div class="saved-distances" id="savedDistance">
     <h2>Define how many pixels are in a centimeter.</h2>
     <p>If there is a drawn line with the length of 1cm, measure it in pixels here:</p>
@@ -188,92 +300,16 @@
     <button type="submit">Save</button>
     <button onclick = "distancePointRed();">DistanceRed</button>
    </div> -->
-   <div class="dpi-ppi-conversion">
+   <!-- <div class="dpi-ppi-conversion">
 
-   </div>
-   <div class="data-management" id="showData">
-    <div class="table-results">
-    <h3>Data results table:</h3>
-    <table id="table">
-      <thead id="tableH">
-      <tr>
-        <td colspan="5" id="titleImage"><b>Table ID: </b></td>
-      </tr>
-      <tr id="idRow">
-        <th>Entry Number</th>
-        <th>Points</th>
-        <th>Measurement type</th>
-        <th id="valuePx">Value(px)</th>
-        <th id="valueCm">Value(cm)</th>
-      </tr>
-    </thead>
-    <tbody id="tbody">
-    </tbody>
-    </table>
-    <div id="imageResizeTableWarning"></div>
-    <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
-  </div>
-  <div class="select-options">
-    <!-- <form action="/"> -->
-      <!-- <label for="point">Select point 1:</label>
-        <select name="point" id="pointChosen1">
-        </select>
-      <label for="point">Select point 2:</label>
-      <select name="point" id="pointChosen2">
-      </select> -->
-      <!-- <label for="measurement">Measurement:</label>
-      <select name="measurement" id="measurement">
-        <option value="Overlap Left" selected>Overlap Left</option>
-        <option value="Overlap Right" selected>Overlap Right</option>
-        <option value="Stride length left front">Stride length left front</option>
-        <option value="Stride length left hind">Stride length left hind</option>
-        <option value="Stride length right front">Stride length right front</option>
-        <option value="Stride length right hind">Stride length right hind</option>
-        <option value="Stride Width Front">Stride Width Front</option>
-        <option value="Stride Width Hind">Stride Width Hind</option>
-      </select> -->
-      <div id="footstepsBeginning">
-      <label for="beginning">First set of footsteps:</label>
-      <select name="beginning" id="footstepStart">
-        <option value="Left">Left</option>
-        <option value="Right">Right</option>
-      </select>
-      <input id="addAll" type="submit" onclick="addEntriesAll()" value="Add Entries">&nbsp<input id="addAll" type="submit" onclick="addEntriesAllAverage()" value="Add Entries with average"><br>
-      </div>
-      <!-- <input type="submit" onclick="addEntry();" value="Add Entries"><br> -->
-      <!-- <br><p id="entryPreview"></p> -->
-      <!-- <button id="refreshList" onclick="refreshList();">Refresh</button>
-      <button id="empty" onclick="emptyList();">Empty</button> -->
-      <div class="remove-by-entries">
-      <p>Remove by entries &#8628;</p>
-      <input id="entryNumber" placeholder="Entry nº" size="3" maxlength="3">
-      <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
-      <button id="removeAllEntries" onclick="removeAllEntries();">Remove All Entries</button>
-      </div>
-      <div class="remove-by-measurement">
-      <p>Remove by measurement type &#8628;</p>
-      <select name="measurement" id="removeMeasurement">
-        <option value="Overlap Left" selected>Overlap Left</option>
-        <option value="Overlap Right" selected>Overlap Right</option>
-        <option value="Stride length left front">Stride length left front</option>
-        <option value="Stride length left hind">Stride length left hind</option>
-        <option value="Stride length right front">Stride length right front</option>
-        <option value="Stride length right hind">Stride length right hind</option>
-        <option value="Stride Width Front">Stride Width Front</option>
-        <option value="Stride Width Hind">Stride Width Hind</option>
-      </select>
-      <button onclick="removeByMeasurement();">Remove</button>
-      </div>
-      <div class="table-id">
-      <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()">Submit</button>&nbsp<button onclick="removeTableID();">Remove</button>
-      </div>
+   </div> -->
+   
       <!-- <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button> -->
 
     <!-- </form> -->
   </div>
 </div>
    <!-- </div> -->
-</div>
 <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/canvas_idea.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/xlsx-full.min.js' %}"></script>
@@ -281,6 +317,8 @@
 <script type="text/javascript" src="{% static 'js/notices_updates_modal.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/js-cookie.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+
 <!-- <script type="text/javascript" src="{% static 'js/canvasjs.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.canvasjs.min.js' %}"></script> -->
 <script>

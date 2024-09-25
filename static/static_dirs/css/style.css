@@ -1,7 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
 html{
   visibility: hidden;
+  margin:0;
+  font-family: "Roboto Condensed", sans-serif;
 }
 
 body {
@@ -53,11 +56,35 @@ header h1 {
   border-radius: 3px;
 }
 
-.modal ul li{
+.modal-help-ae, .modal-help-aea{
+  font-size: 0.9em;
+  border: 3px solid black;
+  background: #ffff;
+  position: fixed;
+  left:50%;
+  bottom: 20%;
+  transform: translateX(-50%);
+  z-index: 100;
+  padding: 0 20px;
+  border-radius: 3px;
+  margin: 0 !important;
+  text-align: justify;
+}
+
+.modal-help-ae ul, .modal-help-aea ul {
+  /* list-style-image: url('../img/'); */
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+.modal ul li,.modal-help-ae ul li, .modal-help-aea ul li{
   padding: 10px 0 10px 0; 
 }
 
-.modal .btn-close{
+.modal .btn-close,.modal-help-ae .btn-close, .modal-help-aea .btn-close{
   padding: 10px;
   margin:10px 0;
   float: right;
@@ -67,7 +94,7 @@ header h1 {
   cursor: pointer;
 }
 
-.modal .btn-close:hover{
+.modal .btn-close:hover,.modal-help-ae .btn-close:hover, .modal-help-aea .btn-close:hover{
   background:#dc3545;
   border: 3px solid #0000;
 }
@@ -180,6 +207,19 @@ header h1 {
   background: rgb(192, 192, 192);
 }
 
+.reset-button{
+  padding: 10px 15px;
+  margin-left: 20px;
+  background: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid #c2c2c2;
+}
+
+.reset-button:hover{
+  background: #c2c2c2;
+}
+
 .img-upload {
   position: relative;
   text-align: center;
@@ -195,33 +235,73 @@ header h1 {
   /* background-size: 1400px 800px; */
 }
 
+.image-info{
+  position: relative;
+  padding: 5px;
+  background: #fff;
+  border: 4px double #000;
+  margin: 3px 0 10px 0;
+  text-align: center;
+  max-width: 450px;
+  left:50%;
+  transform: translateX(-50%);
+}
+
+.image-container{
+  margin-bottom: 0;
+}
+
+
+
 /* All containers */
+
+.custom-select{
+  font-size: 0.8em;
+  padding: 0.3em 0.5em 0.3em 0.5em;
+  background-color: #fff;
+  border: 1.5px solid #a4a7a9;
+  border-radius: 0.25rem;
+  color: #000;
+  cursor: pointer;
+}
+
+
 
 .bottom-functions {
   position: relative;
-  display: grid;
-  gap: 5px;
-  margin: 0 3% 3% 3%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0 20px 20px 20px;
 }
 
-.buttons {
-  display: none;
+.buttons-plus-options{
+  display: flex;
+  flex-direction: row;
   padding: 10px;
-  text-align: center;
+  justify-content: space-around;
+  align-items: center;
+  /* text-align: center; */
   background: #fff;
   border: 3px solid #c1c1c1;
-  max-height: 680px;
+  width: 60vw;
 }
 
-.point-removal {
+.right-side-options{
+  display: flex;
+  flex-direction: column;
+  padding: 0 32px;
+}
+
+.right-side-options .point-removal {
   padding-top: 10px;
   text-align: left;
-  font-size: 1em;
-  border-top-style: double;
+  font-size: 1.2em;
   padding-bottom: 10px;
 }
 
-.point-size {
+.right-side-options .point-size {
   padding-top: 10px;
   border-top-style: double;
 }
@@ -230,19 +310,39 @@ header h1 {
   margin: 10px;
 }
 
-.image-resize {
+.image-resize{
   display: none;
   border: 3px solid #c1c1c1;
   background: #fff;
-  padding: 10px 10px 30px 10px;
-  font-size: 1.1em;
+  padding: 32px 64px 64px 64px;
+  font-size: 1.5rem;
+  text-align: center;
+  width: 90%;
+  
 }
 
-.image-info {
-  display: none;
-  border: 3px solid #c1c1c1;
-  background: #fff;
-  padding: 10px;
+.image-resize .image-text{
+  font-size: 20px;
+  text-align: left;
+}
+
+.image-resize .slider-container{
+  width: 100%;
+}
+
+.collapse-btn{
+  background: transparent;
+  border:none;
+  padding: 0 !important;
+  margin: 0;
+}
+
+.collapse-btn:hover, .collapse-btn.active{
+  font-weight: bold;
+}
+
+.slider{
+  width: 50%;
 }
 
 .saved-distances {
@@ -255,33 +355,61 @@ header h1 {
   width: 52vw;
 }
 
-/* Buttons that add points of different colors */
+/* Buttons that add points of different colors and mouse image scheme */ 
 
-.buttons .marker {
-  padding: 7px 10px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  border: 1px solid #c1c1c1;
+.buttons-plus-options .mouse-scheme{
+  position:relative;
 }
 
-.buttons .marker.active {
+.buttons-plus-options .mouse-scheme img{
+  float:left;
+  border: 3px dashed #000;
+}
+
+.buttons-plus-options .marker{
+  border: none;
+}
+
+.buttons-plus-options .marker.active {
   border: 3px solid #000;
 }
 
-.buttons .button {
-  padding: 7px 10px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  border: 1px solid #c1c1c1;
-  cursor: pointer;
+.buttons-plus-options .btn-toggle{
+  position: absolute;
+  top: 580px;
+  left: 7px;
 }
 
-#redCircleLeft,
-#redCircleRight {
+.buttons-plus-options .btn-reset{
+  position: absolute;
+  top: 580px;
+  left: 260px;
+}
+
+
+
+#redCircleLeft{
+  position: absolute;
+  top: 100px;
+  left: 80px;
   color: #fff;
   background: #ff2626;
-  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#redCircleRight {
+  position: absolute;
+  top: 100px;
+  left: 278px;
+  color: #fff;
+  background: #ff2626;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   cursor: pointer;
   transition: background 0.3s;
 }
@@ -317,11 +445,28 @@ header h1 {
   background: rgb(155, 155, 155);
 }
 
-#blueCircleLeft,
-#blueCircleRight {
+#blueCircleLeft{
+  position: absolute;
+  top: 345px;
+  left: 100px;
   color: #fff;
   background: #0980f1;
-  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+#blueCircleRight {
+  position: absolute;
+  top: 345px;
+  left: 260px;
+  color: #fff;
+  background: #0980f1;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
   cursor: pointer;
   transition: background 0.3s;
 }
@@ -370,20 +515,29 @@ header h1 {
   background: rgb(155, 155, 155);
 }
 
-#resetCanvas {
-  position: relative;
-  border-radius: 5px;
-  border: 1px solid #c1c1c1;
+#resetCanvas, #toggleInactive {
+  position: absolute;
+  border-radius: 10px;
+  border: 2px solid #c1c1c1;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 10px;
+  padding: 5px 10px;
+  margin-bottom: 3px;
 }
 
-#resetCanvas:hover {
-  background: rgb(155, 155, 155);
+#resetCanvas:hover, #toggleInactive:hover {
+  background: rgb(195, 195, 195);
 }
 
-#resetFile {
+.btn-rs:hover > .fa-solid{
+  color: #fff;
+}
+
+.btn-tg:hover > .fa-solid{
+  color: #fff;
+}
+
+/* #resetFile {
   position: relative;
   border-radius: 5px;
   border: 1px solid #c1c1c1;
@@ -394,7 +548,7 @@ header h1 {
 
 #resetFile:hover {
   background: rgb(155, 155, 155);
-}
+} */
 
 #refreshButton,
 #emptyListRemoval {
@@ -440,9 +594,7 @@ header h1 {
 
 /* Measure px in cm section */
 
-#measureButton,
-#resetMeasure,
-#measureDistance {
+#measureButton{
   border-radius: 3px;
   border: 1px solid #c1c1c1;
   cursor: pointer;
@@ -453,6 +605,21 @@ header h1 {
   border: 2px solid #000;
 }
 
+#resetMeasure{
+  border-radius: 3px;
+  border: 2px solid #c1c1c1;
+  cursor: pointer;
+  transition: background 0.2s;
+  background: rgba(230, 1, 1, 0.429);
+}
+#measureDistance{
+  border-radius: 3px;
+  border: 2px solid #c1c1c1;
+  cursor: pointer;
+  transition: background 0.2s;
+  background: rgba(0, 197, 0, 0.554);
+}
+
 #manualUse,
 #resetManual,
 #removeOption {
@@ -461,12 +628,18 @@ header h1 {
 }
 
 #measureButton:hover,
-#resetMeasure:hover,
-#measureDistance:hover,
 #manualUse:hover,
 #resetManual:hover,
 #removeOption:hover {
   background: rgb(184, 184, 184);
+}
+
+#resetMeasure:hover{
+  background: rgba(230, 1, 1, 0.697);
+}
+
+#measureDistance:hover{
+  background: rgba(0, 197, 0, 0.796);
 }
 
 .point-input {
@@ -647,10 +820,22 @@ header h1 {
 
 /* Change point dimensions section */
 
-#sizeInput {
+input{
   margin-top: 10px;
-  padding: 5px;
-  margin-left: 10px;
+  padding: 6px 10px;
+  margin-left: 3px;
+  border: none;
+  background: #ececec;
+  outline: none;
+}
+
+input:focus::placeholder{
+  color: transparent;
+}
+
+input::placeholder{
+  color: #303030;
+  transition: color 0.3s ease;
 }
 
 #changeS {
@@ -688,8 +873,6 @@ header h1 {
   margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
-  left: 50%;
-  transform: translateX(-50%);
   width: 70vw;
 }
 
@@ -698,6 +881,12 @@ header h1 {
   border: 5px double #c1c1c1;
   padding: 5px 10px;
   margin: 5px;
+}
+
+.table-results{
+  max-height: 400px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .data-management h3 {
@@ -768,8 +957,8 @@ header h1 {
   margin: 5px 0px;
 }
 
-.select-options #addAll {
-  padding: 3px 10px;
+/* .select-options #addAll {
+  padding: 5px 10px;
   border-radius: 1px !important;
   border: 1px solid #c1c1c1;
   cursor: pointer;
@@ -777,14 +966,20 @@ header h1 {
 
 .select-options #addAll:hover {
   background: rgb(184, 184, 184);
-}
+} */
 
-.select-options button {
-  padding: 3px 10px;
+.select-options button{
+  padding: 5px 10px;
   border-radius: 1px !important;
   border: 1px solid #c1c1c1;
   cursor: pointer;
 }
+
+#addAll{
+  margin-top: 20px;
+  /* display: none; */
+}
+
 
 .select-options button:hover {
   background: rgb(184, 184, 184);
@@ -803,119 +998,19 @@ header h1 {
   padding: 10px 0 0 0;
 }
 
-@media (min-width: 1570px) and (max-width: 1839px) {
-  .bottom-functions {
-    grid-template-areas:
-      "header header main right"
-      "header header footer footer"
-      "header header footer footer";
-  }
 
-  .buttons {
-    grid-area: header;
-    max-height: 720px;
-  }
-
-  .image-resize {
-    grid-area: main;
-  }
-
-  .image-info {
-    grid-area: right;
-    height: 200px;
-  }
-
-  .saved-distances {
-    grid-area: footer;
-  }
+.open-help-ae, .open-help-aea{
+  font-size: 0.7em;
+  padding: 5px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  border: 1px solid #c1c1c1;
+  margin-left: 2px;
+  transition: background 0.3s ease;
 }
 
-@media (min-width: 1840px) {
-  .bottom-functions {
-    grid-template-areas:
-      "header main main right right"
-      "header footer footer footer footer";
-  }
-
-  .buttons {
-    grid-area: header;
-  }
-
-  .image-resize {
-    grid-area: main;
-  }
-
-  .image-info {
-    grid-area: right;
-    height: 200px;
-  }
-
-  .saved-distances {
-    grid-area: footer;
-  }
+.open-help-ae:hover, .open-help-aea:hover{
+  background: #f1fc1c;
 }
 
-@media (max-width: 1171px) {
-  .saved-distances {
-    width: auto;
-  }
 
-  .data-management {
-    display: block;
-  }
-
-  .data-management .select-options {
-    position: relative;
-    align-items: center;
-    border-top: 1px solid #fff;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .data-management .table-results table {
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  #footstepsBeginning {
-    border-top: 2px solid #000;
-    padding-top: 10px;
-  }
-}
-
-@media (min-width: 1172px) and (max-width: 1569px) {
-  .bottom-functions {
-    grid-template-areas:
-      "header header a a"
-      "header header a a"
-      "header header footer footer"
-      "b b footer footer";
-  }
-
-  .saved-distances {
-    width: auto;
-  }
-
-  .buttons {
-    font-size: 0.9em;
-    grid-area: header;
-  }
-
-  .image-resize {
-    grid-area: a;
-  }
-
-  .buttons button {
-    font-size: 0.9em;
-  }
-
-  .image-info {
-    grid-area: b;
-    height: 160px;
-  }
-
-  .saved-distances {
-    grid-area: footer;
-  }
-}
