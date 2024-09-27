@@ -84,6 +84,7 @@ function drawRedLeft(e) {
     m.x + pointSize * 1.2,
     m.y + pointSize * 1.2 + 10
   );
+  refreshRemoveList();
 }
 
 function drawRedRight(e) {
@@ -100,11 +101,15 @@ function drawRedRight(e) {
     m.x + pointSize * 1.2,
     m.y + pointSize * 1.2 + 10
   );
+  refreshRemoveList();
 }
 
 function drawRedCircleLeft() {
   canvas.addEventListener("click", drawRedLeft, false);
   canvas.addEventListener("click", printMousePos, false);
+  activeFunctionInfo.style.color = 'red';
+  activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.innerHTML = '<i class="fa-solid fa-play"></i>&nbsp Red (front) Left circle active.'
   canvas.removeEventListener("click", drawRedRight, false);
   canvas.removeEventListener("click", drawBlueLeft, false);
   canvas.removeEventListener("click", drawBlueRight, false);
@@ -117,6 +122,9 @@ function drawRedCircleLeft() {
 function drawRedCircleRight() {
   canvas.addEventListener("click", drawRedRight, false);
   canvas.addEventListener("click", printMousePos, false);
+  activeFunctionInfo.style.color = 'red';
+  activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.innerHTML = '<i class="fa-solid fa-play"></i>&nbsp Red (front) Right circle active.'
   canvas.removeEventListener("click", drawRedLeft, false);
   canvas.removeEventListener("click", drawBlueLeft, false);
   canvas.removeEventListener("click", drawBlueRight, false);
@@ -281,6 +289,7 @@ function drawBlueLeft(e) {
     n.x + pointSize * 1.2,
     n.y + pointSize * 1.2 + 10
   );
+  refreshRemoveList();
 }
 
 function drawBlueRight(e) {
@@ -297,24 +306,33 @@ function drawBlueRight(e) {
     n.x + pointSize * 1.2,
     n.y + pointSize * 1.2 + 10
   );
+  refreshRemoveList();
 }
 
 function drawBlueCircleLeft() {
   canvas.addEventListener("click", drawBlueLeft, false);
   canvas.addEventListener("click", printMousePos, false);
+  activeFunctionInfo.style.color = 'blue';
+  activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.innerHTML = '<i class="fa-solid fa-play"></i>&nbsp Blue (hind) Left circle active.'
   canvas.removeEventListener("click", drawBlueRight, false);
   canvas.removeEventListener("click", drawRedRight, false);
   canvas.removeEventListener("click", drawRedLeft, false);
   canvas.style.cursor = "crosshair";
+  
 }
 
 function drawBlueCircleRight() {
   canvas.addEventListener("click", drawBlueRight, false);
   canvas.addEventListener("click", printMousePos, false);
+  activeFunctionInfo.style.color = 'blue';
+  activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.innerHTML = '<i class="fa-solid fa-play"></i>&nbsp Blue (hind) Right circle active.'
   canvas.removeEventListener("click", drawBlueLeft, false);
   canvas.removeEventListener("click", drawRedRight, false);
   canvas.removeEventListener("click", drawRedLeft, false);
   canvas.style.cursor = "crosshair";
+  
 }
 
 function removeBlueCircleLeft() {
@@ -497,7 +515,7 @@ function drawMeasurePoint(e) {
     var o = getPosition(e);
     drawMeasureCoordinates(o, pointSize);
     pointsMeasure.push(o);
-    console.log(pointsMeasure);
+    // console.log(pointsMeasure);
     let index = pointsMeasure.indexOf(o);
     // console.log("Measure Point:" + (index + 1));
   } else {
@@ -541,6 +559,7 @@ function removeAllMeasurePoints() {
 ///////////////////////////////////////////////
 
 function resetCanvas() {
+  activeFunctionInfo.innerHTML = '';
   canvas.removeEventListener("click", drawBlueLeft);
   canvas.removeEventListener("click", drawBlueRight);
   canvas.removeEventListener("click", drawRedLeft);
@@ -612,6 +631,7 @@ function distanceMeasurePoint() {
   } else {
     alert("Add 2 points and measure or manually input known values under.");
   }
+  activeFunctionInfo.innerHTML = '';
 }
 
 let inputPixelsManually = document.getElementById("pixelsInCmMan");
@@ -645,6 +665,42 @@ function resetInput() {
 }
 
 // ------------------------------------------------------------------------------------- -------------------------------------------------------------//
+
+// HOTKEYS SECTION FOR BUTTONS 
+
+document.addEventListener('keydown', function(event) {
+  // Check if the key pressed is "Enter" (key code 13)
+  switch (event.key) {
+    case 'q':
+      // Trigger the button click
+      document.getElementById('redCircleLeft').click();
+      break;
+    case 'w': 
+    // Trigger the button click
+      document.getElementById('redCircleRight').click();
+      break;
+    case 'e':
+    // Trigger the button click
+      document.getElementById('blueCircleLeft').click();
+      break;
+    case 'r':
+    // Trigger the button click
+      document.getElementById('blueCircleRight').click();
+      break;
+    case 'p':
+    // Trigger the button click
+      document.getElementById('toggleInactive').click();
+      break;
+    case 'o':
+    // Trigger the button click
+      document.getElementById('resetCanvas').click();
+      break;
+    
+    default:
+      console.log("Key not mapped to any button");
+
+  }
+});
 
 // ----------------------- MOST VARIABLES ASSIGNED --------------------------- //
 
@@ -699,13 +755,12 @@ let loadFile = function (event) {
     //   " kb";
     if (event.target.files[0].name.length > 30) {
       imgName.innerHTML =
-        "<b><i class='fa-regular fa-image'></i> name:</b> " +
         event.target.files[0].name.slice(
           event.target.files[0].name.length / 2,
           event.target.files[0].name.length + 1
         );
     } else {
-      imgName.innerHTML = "<b><i class='fa-regular fa-image'></i> name:</b> " + event.target.files[0].name;
+      imgName.innerHTML = event.target.files[0].name;
     }
 
     canvas.style.display = "";
@@ -716,6 +771,7 @@ let loadFile = function (event) {
     event.target.value = null;
   }
   // ON LOAD OF NEW IMAGE RESET ALL
+  activeFunctionInfo.innerHTML = '';
   canvas.removeEventListener("click", drawBlueLeft);
   canvas.removeEventListener("click", drawBlueRight);
   canvas.removeEventListener("click", drawRedLeft);
@@ -732,12 +788,11 @@ let loadFile = function (event) {
   [].forEach.call(elems, function (el) {
     el.classList.remove("active");
   });
-
   // IMAGE ONLOAD SECTION - //
   img.onload = () => {
     event.target.value = null;
     imgWidth.innerHTML =
-      "<b><i class='fa-solid fa-image'></i> size:</b> " + img.width;
+      img.width;
     imgHeight.innerHTML =
       img.height;
     imgContainer.style.border = "2px solid black";
@@ -909,6 +964,7 @@ toggleInactive.onclick = function toggleInactive(){
   canvas.removeEventListener("click", drawRedRight);
   canvas.removeEventListener("click", printMousePos);
   canvas.removeEventListener("click", drawMeasurePoint);
+  activeFunctionInfo.innerHTML = '';
   canvas.style.cursor = "auto";
   var elems = document.querySelectorAll(".active");
   [].forEach.call(elems, function (el) {
@@ -1890,32 +1946,43 @@ function removeTableID() {
   manualID.value = "";
 }
 
+// RIGHT-SIDE OPTIONS 
+
+let activeFunctionInfo = document.getElementById('activeFunction');
+
 let selectPoint = document.getElementById("selectPoint");
+
+// FUNCTIONALITY TO REMOVE OR REPLACE POINTS 
+
+let removePointButton = document.getElementById('removePoint');
+let replacePointButton = document.getElementById('replacePoint');
+
 
 function refreshRemoveList() {
   selectPoint.options.length = 0;
+  selectPoint.options[0] = new Option('Select Point');
   for (var i = 0; i < pointsRedLeft.length; i++) {
     newIndexRedL = i + 1;
     selectPoint.options[selectPoint.options.length] = new Option(
-      "Red L" + newIndexRedL
+      "Red L" + newIndexRedL, "Red L" + newIndexRedL 
     );
   }
   for (var j = 0; j < pointsRedRight.length; j++) {
     newIndexRedR = j + 1;
     selectPoint.options[selectPoint.options.length] = new Option(
-      "Red R" + newIndexRedR
+      "Red R" + newIndexRedR, "Red R" + newIndexRedR
     );
   }
   for (var k = 0; k < pointsBlueLeft.length; k++) {
     newIndexBlueL = k + 1;
     selectPoint.options[selectPoint.options.length] = new Option(
-      "Blue L" + newIndexBlueL
+      "Blue L" + newIndexBlueL, "Blue L" + newIndexBlueL
     );
   }
   for (var l = 0; l < pointsBlueRight.length; l++) {
     newIndexBlueR = l + 1;
     selectPoint.options[selectPoint.options.length] = new Option(
-      "Blue R" + newIndexBlueR
+      "Blue R" + newIndexBlueR, "Blue R" + newIndexBlueR
     );
   }
 }
@@ -1924,12 +1991,29 @@ function emptyRemoveList() {
   selectPoint.options.length = 0;
 }
 
-function removeChosenPoint() {
+removePointButton.style.display = 'none', replacePointButton.style.display = 'none';
+
+selectPoint.addEventListener('change', function(){
+  if ((selectPoint.value.includes('Red')) || (selectPoint.value.includes('Blue'))){
+    removePointButton.style.display = '', replacePointButton.style.display = '';
+  } else{
+    removePointButton.style.display = 'none', replacePointButton.style.display = 'none';
+  }
+})
+
+function removeChosenPoint() {  // THIS FUNCTION IS FIXED AND OPTIMIZED --PREVIOUS VERSION WAS REDUNDANT AND WASNT PROPERLY WORKING
   let value = selectPoint.value;
   if (value.includes("Red L")) {
+    let redLindex = value.substr(5);
+    
+    ctx.clearRect(
+      pointsRedLeft[redLindex-1].x - pointSize,
+      pointsRedLeft[redLindex-1].y - pointSize,
+      pointSize * 4 + 18,
+      pointSize * 4 + 10
+    );
+    pointsRedLeft.splice(redLindex-1, 1);
     for (var i = 0; i < pointsRedLeft.length; i++) {
-      newIndexRL = i + 1;
-      if (value.includes(newIndexRL)) {
         if (i >= 9) {
           ctx.clearRect(
             pointsRedLeft[i].x - pointSize,
@@ -1937,7 +2021,7 @@ function removeChosenPoint() {
             pointSize * 4 + 18,
             pointSize * 4 + 10
           );
-          pointsRedLeft.splice(i, 1);
+          
         } else {
           ctx.clearRect(
             pointsRedLeft[i].x - pointSize,
@@ -1945,24 +2029,9 @@ function removeChosenPoint() {
             pointSize * 4 + 10,
             pointSize * 4 + 10
           );
-          pointsRedLeft.splice(i, 1);
+          
         }
-      }
-      if (i >= 9) {
-        ctx.clearRect(
-          pointsRedLeft[i].x - pointSize,
-          pointsRedLeft[i].y - pointSize,
-          pointSize * 4 + 18,
-          pointSize * 4 + 10
-        );
-      } else {
-        ctx.clearRect(
-          pointsRedLeft[i].x - pointSize,
-          pointsRedLeft[i].y - pointSize,
-          pointSize * 4 + 10,
-          pointSize * 4 + 10
-        );
-      }
+      // ------------------------------------------------------------------------- //
       ctx.beginPath();
       ctx.fillStyle = "hsl(0, 100%, 30%)"; // dark red
       ctx.arc(
@@ -1983,9 +2052,16 @@ function removeChosenPoint() {
     }
   }
   if (value.includes("Red R")) {
+    let redRindex = value.substr(5);
+    
+    ctx.clearRect(
+      pointsRedRight[redRindex-1].x - pointSize,
+      pointsRedRight[redRindex-1].y - pointSize,
+      pointSize * 4 + 18,
+      pointSize * 4 + 10
+    );
+    pointsRedRight.splice(redRindex-1, 1);
     for (var j = 0; j < pointsRedRight.length; j++) {
-      newIndexRR = j + 1;
-      if (value.includes(newIndexRR)) {
         if (j >= 9) {
           ctx.clearRect(
             pointsRedRight[j].x - pointSize,
@@ -1993,7 +2069,6 @@ function removeChosenPoint() {
             pointSize * 4 + 20,
             pointSize * 4 + 10
           );
-          pointsRedRight.splice(i, 1);
         } else {
           ctx.clearRect(
             pointsRedRight[j].x - pointSize,
@@ -2001,24 +2076,7 @@ function removeChosenPoint() {
             pointSize * 4 + 12,
             pointSize * 4 + 10
           );
-          pointsRedRight.splice(i, 1);
-        }
-      }
-      if (j >= 9) {
-        ctx.clearRect(
-          pointsRedRight[j].x - pointSize,
-          pointsRedRight[j].y - pointSize,
-          pointSize * 4 + 20,
-          pointSize * 4 + 10
-        );
-      } else {
-        ctx.clearRect(
-          pointsRedRight[j].x - pointSize,
-          pointsRedRight[j].y - pointSize,
-          pointSize * 4 + 12,
-          pointSize * 4 + 10
-        );
-      }
+        } 
       ctx.beginPath();
       ctx.fillStyle = "hsl(0, 100%, 30%)"; // dark red
       ctx.arc(
@@ -2039,27 +2097,17 @@ function removeChosenPoint() {
     }
   }
   if (value.includes("Blue L")) {
+    let blueLindex = value.substr(6);
+    
+    ctx.clearRect(
+      pointsBlueLeft[blueLindex-1].x - pointSize,
+      pointsBlueLeft[blueLindex-1].y - pointSize,
+      pointSize * 4 + 18,
+      pointSize * 4 + 10
+    );
+    pointsBlueLeft.splice(blueLindex-1, 1);
     for (var k = 0; k < pointsBlueLeft.length; k++) {
-      newIndexBL = k + 1;
-      if (value.includes(newIndexBL)) {
-        if (k >= 9) {
-          ctx.clearRect(
-            pointsBlueLeft[k].x - pointSize,
-            pointsBlueLeft[k].y - pointSize,
-            pointSize * 4 + 18,
-            pointSize * 4 + 10
-          );
-          pointsBlueLeft.splice(k, 1);
-        } else {
-          ctx.clearRect(
-            pointsBlueLeft[k].x - pointSize,
-            pointsBlueLeft[k].y - pointSize,
-            pointSize * 4 + 10,
-            pointSize * 4 + 10
-          );
-          pointsBlueLeft.splice(k, 1);
-        }
-      }
+      
       if (k >= 9) {
         ctx.clearRect(
           pointsBlueLeft[k].x - pointSize,
@@ -2075,6 +2123,7 @@ function removeChosenPoint() {
           pointSize * 4 + 10
         );
       }
+      
       ctx.beginPath();
       ctx.fillStyle = "hsl(245, 89%, 42%)"; // Dark Blue color
       ctx.arc(
@@ -2095,9 +2144,16 @@ function removeChosenPoint() {
     }
   }
   if (value.includes("Blue R")) {
+    let blueRindex = value.substr(6);
+    
+    ctx.clearRect(
+      pointsBlueRight[blueRindex-1].x - pointSize,
+      pointsBlueRight[blueRindex-1].y - pointSize,
+      pointSize * 4 + 18,
+      pointSize * 4 + 10
+    );
+    pointsBlueRight.splice(blueRindex-1, 1);
     for (var l = 0; l < pointsBlueRight.length; l++) {
-      newIndexBR = l + 1;
-      if (value.includes(newIndexBR)) {
         if (l >= 9) {
           ctx.clearRect(
             pointsBlueRight[l].x - pointSize,
@@ -2105,7 +2161,6 @@ function removeChosenPoint() {
             pointSize * 4 + 20,
             pointSize * 4 + 10
           );
-          pointsBlueRight.splice(l, 1);
         } else {
           ctx.clearRect(
             pointsBlueRight[l].x - pointSize,
@@ -2113,25 +2168,8 @@ function removeChosenPoint() {
             pointSize * 4 + 12,
             pointSize * 4 + 10
           );
-          pointsBlueRight.splice(l, 1);
         }
-      }
-      if (l >= 9) {
-        ctx.clearRect(
-          pointsBlueRight[l].x - pointSize,
-          pointsBlueRight[l].y - pointSize,
-          pointSize * 4 + 20,
-          pointSize * 4 + 10
-        );
-      } else {
-        ctx.clearRect(
-          pointsBlueRight[l].x - pointSize,
-          pointsBlueRight[l].y - pointSize,
-          pointSize * 4 + 12,
-          pointSize * 4 + 10
-        );
-      }
-      ctx.beginPath();
+        ctx.beginPath();
       ctx.fillStyle = "hsl(245, 89%, 42%)"; // Dark Blue color
       ctx.arc(
         pointsBlueRight[l].x,
@@ -2148,9 +2186,260 @@ function removeChosenPoint() {
         pointsBlueRight[l].x + pointSize * 1.2,
         pointsBlueRight[l].y + pointSize * 1.2 + 10
       );
+      }
     }
+    refreshRemoveList();
   }
+
+
+// REPLACE CHOSEN POINT FUNCTION WORKING 
+
+function replaceChosenPoint(){
+  removePointButton.disabled = true;
+  replacePointButton.disabled = true;
+  selectPoint.disabled = true;
+  document.getElementById('removeImage').disabled = true;
+  document.querySelector('.upload-btn').disabled = true;
+  document.getElementById('redCircleLeft').disabled = true;
+  document.getElementById('redCircleRight').disabled = true;
+  document.getElementById('blueCircleLeft').disabled = true;
+  document.getElementById('blueCircleRight').disabled = true;
+  canvas.style.cursor = "crosshair";
+  var elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, function (el) {
+    el.classList.remove("active");
+  });
+  if (selectPoint.value.includes('Red L')){
+    let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(5);
+    activeFunctionInfo.style.color = 'red';
+    activeFunctionInfo.style.fontWeight = 'bold';
+    activeFunctionInfo.innerHTML = '<i class="fa-solid fa-repeat"></i>&nbsp Replacing Red (front) L'+indexNumber;
+    if (indexNumber >= 9) {
+      ctx.clearRect(
+        pointsRedLeft[indexNumber-1].x - pointSize,
+        pointsRedLeft[indexNumber-1].y - pointSize,
+        pointSize * 4 + 20,
+        pointSize * 4 + 10
+      );
+    } else{
+    ctx.clearRect(
+      pointsRedLeft[indexNumber-1].x - pointSize,
+      pointsRedLeft[indexNumber-1].y - pointSize,
+      pointSize * 4 + 12,
+      pointSize * 4 + 10
+    );
+  }
+    console.log(indexNumber-1);
+    
+    console.log(pointsRedLeft);
+    canvas.removeEventListener("click", drawRedLeft, false);
+    canvas.removeEventListener("click", drawRedRight, false);
+    canvas.removeEventListener("click", drawBlueLeft, false);
+    canvas.removeEventListener("click", drawBlueRight, false);
+    canvas.addEventListener("click", function replacePoint(e){
+      
+      var newPoint = getPosition(e);
+      console.log(newPoint);
+      
+      drawCoordinatesRed(newPoint, pointSize);
+      pointsRedLeft.splice(parseInt(indexNumber-1),1, newPoint);
+      // pointsRedLeft.push(newPoint);
+      console.log(pointsRedLeft);
+      // let index = pointsRedLeft.indexOf(newPoint);
+      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
+      ctx.fillText(
+        "L" + (indexNumber),
+        newPoint.x + pointSize * 1.2,
+        newPoint.y + pointSize * 1.2 + 10
+      );
+      canvas.removeEventListener("click", replacePoint);
+      canvas.style.cursor = "auto";
+      removePointButton.disabled = false;
+      replacePointButton.disabled = false;
+      selectPoint.disabled = false;
+      document.getElementById('removeImage').disabled = false;
+      document.querySelector('.upload-btn').disabled = false;
+      document.getElementById('redCircleLeft').disabled = false;
+      document.getElementById('redCircleRight').disabled = false;
+      document.getElementById('blueCircleLeft').disabled = false;
+      document.getElementById('blueCircleRight').disabled = false;
+      activeFunctionInfo.innerHTML = '';
+          }, false);
+    
+  }
+  if (selectPoint.value.includes('Red R')){
+    let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(5);
+    activeFunctionInfo.style.color = 'red';
+    activeFunctionInfo.style.fontWeight = 'bold';
+    activeFunctionInfo.innerHTML = '<i class="fa-solid fa-repeat"></i>&nbsp Replacing Red (front) R'+indexNumber;
+    if (indexNumber >= 9) {
+      ctx.clearRect(
+        pointsRedRight[indexNumber-1].x - pointSize,
+        pointsRedRight[indexNumber-1].y - pointSize,
+        pointSize * 4 + 20,
+        pointSize * 4 + 10
+      );
+    } else{
+    ctx.clearRect(
+      pointsRedRight[indexNumber-1].x - pointSize,
+      pointsRedRight[indexNumber-1].y - pointSize,
+      pointSize * 4 + 12,
+      pointSize * 4 + 10
+    );
+  }
+    console.log(indexNumber-1);
+    
+    console.log(pointsRedRight);
+    canvas.removeEventListener("click", drawRedLeft, false);
+    canvas.removeEventListener("click", drawRedRight, false);
+    canvas.removeEventListener("click", drawBlueLeft, false);
+    canvas.removeEventListener("click", drawBlueRight, false);
+    canvas.addEventListener("click", function replacePoint(e){
+      canvas.style.cursor = "crosshair";
+      var newPoint = getPosition(e);
+      console.log(newPoint);
+      
+      drawCoordinatesRed(newPoint, pointSize);
+      pointsRedRight.splice(parseInt(indexNumber-1),1, newPoint);
+      
+      console.log(pointsRedRight);
+      // let index = pointsRedLeft.indexOf(newPoint);
+      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
+      ctx.fillText(
+        "R" + (indexNumber),
+        newPoint.x + pointSize * 1.2,
+        newPoint.y + pointSize * 1.2 + 10
+      );
+      canvas.removeEventListener("click", replacePoint);
+      canvas.style.cursor = "auto";
+      removePointButton.disabled = false;
+      replacePointButton.disabled = false;
+      selectPoint.disabled = false;
+      document.getElementById('removeImage').disabled = false;
+      document.querySelector('.upload-btn').disabled = false;
+      document.getElementById('redCircleLeft').disabled = false;
+      document.getElementById('redCircleRight').disabled = false;
+      document.getElementById('blueCircleLeft').disabled = false;
+      document.getElementById('blueCircleRight').disabled = false;
+      activeFunctionInfo.innerHTML = '';
+          }, false);
+      
+  }
+  if (selectPoint.value.includes('Blue L')){
+    let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(6);
+    activeFunctionInfo.style.color = 'red';
+    activeFunctionInfo.style.fontWeight = 'bold';
+    activeFunctionInfo.innerHTML = '<i class="fa-solid fa-repeat"></i>&nbsp Replacing Blue (hind) L'+indexNumber;
+    if (indexNumber >= 9) {
+      ctx.clearRect(
+        pointsBlueLeft[indexNumber-1].x - pointSize,
+        pointsBlueLeft[indexNumber-1].y - pointSize,
+        pointSize * 4 + 20,
+        pointSize * 4 + 10
+      );
+    } else{
+    ctx.clearRect(
+      pointsBlueLeft[indexNumber-1].x - pointSize,
+      pointsBlueLeft[indexNumber-1].y - pointSize,
+      pointSize * 4 + 12,
+      pointSize * 4 + 10
+    );
+  }
+    console.log(indexNumber-1);
+    
+    console.log(pointsBlueLeft);
+    canvas.removeEventListener("click", drawRedLeft, false);
+    canvas.removeEventListener("click", drawRedRight, false);
+    canvas.removeEventListener("click", drawBlueLeft, false);
+    canvas.removeEventListener("click", drawBlueRight, false);
+    canvas.addEventListener("click", function replacePoint(e){
+      var newPoint = getPosition(e);
+      console.log(newPoint);
+      
+      drawCoordinatesBlue(newPoint, pointSize);
+      pointsBlueLeft.splice(parseInt(indexNumber-1),1, newPoint);
+      
+      console.log(pointsBlueLeft);
+      // let index = pointsRedLeft.indexOf(newPoint);
+      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
+      ctx.fillText(
+        "L" + (indexNumber),
+        newPoint.x + pointSize * 1.2,
+        newPoint.y + pointSize * 1.2 + 10
+      );
+      canvas.removeEventListener("click", replacePoint);
+      canvas.style.cursor = "auto";
+      removePointButton.disabled = false;
+      replacePointButton.disabled = false;
+      selectPoint.disabled = false;
+      document.getElementById('removeImage').disabled = false;
+      document.querySelector('.upload-btn').disabled = false;
+      document.getElementById('redCircleLeft').disabled = false;
+      document.getElementById('redCircleRight').disabled = false;
+      document.getElementById('blueCircleLeft').disabled = false;
+      document.getElementById('blueCircleRight').disabled = false;
+      activeFunctionInfo.innerHTML = '';
+          }, false);
+      
+  }
+  if (selectPoint.value.includes('Blue R')){
+    let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(6);
+    activeFunctionInfo.style.color = 'red';
+    activeFunctionInfo.style.fontWeight = 'bold';
+    activeFunctionInfo.innerHTML = '<i class="fa-solid fa-repeat"></i>&nbsp Replacing Blue (hind) R'+indexNumber;
+    if (indexNumber >= 9) {
+      ctx.clearRect(
+        pointsBlueRight[indexNumber-1].x - pointSize,
+        pointsBlueRight[indexNumber-1].y - pointSize,
+        pointSize * 4 + 20,
+        pointSize * 4 + 10
+      );
+    } else{
+    ctx.clearRect(
+      pointsBlueRight[indexNumber-1].x - pointSize,
+      pointsBlueRight[indexNumber-1].y - pointSize,
+      pointSize * 4 + 12,
+      pointSize * 4 + 10
+    );
+  }
+    console.log(indexNumber-1);
+    
+    console.log(pointsBlueRight);
+    canvas.removeEventListener("click", drawRedLeft, false);
+    canvas.removeEventListener("click", drawRedRight, false);
+    canvas.removeEventListener("click", drawBlueLeft, false);
+    canvas.removeEventListener("click", drawBlueRight, false);
+    canvas.addEventListener("click", function replacePoint(e){
+      var newPoint = getPosition(e);
+      console.log(newPoint);
+      
+      drawCoordinatesBlue(newPoint, pointSize);
+      pointsBlueRight.splice(parseInt(indexNumber-1),1, newPoint);
+      
+      console.log(pointsBlueRight);
+      // let index = pointsRedLeft.indexOf(newPoint);
+      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
+      ctx.fillText(
+        "R" + (indexNumber),
+        newPoint.x + pointSize * 1.2,
+        newPoint.y + pointSize * 1.2 + 10
+      );
+      canvas.removeEventListener("click", replacePoint);
+      canvas.style.cursor = "auto";
+      removePointButton.disabled = false;
+      replacePointButton.disabled = false;
+      selectPoint.disabled = false;
+      document.getElementById('removeImage').disabled = false;
+      document.querySelector('.upload-btn').disabled = false;
+      document.getElementById('redCircleLeft').disabled = false;
+      document.getElementById('redCircleRight').disabled = false;
+      document.getElementById('blueCircleLeft').disabled = false;
+      document.getElementById('blueCircleRight').disabled = false;
+      activeFunctionInfo.innerHTML = '';
+          }, false);  
+  } 
 }
+
 
 let removeMeasurement = document.getElementById("removeMeasurement");
 

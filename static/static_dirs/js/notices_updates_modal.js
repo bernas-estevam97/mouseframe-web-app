@@ -1,10 +1,9 @@
-var closeBtn = document.getElementById("closeModal");
-var modalNews = document.getElementById("modalNews"); 
-var showNews = document.getElementById("showNews");
-var modalStorage = localStorage.getItem('modalNews')
+let closeBtn = document.getElementById("closeModal");
+let modalNews = document.getElementById("modalNews"); 
+let showNews = document.getElementById("showNews");
+let modalStorage = localStorage.getItem('modalNews')
 
 if (modalStorage){
-    
     modalNews.classList.add("hidden");
 } else{
     localStorage.setItem('modalNews','true');

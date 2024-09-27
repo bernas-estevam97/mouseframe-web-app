@@ -44,7 +44,7 @@ header h1 {
   text-decoration: underline;
 }
 
-.modal{
+.modal-news{
   border: 3px solid black;
   background: #ffff;
   position: fixed;
@@ -52,7 +52,7 @@ header h1 {
   top: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
-  padding: 0 20px;
+  padding: 32px;
   border-radius: 3px;
 }
 
@@ -65,7 +65,7 @@ header h1 {
   bottom: 20%;
   transform: translateX(-50%);
   z-index: 100;
-  padding: 0 20px;
+  padding: 32px;
   border-radius: 3px;
   margin: 0 !important;
   text-align: justify;
@@ -84,7 +84,7 @@ header h1 {
   padding: 10px 0 10px 0; 
 }
 
-.modal .btn-close,.modal-help-ae .btn-close, .modal-help-aea .btn-close{
+.modal-news .new-btn-close-modal,.modal-help-ae .new-btn-close-modal, .modal-help-aea .new-btn-close-modal{
   padding: 10px;
   margin:10px 0;
   float: right;
@@ -94,7 +94,7 @@ header h1 {
   cursor: pointer;
 }
 
-.modal .btn-close:hover,.modal-help-ae .btn-close:hover, .modal-help-aea .btn-close:hover{
+.modal-news .new-btn-close-modal:hover,.modal-help-ae .new-btn-close-modal:hover, .modal-help-aea .new-btn-close-modal:hover{
   background:#dc3545;
   border: 3px solid #0000;
 }
@@ -165,9 +165,10 @@ header h1 {
 }
 
 #userResolution {
+  text-align: center;
   position: relative;
   background: #fff;
-  width: 230px;
+  width: 280px;
   padding: 10px;
   left: 4em;
   border: 3px double #000;
@@ -176,8 +177,8 @@ header h1 {
 
 #version {
   position: absolute;
-  top: -40px;
-  right: 0;
+  top: -30px;
+  right: 5px;
 }
 
 .logout-button {
@@ -246,11 +247,6 @@ header h1 {
   left:50%;
   transform: translateX(-50%);
 }
-
-.image-container{
-  margin-bottom: 0;
-}
-
 
 
 /* All containers */
@@ -337,8 +333,13 @@ header h1 {
   margin: 0;
 }
 
-.collapse-btn:hover, .collapse-btn.active{
-  font-weight: bold;
+.collapse-btn .fa-solid{
+  color:#000;
+  
+}
+
+.collapse-btn:hover > .fa-solid{
+  font-size: 1.1em;
 }
 
 .slider{
@@ -363,7 +364,14 @@ header h1 {
 
 .buttons-plus-options .mouse-scheme img{
   float:left;
-  border: 3px dashed #000;
+  border: 2px solid #000;
+  box-shadow: 4px 6px 18px; /* blur */
+  /* box-shadow: 6px 6px; shadow */
+  padding-bottom: 10px;
+}
+
+.buttons-plus-options .mouse-scheme img:hover{
+  cursor: grab;
 }
 
 .buttons-plus-options .marker{
@@ -516,6 +524,7 @@ header h1 {
 }
 
 #resetCanvas, #toggleInactive {
+  font-size: 0.7em;
   position: absolute;
   border-radius: 10px;
   border: 2px solid #c1c1c1;
@@ -646,7 +655,7 @@ header h1 {
   height: 20px;
 }
 
-#removePoint {
+#removePoint, #replacePoint {
   padding: 5px 10px;
   margin: 0;
   position: relative;
@@ -657,7 +666,7 @@ header h1 {
   margin-top: 10px;
 }
 
-#removePoint:hover {
+#removePoint:hover, #replacePoint:hover {
   background: rgb(155, 155, 155);
 }
 

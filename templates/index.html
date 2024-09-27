@@ -17,7 +17,7 @@
         <h1>MOUSE FRAME - <i>mus musculus</i> walking behaviour analysis tool</h1>
         <img src="{% static 'img/mouse.png' %}">
     </header>
-    <section class="modal" id="modalNews">
+    <section class="modal-news" id="modalNews">
       <h2>Notices and updates - Version 0.8.2</h2>
       <ul>
         <li>Fixed visual bugs for most resolutions.</li>
@@ -26,7 +26,7 @@
         <li>The saved values require an image size of which the measurement was saved in order to keep track of right
           cm to pixel conversions and avoid measurement usage in wrong resolutions.</li>
       </ul>
-      <btn class="btn-close" id="closeModal">Close</btn>
+      <button class="new-btn-close-modal" id="closeModal">Close</button>
     </section>
     <!-- <div class="overlay hidden"></div> -->
     
@@ -39,7 +39,7 @@
                 <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
                 <li>For more information on this application and to see how the calculations are made for each measurement, check this <a class="info-page" href="{% url 'info' %}">link</a>.</li>
-                <li>Check news for this version <i class="fa-solid fa-arrow-right"></i> <btn class="show-updates" id="showNews">News and updates</btn></li>
+                <li>Check news for this version <i class="fa-solid fa-arrow-right"></i> <button class="show-updates" id="showNews">News and updates</button></li>
             </ul>
             <p id="userResolution"></p>
             <p id="loginName">Welcome, you are logged as <b><u>{{ user.get_username }}</u></b>.</p><a class="logout-button" href="{% url 'logout' %}">Logout</a><br>
@@ -65,11 +65,11 @@
         </div>
 
       </div>
-      <div id="canvasUpload" class="image-info"><span id="imageName"></span>&nbsp&nbsp&nbsp&nbsp&nbsp<span id="imageUploadedWidth"></span>x<span id="imageUploadedHeight"></span></div>
+      <div id="canvasUpload" class="image-info"><b><i class='fa-regular fa-image'></i> name:&nbsp</b><span id="imageName"></span>&nbsp&nbsp&nbsp&nbsp&nbsp<b><i class='fa-solid fa-image'></i> default resolution:&nbsp</b> <span id="imageUploadedWidth"></span>x<span id="imageUploadedHeight"></span></div>
     <div class="bottom-functions">
       <div class="image-resize" id="imageEdit">
-        <h3 style="font-size: 2rem; margin:0 0 10px 0;">Image resizing<button id="collapseButton" class="collapse-btn" type="button" data-toggle="collapse" data-target="#collapseContent">
-          <!-- <i class="fa-solid fa-caret-down"></i> -->(?)
+        <h3 style="font-size: 2rem; margin:0 0 10px 0;">Image resizing&nbsp<button id="collapseButton" class="collapse-btn" type="button" data-toggle="collapse" data-target="#collapseContent">
+          <!-- <i class="fa-solid fa-caret-down"></i> --><i class="fa-solid fa-circle-question"></i>
         </button>:</h3>
         <div class="collapse" id="collapseContent">
         <p style="font-size: 1.2rem; text-align: left;">(*)Be sure to resize to your ideal size before working on any measurements.
@@ -92,7 +92,7 @@
         <p><output id="value"></output></p> -->
        </div>  
       <div class="buttons-plus-options">
-        <div class="mouse-scheme"><img src="{% static 'img/mouse-scheme-new.png' %}">
+        <div class="mouse-scheme"><img src="{% static 'img/mouse-scheme-new.png' %}" title="Mouse (dorsal, anatomical position) from biorender.com">
          <button class="marker" type="button" id="redCircleLeft" onclick="drawRedCircleLeft();"></button>
          <!-- <button class="button" type="button" id="deleteCircleRedLeft" onclick="removeRedCircleLeft();">Delete last added left red dot</button>
          <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete all left red dots</button><br> -->
@@ -111,20 +111,25 @@
         </div>
          
          <div class="right-side-options">
+          <div class="info-active-function" id="activeFunction"></div>
          <div class="point-removal">
-         <h4>Remove a point of choice:</h4>
-         <p>Instructions for manual removal:</p>
+         <h4>Remove a point of choice&nbsp<button class="collapse-btn" type="button" data-toggle="collapse" data-target="#collapseRemovePointHelp"><i class="fa-solid fa-circle-info"></i></button>:</h4>
+        <div style="font-size: 0.8em;" class="collapse" id="collapseRemovePointHelp">
+        <p>Instructions for manual removal:</p>
          <ul>
-          <li>If you have points added, click to refresh button to show all available points for removal.</li>
-          <li>Click empty to remove all the points from the list or simply refresh again if you have added new points</li>
-          <li>After choosing your desired point for removal click the Remove Point button.</li>
-          <li>By deleting a button, the group that it made part of will update.</li>
+          <li>If you already added some points to the image above, click the refresh icon to list them and prepare for removal.</li>
+          <li>Click the trash icon to remove all the points from the list or simply refresh again if you have added new points</li>
+          <li>After choosing your desired point two button options for removal will appear:<ul><li><u>Remove:</u> Delete the point and update the index of all other points as if the point removed did not exist.</li>
+          <li><u>Replace:</u> Remove the point, but it requires a single new point input by the user to use as replacement (many buttons will be disabled when the replacing function is active). </li></ul></li>
+          <li>There are other options below for simpler removal of points or specific group of points.</li>
          </ul>
-         <button id="refreshButton" onclick="refreshRemoveList();">Refresh</button>
-         <button id="emptyListRemoval" onclick="emptyRemoveList();">Empty</button>
-         <select id="selectPoint" class="custom-select">
+        </div>
+         <!-- <button id="refreshButton" onclick="refreshRemoveList();"><i class="fa-solid fa-arrows-rotate"></i></button>
+         <button id="emptyListRemoval" onclick="emptyRemoveList();"><i class="fa-solid fa-trash"></i></button> -->
+         <label for="selectPoint">Add points, see them here <i class="fa-solid fa-right-long"></i>&nbsp</label><select id="selectPoint" class="custom-select">
          </select>
-         &nbsp<button id="removePoint" onclick="removeChosenPoint();">Remove Point</button>
+         &nbsp<button id="removePoint" onclick="removeChosenPoint();">Remove</button>
+         <button id="replacePoint" onclick="replaceChosenPoint();">Replace</button>
         </div>
         <div class="point-size">
           <h2>Change dimensions of your marking points:</h2>
@@ -226,7 +231,7 @@
               <li>&#x27A3; &nbsp This function does not require a full set of marked dots to perform all available measurements, but it will throw an alert that some measurements could not be measured for the lack of certain dots.</li>
               <li>&#x27A3; &nbsp Overall, this measurement type is less sensitive and great for when the user only wants a few set of measurements and not all.</li>
             </ul>
-            <btn class="btn-close" id="closeModalHelpAddEntries">Close</btn>
+            <btn class="new-btn-close-modal" id="closeModalHelpAddEntries">Close</btn>
           </section>
           <section class="modal-help-aea" id="modalHelpAddEntriesAverage">
             <h2><b><u>Help</u></b> - What does Add Entries with Average do?</h2>
@@ -236,7 +241,7 @@
               <li>&#x27A2; &nbsp It also needs all marked dots in the correct spots to perform all the available calculations.</li>
               <li>&#x27A2; &nbsp This method/function is the most complete and sensitive when it comes to data retrieval.</li>
             </ul>
-            <btn class="btn-close" id="closeModalHelpAddEntriesAverage">Close</btn>
+            <btn class="new-btn-close-modal" id="closeModalHelpAddEntriesAverage">Close</btn>
           </section>
           <button id="addAll" type="submit" onclick="addEntriesAll()">Add Entries</button><span class="open-help-ae" id="openAe">?</span>&nbsp&nbsp&nbsp<button id="addAllAverage" type="submit" onclick="addEntriesAllAverage()">Add Entries with average</button><span class="open-help-aea" id="openAea">?</span><br>
           </div>
