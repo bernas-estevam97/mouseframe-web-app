@@ -12,6 +12,28 @@
     <title>Mouse Frame - Analysis</title>
 </head>
 <body>
+  <div class="resolution-unsupported">
+    <section class="vh-100 gradient-custom">
+        
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card bg-dark text-white" style="border-radius: 1rem;">
+              <div class="card-body p-5 text-center">
+    
+                <div class="mb-md-5 mt-md-4">
+                  <h2 class="fw-bold mb-2 text-uppercase">Unsupported resolution</h2>
+                  <p>This resolution and lower ones are not supported by this application.</p>
+                  <img src="{% static 'img/cartoon-mouse.png' %}"
+                </div>
+    
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </section>
+  </div>
   <p id="version">v0.8.2</p>
     <header>
         <h1>MOUSE FRAME - <i>mus musculus</i> walking behaviour analysis tool</h1>
@@ -28,6 +50,7 @@
       </ul>
       <button class="new-btn-close-modal" id="closeModal">Close</button>
     </section>
+    
     <!-- <div class="overlay hidden"></div> -->
     
     <div class="container-full">
@@ -68,7 +91,7 @@
       <div id="canvasUpload" class="image-info"><b><i class='fa-regular fa-image'></i> name:&nbsp</b><span id="imageName"></span>&nbsp&nbsp&nbsp&nbsp&nbsp<b><i class='fa-solid fa-image'></i> default resolution:&nbsp</b> <span id="imageUploadedWidth"></span>x<span id="imageUploadedHeight"></span></div>
     <div class="bottom-functions">
       <div class="image-resize" id="imageEdit">
-        <h3 style="font-size: 2rem; margin:0 0 10px 0;">Image resizing&nbsp<button id="collapseButton" class="collapse-btn" type="button" data-toggle="collapse" data-target="#collapseContent">
+        <h3 style="font-size: 2rem; margin:0 0 10px 0;"><i class="fa-solid fa-left-right"></i>&nbspImage resizing&nbsp<button id="collapseButton" class="collapse-btn" type="button" data-toggle="collapse" data-target="#collapseContent">
           <!-- <i class="fa-solid fa-caret-down"></i> --><i class="fa-solid fa-circle-question"></i>
         </button>:</h3>
         <div class="collapse" id="collapseContent">
@@ -131,148 +154,204 @@
          &nbsp<button id="removePoint" onclick="removeChosenPoint();">Remove</button>
          <button id="replacePoint" onclick="replaceChosenPoint();">Replace</button>
         </div>
-        <div class="point-size">
-          <h2>Change dimensions of your marking points:</h2>
-          <input id="sizeInput" type="number" placeholder="Dot Size">
-          <button id="changeS" onclick="changeSize();">Change point size</button>
-          <button id="resetS" onclick="resetSize();">Reset point size</button>
+        <h4 style="border-top-style: double; padding-top: 10px;">Remove a group of points:&nbsp<button class="collapse-btn" type="button" data-toggle="collapse" data-target="#collapseRemoveGroupHelp"><i class="fa-solid fa-circle-info"></i></button>:</h4>
+        <div class="collapse" id="collapseRemoveGroupHelp">
+          <p>Information for group removal:</p>
+           <ul>
+            <li>As an alternative to removing or replacing a point you can also remove an entire group of points. They are divided in 4 groups:<ul>
+              <li>Red left</li>
+              <li>Red right</li>
+              <li>Blue left</li>
+              <li>Blue right</li></ul>
+            </li>
+            <li>The points will be removed from the image by simply clicking one of the four buttons below.</li>
+           </ul>
+          </div>
+          <div class="remove-groups">
+          <div class="red-remove-points">
+          <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete Red L group</button>
+          <button class="button" type="button" id="deleteAllCircleRedRight" onclick="removeAllRedCircleRight();">Delete Red R group</button>
+          </div>
+          <div class="blue-remove-points">
+          <button class="button" type="button" id="deleteAllCircleBlueLeft" onclick="removeAllBlueCircleLeft();">Delete Blue L group</button>
+          <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete Blue R group</button>
+          </div>
+          </div>
+          <div class="point-size">
+          <h2 style="font-size: 1.5rem;">Change dimensions of your marking points:</h2>
+          <input id="sizeInput" type="number" placeholder="Point size in px...">
+          <button id="changeS" onclick="changeSize();">Change size</button>
+          <button id="resetS" onclick="resetSize();"><i class="fa-solid fa-rotate-left"></i></button>
           <p> Default point radius size is set to 4px</p>
           <p id="dynamicSize"></p>
-          <p><strong>Note:</strong>When deleting buttons make sure you don't change radius size. Only delete points when working with a fixed size</p>
+          <p><strong>Note:</strong>&nbspWhen deleting buttons make sure you don't change radius size. Only delete points when working with a fixed size</p>
           </div>
         </div>
        </div>
-       <div class="saved-distances" id="savedDistance">
-        <h3>Define how many pixels are in a centimeter.</h3>
-        <p>If there is a drawn line with the length of 1cm, measure it in pixels here:</p>
-        <p id="scaleDistance"></p>
-        <button id="measureButton" class="measure" onclick="drawMeasureCircle();">Add measuring points</button>
-        <button id="resetMeasure" onclick="removeAllMeasurePoints();">&#x21ba;</button>
-        <button onclick = "distanceMeasurePoint()" id="measureDistance">Measure</button>
-        <p>Manually input known value of pixels in 1 cm or use saved values (choose only one value before clicking use):</p>
-        <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" onKeyPress="if(this.value.length==8) return false;" placeholder="Px in cm...">&nbspOR&nbsp
-        <select id="savedChoices" form="savedDistancesForm" class="custom-select">
-            <option value="None" disabled selected>Select a value</option>
-          {% for distance in saved_distances %}
-            <option id="{{forloop.counter}}" value="{{distance.conversion_value}}">{{distance.conversion_value}} - {{distance.image_size}}</option>
-          {% endfor %}
-        </select>
-        <button onclick="manualInputMeasure();" id="manualUse">Use</button>
-        <button onclick="resetInput();" id="resetManual">Reset</button>
-        <!-- <button id="removeOption" type="submit">Delete</button> -->
-        <div class="measure-info"><div id="measureIntro">Measurement result:</div><div id="measureToCm"></div></div>
-        <h4 style="font-size: 1.5em;">Save section</h4>
-        <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from.</p>
-        <p style="font-size: 0.9em">(!) Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
-        <form action="saved" method="POST" id="savedDistancesForm">{% csrf_token %}
-          Value in pixels:
-          <input type="text" name="saved_distance_value" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="8" placeholder="Save value..." required>
-          <br><br>&nbspImage Size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required>
-          <br><br><button class="save-button" id="saveDistanceButton" type="submit">Save</button> 
-        </form>
-        <div id="messageSave"></div>
-       </div>
-       <div class="data-management" id="showData">
-        <div class="table-results">
-        <h3 style="text-decoration: underline;">Data results Table</h3>
-        <table id="table">
-          <thead id="tableH">
-          <tr>
-            <td colspan="5" id="titleImage"><b>Table ID: </b></td>
-          </tr>
-          <tr id="idRow">
-            <th>Entry Number</th>
-            <th>Points</th>
-            <th>Measurement type</th>
-            <th id="valuePx">Value(px)</th>
-            <th id="valueCm">Value(cm)</th>
-          </tr>
-        </thead>
-        <tbody id="tbody">
-        </tbody>
-        </table>
-        <div id="imageResizeTableWarning"></div>
-        <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
+       <!--- BREAK-->
+       <div id="accordion" style="width: 70vw;">
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <!-- <h5 class="mb-0"> -->
+              <button id="btnLinkOne" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <h5 style="font-size: 1.2em; color: #000;"><i class="fa-solid fa-angles-down" style="padding-right: 10px;"></i>Pixels in a centimeter</h5>
+              </button>
+            <!-- </h5> -->
+          </div>
+      
+          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+            <div class="card-body">
+              <div class="saved-distances" id="savedDistance">
+                <h4>Define how many pixels are in a centimeter:</h3>
+                <p>If there is a drawn line with the length of 1cm, measure it in pixels here:</p>
+                <p id="scaleDistance"></p>
+                <button id="measureButton" class="measure" onclick="drawMeasureCircle();">Add measuring points</button>
+                <button id="resetMeasure" onclick="removeAllMeasurePoints();">&#x21ba;</button>
+                <button onclick = "distanceMeasurePoint()" id="measureDistance">Measure</button>
+                <p>Manually input known value of pixels in 1 cm or use saved values (choose only one value before clicking use):</p>
+                <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" onKeyPress="if(this.value.length==8) return false;" placeholder="Px in cm...">&nbspOR&nbsp
+                <select id="savedChoices" form="savedDistancesForm" class="custom-select">
+                    <option value="None" disabled selected>Select a value</option>
+                  {% for distance in saved_distances %}
+                    <option id="{{forloop.counter}}" value="{{distance.conversion_value}}">{{distance.conversion_value}} - {{distance.image_size}}</option>
+                  {% endfor %}
+                </select>
+                <button onclick="manualInputMeasure();" id="manualUse">Use</button>
+                <button onclick="resetInput();" id="resetManual">Reset</button>
+                <!-- <button id="removeOption" type="submit">Delete</button> -->
+                <div class="measure-info"><div id="measureIntro">Measurement result:</div><div id="measureToCm"></div></div>
+                <h4 style="font-size: 1.5em;">Save section</h4>
+                <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from.</p>
+                <p style="font-size: 0.9em">(!) Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
+                <form action="saved" method="POST" id="savedDistancesForm">{% csrf_token %}
+                  Value(px):
+                  <input type="text" name="saved_distance_value" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="8" placeholder="Save value..." required>
+                  <br><br>&nbspImage Size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required>
+                  <br><br><button class="save-button" id="saveDistanceButton" type="submit"><i class="fa-solid fa-floppy-disk"></i></button> 
+                </form>
+                <div id="messageSave"></div>
+               </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header" id="headingTwo">
+            <!-- <h5 class="mb-0"> -->
+              <button id="btnLinkTwo" class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <h5 style="font-size: 1.2em; color: #000;"><i class="fa-solid fa-angles-down" style="padding-right: 10px;"></i>Data management</h5>
+              </button>
+            <!-- </h5> -->
+          </div>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+              <div class="data-management" id="showData">
+                <div class="table-results">
+                <h3 style="text-decoration: underline;">Data results Table</h3>
+                <table id="table">
+                  <thead id="tableH">
+                  <tr>
+                    <td colspan="5" id="titleImage"><b>Table ID: </b></td>
+                  </tr>
+                  <tr id="idRow">
+                    <th>Entry Number</th>
+                    <th>Points</th>
+                    <th>Measurement type</th>
+                    <th id="valuePx">Value(px)</th>
+                    <th id="valueCm">Value(cm)</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody">
+                </tbody>
+                </table>
+                <div id="imageResizeTableWarning"></div>
+                <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
+              </div>
+              <div class="select-options">
+                <!-- <form action="/"> -->
+                  <!-- <label for="point">Select point 1:</label>
+                    <select name="point" id="pointChosen1">
+                    </select>
+                  <label for="point">Select point 2:</label>
+                  <select name="point" id="pointChosen2">
+                  </select> -->
+                  <!-- <label for="measurement">Measurement:</label>
+                  <select name="measurement" id="measurement">
+                    <option value="Overlap Left" selected>Overlap Left</option>
+                    <option value="Overlap Right" selected>Overlap Right</option>
+                    <option value="Stride length left front">Stride length left front</option>
+                    <option value="Stride length left hind">Stride length left hind</option>
+                    <option value="Stride length right front">Stride length right front</option>
+                    <option value="Stride length right hind">Stride length right hind</option>
+                    <option value="Stride Width Front">Stride Width Front</option>
+                    <option value="Stride Width Hind">Stride Width Hind</option>
+                  </select> -->
+                  <div class="table-id">
+                    <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()">Submit</button>&nbsp<button onclick="removeTableID();">Remove</button>
+                  </div>
+                  <div id="footstepsBeginning">
+                  <label for="beginning">First set of footsteps:</label>
+                  <select name="beginning" id="footstepStart" class="custom-select">
+                    <option value="None" selected>Select one</option>
+                    <option value="Left">Left</option>
+                    <option value="Right">Right</option>
+                  </select><br>
+                  <section class="modal-help-ae" id="modalHelpAddEntries">
+                    <h2><b><u>Help</u></b> - What does Add Entries option do?</h2>
+                    <ul>
+                      <li>&#x27A3; &nbsp This function allows users to calculate distances between the points marked above.</li>
+                      <li>&#x27A3; &nbsp In contrast with the "Add entries with average" function, this option does not require the pixels in 1 cm measurement (if the value is available it will still convert px to cm). If the user only wants to know the distance in pixels this option may suffice.</li>
+                      <li>&#x27A3; &nbsp This function does not require a full set of marked dots to perform all available measurements, but it will throw an alert that some measurements could not be measured for the lack of certain dots.</li>
+                      <li>&#x27A3; &nbsp Overall, this measurement type is less sensitive and great for when the user only wants a few set of measurements and not all.</li>
+                    </ul>
+                    <btn class="new-btn-close-modal" id="closeModalHelpAddEntries">Close</btn>
+                  </section>
+                  <section class="modal-help-aea" id="modalHelpAddEntriesAverage">
+                    <h2><b><u>Help</u></b> - What does Add Entries with Average do?</h2>
+                    <ul>
+                      <li>&#x27A2; &nbsp This function calculates a complete set of measurements, converts the values to cm and displays mean values for each measurement in cm.</li>
+                      <li>&#x27A2; &nbsp "Add entries with average" requires the px in 1 cm measurement beforehand.</li>
+                      <li>&#x27A2; &nbsp It also needs all marked dots in the correct spots to perform all the available calculations.</li>
+                      <li>&#x27A2; &nbsp This method/function is the most complete and sensitive when it comes to data retrieval.</li>
+                    </ul>
+                    <btn class="new-btn-close-modal" id="closeModalHelpAddEntriesAverage">Close</btn>
+                  </section>
+                  <button id="addAll" type="submit" onclick="addEntriesAll()">Add Entries</button><span class="open-help-ae" id="openAe">?</span>&nbsp&nbsp&nbsp<button id="addAllAverage" type="submit" onclick="addEntriesAllAverage()">Add Entries with average</button><span class="open-help-aea" id="openAea">?</span><br>
+                  </div>
+                  <!-- <input type="submit" onclick="addEntry();" value="Add Entries"><br> -->
+                  <!-- <br><p id="entryPreview"></p> -->
+                  <!-- <button id="refreshList" onclick="refreshList();">Refresh</button>
+                  <button id="empty" onclick="emptyList();">Empty</button> -->
+                  <div class="remove-by-entries" id="removeByEntries">
+                  <p>Remove by entries &#8628;</p>
+                  <input id="entryNumber" placeholder="Entry nº" size="3" maxlength="3">
+                  <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
+                  <button id="removeAllEntries" onclick="removeAllEntries();">Remove All Entries</button>
+                  </div>
+                  <div class="remove-by-measurement" id="removeByMeasurement">
+                  <p>Remove by measurement type &#8628;</p>
+                  <select name="measurement" id="removeMeasurement" class="custom-select">
+                    <option value="Overlap Left" selected>Overlap Left</option>
+                    <option value="Overlap Right" selected>Overlap Right</option>
+                    <option value="Stride length left front">Stride length left front</option>
+                    <option value="Stride length left hind">Stride length left hind</option>
+                    <option value="Stride length right front">Stride length right front</option>
+                    <option value="Stride length right hind">Stride length right hind</option>
+                    <option value="Stride Width Front">Stride Width Front</option>
+                    <option value="Stride Width Hind">Stride Width Hind</option>
+                  </select>
+                  <button onclick="removeByMeasurement();">Remove</button>
+                  </div>
+              </div>
+           
+           
+          </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="select-options">
-        <!-- <form action="/"> -->
-          <!-- <label for="point">Select point 1:</label>
-            <select name="point" id="pointChosen1">
-            </select>
-          <label for="point">Select point 2:</label>
-          <select name="point" id="pointChosen2">
-          </select> -->
-          <!-- <label for="measurement">Measurement:</label>
-          <select name="measurement" id="measurement">
-            <option value="Overlap Left" selected>Overlap Left</option>
-            <option value="Overlap Right" selected>Overlap Right</option>
-            <option value="Stride length left front">Stride length left front</option>
-            <option value="Stride length left hind">Stride length left hind</option>
-            <option value="Stride length right front">Stride length right front</option>
-            <option value="Stride length right hind">Stride length right hind</option>
-            <option value="Stride Width Front">Stride Width Front</option>
-            <option value="Stride Width Hind">Stride Width Hind</option>
-          </select> -->
-          <div class="table-id">
-            <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()">Submit</button>&nbsp<button onclick="removeTableID();">Remove</button>
-          </div>
-          <div id="footstepsBeginning">
-          <label for="beginning">First set of footsteps:</label>
-          <select name="beginning" id="footstepStart" class="custom-select">
-            <option value="None" selected>Select one</option>
-            <option value="Left">Left</option>
-            <option value="Right">Right</option>
-          </select><br>
-          <section class="modal-help-ae" id="modalHelpAddEntries">
-            <h2><b><u>Help</u></b> - What does Add Entries option do?</h2>
-            <ul>
-              <li>&#x27A3; &nbsp This function allows users to calculate distances between the points marked above.</li>
-              <li>&#x27A3; &nbsp In contrast with the "Add entries with average" function, this option does not require the pixels in 1 cm measurement (if the value is available it will still convert px to cm). If the user only wants to know the distance in pixels this option may suffice.</li>
-              <li>&#x27A3; &nbsp This function does not require a full set of marked dots to perform all available measurements, but it will throw an alert that some measurements could not be measured for the lack of certain dots.</li>
-              <li>&#x27A3; &nbsp Overall, this measurement type is less sensitive and great for when the user only wants a few set of measurements and not all.</li>
-            </ul>
-            <btn class="new-btn-close-modal" id="closeModalHelpAddEntries">Close</btn>
-          </section>
-          <section class="modal-help-aea" id="modalHelpAddEntriesAverage">
-            <h2><b><u>Help</u></b> - What does Add Entries with Average do?</h2>
-            <ul>
-              <li>&#x27A2; &nbsp This function calculates a complete set of measurements, converts the values to cm and displays mean values for each measurement in cm.</li>
-              <li>&#x27A2; &nbsp "Add entries with average" requires the px in 1 cm measurement beforehand.</li>
-              <li>&#x27A2; &nbsp It also needs all marked dots in the correct spots to perform all the available calculations.</li>
-              <li>&#x27A2; &nbsp This method/function is the most complete and sensitive when it comes to data retrieval.</li>
-            </ul>
-            <btn class="new-btn-close-modal" id="closeModalHelpAddEntriesAverage">Close</btn>
-          </section>
-          <button id="addAll" type="submit" onclick="addEntriesAll()">Add Entries</button><span class="open-help-ae" id="openAe">?</span>&nbsp&nbsp&nbsp<button id="addAllAverage" type="submit" onclick="addEntriesAllAverage()">Add Entries with average</button><span class="open-help-aea" id="openAea">?</span><br>
-          </div>
-          <!-- <input type="submit" onclick="addEntry();" value="Add Entries"><br> -->
-          <!-- <br><p id="entryPreview"></p> -->
-          <!-- <button id="refreshList" onclick="refreshList();">Refresh</button>
-          <button id="empty" onclick="emptyList();">Empty</button> -->
-          <div class="remove-by-entries" id="removeByEntries">
-          <p>Remove by entries &#8628;</p>
-          <input id="entryNumber" placeholder="Entry nº" size="3" maxlength="3">
-          <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
-          <button id="removeAllEntries" onclick="removeAllEntries();">Remove All Entries</button>
-          </div>
-          <div class="remove-by-measurement" id="removeByMeasurement">
-          <p>Remove by measurement type &#8628;</p>
-          <select name="measurement" id="removeMeasurement" class="custom-select">
-            <option value="Overlap Left" selected>Overlap Left</option>
-            <option value="Overlap Right" selected>Overlap Right</option>
-            <option value="Stride length left front">Stride length left front</option>
-            <option value="Stride length left hind">Stride length left hind</option>
-            <option value="Stride length right front">Stride length right front</option>
-            <option value="Stride length right hind">Stride length right hind</option>
-            <option value="Stride Width Front">Stride Width Front</option>
-            <option value="Stride Width Hind">Stride Width Hind</option>
-          </select>
-          <button onclick="removeByMeasurement();">Remove</button>
-          </div>
-      </div>
-   
-   
-  </div>
+       <!--- BREAK-->
+       
+
    <!-- <div class="resolution-info">
     <label id="labelInput" for="inches">Your screen size in inches(in):</label>
     <input name="inches" class="input-inches" id="inputScreenInches" type="text" maxlength="4" size="4" onkeypress="if(!event.key.match(/[1-9.]/)) event.preventDefault()">
@@ -339,5 +418,32 @@
 
 </script>
 <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
+<script>
+
+  let btnLinkOne = document.getElementById('btnLinkOne');
+  let btnLinkTwo = document.getElementById('btnLinkTwo');
+  let collapseOne = document.getElementById('collapseOne');
+  let collapseTwo = document.getElementById('collapseTwo');
+
+
+  btnLinkOne.addEventListener('click', ()=>{
+    if (collapseTwo.classList.contains('show')){
+      btnLinkOne.classList.toggle('active');
+      btnLinkTwo.classList.remove('active');
+    }else{
+      btnLinkOne.classList.toggle('active');
+    }
+  })
+
+  btnLinkTwo.addEventListener('click', ()=>{
+    if (collapseOne.classList.contains('show')){
+      btnLinkTwo.classList.toggle('active');
+      btnLinkOne.classList.remove('active');
+    }else{
+      btnLinkTwo.classList.toggle('active');
+    }
+  })
+
+</script>
 </body>
 </html>

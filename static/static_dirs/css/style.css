@@ -12,6 +12,10 @@ body {
   background-color: #f3f3f3;
 }
 
+.resolution-unsupported{
+  display: none;
+}
+
 .hidden{
   display: none;
 }
@@ -54,6 +58,10 @@ header h1 {
   z-index: 100;
   padding: 32px;
   border-radius: 3px;
+}
+
+.modal-news ul li{
+  padding-top: 10px;
 }
 
 .modal-help-ae, .modal-help-aea{
@@ -281,7 +289,7 @@ header h1 {
   /* text-align: center; */
   background: #fff;
   border: 3px solid #c1c1c1;
-  width: 60vw;
+  width: 70vw;
 }
 
 .right-side-options{
@@ -313,7 +321,7 @@ header h1 {
   padding: 32px 64px 64px 64px;
   font-size: 1.5rem;
   text-align: center;
-  width: 90%;
+  width: 70vw;
   
 }
 
@@ -353,7 +361,6 @@ header h1 {
   background-color: #fff;
   border: 3px double #c1c1c1;
   padding: 0 10px 10px 10px;
-  width: 52vw;
 }
 
 /* Buttons that add points of different colors and mouse image scheme */ 
@@ -368,10 +375,6 @@ header h1 {
   box-shadow: 4px 6px 18px; /* blur */
   /* box-shadow: 6px 6px; shadow */
   padding-bottom: 10px;
-}
-
-.buttons-plus-options .mouse-scheme img:hover{
-  cursor: grab;
 }
 
 .buttons-plus-options .marker{
@@ -394,6 +397,16 @@ header h1 {
   left: 260px;
 }
 
+.remove-groups{
+  display: flex;
+  flex-direction: column;
+}
+
+.red-remove-points, .blue-remove-points{
+  display :flex;
+  flex-direction: row;
+  justify-content: center;
+}
 
 
 #redCircleLeft{
@@ -446,11 +459,17 @@ header h1 {
   border: 1px solid #c1c1c1;
   cursor: pointer;
   transition: all 0.2s;
+  margin: 0 5px 5px 5px;
+  width: 165px;
+  position: relative;
+  padding: 5px 0;
+  background: #ff2626;
+  color: #fff;
 }
 
 #deleteAllCircleRedLeft:hover,
 #deleteAllCircleRedRight:hover {
-  background: rgb(155, 155, 155);
+  background: #cf0808;
 }
 
 #blueCircleLeft{
@@ -503,11 +522,16 @@ header h1 {
   border: 1px solid #c1c1c1;
   cursor: pointer;
   transition: all 0.2s;
+  margin: 0 5px 5px 5px;
+  width: 165px;
+  padding: 5px 0;
+  background: #0980f1;
+  color: #fff;
 }
 
 #deleteAllCircleBlueLeft:hover,
 #deleteAllCircleBlueRight:hover {
-  background: rgb(155, 155, 155);
+  background: #0162be;
 }
 
 #resetCanvasNotIdx {
@@ -719,7 +743,7 @@ header h1 {
   height: 20px;
 }
 
-.ppi-calc {
+/* .ppi-calc {
   padding: 5px;
   position: relative;
   border-radius: 1px;
@@ -731,7 +755,7 @@ header h1 {
 
 .ppi-calc:hover {
   background: rgb(202, 202, 202);
-}
+} */
 
 /* ----------- */
 
@@ -863,7 +887,7 @@ input::placeholder{
 
 #resetS {
   margin-top: 10px;
-  padding: 5px 20px;
+  padding: 5px 10px;
   position: relative;
   border-radius: 2px;
   border: 1px solid #c1c1c1;
@@ -882,7 +906,6 @@ input::placeholder{
   margin-bottom: 30px;
   display: flex;
   justify-content: space-between;
-  width: 70vw;
 }
 
 .data-management .table-results {
@@ -940,8 +963,7 @@ input::placeholder{
   width: 50%;
   text-align: center;
   padding: 0px 10px 5px 10px;
-  margin: 0px 5px 5px 5px;
-  font-size: 1.2em;
+  font-size: 1em;
   height: 460px;
 }
 
@@ -1023,3 +1045,44 @@ input::placeholder{
 }
 
 
+.btn-link{
+  text-decoration: none !important;
+}
+
+.btn-link:hover{
+  text-decoration: underline !important;
+  text-decoration-color: #000 !important;
+}
+
+#btnLinkOne.active, #btnLinkTwo.active{
+  text-decoration: underline !important;
+  text-decoration-color: #000 !important;
+}
+
+#btnLinkOne.active .fa-solid, #btnLinkTwo.active .fa-solid{
+  transform: rotate(180deg);
+  padding-left: 10px;
+}
+
+.fa-solid{
+  transition: transform 0.5s ease-in, padding-left 0.5s ease-in;
+}
+
+
+@media screen and (max-width:1024px){
+  #version, .modal-news, .container-full, header{
+    display: none;
+  }
+
+  .resolution-unsupported{
+    display: block !important;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .resolution-unsupported img{
+    width: 316px;
+    height: 197.5px;
+  }
+}

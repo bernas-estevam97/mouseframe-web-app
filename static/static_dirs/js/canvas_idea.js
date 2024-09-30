@@ -217,12 +217,12 @@ function removeAllRedCircleLeft() {
         pointSize * 4 + 10
       );
     }
-    console.log(
-      "Removed point on the coordinates: X " +
-        pointsRedLeft[i].x +
-        " Y: " +
-        pointsRedLeft[i].y
-    );
+    // console.log(
+    //   "Removed point on the coordinates: X " +
+    //     pointsRedLeft[i].x +
+    //     " Y: " +
+    //     pointsRedLeft[i].y
+    // );
   }
   pointsRedLeft.length = 0;
   canvas.removeEventListener("click", drawRedLeft, false);
@@ -231,6 +231,9 @@ function removeAllRedCircleLeft() {
   canvas.removeEventListener("click", drawBlueRight, false);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
+  activeFunctionInfo.style.color = 'red';
+  activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.innerHTML = '<i class="fa-solid fa-xmark"></i>&nbspAll red left points removed!';
 }
 
 function removeAllRedCircleRight() {
@@ -264,6 +267,9 @@ function removeAllRedCircleRight() {
   canvas.removeEventListener("click", drawBlueRight, false);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
+  activeFunctionInfo.style.color = 'red';
+  activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.innerHTML = '<i class="fa-solid fa-xmark"></i>&nbspAll red right points removed!';
 }
 
 // DRAW BLUE - ALL EVENTS
@@ -430,6 +436,9 @@ function removeAllBlueCircleLeft() {
   canvas.removeEventListener("click", drawRedRight);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
+  activeFunctionInfo.style.color = 'blue';
+  activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.innerHTML = '<i class="fa-solid fa-xmark"></i>&nbspAll blue left points removed!';
 }
 
 function removeAllBlueCircleRight() {
@@ -463,6 +472,9 @@ function removeAllBlueCircleRight() {
   canvas.removeEventListener("click", drawRedRight);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
+  activeFunctionInfo.style.color = 'blue';
+  activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.innerHTML = '<i class="fa-solid fa-xmark"></i>&nbspAll blue right points removed!';
 }
 
 // MEASURE POINTS - ALL EVENTS
@@ -574,11 +586,12 @@ function resetCanvas() {
   pointsMeasure.length = 0;
   canvas.style.cursor = "auto";
   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize +"px";
+  showSize.innerHTML = "Current point radius size is: " + pointSize +"px";
   var elems = document.querySelectorAll(".active");
   [].forEach.call(elems, function (el) {
     el.classList.remove("active");
   });
+  refreshRemoveList();
 }
 
 //function clearCanvas(){
@@ -728,6 +741,7 @@ let tableWarning = document.getElementById("imageResizeTableWarning");
 document.getElementById("savedDistance").style.display = "none";
 document.getElementById("showData").style.display = "none";
 document.getElementById('removeImage').style.display = "none";
+document.getElementById('accordion').style.display = 'none';
 canvasUpload.style.display = "none";
 buttons.style.display = "none";
 canvas.style.display = "none";
@@ -890,6 +904,7 @@ let loadFile = function (event) {
     // document.getElementById("labelInput").style.display = "";
     // document.getElementById("ppiCalculus").style.display = "";
     document.getElementById('removeImage').style.display = "";
+    document.getElementById('accordion').style.display = '';
     // ------------------------------------------------------ //
   };
 };
@@ -1359,6 +1374,7 @@ let resetFile = function (event) {
   [].forEach.call(elems, function (el) {
     el.classList.remove("active");
   });
+  document.getElementById('accordion'),style.display = 'none';
 };
 
 //---------------------------------------------------------//
