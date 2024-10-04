@@ -19,7 +19,7 @@ def home(request):
 #    if not request.user.is_authenticated:
 #         return redirect('/authenticate/login')
 #    else:
-     saved_distances = SavedDistances.objects.all()
+     saved_distances = SavedDistances.objects.filter(user=request.user)
      return render(request, 'index.html', {'saved_distances': saved_distances})
 
 @login_required(login_url=settings.LOGIN_URL)
@@ -40,9 +40,9 @@ def saved_distance(request):
           else:
               return
      #  print(conversion, image_size)
-          new = SavedDistances(conversion_value=conversion,image_size = image_size)
+          new = SavedDistances(user=request.user, conversion_value=conversion,image_size = image_size)
           new.save()
-          saved_distances = SavedDistances.objects.all()
+          saved_distances = SavedDistances.objects.filter(user=request.user)
           # return render(request, 'index.html', {'saved_distances': saved_distances})
           return HttpResponse(saved_distances)
 

@@ -802,6 +802,7 @@ let loadFile = function (event) {
   [].forEach.call(elems, function (el) {
     el.classList.remove("active");
   });
+  refreshRemoveList();
   // IMAGE ONLOAD SECTION - //
   img.onload = () => {
     event.target.value = null;
@@ -1374,7 +1375,7 @@ let resetFile = function (event) {
   [].forEach.call(elems, function (el) {
     el.classList.remove("active");
   });
-  document.getElementById('accordion'),style.display = 'none';
+  document.getElementById('accordion').style.display = 'none';
 };
 
 //---------------------------------------------------------//

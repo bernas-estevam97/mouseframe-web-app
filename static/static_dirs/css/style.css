@@ -4,12 +4,12 @@
 html{
   visibility: hidden;
   margin:0;
-  font-family: "Roboto Condensed", sans-serif;
 }
 
 body {
   position: relative;
   background-color: #f3f3f3;
+  font-family: "Roboto Condensed", sans-serif !important;
 }
 
 .resolution-unsupported{
@@ -19,6 +19,9 @@ body {
 .hidden{
   display: none;
 }
+
+
+/* HEADER SECTION */
 
 header {
   display: flex;
@@ -48,6 +51,21 @@ header h1 {
   text-decoration: underline;
 }
 
+.show-updates{
+  cursor: pointer;
+  padding: 5px;
+  border: 2px solid rgb(0, 0, 0);
+  border-radius: 2px;
+  transition: background 0.5s;
+}
+
+.show-updates:hover{
+  background: rgb(223, 223, 223);
+}
+
+/* ---------------------------- */
+/* Modals: NEWS AND HELP MODALS */
+
 .modal-news{
   border: 3px solid black;
   background: #ffff;
@@ -65,7 +83,7 @@ header h1 {
 }
 
 .modal-help-ae, .modal-help-aea{
-  font-size: 0.9em;
+  font-size: 1.1em;
   border: 3px solid black;
   background: #ffff;
   position: fixed;
@@ -107,16 +125,12 @@ header h1 {
   border: 3px solid #0000;
 }
 
-.show-updates{
-  cursor: pointer;
-  padding: 5px;
-  border: 2px solid rgb(0, 0, 0);
-  border-radius: 2px;
-  transition: background 0.5s;
-}
+/* ------------------------------------------------ */
 
-.show-updates:hover{
-  background: rgb(223, 223, 223);
+/* CONTAINERS AND SUBCONTAINERS */
+
+.container-full {
+  position: relative;
 }
 
 /* .container-full{
@@ -125,9 +139,6 @@ header h1 {
     display: flex;
     /* flex-direction: column; 
 } */
-.container-full {
-  position: relative;
-}
 
 .requirements {
   position: relative;
@@ -160,6 +171,8 @@ header h1 {
   list-style-type: disc;
   font-size: 1.2em;
 }
+
+       /* LOGIN/LOGOUT BUTTON, USER RESOLUTION INFORMATION AND VERSION */
 
 #loginName {
   position: relative;
@@ -204,6 +217,9 @@ header h1 {
   background: rgb(168, 30, 30);
 }
 
+      /* -------------------------- */
+      /* IMAGE UPLOAD AND RESET BUTTONS */
+
 .upload-btn {
   padding: 10px 15px;
   margin-left: 20px;
@@ -235,6 +251,8 @@ header h1 {
   margin-top: 50px;
 }
 
+      /* IMAGE AND CANVAS CONTAINERS */
+
 .image-container {
   position: relative;
   display: block;
@@ -257,19 +275,7 @@ header h1 {
 }
 
 
-/* All containers */
-
-.custom-select{
-  font-size: 0.8em;
-  padding: 0.3em 0.5em 0.3em 0.5em;
-  background-color: #fff;
-  border: 1.5px solid #a4a7a9;
-  border-radius: 0.25rem;
-  color: #000;
-  cursor: pointer;
-}
-
-
+/* All subbcontainers and special classes */
 
 .bottom-functions {
   position: relative;
@@ -280,33 +286,69 @@ header h1 {
   margin: 0 20px 20px 20px;
 }
 
+.custom-select{
+  font-size: 1em;
+  padding: 0.3em 0.5em 0.3em 0.5em;
+  background-color: #fff;
+  border: 1.5px solid #a4a7a9;
+  border-radius: 0.25rem;
+  color: #000;
+  cursor: pointer;
+}
+
 .buttons-plus-options{
-  display: flex;
-  flex-direction: row;
   padding: 10px;
-  justify-content: space-around;
-  align-items: center;
   /* text-align: center; */
   background: #fff;
   border: 3px solid #c1c1c1;
   width: 70vw;
 }
 
+.buttons-plus-options .mouse-scheme{
+  position:relative;
+  float:left;
+}
+
+.buttons-plus-options .mouse-scheme .mouse-image{
+  border: 2px solid #000;
+  box-shadow: 4px 6px 18px; /* blur */
+  /* box-shadow: 6px 6px; shadow */
+  padding-bottom: 10px;
+}
+
+.hotkeys-legend{
+  position: absolute;
+  top: 412px;
+  left: 12px;
+  border: 1px dashed #000;
+  padding: 5px 10px;
+}
+
+.under-image{
+  width:366px;
+  padding: 5px 5px;
+  margin-top: 20px;
+  font-size: 1.2em;
+}
+
 .right-side-options{
+  position:relative;
   display: flex;
   flex-direction: column;
   padding: 0 32px;
 }
 
-.right-side-options .point-removal {
+.right-side-options .point-removal, .right-side-options .group-removal {
   padding-top: 10px;
   text-align: left;
   font-size: 1.2em;
   padding-bottom: 10px;
 }
 
+
+
 .right-side-options .point-size {
-  padding-top: 10px;
+  padding-top: 25px;
   border-top-style: double;
 }
 
@@ -365,18 +407,6 @@ header h1 {
 
 /* Buttons that add points of different colors and mouse image scheme */ 
 
-.buttons-plus-options .mouse-scheme{
-  position:relative;
-}
-
-.buttons-plus-options .mouse-scheme img{
-  float:left;
-  border: 2px solid #000;
-  box-shadow: 4px 6px 18px; /* blur */
-  /* box-shadow: 6px 6px; shadow */
-  padding-bottom: 10px;
-}
-
 .buttons-plus-options .marker{
   border: none;
 }
@@ -387,8 +417,8 @@ header h1 {
 
 .buttons-plus-options .btn-toggle{
   position: absolute;
-  top: 580px;
-  left: 7px;
+  top: 540px;
+  left: 257px;
 }
 
 .buttons-plus-options .btn-reset{
@@ -408,6 +438,8 @@ header h1 {
   justify-content: center;
 }
 
+
+/* CLICKABLE BUTTONS STYLING SECTION */
 
 #redCircleLeft{
   position: absolute;
@@ -596,7 +628,7 @@ header h1 {
   background: rgb(184, 184, 184);
 }
 
-/* Image resize section */
+/* Image resize section- DISPLAY NONE FOR NOW*/
 
 #fiftyP,
 #seventyFiveP,
@@ -625,7 +657,7 @@ header h1 {
   padding: 7px 10px;
 }
 
-/* Measure px in cm section */
+/* MEASURE PX IN CM SECTION */
 
 #measureButton{
   border-radius: 3px;
@@ -905,7 +937,7 @@ input::placeholder{
   position: relative;
   margin-bottom: 30px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .data-management .table-results {
@@ -961,24 +993,20 @@ input::placeholder{
 .data-management .select-options {
   position: relative;
   width: 50%;
-  text-align: center;
-  padding: 0px 10px 5px 10px;
+  text-align: left;
   font-size: 1em;
-  height: 460px;
+  border: 1px solid #000;
+  padding: 0 30px;
 }
 
-.select-options label {
-  width: 6em;
-}
+
 
 .select-options #footstepsBeginning,
 .select-options .remove-by-entries,
 .select-options .remove-by-measurement,
 .select-options .table-id {
-  border: 3px ridge #c1c1c1;
   margin-bottom: 10px;
   padding: 10px 0;
-  background-color: #fff;
 }
 
 .select-options #footstepsBeginning p,
@@ -1030,20 +1058,6 @@ input::placeholder{
 }
 
 
-.open-help-ae, .open-help-aea{
-  font-size: 0.7em;
-  padding: 5px 8px;
-  border-radius: 3px;
-  cursor: pointer;
-  border: 1px solid #c1c1c1;
-  margin-left: 2px;
-  transition: background 0.3s ease;
-}
-
-.open-help-ae:hover, .open-help-aea:hover{
-  background: #f1fc1c;
-}
-
 
 .btn-link{
   text-decoration: none !important;
@@ -1069,7 +1083,11 @@ input::placeholder{
 }
 
 
-@media screen and (max-width:1024px){
+
+
+
+
+@media screen and (max-width:1054px){
   #version, .modal-news, .container-full, header{
     display: none;
   }
