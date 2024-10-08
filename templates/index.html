@@ -34,13 +34,13 @@
       </div> 
     </section>
   </div>
-  <p id="version">v0.8.2</p>
+  <p id="version">v1.1.2</p>
     <header>
         <h1>MOUSE FRAME - <i>mus musculus</i> walking behaviour analysis tool</h1>
         <img src="{% static 'img/mouse.png' %}">
     </header>
     <section class="modal-news" id="modalNews">
-      <h2>Notices and updates - Version 0.8.2</h2>
+      <h2>Notices and updates - Version 1.1.2</h2>
       <ul>
         <li>Fixed visual bugs for most resolutions.</li>
         <li>Added compatibility for most resolutions but this app is not a mobile app. Don't expect it to function on mobile phones (may work on tablets with big resolutions).</li>
@@ -95,11 +95,14 @@
           <!-- <i class="fa-solid fa-caret-down"></i> --><i class="fa-solid fa-circle-question"></i>
         </button>:</h3>
         <div class="collapse" id="collapseContent">
-        <p style="font-size: 1.2rem; text-align: left;">(*)Be sure to resize to your ideal size before working on any measurements.
-          <br>(*)By resizing you delete any progress done on the current image size.
-          <br>(*)When changing image original size make sure that image has a 1 cm scale to be converted to pixels. 
-          <br>(*)Do not work with different image sizes if you can't get a 1 cm value in pixels for all sizes. And do not use saved values acquired from images with sizes different from the one you are working on. 
-          <br><span style="color:red;"><b>&#9888;</b></span> <b><u>Caution:</u></b>&nbspAny data in the table below will be removed along with the dots marked in the image when resizing!</p>
+          <ul>
+            <li style="font-size: 1.2rem; text-align: left;">Be sure to resize to your ideal size before working on any measurements.</li>
+            <li style="font-size: 1.2rem; text-align: left;">By resizing you delete any progress done on the current image size.</li>
+            <li style="font-size: 1.2rem; text-align: left;">If the image has a 1 cm scale to be converted to pixels it can be safely resized since you can measure the resized 1cm line and use it.</li>
+            <li style="font-size: 1.2rem; text-align: left;">If the image does not have a 1cm line and you do not have a saved value for the new resized image resolution, it is recommended not to resize as you will not be able to get a cm to px correct conversion value.</li>
+            <li style="font-size: 1.2rem; text-align: left;">You can use the resize function by dragging the scroll or by clicking a scrollbar position or even use your arrow keys after clicking the scrollbar pointer.</li>
+          </ul>
+          <span style="color:red;"><b>&#9888;</b></span> <b><u>Caution:</u></b>&nbspAny data in the table below will be removed along with the dots marked in the image when resizing!</p>
         </div>
         <div class="slider-container">
         <input type="range" min="1" max="20" value="20" id="mySlider" class="slider" style="padding:0;">
@@ -130,7 +133,7 @@
          <!-- <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
          <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br> -->
          <!-- <button class="button" type="button" id="resetCanvasNotIdx" onclick="clearCanvas()">Clear Canvas</button> -->
-         <div class="btn-toggle">Pause all:&nbsp<button class="btn-tg" type="button" id="toggleInactive"><i class="fa-solid fa-circle-stop"></i></button></div>
+         <div class="btn-toggle">Pause all:&nbsp<button class="btn-tg" type="button" id="toggleInactive" onclick="toggleInactive();"><i class="fa-solid fa-circle-stop"></i></button></div>
          <div class="btn-reset">Reset all:&nbsp<button class="btn-rs" type="button" id="resetCanvas" onclick="resetCanvas();"><i class="fa-solid fa-eraser"></i></button></div>
          <div class="hotkeys-legend">
           <div style="margin-bottom:5px; font-weight: bold;"><i class="fa-solid fa-keyboard"></i>&nbspshortcuts:</div>
@@ -149,7 +152,7 @@
             <li style="margin-top: 10px;">The "Reset all" button/function will clear all your points in your selected image above, in simple terms it will reset all your work done above</li>
           </ul>
           <p style="font-size: 1em;">Mouse image adapted from:</p>
-          <a href="https://www.biorender.com/" target="_blank"><img src="{% static 'img/bio-render.png' %}" style="width:354px; height: 351px;"></a><br>
+          <a href="https://www.biorender.com/" target="_blank"><img src="{% static 'img/bio-render.png' %}" style="width:254px; height: 251px;"></a><br>
           
           </div>
          </div>
@@ -223,11 +226,15 @@
             <div class="card-body">
               <div class="saved-distances" id="savedDistance">
                 <h4>Define how many pixels are in a centimeter:</h3>
-                <p>If there is a drawn line with the length of 1cm, measure it in pixels here:</p>
-                <p id="scaleDistance"></p>
-                <button id="measureButton" class="measure" onclick="drawMeasureCircle();">Add measuring points</button>
-                <button id="resetMeasure" onclick="removeAllMeasurePoints();">&#x21ba;</button>
-                <button onclick = "distanceMeasurePoint()" id="measureDistance">Measure</button>
+                <h5 style="padding-top: 10px;">1. Measuring the 1cm (optional according to availability)</h5>
+                <p>If there is a drawn line with the length of 1cm, measure it in pixels here by clicking "+" below.</p>
+                <p>The "+" button activates the function to add two new points to the image above, delimiting the 1cm line in it.</p>
+                <p id="addMeasureInfo"></p>
+                <!-- <p id="scaleDistance"></p> -->
+                <button id="measureButton" class="measure" onclick="drawMeasureCircle();"><i class="fa-solid fa-plus"></i></button>
+                <button id="resetMeasure" onclick="removeAllMeasurePoints();"><i class="fa-solid fa-eraser"></i></button>
+                <button onclick = "distanceMeasurePoint()" id="measureDistance"><i class="fa-solid fa-ruler"></i></button>
+                <h5 style="padding-top: 10px;">2. Manually input a value or use previous saved values</h5>
                 <p>Manually input known value of pixels in 1 cm or use saved values (choose only one value before clicking use):</p>
                 <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" onKeyPress="if(this.value.length==8) return false;" placeholder="Px in cm...">&nbspOR&nbsp
                 <select id="savedChoices" form="savedDistancesForm" class="custom-select">
@@ -237,9 +244,10 @@
                   {% endfor %}
                 </select>
                 <button onclick="manualInputMeasure();" id="manualUse">Use</button>
-                <button onclick="resetInput();" id="resetManual">Reset</button>
+                <button onclick="resetInput();" id="resetManual"><i class="fa-solid fa-rotate-left"></i></button>
                 <!-- <button id="removeOption" type="submit">Delete</button> -->
-                <div class="measure-info"><div id="measureIntro">Measurement result:</div><div id="measureToCm"></div></div>
+                <h5 style="padding-top: 10px;">Measurement result</h5>
+                <div class="measure-info"><div id="measureIntro">Value:</div><div id="measureToCm"></div></div>
                 <h4 style="font-size: 1.5em;">Save section</h4>
                 <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from.</p>
                 <p style="font-size: 0.9em">(!) Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
@@ -432,19 +440,19 @@
 
   btnLinkOne.addEventListener('click', ()=>{
     if (collapseTwo.classList.contains('show')){
-      btnLinkOne.classList.toggle('active');
-      btnLinkTwo.classList.remove('active');
+      btnLinkOne.classList.toggle('active-new');
+      btnLinkTwo.classList.remove('active-new');
     }else{
-      btnLinkOne.classList.toggle('active');
+      btnLinkOne.classList.toggle('active-new');
     }
   })
 
   btnLinkTwo.addEventListener('click', ()=>{
     if (collapseOne.classList.contains('show')){
-      btnLinkTwo.classList.toggle('active');
-      btnLinkOne.classList.remove('active');
+      btnLinkTwo.classList.toggle('active-new');
+      btnLinkOne.classList.remove('active-new');
     }else{
-      btnLinkTwo.classList.toggle('active');
+      btnLinkTwo.classList.toggle('active-new');
     }
   })
 

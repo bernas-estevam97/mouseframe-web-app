@@ -672,7 +672,6 @@ header h1 {
 
 #resetMeasure{
   border-radius: 3px;
-  border: 2px solid #c1c1c1;
   cursor: pointer;
   transition: background 0.2s;
   background: rgba(230, 1, 1, 0.429);
@@ -682,7 +681,6 @@ header h1 {
   border: 2px solid #c1c1c1;
   cursor: pointer;
   transition: background 0.2s;
-  background: rgba(0, 197, 0, 0.554);
 }
 
 #manualUse,
@@ -704,7 +702,7 @@ header h1 {
 }
 
 #measureDistance:hover{
-  background: rgba(0, 197, 0, 0.796);
+  background: rgb(184, 184, 184);
 }
 
 .point-input {
@@ -1068,12 +1066,12 @@ input::placeholder{
   text-decoration-color: #000 !important;
 }
 
-#btnLinkOne.active, #btnLinkTwo.active{
+#btnLinkOne.active-new, #btnLinkTwo.active-new{
   text-decoration: underline !important;
   text-decoration-color: #000 !important;
 }
 
-#btnLinkOne.active .fa-solid, #btnLinkTwo.active .fa-solid{
+#btnLinkOne.active-new .fa-solid, #btnLinkTwo.active-new .fa-solid{
   transform: rotate(180deg);
   padding-left: 10px;
 }

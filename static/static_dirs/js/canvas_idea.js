@@ -543,6 +543,7 @@ function drawMeasureCircle() {
   canvas.removeEventListener("click", drawRedLeft);
   canvas.removeEventListener("click", drawRedRight);
   canvas.style.cursor = "pointer";
+  document.getElementById('addMeasureInfo').innerHTML = '<b><i class="fa-solid fa-play"></i>&nbspAdd measure points active</b><br>(*) You can stop this function by clicking the eraser button below or clicking the reset or pause buttons from the above section (shortcut keys work aswell).';
 }
 
 function removeAllMeasurePoints() {
@@ -566,6 +567,7 @@ function removeAllMeasurePoints() {
   canvas.style.cursor = "default";
   document.getElementById("measureToCm").innerHTML = "";
   dist = 0;
+  document.getElementById('addMeasureInfo').innerHTML = "";
 }
 
 ///////////////////////////////////////////////
@@ -591,6 +593,7 @@ function resetCanvas() {
   [].forEach.call(elems, function (el) {
     el.classList.remove("active");
   });
+  document.getElementById('addMeasureInfo').innerHTML = '';
   refreshRemoveList();
 }
 
@@ -645,6 +648,7 @@ function distanceMeasurePoint() {
     alert("Add 2 points and measure or manually input known values under.");
   }
   activeFunctionInfo.innerHTML = '';
+  document.getElementById('addMeasureInfo').innerHTML = "";
 }
 
 let inputPixelsManually = document.getElementById("pixelsInCmMan");
@@ -972,8 +976,7 @@ let loadFile = function (event) {
 
 // TOGGLE INACTIVE FUNCTION
 
-let toggleInactive = document.getElementById('toggleInactive');
-toggleInactive.onclick = function toggleInactive(){
+function toggleInactive(){
   canvas.removeEventListener("click", drawBlueLeft);
   canvas.removeEventListener("click", drawBlueRight);
   canvas.removeEventListener("click", drawRedLeft);
@@ -986,6 +989,7 @@ toggleInactive.onclick = function toggleInactive(){
   [].forEach.call(elems, function (el) {
     el.classList.remove("active");
   });
+  document.getElementById('addMeasureInfo').innerHTML = '';
 }
 
 
