@@ -215,6 +215,7 @@ header h1 {
 
 .logout-button:hover {
   background: rgb(168, 30, 30);
+  color: white !important;
 }
 
       /* -------------------------- */
@@ -361,7 +362,7 @@ header h1 {
   border: 3px solid #c1c1c1;
   background: #fff;
   padding: 32px 64px 64px 64px;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   text-align: center;
   width: 70vw;
   
@@ -376,21 +377,48 @@ header h1 {
   width: 100%;
 }
 
-.collapse-btn{
-  background: transparent;
-  border:none;
+/* BOOTSTRAP CLASS STYLES OVERWRITE */
+
+.btn-primary{
+  background-color: transparent !important;
+  border:none !important;
   padding: 0 !important;
   margin: 0;
+  border-color: none !important;
+  font-size: 1em !important;
 }
 
-.collapse-btn .fa-solid{
+.btn-primary:hover{
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.btn-primary:focus{
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.btn-primary .fa-solid{
   color:#000;
-  
 }
 
-.collapse-btn:hover > .fa-solid{
+.btn-primary:hover > .fa-solid{
   font-size: 1.1em;
 }
+
+.accordion-item{
+  border: 2px solid rgba(0,0,0,.125) !important; 
+}
+
+.accordion-header button{
+  font-size: 0.7em !important;
+}
+
+.accordion-button:focus{
+  border: none !important;
+  box-shadow: none !important;
+}
+/* ----------------------------------------------- */
 
 .slider{
   width: 50%;
@@ -401,7 +429,6 @@ header h1 {
   /* display: flex; */
   justify-content: space-between;
   background-color: #fff;
-  border: 3px double #c1c1c1;
   padding: 0 10px 10px 10px;
 }
 
@@ -581,26 +608,29 @@ header h1 {
 
 #resetCanvas, #toggleInactive {
   font-size: 0.7em;
-  position: absolute;
-  border-radius: 10px;
+  border-radius: 3px;
   border: 2px solid #c1c1c1;
   cursor: pointer;
   transition: all 0.2s;
   padding: 5px 10px;
-  margin-bottom: 3px;
+}
+
+.btn-tg .fa-solid, .btn-rs .fa-solid{
+  font-size: 1.3em;
+  margin-top: 3px;
 }
 
 #resetCanvas:hover, #toggleInactive:hover {
   background: rgb(195, 195, 195);
 }
 
-.btn-rs:hover > .fa-solid{
+/* .btn-rs:hover > .fa-solid{
   color: #fff;
 }
 
 .btn-tg:hover > .fa-solid{
   color: #fff;
-}
+} */
 
 /* #resetFile {
   position: relative;
@@ -664,6 +694,7 @@ header h1 {
   border: 1px solid #c1c1c1;
   cursor: pointer;
   transition: background 0.2s;
+  margin-right: 10px;
 }
 
 #measureButton.active {
@@ -675,12 +706,14 @@ header h1 {
   cursor: pointer;
   transition: background 0.2s;
   background: rgba(230, 1, 1, 0.429);
+  margin-right: 10px;
 }
 #measureDistance{
   border-radius: 3px;
   border: 2px solid #c1c1c1;
   cursor: pointer;
   transition: background 0.2s;
+  margin-right: 10px;
 }
 
 #manualUse,
@@ -738,11 +771,15 @@ header h1 {
 }
 
 .saved-distances button {
-  padding: 7px 10px;
+  padding: 10px 15px;
   margin-bottom: 10px;
   border-radius: 10px;
   border: 1px solid #c1c1c1;
   cursor: pointer;
+}
+
+.saved-distances .save-button .fa-solid{
+  font-size: 1.5em;
 }
 
 .save-button {
@@ -993,8 +1030,9 @@ input::placeholder{
   width: 50%;
   text-align: left;
   font-size: 1em;
-  border: 1px solid #000;
-  padding: 0 30px;
+  border: 5px double #c1c1c1;
+  padding: 5px 10px;
+  margin: 5px;
 }
 
 
@@ -1077,9 +1115,8 @@ input::placeholder{
 }
 
 .fa-solid{
-  transition: transform 0.5s ease-in, padding-left 0.5s ease-in;
+  transition: transform 0.2s ease-in-out, padding-left 0.2s ease-in-out;
 }
-
 
 
 

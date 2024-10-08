@@ -594,34 +594,31 @@ function resetCanvas() {
     el.classList.remove("active");
   });
   document.getElementById('addMeasureInfo').innerHTML = '';
+  document.activeElement.blur();
   refreshRemoveList();
 }
 
-//function clearCanvas(){
-//  canvas.removeEventListener('click', drawBlueLeft);
-//  canvas.removeEventListener('click', drawBlueRight);
-//  canvas.removeEventListener('click', drawRedLeft);
-//  canvas.removeEventListener('click', drawRedRight);
-//  canvas.removeEventListener("click", printMousePos);
-//  canvas.removeEventListener('click', drawMeasurePoint);
-//  ctx.clearRect(0, 0, canvas.width, canvas.height);
-//  alert("Clearing points from canvas but keeping indexes. If you want to start over entirely, remove the points from the image plus their indexes by clicking reset canvas instead.");
-//  canvas.style.cursor = "auto";
-//  pointSize = 4;  // when clicking reset canvas point size also goes to default --- can be changed
-//  showSize.innerHTML = "Current point size is: " + pointSize;
-//};
 
-// let distances = [];
-// let dist = Math.sqrt( Math.pow((x1-x2), 2) + Math.pow((y1-y2), 2) );
-// const distance = (x1, y1, x2, y2) => Math.hypot(x2 - x1, y2 - y1);
-// length[mm] = pixel * 25.4mm (1 in) / dpi
-// 1 pixel/inch  =  0.393701 pixel/centimeter
+// TOGGLE INACTIVE FUNCTION
 
-// function getDistance(point1, point2){
-//   if (point1 != undefined && point2 != undefined){
+function toggleInactive(){
+  canvas.removeEventListener("click", drawBlueLeft);
+  canvas.removeEventListener("click", drawBlueRight);
+  canvas.removeEventListener("click", drawRedLeft);
+  canvas.removeEventListener("click", drawRedRight);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.removeEventListener("click", drawMeasurePoint);
+  activeFunctionInfo.innerHTML = '';
+  canvas.style.cursor = "auto";
+  var elems = document.querySelectorAll(".active");
+  [].forEach.call(elems, function (el) {
+    el.classList.remove("active");
+  });
+  document.activeElement.blur();
+  document.getElementById('addMeasureInfo').innerHTML = '';
+}
 
-//   }
-// }
+
 
 function distanceMeasurePoint() {
   if (pointsMeasure.length != 0) {
@@ -714,8 +711,7 @@ document.addEventListener('keydown', function(event) {
       break;
     
     default:
-      console.log("Key not mapped to any button");
-
+      // console.log("Key not mapped to any button");
   }
 });
 
@@ -974,23 +970,6 @@ let loadFile = function (event) {
 //   }
 // } ---------------------------------------------------------------------------------------------------------------------------
 
-// TOGGLE INACTIVE FUNCTION
-
-function toggleInactive(){
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener("click", drawMeasurePoint);
-  activeFunctionInfo.innerHTML = '';
-  canvas.style.cursor = "auto";
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
-  });
-  document.getElementById('addMeasureInfo').innerHTML = '';
-}
 
 
 // Image resizing section

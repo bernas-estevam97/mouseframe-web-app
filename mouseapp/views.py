@@ -60,3 +60,6 @@ def error_403(request, exception):
 
 def error_404(request, exception):
      return render(request, 'authenticate/not-found.html')
+
+def error_500(request):
+     return render(request, '500.html', status=500)

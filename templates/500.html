@@ -9,7 +9,7 @@
     <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
-    <title>Mouse Frame - 404</title>
+    <title>Mouse Frame - 500</title>
 </head>
 <body>
     {% block content %}
@@ -24,14 +24,14 @@
                   <div class="mb-md-5 mt-md-4">
                    
 
-                    <h2 class="fw-bold mb-2 text-uppercase">404 Page not found</h2>
+                    <h2 class="fw-bold mb-2 text-uppercase">Mouseframe - 500</h2>
                     
-                    <p class="text-white-50 mb-5">This page does not exist</p>
+                    <p class="text-white-50 mb-5">Internal server error</p>
                     
                     <div class="form-outline form-white mb-4">
-                    <img src="{% static 'img/notfound.png' %}" style="height: 200px; width: 200px;">
+                    <img src="{% static 'img/server-down.png' %}" style="height: 200px; width: 200px;">
                     </div>
-                    <p class="text-white-50 mb-5">Follow this <a href="{% url 'home' %}">link</a> to go to the home page</p>
+                    <p class="text-white-50 mb-5">Contact the admin, with the previously provided details, for more information.</p>
                     <!-- {% if messages %}
                       {% for message in messages %}
                       <div class="alert alert-warning alert-dismissible fade show" role="alert">

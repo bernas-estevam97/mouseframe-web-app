@@ -26,7 +26,6 @@
                   <p>This resolution and lower ones are not supported by this application.</p>
                   <img src="{% static 'img/cartoon-mouse.png' %}"
                 </div>
-    
               </div>
             </div>
           </div>
@@ -40,13 +39,14 @@
         <img src="{% static 'img/mouse.png' %}">
     </header>
     <section class="modal-news" id="modalNews">
-      <h2>Notices and updates - Version 1.1.2</h2>
+      <h2>Latest news and updates - Version 1.1.2</h2>
       <ul>
-        <li>Fixed visual bugs for most resolutions.</li>
-        <li>Added compatibility for most resolutions but this app is not a mobile app. Don't expect it to function on mobile phones (may work on tablets with big resolutions).</li>
-        <li>Added function to save values and use them without app refresh, this way not restarting your progress.</li>
+        <li>Fixed visual bugs for PC resolutions.</li>
+        <li>This app is not a mobile app. If the resolution of your device is below a certain level, the app won't show its details</li>
+        <li>Added function to save values and use them without app refresh, in this way not restarting your image progress.</li>
         <li>The saved values require an image size of which the measurement was saved in order to keep track of right
           cm to pixel conversions and avoid measurement usage in wrong resolutions.</li>
+        <li>All saved measurements are filtered by user, so you won't see values saved from other users.</li>
       </ul>
       <button class="new-btn-close-modal" id="closeModal">Close</button>
     </section>
@@ -61,15 +61,14 @@
                 <li>Only image file formats are supported (.tiff formats are not yet supported).</li>
                 <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
-                <li>For more information on this application and to see how the calculations are made for each measurement, check this <a class="info-page" href="{% url 'info' %}">link</a>.</li>
-                <li>Check news for this version <i class="fa-solid fa-arrow-right"></i> <button class="show-updates" id="showNews">News and updates</button></li>
+                <li>For more information on this application and to see how the calculations are made for each measurement, check the<a class="info-page" href="{% url 'info' %}">info</a>page.</li>
+                <li>Check <button class="show-updates" id="showNews">News and updates</button> for this version.</li>
             </ul>
             <p id="userResolution"></p>
             <p id="loginName">Welcome, you are logged as <b><u>{{ user.get_username }}</u></b>.</p><a class="logout-button" href="{% url 'logout' %}">Logout</a><br>
         </div>
     <!-- </div> -->
     <!-- <div class="right-part"> -->
-      
       <div class="img-selection">
         <div class="img-upload">
             <label for="img" style="font-size: 1.1em;">Upload your image here:</label>
@@ -91,7 +90,7 @@
       <div id="canvasUpload" class="image-info"><b><i class='fa-regular fa-image'></i> name:&nbsp</b><span id="imageName"></span>&nbsp&nbsp&nbsp&nbsp&nbsp<b><i class='fa-solid fa-image'></i> default resolution:&nbsp</b> <span id="imageUploadedWidth"></span>x<span id="imageUploadedHeight"></span></div>
     <div class="bottom-functions">
       <div class="image-resize" id="imageEdit">
-        <h3 style="font-size: 2rem; margin:0 0 10px 0;"><i class="fa-solid fa-left-right"></i>&nbspImage resizing&nbsp<button id="collapseButton" class="collapse-btn" type="button" data-toggle="collapse" data-target="#collapseContent">
+        <h3 style="font-size: 2rem; margin:0 0 10px 0;"><i class="fa-solid fa-left-right"></i>&nbspImage resizing&nbsp<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContent">
           <!-- <i class="fa-solid fa-caret-down"></i> --><i class="fa-solid fa-circle-question"></i>
         </button>:</h3>
         <div class="collapse" id="collapseContent">
@@ -144,7 +143,7 @@
           <div><img src="{% static 'img/letter-o.png' %}">: Reset all</div>
           <div><img src="{% static 'img/letter-p.png' %}">: Pause all</div>
          </div>
-         <div class="under-image">Mouse scheme information <button class="collapse-btn" type="button" data-toggle="collapse" data-target="#otherInfo"><i class="fa-solid fa-circle-info"></i></button>: </div>
+         <div class="under-image">Mouse scheme information <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#otherInfo"><i class="fa-solid fa-circle-info"></i></button>: </div>
          <div class="collapse" style="width:366px;" id="otherInfo">
           <ul>
             <li style="margin-top: 10px;">You can activate button function by either clicking the respective button in each of the mouse's paws or by using a keyboard shortcut referenced above</li>
@@ -159,7 +158,7 @@
          <div class="right-side-options">
           <div class="info-active-function" id="activeFunction"></div>
          <div class="point-removal">
-         <h4>Remove a point of choice&nbsp<button class="collapse-btn" type="button" data-toggle="collapse" data-target="#collapseRemovePointHelp"><i class="fa-solid fa-circle-info"></i></button>:</h4>
+         <h4>Remove a point of choice&nbsp<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRemovePointHelp"><i class="fa-solid fa-circle-info"></i></button>:</h4>
         <div style="font-size: 0.9em;" class="collapse" id="collapseRemovePointHelp">
         <p>Instructions for manual removal:</p>
          <ul>
@@ -176,7 +175,7 @@
          <button id="replacePoint" onclick="replaceChosenPoint();">Replace</button>
         </div>
         <div class="group-removal">
-        <h4 style="border-top-style: double; padding-top: 10px;">Remove a group of points:&nbsp<button class="collapse-btn" type="button" data-toggle="collapse" data-target="#collapseRemoveGroupHelp"><i class="fa-solid fa-circle-info"></i></button>:</h4>
+        <h4 style="border-top-style: double; padding-top: 10px;">Remove a group of points:&nbsp<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRemoveGroupHelp"><i class="fa-solid fa-circle-info"></i></button>:</h4>
         <div style="font-size: 0.9em;" class="collapse" id="collapseRemoveGroupHelp">
           <p>Information for group removal:</p>
            <ul>
@@ -213,22 +212,27 @@
        </div>
        <!--- BREAK-->
        <div id="accordion" style="width: 70vw;">
-        <div class="card">
-          <div class="card-header" id="headingOne">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
             <!-- <h5 class="mb-0"> -->
-              <button id="btnLinkOne" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                <h5 style="font-size: 1.2em; color: #000;"><i class="fa-solid fa-angles-down" style="padding-right: 10px;"></i>Pixels in a centimeter</h5>
+              <button id="btnLinkOne" class="accordion-button collapsed" type=button data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                Pixels in a centimeter
               </button>
             <!-- </h5> -->
-          </div>
+            </h2>
+          
       
-          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-            <div class="card-body">
+          <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordion">
+            <div class="accordion-body">
               <div class="saved-distances" id="savedDistance">
                 <h4>Define how many pixels are in a centimeter:</h3>
                 <h5 style="padding-top: 10px;">1. Measuring the 1cm (optional according to availability)</h5>
-                <p>If there is a drawn line with the length of 1cm, measure it in pixels here by clicking "+" below.</p>
-                <p>The "+" button activates the function to add two new points to the image above, delimiting the 1cm line in it.</p>
+                <ul>
+                <li>If there is a drawn line with the length of 1cm, measure it in pixels here by clicking "+" below.</li>
+                <li>The "+" button activates the function to add two new points to the image above, delimiting the 1cm line in it.</li>
+                <li>After adding to points delimiting the 1cm line, click the ruler icon to measure that distance in pixels.</li>
+                <li style="margin-bottom: 10px;">The result will appear below.</li>
+                </ul>
                 <p id="addMeasureInfo"></p>
                 <!-- <p id="scaleDistance"></p> -->
                 <button id="measureButton" class="measure" onclick="drawMeasureCircle();"><i class="fa-solid fa-plus"></i></button>
@@ -249,29 +253,29 @@
                 <h5 style="padding-top: 10px;">Measurement result</h5>
                 <div class="measure-info"><div id="measureIntro">Value:</div><div id="measureToCm"></div></div>
                 <h4 style="font-size: 1.5em;">Save section</h4>
-                <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from.</p>
-                <p style="font-size: 0.9em">(!) Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
+                <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from (both fields are required to save).</p>
+                <p style="font-size: 1em"><b><i class="fa-solid fa-triangle-exclamation"></i>&nbspImportant:</b> Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
                 <form action="saved" method="POST" id="savedDistancesForm">{% csrf_token %}
-                  Value(px):
-                  <input type="text" name="saved_distance_value" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="8" placeholder="Save value..." required>
-                  <br><br>&nbspImage Size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required>
-                  <br><br><button class="save-button" id="saveDistanceButton" type="submit"><i class="fa-solid fa-floppy-disk"></i></button> 
+                  <ol>
+                    <li>Value(px):
+                      <input type="text" name="saved_distance_value" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="8" placeholder="Save value..." required></li>
+                    <li>Image Size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required></li>
+                  </ol>
+                  <button class="save-button" id="saveDistanceButton" type="submit"><i class="fa-solid fa-floppy-disk"></i></button> 
                 </form>
                 <div id="messageSave"></div>
                </div>
             </div>
           </div>
         </div>
-        <div class="card">
-          <div class="card-header" id="headingTwo">
-            <!-- <h5 class="mb-0"> -->
-              <button id="btnLinkTwo" class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                <h5 style="font-size: 1.2em; color: #000;"><i class="fa-solid fa-angles-down" style="padding-right: 10px;"></i>Data management</h5>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type=button data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Data management
               </button>
-            <!-- </h5> -->
-          </div>
-          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-            <div class="card-body">
+            </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordion">
+            <div class="accordion-body">
               <div class="data-management" id="showData">
                 <div class="table-results">
                 <h3 style="text-decoration: underline;">Data results Table</h3>
@@ -297,10 +301,10 @@
               <div class="select-options">
                   <h4 style="text-align: center;">Table management options</h4>
                   <div class="table-id">
-                    <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()"><i class="fa-solid fa-check"></i></button>&nbsp<button onclick="removeTableID();"><i class="fa-solid fa-xmark"></i></button>
+                    <p>1. Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()"><i class="fa-solid fa-check"></i></button>&nbsp<button onclick="removeTableID();"><i class="fa-solid fa-rotate-left"></i></button>
                   </div>
                   <div id="footstepsBeginning">
-                  <label for="beginning">First set of footsteps:</label>
+                  <label for="beginning">2. First set of footsteps:</label>
                   <select name="beginning" id="footstepStart" class="custom-select">
                     <option value="None" selected>Select one</option>
                     <option value="Left">Left</option>
@@ -334,10 +338,11 @@
                   <!-- <button id="refreshList" onclick="refreshList();">Refresh</button>
                   <button id="empty" onclick="emptyList();">Empty</button> -->
                   <div class="remove-by-entries" id="removeByEntries">
+                  <h5>Removal section:</h5>
                   <p>Remove by entry number or remove all &#8628;</p>
                   <input id="entryNumber" placeholder="Entry nº" size="3" maxlength="3">
-                  <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
-                  <button id="removeAllEntries" onclick="removeAllEntries();">Remove All Entries</button>
+                  <button id="removeEntry" onclick="removeEntry();"><i class="fa-solid fa-xmark"></i></button>
+                  <button id="removeAllEntries" onclick="removeAllEntries();">Delete all &nbsp<i class="fa-solid fa-trash"></i></button>
                   </div>
                   <div class="remove-by-measurement" id="removeByMeasurement">
                   <p>Remove by measurement type &#8628;</p>
@@ -354,12 +359,11 @@
                   <button onclick="removeByMeasurement();">Remove</button>
                   </div>
               </div>
-           
-           
           </div>
             </div>
           </div>
         </div>
+      </div>
       </div>
        <!--- BREAK-->
        
@@ -406,17 +410,14 @@
   </div>
 </div>
    <!-- </div> -->
-<script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/canvas_idea.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/xlsx-full.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/effects.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/notices_updates_modal.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/js-cookie.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-
-<!-- <script type="text/javascript" src="{% static 'js/canvasjs.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery.canvasjs.min.js' %}"></script> -->
+<script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script>
   let fileName = document.getElementById("entryTableID");
 
@@ -432,29 +433,29 @@
 <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
 <script>
 
-  let btnLinkOne = document.getElementById('btnLinkOne');
-  let btnLinkTwo = document.getElementById('btnLinkTwo');
-  let collapseOne = document.getElementById('collapseOne');
-  let collapseTwo = document.getElementById('collapseTwo');
+  // let btnLinkOne = document.getElementById('btnLinkOne');
+  // let btnLinkTwo = document.getElementById('btnLinkTwo');
+  // let collapseOne = document.getElementById('collapseOne');
+  // let collapseTwo = document.getElementById('collapseTwo');
 
 
-  btnLinkOne.addEventListener('click', ()=>{
-    if (collapseTwo.classList.contains('show')){
-      btnLinkOne.classList.toggle('active-new');
-      btnLinkTwo.classList.remove('active-new');
-    }else{
-      btnLinkOne.classList.toggle('active-new');
-    }
-  })
+  // btnLinkOne.addEventListener('click', ()=>{
+  //   if (collapseTwo.classList.contains('show')){
+  //     btnLinkOne.classList.toggle('active-new');
+  //     btnLinkTwo.classList.remove('active-new');
+  //   }else{
+  //     btnLinkOne.classList.toggle('active-new');
+  //   }
+  // })
 
-  btnLinkTwo.addEventListener('click', ()=>{
-    if (collapseOne.classList.contains('show')){
-      btnLinkTwo.classList.toggle('active-new');
-      btnLinkOne.classList.remove('active-new');
-    }else{
-      btnLinkTwo.classList.toggle('active-new');
-    }
-  })
+  // btnLinkTwo.addEventListener('click', ()=>{
+  //   if (collapseOne.classList.contains('show')){
+  //     btnLinkTwo.classList.toggle('active-new');
+  //     btnLinkOne.classList.remove('active-new');
+  //   }else{
+  //     btnLinkTwo.classList.toggle('active-new');
+  //   }
+  // })
 
 </script>
 </body>
