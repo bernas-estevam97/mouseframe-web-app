@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <title>Mouse Frame - Analysis</title>
+    <title>MOUSEFRAME - Analysis</title>
 </head>
 <body>
   <div class="resolution-unsupported">
@@ -35,8 +35,11 @@
   </div>
   <p id="version">v1.1.2</p>
     <header>
-        <h1>MOUSE FRAME - <i>mus musculus</i> walking behaviour analysis tool</h1>
-        <img src="{% static 'img/mouse.png' %}">
+        <h1><u>MOUSEFRAME</u> - <i>mus musculus</i> walking behaviour analysis tool</h1>
+        <div class="header-images"> 
+        <img class="image-one" src="{% static 'img/mouse.png' %}">
+        <img class="image-two" src="{% static 'img/mouse-paws.png' %}"  
+      </div>
     </header>
     <section class="modal-news" id="modalNews">
       <h2>Latest news and updates - Version 1.1.2</h2>
@@ -59,13 +62,13 @@
             <h3>Brief information and requirements</h3>
             <ul>
                 <li>Only image file formats are supported (.tiff formats are not yet supported).</li>
-                <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw, in this case only dots of different sizes and colors can be added.</li>
+                <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw. In this case, only dots of different sizes and colors can be added.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
                 <li>For more information on this application and to see how the calculations are made for each measurement, check the<a class="info-page" href="{% url 'info' %}">info</a>page.</li>
                 <li>Check <button class="show-updates" id="showNews">News and updates</button> for this version.</li>
             </ul>
-            <p id="userResolution"></p>
-            <p id="loginName">Welcome, you are logged as <b><u>{{ user.get_username }}</u></b>.</p><a class="logout-button" href="{% url 'logout' %}">Logout</a><br>
+            <p id="loginName">Welcome! You are logged in as <b><u>{{ user.get_username }}</u></b></p>
+            <p id="userResolution"></p><a class="logout-button" href="{% url 'logout' %}">Logout</a><br>
         </div>
     <!-- </div> -->
     <!-- <div class="right-part"> -->
@@ -216,7 +219,7 @@
           <h2 class="accordion-header" id="headingOne">
             <!-- <h5 class="mb-0"> -->
               <button id="btnLinkOne" class="accordion-button collapsed" type=button data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                Pixels in a centimeter
+                Measure how many pixels in a centimeter
               </button>
             <!-- </h5> -->
             </h2>
@@ -239,7 +242,7 @@
                 <button id="resetMeasure" onclick="removeAllMeasurePoints();"><i class="fa-solid fa-eraser"></i></button>
                 <button onclick = "distanceMeasurePoint()" id="measureDistance"><i class="fa-solid fa-ruler"></i></button>
                 <h5 style="padding-top: 10px;">2. Manually input a value or use previous saved values</h5>
-                <p>Manually input known value of pixels in 1 cm or use saved values (choose only one value before clicking use):</p>
+                <p>Manually input known value of pixels in 1 cm or use saved values (choose only one of the options and click use):</p>
                 <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" onKeyPress="if(this.value.length==8) return false;" placeholder="Px in cm...">&nbspOR&nbsp
                 <select id="savedChoices" form="savedDistancesForm" class="custom-select">
                     <option value="None" disabled selected>Select a value</option>
@@ -252,7 +255,7 @@
                 <!-- <button id="removeOption" type="submit">Delete</button> -->
                 <h5 style="padding-top: 10px;">Measurement result</h5>
                 <div class="measure-info"><div id="measureIntro">Value:</div><div id="measureToCm"></div></div>
-                <h4 style="font-size: 1.5em;">Save section</h4>
+                <h4 style="font-size: 1.5em; border-top: 2px solid rgba(0,0,0,.125) !important; padding-top: 20px;">Save section</h4>
                 <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from (both fields are required to save).</p>
                 <p style="font-size: 1em"><b><i class="fa-solid fa-triangle-exclamation"></i>&nbspImportant:</b> Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
                 <form action="saved" method="POST" id="savedDistancesForm">{% csrf_token %}

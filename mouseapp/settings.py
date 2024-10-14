@@ -29,7 +29,7 @@ SECRET_KEY = key
 #key = os.environ.get('S_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '94.46.171.187', 'mouseframe.pt']
