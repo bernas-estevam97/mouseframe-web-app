@@ -321,16 +321,12 @@ header h1 {
 }
 
 .buttons-plus-options{
-  padding: 10px;
+  position: relative;
+  display: flex !important;
   /* text-align: center; */
-  background: #fff;
-  border: 3px solid #c1c1c1;
-  width: 70vw;
 }
 
 .buttons-plus-options .mouse-scheme{
-  position:relative;
-  float:left;
 }
 
 .buttons-plus-options .mouse-scheme .mouse-image{
@@ -356,10 +352,9 @@ header h1 {
 }
 
 .right-side-options{
-  position:relative;
   display: flex;
   flex-direction: column;
-  padding: 0 32px;
+  padding-left: 32px;
 }
 
 .right-side-options .point-removal, .right-side-options .group-removal {
@@ -398,6 +393,24 @@ header h1 {
 
 .image-resize .slider-container{
   width: 100%;
+}
+
+
+
+input[type='range']{
+  accent-color: #628d95;
+}
+
+/* input[type="range"]::-webkit-slider-runnable-track{
+  background: #e6e5e5;
+} */
+
+input[type='range']::-webkit-slider-thumb:hover{
+  cursor: ew-resize !important;
+}
+
+.slider-container .slider:hover{
+  cursor: pointer;
 }
 
 /* BOOTSTRAP CLASS STYLES OVERWRITE */

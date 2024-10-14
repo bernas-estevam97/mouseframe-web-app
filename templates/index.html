@@ -119,113 +119,126 @@
         <input type="range" min="1" max="20" value="1" class="slider" id="Slider">
         <p><output id="value"></output></p> -->
        </div>  
-      <div class="buttons-plus-options">
-        <div class="mouse-scheme">
-         <div><img class="mouse-image" src="{% static 'img/mouse-scheme-new.png' %}" title="Mouse (dorsal, anatomical position) from biorender.com"></div>
-         <button class="marker" type="button" id="redCircleLeft" onclick="drawRedCircleLeft();"></button>
-         <!-- <button class="button" type="button" id="deleteCircleRedLeft" onclick="removeRedCircleLeft();">Delete last added left red dot</button>
-         <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete all left red dots</button><br> -->
-         <button class="marker" type="button" id="redCircleRight" onclick="drawRedCircleRight();"></button>
-         <!-- <button class="button" type="button" id="deleteCircleRedRight" onclick="removeRedCircleRight();">Delete last added right red dot</button>
-         <button class="button" type="button" id="deleteAllCircleRedRight" onclick="removeAllRedCircleRight();">Delete all right red dots</button><br> -->
-         <button class="marker" type="button" id="blueCircleLeft" onclick="drawBlueCircleLeft();"></button>
-         <!-- <button class="button" type="button" id="deleteCircleBlueLeft" onclick="removeBlueCircleLeft();">Delete last added left blue dot</button>
-         <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllBlueCircleLeft();">Delete all left blue dots</button><br> -->
-         <button class="marker" type="button" id="blueCircleRight" onclick="drawBlueCircleRight();"></button>
-         <!-- <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
-         <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br> -->
-         <!-- <button class="button" type="button" id="resetCanvasNotIdx" onclick="clearCanvas()">Clear Canvas</button> -->
-         <div class="btn-toggle">Pause all:&nbsp<button class="btn-tg" type="button" id="toggleInactive" onclick="toggleInactive();"><i class="fa-solid fa-circle-stop"></i></button></div>
-         <div class="btn-reset">Reset all:&nbsp<button class="btn-rs" type="button" id="resetCanvas" onclick="resetCanvas();"><i class="fa-solid fa-eraser"></i></button></div>
-         <div class="hotkeys-legend">
-          <div style="margin-bottom:5px; font-weight: bold;"><i class="fa-solid fa-keyboard"></i>&nbspshortcuts:</div>
-          <div><img src="{% static 'img/letter-q.png' %}">: Red L</div>
-          <div><img src="{% static 'img/letter-w.png' %}">: Red R</div>
-          <div><img src="{% static 'img/letter-e.png' %}">: Blue L</div>
-          <div><img src="{% static 'img/letter-r.png' %}">: Blue R</div>
-          <div><img src="{% static 'img/letter-o.png' %}">: Reset all</div>
-          <div><img src="{% static 'img/letter-p.png' %}">: Pause all</div>
-         </div>
-         <div class="under-image">Mouse scheme information <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#otherInfo"><i class="fa-solid fa-circle-info"></i></button>: </div>
-         <div class="collapse" style="width:366px;" id="otherInfo">
-          <ul>
-            <li style="margin-top: 10px;">You can activate button function by either clicking the respective button in each of the mouse's paws or by using a keyboard shortcut referenced above</li>
-            <li style="margin-top: 10px;">The "Pause all" button/function will stop any ongoing function to add points</li>
-            <li style="margin-top: 10px;">The "Reset all" button/function will clear all your points in your selected image above, in simple terms it will reset all your work done above</li>
-          </ul>
-          <p style="font-size: 1em;">Mouse image adapted from:</p>
-          <a href="https://www.biorender.com/" target="_blank"><img src="{% static 'img/bio-render.png' %}" style="width:254px; height: 251px;"></a><br>
-          
-          </div>
-         </div>
-         <div class="right-side-options">
-          <div class="info-active-function" id="activeFunction"></div>
-         <div class="point-removal">
-         <h4>Remove a point of choice&nbsp<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRemovePointHelp"><i class="fa-solid fa-circle-info"></i></button>:</h4>
-        <div style="font-size: 0.9em;" class="collapse" id="collapseRemovePointHelp">
-        <p>Instructions for manual removal:</p>
-         <ul>
-          <li>Your points appear below as you add them.</li>
-          <li>Select your desired point and two options for removal will appear:<ul><li><u>Remove:</u> Delete the point and update the count without the removed point.</li>
-          <li><u>Replace:</u> Remove the point, but it requires a single new point input by the user to use as replacement (many buttons will be disabled when the replacing function is active). </li></ul></li>
-         </ul>
-        </div>
-         <!-- <button id="refreshButton" onclick="refreshRemoveList();"><i class="fa-solid fa-arrows-rotate"></i></button>
-         <button id="emptyListRemoval" onclick="emptyRemoveList();"><i class="fa-solid fa-trash"></i></button> -->
-         <label for="selectPoint">Add points, see them here <i class="fa-solid fa-right-long"></i>&nbsp</label><select id="selectPoint" class="custom-select">
-         </select>
-         &nbsp<button id="removePoint" onclick="removeChosenPoint();">Remove</button>
-         <button id="replacePoint" onclick="replaceChosenPoint();">Replace</button>
-        </div>
-        <div class="group-removal">
-        <h4 style="border-top-style: double; padding-top: 10px;">Remove a group of points:&nbsp<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRemoveGroupHelp"><i class="fa-solid fa-circle-info"></i></button>:</h4>
-        <div style="font-size: 0.9em;" class="collapse" id="collapseRemoveGroupHelp">
-          <p>Information for group removal:</p>
-           <ul>
-            <li>As an alternative to removing or replacing a point you can also remove an entire group of points. They are divided in 4 groups:<ul>
-              <li>Red left</li>
-              <li>Red right</li>
-              <li>Blue left</li>
-              <li>Blue right</li></ul>
-            </li>
-            <li>The points will be removed from the image by simply clicking one of the four buttons below.</li>
-           </ul>
-          </div>
-          <div class="remove-groups">
-          <div class="red-remove-points">
-          <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete Red L group</button>
-          <button class="button" type="button" id="deleteAllCircleRedRight" onclick="removeAllRedCircleRight();">Delete Red R group</button>
-          </div>
-          <div class="blue-remove-points">
-          <button class="button" type="button" id="deleteAllCircleBlueLeft" onclick="removeAllBlueCircleLeft();">Delete Blue L group</button>
-          <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete Blue R group</button>
-          </div>
-          </div>
-          </div>
-          <div class="point-size">
-          <h2 style="font-size: 1.5rem;">Change dimensions of your marking points:</h2>
-          <input id="sizeInput" type="number" placeholder="Point size in px..." style="width:100px;">
-          <button id="changeS" onclick="changeSize();">Change</button>
-          <button id="resetS" onclick="resetSize();"><i class="fa-solid fa-rotate-left"></i></button>
-          <p> Default point radius size is set to 4px</p>
-          <p id="dynamicSize"></p>
-          <p><strong>Note:</strong>&nbspWhen deleting buttons make sure you don't change radius size. Only delete points when working with a fixed size</p>
-          </div>
-        </div>
-       </div>
+      
        <!--- BREAK-->
        <div id="accordion" style="width: 70vw;">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
             <!-- <h5 class="mb-0"> -->
               <button id="btnLinkOne" class="accordion-button collapsed" type=button data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                Measure how many pixels in a centimeter
+                Mark/Draw and delete points
               </button>
             <!-- </h5> -->
             </h2>
-          
-      
-          <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordion">
+
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordion">
+              <div class="accordion-body">
+                <div class="buttons-plus-options">
+                  <div class="mouse-scheme">
+                   <img class="mouse-image" src="{% static 'img/mouse-scheme-new.png' %}" title="Mouse (dorsal, anatomical position) from biorender.com">
+                   <button class="marker" type="button" id="redCircleLeft" onclick="drawRedCircleLeft();">L</button>
+                   <!-- <button class="button" type="button" id="deleteCircleRedLeft" onclick="removeRedCircleLeft();">Delete last added left red dot</button>
+                   <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete all left red dots</button><br> -->
+                   <button class="marker" type="button" id="redCircleRight" onclick="drawRedCircleRight();">R</button>
+                   <!-- <button class="button" type="button" id="deleteCircleRedRight" onclick="removeRedCircleRight();">Delete last added right red dot</button>
+                   <button class="button" type="button" id="deleteAllCircleRedRight" onclick="removeAllRedCircleRight();">Delete all right red dots</button><br> -->
+                   <button class="marker" type="button" id="blueCircleLeft" onclick="drawBlueCircleLeft();">L</button>
+                   <!-- <button class="button" type="button" id="deleteCircleBlueLeft" onclick="removeBlueCircleLeft();">Delete last added left blue dot</button>
+                   <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllBlueCircleLeft();">Delete all left blue dots</button><br> -->
+                   <button class="marker" type="button" id="blueCircleRight" onclick="drawBlueCircleRight();">R</button>
+                   <!-- <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
+                   <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br> -->
+                   <!-- <button class="button" type="button" id="resetCanvasNotIdx" onclick="clearCanvas()">Clear Canvas</button> -->
+                   <div class="btn-toggle">Pause all:&nbsp<button class="btn-tg" type="button" id="toggleInactive" onclick="toggleInactive();"><i class="fa-solid fa-circle-stop"></i></button></div>
+                   <div class="btn-reset">Reset all:&nbsp<button class="btn-rs" type="button" id="resetCanvas" onclick="resetCanvas();"><i class="fa-solid fa-eraser"></i></button></div>
+                   <div class="hotkeys-legend">
+                    <div style="margin-bottom:5px; font-weight: bold;"><i class="fa-solid fa-keyboard"></i>&nbspshortcuts:</div>
+                    <div><img src="{% static 'img/letter-q.png' %}">: Red L</div>
+                    <div><img src="{% static 'img/letter-w.png' %}">: Red R</div>
+                    <div><img src="{% static 'img/letter-e.png' %}">: Blue L</div>
+                    <div><img src="{% static 'img/letter-r.png' %}">: Blue R</div>
+                    <div><img src="{% static 'img/letter-o.png' %}">: Reset all</div>
+                    <div><img src="{% static 'img/letter-p.png' %}">: Pause all</div>
+                   </div>
+                   <div class="under-image">Mouse scheme information <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#otherInfo"><i class="fa-solid fa-circle-info"></i></button>: </div>
+                   <div class="collapse" style="width:366px;" id="otherInfo">
+                    <ul>
+                      <li style="margin-top: 10px;">You can activate button function by either clicking the respective button in each of the mouse's paws or by using a keyboard shortcut referenced above</li>
+                      <li style="margin-top: 10px;">The "Pause all" button/function will stop any ongoing function to add points</li>
+                      <li style="margin-top: 10px;">The "Reset all" button/function will clear all your points in your selected image above, in simple terms it will reset all your work done above</li>
+                    </ul>
+                    <p style="font-size: 1em;">Mouse image adapted from:</p>
+                    <a href="https://www.biorender.com/" target="_blank"><img src="{% static 'img/bio-render.png' %}" style="width:254px; height: 251px;"></a><br>
+                    
+                    </div>
+                   </div>
+                   <div class="right-side-options">
+                    <div class="info-active-function" id="activeFunction"></div>
+                   <div class="point-removal">
+                   <h4>Remove a point of choice&nbsp<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRemovePointHelp"><i class="fa-solid fa-circle-info"></i></button>:</h4>
+                  <div style="font-size: 0.9em;" class="collapse" id="collapseRemovePointHelp">
+                  <p>Instructions for manual removal:</p>
+                   <ul>
+                    <li>Your points appear below as you add them.</li>
+                    <li>Select your desired point and two options for removal will appear:<ul><li><u>Remove:</u> Delete the point and update the count without the removed point.</li>
+                    <li><u>Replace:</u> Remove the point, but it requires a single new point input by the user to use as replacement (many buttons will be disabled when the replacing function is active). </li></ul></li>
+                   </ul>
+                  </div>
+                   <!-- <button id="refreshButton" onclick="refreshRemoveList();"><i class="fa-solid fa-arrows-rotate"></i></button>
+                   <button id="emptyListRemoval" onclick="emptyRemoveList();"><i class="fa-solid fa-trash"></i></button> -->
+                   <label for="selectPoint">Add points, see them here <i class="fa-solid fa-right-long"></i>&nbsp</label><select id="selectPoint" class="custom-select">
+                   </select>
+                   &nbsp<button id="removePoint" onclick="removeChosenPoint();">Remove</button>
+                   <button id="replacePoint" onclick="replaceChosenPoint();">Replace</button>
+                  </div>
+                  <div class="group-removal">
+                  <h4 style="border-top-style: double; padding-top: 10px;">Remove a group of points:&nbsp<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRemoveGroupHelp"><i class="fa-solid fa-circle-info"></i></button>:</h4>
+                  <div style="font-size: 0.9em;" class="collapse" id="collapseRemoveGroupHelp">
+                    <p>Information for group removal:</p>
+                     <ul>
+                      <li>As an alternative to removing or replacing a point you can also remove an entire group of points. They are divided in 4 groups:<ul>
+                        <li>Red left</li>
+                        <li>Red right</li>
+                        <li>Blue left</li>
+                        <li>Blue right</li></ul>
+                      </li>
+                      <li>The points will be removed from the image by simply clicking one of the four buttons below.</li>
+                     </ul>
+                    </div>
+                    <div class="remove-groups">
+                    <div class="red-remove-points">
+                    <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete Red L group</button>
+                    <button class="button" type="button" id="deleteAllCircleRedRight" onclick="removeAllRedCircleRight();">Delete Red R group</button>
+                    </div>
+                    <div class="blue-remove-points">
+                    <button class="button" type="button" id="deleteAllCircleBlueLeft" onclick="removeAllBlueCircleLeft();">Delete Blue L group</button>
+                    <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete Blue R group</button>
+                    </div>
+                    </div>
+                    </div>
+                    <div class="point-size">
+                    <h2 style="font-size: 1.5rem;">Change dimensions of your marking points:</h2>
+                    <input id="sizeInput" type="number" placeholder="Point size in px..." style="width:100px;">
+                    <button id="changeS" onclick="changeSize();">Change</button>
+                    <button id="resetS" onclick="resetSize();"><i class="fa-solid fa-rotate-left"></i></button>
+                    <p> Default point radius size is set to 4px</p>
+                    <p id="dynamicSize"></p>
+                    <p><strong>Note:</strong>&nbspWhen deleting buttons make sure you don't change radius size. Only delete points when working with a fixed size</p>
+                    </div>
+                  </div>
+                 </div>
+              </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <!-- <h5 class="mb-0"> -->
+              <button id="btnLinkTwo" class="accordion-button collapsed" type=button data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Measure how many pixels in a centimeter
+              </button>
+            <!-- </h5> -->
+            </h2>   
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion">
             <div class="accordion-body">
               <div class="saved-distances" id="savedDistance">
                 <h4>Define how many pixels are in a centimeter:</h3>
@@ -272,12 +285,12 @@
           </div>
         </div>
         <div class="accordion-item">
-            <h2 class="accordion-header" id="headingTwo">
-              <button class="accordion-button collapsed" type=button data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type=button data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                 Data management
               </button>
             </h2>
-          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordion">
+          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordion">
             <div class="accordion-body">
               <div class="data-management" id="showData">
                 <div class="table-results">
