@@ -1,39 +1,69 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 
+:root{
+    --new-body-color: #f7f7f7;
+    /* --new-color-bg: rgba(168, 213, 255, 0.42); */
+    --new-color-bg: #7da2a9b2;
+    /* --new-color-border: rgba(74, 166, 252, 1); */
+    --new-color-border: #7da2a9;
+  }
+
+
 html{
     scroll-behavior: smooth;
+    margin: 0;
 }
 
 body{
     position: relative;
-    background-color: #f3f3f3;
+    background-color: var(--new-body-color) !important;
     font-family: "Roboto Condensed", sans-serif !important;
+    margin: 0;
 }
 
-#version{
+#version {
     position: absolute;
-    top: -40px;
-    right: 0;
-}
+    top: -15px;
+    right: 10px;
+    z-index: 10;
+  }
 
+.resolution-unsupported{
+    display: none;
+  }
 
-header{
+header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center; /* align y axis */
-    border: 5px double grey;
-    border-radius: 20px;
+    /* border: 5px double grey; */
+    /* border-radius: 20px; */
     position: relative;
-    background-color: #b8b8b8;
-    margin: 30px 3em 20px 3em;
-}
+    background-color: var(--new-color-bg);
+    margin-bottom: 50px;
+    height: 70px;
+  }
 
-header h1{
+  header .header-images .image-one{
+    height: 90px;
+    width: 90px;
+  }
+  
+  header .header-images .image-two{
+    height: 60px;
+    width: 60px;
+    transform: rotate(270deg);
+    margin-bottom: 15px;
+  }
+  
+  header h1 {
+    font-size: 2em;
     color: black;
+    font-family: "Oswald", sans-serif;
     font-weight: 400;
     padding: 30px;
     text-align: center;
-}
+  }
 
 .container{
     position: relative;
@@ -46,8 +76,8 @@ header h1{
 .container h3{
     font-size: 1.5em;
     text-align: center;
-    background-color: #C1C1C1;
-    border: 3px solid rgb(117, 117, 117);
+    background-color: var(--new-color-bg);
+    border: 3px solid var(--new-color-border);
     border-radius: 20px 20px 0 0;
     margin: 0 40px;
     padding: 10px 0;
@@ -56,7 +86,7 @@ header h1{
 .container p{
     margin: 0 40px;
     background: #fff;
-    border: 3px solid #727272;
+    border: 3px solid var(--new-color-border);
     border-top: none;
     border-bottom: none;
     padding: 10px 10px 20px 10px;
@@ -70,7 +100,7 @@ header h1{
     margin: 0 40px;
     background: #fff;
     padding-bottom: 20px;
-    border: 3px solid #727272;
+    border: 3px solid var(--new-color-border);
     border-top: none;
     border-bottom: none;
 }
@@ -98,7 +128,7 @@ header h1{
     margin: 0 40px;
     background: #fff;
     padding-bottom: 20px;
-    border: 3px solid #727272;
+    border: 3px solid var(--new-color-border);
     border-radius: 0 0 20px 20px;
     border-top: none;
     justify-content: center;
@@ -119,7 +149,7 @@ header h1{
     width: 85vw;
     left: 50%;
     transform: translateX(-50%);
-    border: 3px double #727272;
+    border: 3px double var(--new-color-border);
     border-radius: 2px;
     background: #fff; 
 }
@@ -148,7 +178,7 @@ header h1{
 
 .home-page{
     position: fixed;
-    bottom: 0;
+    bottom: 30px;
     right: 0;
     margin-bottom: 2em;
     margin-right: 0.2em;
@@ -157,14 +187,14 @@ header h1{
 .home-page a{
     text-decoration: none;
     padding: 10px;
-    border: 3px solid #3d3d3d;
+    border: 3px solid var(--new-color-border);
     border-radius: 10px;
     font-size: 2em;
     transition: all 0.3s;
 }
 
 .home-page a:hover{
-    background: #3d3d3d;
+    background: var(--new-color-border);
 }
 
 .home-page a:hover > i{
@@ -172,9 +202,25 @@ header h1{
 }
 
 .home-page a i{
-    color: #3d3d3d;
+    color: var(--new-color-border);
     transition: all 0.3s;
 }
+
+footer{
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+    font-size: 0.9rem;
+    background-color: var(--new-color-bg);
+    border-top: 2px solid var(--new-color-border);
+    margin-top: 50px;
+  }
+  
+  footer p{
+    margin-bottom: 0 !important;
+  }
+  
 
 @media (min-width: 1000px) and (max-width: 1600px) {
     .img-container img{
@@ -182,8 +228,7 @@ header h1{
         left: 50%;
         transform: translateX(-50%);
         max-width: 700px;
-        height: auto;
-        
+        height: auto; 
     }
 }
 

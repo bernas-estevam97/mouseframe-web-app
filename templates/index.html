@@ -36,10 +36,21 @@
   <p id="version">v1.1.2</p>
     <header>
         <h1><u>MOUSEFRAME</u> - <i>mus musculus</i> walking behaviour analysis tool</h1>
+        <li class="nav-item dropdown" style="list-style-type: none; font-size: 2em;">
+          <a class="nav-link dropdown-toggle" style="color: black;"  href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            More
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Information</a></li>
+            <li><a class="dropdown-item" href="#">Contact</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </li>
         <div class="header-images"> 
         <img class="image-one" src="{% static 'img/mouse.png' %}">
         <img class="image-two" src="{% static 'img/mouse-paws.png' %}"  
-      </div>
+        </div>
     </header>
     <section class="modal-news" id="modalNews">
       <h2>Latest news and updates - Version 1.1.2</h2>
@@ -425,6 +436,9 @@
     <!-- </form> -->
   </div>
 </div>
+<footer>
+  <p>© MOUSEFRAME. All rights reserved 2022<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script></p>
+</footer>
    <!-- </div> -->
 <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/canvas_idea.js' %}"></script>

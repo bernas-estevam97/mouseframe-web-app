@@ -8,13 +8,37 @@
     <link rel="stylesheet" href="{% static 'css/info.css' %}">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
     <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
-    <title>Mouse Frame - Info</title>
+    <title>MOUSEFRAME - Info</title>
 </head>
 <body>
+    <div class="resolution-unsupported">
+        <section class="vh-100 gradient-custom">
+            
+          <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+              <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                  <div class="card-body p-5 text-center">
+        
+                    <div class="mb-md-5 mt-md-4">
+                      <h2 class="fw-bold mb-2 text-uppercase">Unsupported resolution</h2>
+                      <p>This resolution and lower ones are not supported by this application.</p>
+                      <img src="{% static 'img/cartoon-mouse.png' %}"
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+        </section>
+      </div>
     <p id="version">v1.1.2</p>
     <header>
-        <h1>MOUSE FRAME - Tool Information </h1>
-        <img src="{% static 'img/mouse.png' %}">
+        <h1><u>MOUSEFRAME</u> - Information page</h1>
+        <div class="header-images"> 
+        <img class="image-one" src="{% static 'img/mouse.png' %}">
+        <img class="image-two" src="{% static 'img/mouse-paws.png' %}"  
+        </div>
     </header>
     <div class="container">
         <h3>Information on mice walking behaviour analysis</h3>
@@ -75,6 +99,11 @@
                 </figure>
                 
         </div>
-    <div class="home-page">
+    <!-- <div class="home-page">
         <a href="{% url 'home' %}"><i class="fas fa-home"></i></a>
-    </div>
+    </div> -->
+    </body>
+    <footer>
+        <p>© MOUSEFRAME. All rights reserved 2022<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script></p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam saepe id ea delectus dolorum, voluptatum exercitationem corporis nobis quod quam doloremque veritatis illo quibusdam amet incidunt beatae quos. Odio, tenetur?</p>
+    </footer>

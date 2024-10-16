@@ -693,11 +693,11 @@ document.addEventListener('keydown', function(event) {
     // Trigger the button click
       document.getElementById('redCircleRight').click();
       break;
-    case 'e':
+    case 'a':
     // Trigger the button click
       document.getElementById('blueCircleLeft').click();
       break;
-    case 'r':
+    case 's':
     // Trigger the button click
       document.getElementById('blueCircleRight').click();
       break;
@@ -705,7 +705,7 @@ document.addEventListener('keydown', function(event) {
     // Trigger the button click
       document.getElementById('toggleInactive').click();
       break;
-    case 'o':
+    case 'r':
     // Trigger the button click
       document.getElementById('resetCanvas').click();
       break;

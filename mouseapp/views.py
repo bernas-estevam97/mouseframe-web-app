@@ -22,6 +22,7 @@ def home(request):
      saved_distances = SavedDistances.objects.filter(user=request.user)
      return render(request, 'index.html', {'saved_distances': saved_distances})
 
+
 @login_required(login_url=settings.LOGIN_URL)
 def info(request):
 #    if not request.user.is_authenticated:
