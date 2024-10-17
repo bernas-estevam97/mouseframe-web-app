@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/info.css' %}">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
     <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <title>MOUSEFRAME - Info</title>
 </head>
 <body>
@@ -35,17 +36,40 @@
     <p id="version">v1.1.2</p>
     <header>
         <h1><u>MOUSEFRAME</u> - Information page</h1>
+        <li class="nav-item dropdown" style="list-style-type: none;">
+          <a class="nav-link dropdown-toggle" style="color: #000;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Other pages
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'home' %}">Analysis Page/Home</a></li>
+            <li><a class="dropdown-item" href="{% url 'contact' %}">Contact</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank">ABC-RI</a></li>
+          </ul>
+        </li>
         <div class="header-images"> 
         <img class="image-one" src="{% static 'img/mouse.png' %}">
         <img class="image-two" src="{% static 'img/mouse-paws.png' %}"  
         </div>
     </header>
-    <div class="container">
+    <div class="container-full-2">
+      <div class="container-elems">
+        <h3>Purpose of MOUSEFRAME</h3>
+        <ul>
+        <li>
+          This application aims to minimize exhaustive calculations performed in a laboratiry setting, automating them to a certain extent. Researchers usually obtain these measurements by manually measuring them with a ruler. The paper tracks (where the mice are walking) are digitized and then used here.</li>
+        <li>Although scanning these sheets can be also exhaustive, this application offers an intuitive layout and returns results almost instantly which can later be exported to excel datasheets.</li>
+      <li>
+          MOUSEFRAME's main task is to transform the scanned sheets (in image format) into a canvas and therefore making it possible to add elements to the image and perform functions with these same elements.
+      </li>
+    </ul>
+      </div>
+      <div class="container-elems">
         <h3>Information on mice walking behaviour analysis</h3>
         <p>The front paws of the mice are marked in <a style="color:red; text-decoration:underline;">red</a> and the hind paws in <a style="color:blue;text-decoration:underline;">blue</a>. 
-           This analysis goes through 8 different types of measurements that are all manually calculated in the laboratory. 
+           This analysis goes through 8 different types of measurements that are all manually calculated in a laboratory setting. 
            The 8 measures are the following:</p>
-        <ul>
+        <ul class="measurements">
             <li><a href="#sllf">Stride length left front</a></li>
             <li><a href="#sllh">Stride length left hind</a></li>
             <li><a href="#slrf">Stride length right front</a></li>
@@ -57,53 +81,65 @@
         </ul>
         <p>The following image shows every measurement type and how it is calculated in simple terms:</p>
         <div class="img-container">
-        <figure><img src="{% static 'img/image-vector.png' %}">
+        <figure><a class="download-image" href="{% static 'img/image-vector.png' %}" target="_blank">
+        <img src="{% static 'img/image-vector.png' %}"></a>
         <figcaption style="font-size: 1.1em;"><b>Figure 1:</b> Every measurement calculated using this online tool. L stands for left side. R stands for right side. Vectors x and y are represented with its respective directions. The coordinates saved are according to its x and y values where the origin is always the top left corner of the images.</figcaption>
         </figure>
         </div>
+      </div>
+      <div class="info-container">
+        
+        <h3>How are the values obtained?</h3>
+        <p>All calculations are performed using simple algorithms for calculating the 
+            distance between points using javascript. The fact that the user 
+            previously marked each paw with its respective location (front/red or rear/blue, left or right), 
+            enables these calculations. 
+            Through the order of the footprints, the program will run a loop for each set 
+            of footprints and perform all the calculations programmed (it is important to 
+            emphasize that if the order is somehow changed, the program may not calculate 
+            the right measurements). Knowing the way this all works helps avoid wrong measurements.</p>
+            <ul>
+                <li><a style="text-decoration: underline;" id="sllf">Stride length left front</a>: Uses only the red dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
+                <li><a style="text-decoration: underline;" id="sllh">Stride length left hind</a>: Uses only the blue dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
+                <li><a style="text-decoration: underline;" id="slrf">Stride length right front</a>: Uses only the red dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
+                <li><a style="text-decoration: underline;" id="slrh">Stride length right hind</a>: Uses only the blue dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
+                <li><a style="text-decoration: underline;" id="ol">Overlap Left</a>: It uses both the red and blue dots on the left side with equal index and calculates the distance between them.</li>
+                <li><a style="text-decoration: underline;" id="or">Overlap Right</a>: It uses both the red and blue dots on the right side with equal index and calculates the distance between them.</li>
+                <li><a style="text-decoration: underline;" id="swf">Stride Width Front</a>: It uses the red dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both red dots in where the measurement is being made. There is an example in figure 2. This method will be improved with time.</li>
+                <li><a style="text-decoration: underline;" id="swh">Stride Width Hind</a>: It uses the blue dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both blue dots in where the measurement is being made. There is an example in figure 3. This method will be improved with time.</li>
+            </ul>
+            
+            <figure><a class="download-image" href="{% static 'img/swfrstart.jpg' %}" target="_blank"><img src="{% static 'img/swfrstart.jpg' %}"></a>
+                <figcaption style="font-size: 1.1em;"><b>Figure 2:</b> Stride width front with the first set of footsteps on the right. The measurement is done between L1 and I1 where this has the same value of X of L1 but the average of R1y and R2y (in this example).</figcaption>
+            </figure>
+            
+           
+            <figure><a class="download-image" href="{% static 'img/swhlstart.jpg' %}" target="_blank"><img src="{% static 'img/swhlstart.jpg' %}"></a>
+                <figcaption style="font-size: 1.1em;"><b>Figure 3:</b> Stride width hind with the first set of footsteps on the left. The measurement is done between R1 and I1 where this has the same value of X of L1 but the average of L1y and L2y (in this example).</figcaption>
+            </figure>
+            
     </div>
-        <div class="info-container">
-            <p>
-                The created application aims to minimize these exhaustive calculations, automating them to a certain extent. The paper tracks (where the mice are walking) are digitized and then used in the application. It is important that these sheets have a scale of 1 cm so that the application knows how many pixels are in a centimeter.
-            </p>
-            <p>
-                The application's main task is to transform the scanned sheets (in image format) into a canvas and therefore making it possible to add elements to the image and perform functions with these same elements. In the case of this application, it is possible to add points in each place where the paws are marked following an order.
-            </p>
-            <h4>How are the values obtained?</h4>
-            <p>All calculations are performed using simple algorithms for calculating the 
-                distance between points using javascript. The fact that the user 
-                previously marked each paw with its respective location (front/red or rear/blue, left or right), 
-                enables these calculations. 
-                Through the order of the footprints, the program will run a loop for each set 
-                of footprints and perform all the calculations programmed (it is important to 
-                emphasize that if the order is somehow changed, the program may not calculate 
-                the right measurements). Knowing the way this all works helps avoid wrong measurements.</p>
-                <ul>
-                    <li><a style="text-decoration: underline;" id="sllf">Stride length left front</a>: Uses only the red dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
-                    <li><a style="text-decoration: underline;" id="sllh">Stride length left hind</a>: Uses only the blue dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
-                    <li><a style="text-decoration: underline;" id="slrf">Stride length right front</a>: Uses only the red dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
-                    <li><a style="text-decoration: underline;" id="slrh">Stride length right hind</a>: Uses only the blue dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
-                    <li><a style="text-decoration: underline;" id="ol">Overlap Left</a>: It uses both the red and blue dots on the left side with equal index and calculates the distance between them.</li>
-                    <li><a style="text-decoration: underline;" id="or">Overlap Right</a>: It uses both the red and blue dots on the right side with equal index and calculates the distance between them.</li>
-                    <li><a style="text-decoration: underline;" id="swf">Stride Width Front</a>: It uses the red dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both red dots in where the measurement is being made. There is an example in figure 2. This method will be improved with time.</li>
-                    <li><a style="text-decoration: underline;" id="swh">Stride Width Hind</a>: It uses the blue dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both blue dots in where the measurement is being made. There is an example in figure 3. This method will be improved with time.</li>
-                </ul>
-                
-                <figure><img src="{% static 'img/swfrstart.jpg' %}">
-                    <figcaption style="font-size: 1.1em;"><b>Figure 2:</b> Stride width front with the first set of footsteps on the right. The measurement is done between L1 and I1 where this has the same value of X of L1 but the average of R1y and R2y (in this example).</figcaption>
-                </figure>
-                
-               
-                <figure><img src="{% static 'img/swhlstart.jpg' %}">
-                    <figcaption style="font-size: 1.1em;"><b>Figure 3:</b> Stride width hind with the first set of footsteps on the left. The measurement is done between R1 and I1 where this has the same value of X of L1 but the average of L1y and L2y (in this example).</figcaption>
-                </figure>
-                
-        </div>
+    </div>
+        
     <!-- <div class="home-page">
         <a href="{% url 'home' %}"><i class="fas fa-home"></i></a>
     </div> -->
-    </body>
     <footer>
-        <p>© MOUSEFRAME. All rights reserved 2022<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script></p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam saepe id ea delectus dolorum, voluptatum exercitationem corporis nobis quod quam doloremque veritatis illo quibusdam amet incidunt beatae quos. Odio, tenetur?</p>
+      <div class="footer-links">
+        <a href="" target="_blank">Contact</a>
+        <a href="{% url 'info' %}" target="_blank">Information page</a>
+        <a href="https://abcri.pt/" target="_blank">ABC-RI</a>
+        <a href="https://abcri.pt/mngt/" target="_blank">MNGT</a>
+      </div>
+      <p>© MOUSEFRAME. All rights reserved 2022<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script></p>
+      <div class="footer-logos">
+        <div class="img-one"><img src="{% static 'img/Logo_ABCRI.png' %}" alt=""></div>
+        <div class="img-two"><img src="{% static 'img/logo_MNGT.png' %}" alt=""></div>
+      </div>
     </footer>
+    <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    </body>
+</html>
+    
+    

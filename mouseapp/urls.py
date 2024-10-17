@@ -29,6 +29,7 @@ urlpatterns = [
     path('authenticate/', include('django.contrib.auth.urls')),
     path('authenticate/', include('accounts.urls')),
     path('info', info, name="info"),
+    path('contact', contact, name='contact'),
     # path('canvas', canvas),
     # path('editor', image_editor),
     # path('image_dim', img_dim),

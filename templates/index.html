@@ -24,6 +24,12 @@
                 <div class="mb-md-5 mt-md-4">
                   <h2 class="fw-bold mb-2 text-uppercase">Unsupported resolution</h2>
                   <p>This resolution and lower ones are not supported by this application.</p>
+                  <p>Change to a bigger resolution to use the app <br>(>1100px of width)</p>
+                  <p>You can view other pages such as:</p>
+                  <ul style="list-style-type: none; padding-left: 0;">
+                    <li class="unsp-link"><a href="{% url 'info' %}">Tool Information</a></li>
+                    <li class="unsp-link"><a href="{% url 'contact' %}">Contact</a></li>
+                  </ul>
                   <img src="{% static 'img/cartoon-mouse.png' %}"
                 </div>
               </div>
@@ -36,15 +42,15 @@
   <p id="version">v1.1.2</p>
     <header>
         <h1><u>MOUSEFRAME</u> - <i>mus musculus</i> walking behaviour analysis tool</h1>
-        <li class="nav-item dropdown" style="list-style-type: none; font-size: 2em;">
-          <a class="nav-link dropdown-toggle" style="color: black;"  href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            More
+        <li class="nav-item dropdown" style="list-style-type: none;">
+          <a class="nav-link dropdown-toggle" style="color: #000;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Other pages
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Information</a></li>
-            <li><a class="dropdown-item" href="#">Contact</a></li>
+            <li><a class="dropdown-item" href="{% url 'info' %}">Tool Information</a></li>
+            <li><a class="dropdown-item" href="{% url 'contact' %}">Contact</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank">ABC-RI</a></li>
           </ul>
         </li>
         <div class="header-images"> 
@@ -166,9 +172,9 @@
                     <div style="margin-bottom:5px; font-weight: bold;"><i class="fa-solid fa-keyboard"></i>&nbspshortcuts:</div>
                     <div><img src="{% static 'img/letter-q.png' %}">: Red L</div>
                     <div><img src="{% static 'img/letter-w.png' %}">: Red R</div>
-                    <div><img src="{% static 'img/letter-e.png' %}">: Blue L</div>
-                    <div><img src="{% static 'img/letter-r.png' %}">: Blue R</div>
-                    <div><img src="{% static 'img/letter-o.png' %}">: Reset all</div>
+                    <div><img src="{% static 'img/letter-a.png' %}">: Blue L</div>
+                    <div><img src="{% static 'img/letter-s.png' %}">: Blue R</div>
+                    <div><img src="{% static 'img/letter-r.png' %}">: Reset all</div>
                     <div><img src="{% static 'img/letter-p.png' %}">: Pause all</div>
                    </div>
                    <div class="under-image">Mouse scheme information <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#otherInfo"><i class="fa-solid fa-circle-info"></i></button>: </div>
@@ -437,7 +443,18 @@
   </div>
 </div>
 <footer>
+  
+  <div class="footer-links">
+    <a href="" target="_blank">Contact</a>
+    <a href="{% url 'info' %}" target="_blank">Information page</a>
+    <a href="https://abcri.pt/" target="_blank">ABC-RI</a>
+    <a href="https://abcri.pt/mngt/" target="_blank">MNGT</a>
+  </div>
   <p>© MOUSEFRAME. All rights reserved 2022<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script></p>
+  <div class="footer-logos">
+    <div class="img-one"><img src="{% static 'img/Logo_ABCRI.png' %}" alt=""></div>
+    <div class="img-two"><img src="{% static 'img/logo_MNGT.png' %}" alt=""></div>
+  </div>
 </footer>
    <!-- </div> -->
 <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>

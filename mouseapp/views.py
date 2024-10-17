@@ -29,6 +29,13 @@ def info(request):
 #         return redirect('/authenticate/login')
 #    else:
      return render(request, 'info.html')
+
+@login_required(login_url=settings.LOGIN_URL)
+def contact(request):
+#    if not request.user.is_authenticated:
+#         return redirect('/authenticate/login')
+#    else:
+     return render(request, 'contact.html')
    
 @login_required(login_url=settings.LOGIN_URL)
 def saved_distance(request):

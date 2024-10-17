@@ -1,0 +1,232 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root{
+    --new-body-color: #f7f7f7;
+    /* --new-color-bg: rgba(168, 213, 255, 0.42); */
+    --new-color-bg: #7da2a988;
+    /* --new-color-border: rgba(74, 166, 252, 1); */
+    --new-color-border: #7da2a9;
+  }
+  
+  html{
+    margin:0;
+  }
+  
+  body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--new-body-color) !important;
+    font-family: "Roboto Condensed", sans-serif !important;
+    min-height: 100vh;
+    margin: 0;
+  }
+
+  main {
+    flex: 1;
+  }
+
+/* HEADER SECTION */
+
+#version {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    z-index: 10;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center; /* align y axis */
+    /* border: 5px double grey; */
+    /* border-radius: 20px; */
+    position: relative;
+    background-color: var(--new-color-bg);
+    margin-bottom: 50px;
+    height: 70px;
+  }
+  
+  header .header-images .image-one{
+    height: 90px;
+    width: 90px;
+  }
+  
+  header .header-images .image-two{
+    height: 60px;
+    width: 60px;
+    transform: rotate(270deg);
+  }
+  
+  header h1 {
+    font-size: 2.4vw;
+    color: black;
+    font-family: "Oswald", sans-serif;
+    font-weight: 400;
+    padding: 30px;
+    text-align: center;
+  }
+  
+  
+  .nav-link{
+    background-color: var(--new-body-color);
+    border-radius: 3px;
+    border: 3px solid var(--new-color-border) !important;
+    font-size: 1.5vw;
+    padding: 0 10px !important;
+  }
+  
+  .dropdown-menu{
+    font-size: 1.3vw !important;
+  }
+  
+  .nav-link:hover{
+    background-color: white;
+  }
+  
+  .dropdown-item:focus{
+    background-color: var(--new-color-border) !important;
+  }
+
+/* CONTAINERS */
+
+.container-full{
+    position: relative;
+    width: 70vw;
+    padding: 10px;
+    margin: 100px 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.container-contact{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.left-side-contact{
+    margin-top: 50px;
+}
+
+.left-side-contact h3{
+    font-size: 3em;
+}
+
+.left-side-contact ul li{
+    font-size: 1.5em;
+    padding: 20px 0;
+}
+
+.left-side-contact ul li a{
+    color: #000;
+}
+
+.left-side-contact .logos{
+    text-align: center;
+}
+
+.left-side-contact .logos i{
+    font-size: 50px;
+}
+
+.right-side-contact img{
+    width: 500px;
+    height: 500px;
+}
+
+
+/* FOOTER SECTION */
+
+footer{
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+    font-size: 0.9rem;
+    background-color: var(--new-color-bg);
+    border-top: 2px solid var(--new-color-border);
+    margin-top: 75px;
+  }
+  
+  footer p{
+    margin-bottom: 0 !important;
+  }
+  
+  footer .footer-logos{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  footer .footer-logos .img-one img{
+    height: 40px;
+    width: 70px;
+    margin: 5px;
+  }
+  
+  footer .footer-logos .img-two img{
+    height: 50px;
+    width: 120px;
+    margin: 5px;
+  }
+  
+  footer .footer-links{
+    margin: 10px 0;
+  }
+  
+  footer .footer-links a{
+    text-decoration: none;
+    color: #000;
+    margin: 0 20px;
+    font-size: 1.5em;
+  }
+  
+  footer .footer-links a:hover{
+    text-decoration: underline;
+  }
+
+
+
+  @media (min-width: 500px) and (max-width: 999px){
+    header h1{
+        font-size: 4vw !important;
+        padding: 0 0 0 20px !important;
+    }
+
+    header .image-two{
+        display: none !important;
+    }
+
+    .nav-link{
+        font-size: 3vw !important;
+        padding: 5px !important;
+    }
+
+    #version{
+        top: 70px !important;
+    }
+}
+
+@media (max-width: 500px){
+    header h1{
+        font-size: 4vw !important;
+        padding: 0 0 0 20px !important;
+    }
+
+    header .image-two{
+        display: none !important;
+    }
+
+    .nav-link{
+        font-size: 3vw !important;
+        padding: 5px !important;
+    }
+
+    #version{
+        top: 70px !important;
+    }
+   
+}
