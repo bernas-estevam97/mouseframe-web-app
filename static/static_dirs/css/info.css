@@ -169,6 +169,10 @@ background-color: var(--new-color-border) !important;
     position:relative;
 }
 
+.container-elems p{
+    padding: 0 20px;
+}
+
 
 
 .container-elems .img-container img{

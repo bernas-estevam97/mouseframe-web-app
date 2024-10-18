@@ -910,6 +910,20 @@ let loadFile = function (event) {
   };
 };
 
+
+// ALERT USER BEFORE LEAVING ANALYSIS PAGE //
+
+
+window.addEventListener("beforeunload", (event) => {
+  if(img.src !== ''){
+    event.returnValue = true;
+  }
+  return;
+});
+
+
+
+
 // FUNCTIONS TO CHANGE CANVAS DIMENSIONS // --------------------------------------------------------------------------------------
 
 //     let canvasWidth = document.getElementById("canvasWidth");
