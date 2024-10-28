@@ -565,7 +565,7 @@ function removeAllMeasurePoints() {
   canvas.removeEventListener("click", drawMeasurePoint);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
-  document.getElementById("measureToCm").innerHTML = "";
+  document.getElementById("measureToCm").value = "";
   dist = 0;
   document.getElementById('addMeasureInfo').innerHTML = "";
 }
@@ -627,8 +627,8 @@ function distanceMeasurePoint() {
       pointsMeasure[1].y - pointsMeasure[0].y
     ).toFixed(3);
     console.log(dist);
-    document.getElementById("measureToCm").innerHTML =
-      "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
+    document.getElementById("measureToCm").value =
+      parseFloat(dist);
     // if (imgSizeStatus == 1){
     //   document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
     // }
@@ -658,16 +658,16 @@ function manualInputMeasure() {
   ) {
     dist = inputPixelsManually.value;
     savedChoices.value = "None";
-    document.getElementById("measureToCm").innerHTML =
-      "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
+    document.getElementById("measureToCm").value =
+      parseFloat(dist);
   }
   if (
     savedChoices.options[savedChoices.selectedIndex].value != "None" &&
     inputPixelsManually.value == ""
   ) {
     dist = savedChoices[savedChoices.selectedIndex].value;
-    document.getElementById("measureToCm").innerHTML =
-      "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
+    document.getElementById("measureToCm").value =
+      parseFloat(dist);
   }
 }
 
@@ -675,7 +675,7 @@ function resetInput() {
   inputPixelsManually.value = "";
   savedChoices.value = "None";
   dist = 0;
-  document.getElementById("measureToCm").innerHTML = "";
+  document.getElementById("measureToCm").value = "";
 }
 
 // ------------------------------------------------------------------------------------- -------------------------------------------------------------//
@@ -1364,7 +1364,7 @@ let resetFile = function (event) {
   // imgWidthInput.value = '';
   // imgHeightInput.value = '';
   tableTitle.innerHTML = "<b>Table ID: <b>";
-  document.getElementById("measureToCm").innerHTML = "";
+  document.getElementById("measureToCm").value = "";
   dist = 0;
   imgSizeStatus = 0;
   document.getElementById('removeImage').style.display = "none";

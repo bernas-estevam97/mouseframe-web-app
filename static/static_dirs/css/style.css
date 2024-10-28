@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Acme&display=swap');
 
 :root{
   --new-body-color: #f7f7f7;
@@ -53,8 +54,8 @@ body {
 
 #version {
   position: absolute;
-  top: 70px;
-  right: 10px;
+  top: 0;
+  right: 5px;
   z-index: 10;
 }
 
@@ -67,7 +68,7 @@ header {
   position: relative;
   background-color: var(--new-color-bg);
   margin-bottom: 50px;
-  height: 70px;
+  height: 90px;
 }
 
 header .header-images .image-one{
@@ -86,8 +87,10 @@ header h1 {
   color: black;
   font-family: "Oswald", sans-serif;
   font-weight: 400;
-  padding: 30px;
+  padding: 5px 20px;
   text-align: center;
+  background-color: rgba(242, 242, 242, 0.8);
+  box-shadow: 10px 10px var(--new-color-border);
 }
 
 
@@ -95,16 +98,18 @@ header h1 {
   background-color: var(--new-body-color);
   border-radius: 3px;
   border: 3px solid var(--new-color-border) !important;
-  font-size: 1.5vw;
+  font-size: 1.6vw;
   padding: 0 10px !important;
+  transition: box-shadow 0.25s !important;
 }
 
 .dropdown-menu{
   font-size: 1.3vw !important;
 }
 
-.nav-link:hover{
+.nav-link:hover, .nav-link:focus{
   background-color: white;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .dropdown-item:focus{
@@ -842,6 +847,11 @@ input[type='range']::-webkit-slider-thumb:hover{
   text-decoration: underline;
 }
 
+.measure-info input{
+  text-align: center !important;
+  padding: 0 5px !important;
+}
+
 .saved-distances h3 {
   text-align: center;
 }
@@ -1259,5 +1269,18 @@ footer .footer-links a:hover{
   .resolution-unsupported img{
     width: 316px;
     height: 197.5px;
+  }
+}
+
+/* Control for bigger resolutions */
+
+@media screen and (min-width: 1921px){
+  header h1 {
+    font-size: 3em;
+  }
+  
+  
+  .nav-link{
+    font-size: 3em;
   }
 }

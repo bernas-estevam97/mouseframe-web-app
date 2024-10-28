@@ -41,13 +41,13 @@
   </div>
   <p id="version">v1.1.2</p>
     <header>
-        <h1><u>MOUSEFRAME</u> - <i>mus musculus</i> walking behaviour analysis tool</h1>
+        <h1>MOUSEFRAME - <i>mus musculus</i> walking behaviour analysis</h1>
         <li class="nav-item dropdown" style="list-style-type: none;">
           <a class="nav-link dropdown-toggle" style="color: #000;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Other pages
+            More
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'info' %}">Tool Information</a></li>
+            <li><a class="dropdown-item" href="{% url 'info' %}">Information</a></li>
             <li><a class="dropdown-item" href="{% url 'contact' %}">Contact</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank">ABC-RI</a></li>
@@ -284,7 +284,7 @@
                 <button onclick="resetInput();" id="resetManual"><i class="fa-solid fa-rotate-left"></i></button>
                 <!-- <button id="removeOption" type="submit">Delete</button> -->
                 <h5 style="padding-top: 10px;">Measurement result</h5>
-                <div class="measure-info"><div id="measureIntro">Value:</div><div id="measureToCm"></div></div>
+                <div class="measure-info"><div id="measureIntro">Value:</div>&nbsp&nbsp<input id="measureToCm" value="" size="5" readonly>px equals 1 cm.</div>
                 <h4 style="font-size: 1.5em; border-top: 2px solid rgba(0,0,0,.125) !important; padding-top: 20px;">Save section</h4>
                 <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from (both fields are required to save).</p>
                 <p style="font-size: 1em"><b><i class="fa-solid fa-triangle-exclamation"></i>&nbspImportant:</b> Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
@@ -292,7 +292,7 @@
                   <ol>
                     <li>Value(px):
                       <input type="text" name="saved_distance_value" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="8" placeholder="Save value..." required></li>
-                    <li>Image Size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required></li>
+                    <li>Image size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required></li>
                   </ol>
                   <button class="save-button" id="saveDistanceButton" type="submit"><i class="fa-solid fa-floppy-disk"></i></button> 
                 </form>
