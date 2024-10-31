@@ -24,9 +24,10 @@
                   <div class="mb-md-5 mt-md-4">
                     <form action="" method="POST">
                     {% csrf_token %}
-
-                    <h2 class="fw-bold mb-2 text-uppercase">APP Login</h2>
-                    <p class="text-white-50 mb-5">Please enter your given login credentials</p>
+                    <h3>Welcome to the Mouseframe Application!</h3>
+                    <img style="width: 100px; height: 100px;" class="image-one" src="{% static 'img/logo.png' %}">
+                   <br><br><h2 class="fw-bold mb-2 text-uppercase">APP Login</h2>
+                    <p class="text-white-50 mb-5">Please enter your given login credentials<br>(Private version)</p>
                     <div class="form-outline form-white mb-4">
                       <input type="user" id="username" class="form-control form-control-lg" name="username" required/>
                       <label class="form-label" for="username">User</label>

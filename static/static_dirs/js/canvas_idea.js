@@ -682,38 +682,51 @@ function resetInput() {
 
 // HOTKEYS SECTION FOR BUTTONS 
 
+
+
 document.addEventListener('keydown', function(event) {
-  // Check if the key pressed is "Enter" (key code 13)
-  switch (event.key) {
-    case 'q':
+  // Don't use shortcut buttons if in textarea or input fields
+  const activeElement = document.activeElement;
+  if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') {
+    // Don't execute global keydown events if an input or textarea is focused
+    return;
+  } else{
+    switch (event.key) {
+      case 'q':
+        // Trigger the button click
+        document.getElementById('redCircleLeft').click();
+        break;
+      case 'w': 
       // Trigger the button click
-      document.getElementById('redCircleLeft').click();
-      break;
-    case 'w': 
-    // Trigger the button click
-      document.getElementById('redCircleRight').click();
-      break;
-    case 'a':
-    // Trigger the button click
-      document.getElementById('blueCircleLeft').click();
-      break;
-    case 's':
-    // Trigger the button click
-      document.getElementById('blueCircleRight').click();
-      break;
-    case 'p':
-    // Trigger the button click
-      document.getElementById('toggleInactive').click();
-      break;
-    case 'r':
-    // Trigger the button click
-      document.getElementById('resetCanvas').click();
-      break;
-    
-    default:
-      // console.log("Key not mapped to any button");
-  }
-});
+        document.getElementById('redCircleRight').click();
+        break;
+      case 'a':
+      // Trigger the button click
+        document.getElementById('blueCircleLeft').click();
+        break;
+      case 's':
+      // Trigger the button click
+        document.getElementById('blueCircleRight').click();
+        break;
+      case 'p':
+      // Trigger the button click
+        document.getElementById('toggleInactive').click();
+        break;
+      case 'r':
+      // Trigger the button click
+        document.getElementById('resetCanvas').click();
+        break;
+      
+      default:
+        // console.log("Key not mapped to any button");
+    }
+  } 
+  // Check if the key pressed is "Enter" (key code 13)
+  
+});   
+
+
+
 
 // ----------------------- MOST VARIABLES ASSIGNED --------------------------- //
 
