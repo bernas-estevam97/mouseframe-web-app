@@ -60,7 +60,7 @@
   }
   
   header h1{
-    font-size: 2.4vw;
+    font-size: clamp(2em, 2vw + 1rem, 3em) !important;
     color: black;
     font-family: "Oswald", sans-serif;
     font-weight: 400;
@@ -75,13 +75,13 @@
     background-color: var(--new-body-color);
     border-radius: 3px;
     border: 3px solid var(--new-color-border) !important;
-    font-size: 1.6vw;
+    font-size: 2em !important;
     padding: 0 10px !important;
     transition: box-shadow 0.25s !important;
   }
   
   .dropdown-menu{
-    font-size: 1.3vw !important;
+    font-size: 1.5em !important;
   }
   
   .nav-link:hover, .nav-link:focus{
@@ -209,12 +209,11 @@ footer{
   }
 
     .nav-link{
-        font-size: 3vw !important;
-        padding: 5px !important;
+        font-size: clamp(1.5em, 1.2vw + 1em, 2.2em) !important;
     }
 
     .dropdown-item{
-      font-size: 3vw !important;
+      font-size: clamp(1.5em, 1.2vw + 1em, 2.2em) !important;
     }
 
     .container-full{
@@ -237,7 +236,7 @@ footer{
 
 @media (max-width: 649px){
     header h1{
-        font-size: 4vw !important;
+      font-size: clamp(0.8em, 1.6vw + 1rem, 3em) !important;
     }
 
     header .image-two{
@@ -249,12 +248,13 @@ footer{
     }
 
     .nav-link{
-        font-size: 3vw !important;
-        padding: 5px !important;
+      font-size: clamp(0.8em, 0.8vw + 1rem, 1.5em) !important;
+      margin-left: 10px !important;
+      padding: 5px !important;
     }
 
     .dropdown-item{
-      font-size: 3vw !important;
+      font-size: 2.5em !important;
     }
 
 

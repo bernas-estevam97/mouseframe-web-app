@@ -725,12 +725,22 @@ document.addEventListener('keydown', function(event) {
   
 });   
 
+// Resolution section //
 
+function getUserResolution() {
+  document.getElementById("userResolution").innerHTML =
+    "<strong>Your resolution is:</strong> " +
+    window.screen.width * window.devicePixelRatio +
+    "x" +
+    window.screen.height * window.devicePixelRatio;
+}
+
+getUserResolution();
 
 
 // ----------------------- MOST VARIABLES ASSIGNED --------------------------- //
 
-let imgSizeStatus = 0;
+// let imgSizeStatus = 0;
 let imgWidth = document.getElementById("imageUploadedWidth");
 let imgHeight = document.getElementById("imageUploadedHeight");
 // let imgSize = document.getElementById("imageUploadedSize");
@@ -824,34 +834,36 @@ let loadFile = function (event) {
     imgHeight.innerHTML =
       img.height;
     imgContainer.style.border = "2px solid black";
-    if (img.width >= 3000 || img.height >= 3000) {
-      imgSizeStatus = 25;
-      imgContainer.style.width = img.width * 0.25 + "px";
-      imgContainer.style.height = img.height * 0.25 + "px";
+    // If statements for automatically resizing images too big for 1080p screens. Need to work on more resizing function accoridng to user resolution : Function in line 730
+
+    if (img.width >= (window.screen.width * window.devicePixelRatio)*2 || img.height >= (window.screen.height * window.devicePixelRatio)*2) {
+      // imgSizeStatus = 25;
+      imgContainer.style.width = img.width * 0.4 + "px";
+      imgContainer.style.height = img.height * 0.4 + "px";
       imgContainer.style.backgroundSize =
-        img.width * 0.25 + "px " + img.height * 0.25 + "px";
-      canvas.height = img.height * 0.25;
-      canvas.width = img.width * 0.25;
+        img.width * 0.4 + "px " + img.height * 0.4 + "px";
+      canvas.height = img.height * 0.4;
+      canvas.width = img.width * 0.4;
       document.getElementById("currentImgSize").innerHTML =
         "<b>Current image size is:</b> " +
-        img.width * 0.25 +
+        img.width * 0.4 +
         "x" +
-        img.height * 0.25 +
-        " (25% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 25% of the size.</i>";
+        img.height * 0.4 +
+        " (40% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 40% of the size.</i>";
       // tableDynamicValuePx.innerHTML = "Value(px) at 25%";
       // tableDynamicValueCm.innerHTML = "Value(cm) at 25%";
       // let originalValueCm = table.rows[1].insertCell();
       // originalValueCm.outerHTML =
       //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
+      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 40% of its original size!`; //\n
       //A new column with original image size values in cm added.`;
       // document.getElementById("titleImage").colSpan = "6";
-      slider.value = 5;
+      slider.value = 8;
     } else if (
-      (img.width >= 1500 && img.width < 2000) ||
-      (img.height >= 1500 && img.height < 2000)
+      (img.width >= (window.screen.width * window.devicePixelRatio) && img.width < (window.screen.width * window.devicePixelRatio)*1.3) ||
+      (img.height >= (window.screen.height * window.devicePixelRatio) && img.height < (window.screen.height * window.devicePixelRatio)*1.3)
     ) {
-      imgSizeStatus = 75;
+      // imgSizeStatus = 75;
       imgContainer.style.width = img.width * 0.75 + "px";
       imgContainer.style.height = img.height * 0.75 + "px";
       imgContainer.style.backgroundSize =
@@ -874,10 +886,10 @@ let loadFile = function (event) {
       // document.getElementById("titleImage").colSpan = "6";
       slider.value = 15;
     } else if (
-      (img.width >= 2000 && img.width < 3000) ||
-      (img.height >= 2000 && img.height < 3000)
+      (img.width >= (window.screen.width * window.devicePixelRatio)*1.3 && img.width < (window.screen.width * window.devicePixelRatio)*2) ||
+      (img.height >= (window.screen.height * window.devicePixelRatio)*1.3 && img.height < (window.screen.height * window.devicePixelRatio)*2)
     ) {
-      imgSizeStatus = 50;
+      // imgSizeStatus = 50;
       imgContainer.style.width = img.width * 0.5 + "px";
       imgContainer.style.height = img.height * 0.5 + "px";
       imgContainer.style.backgroundSize =
@@ -900,7 +912,7 @@ let loadFile = function (event) {
       //A new column with original image size values in cm added.`;
       slider.value = 10;
     } else {
-      imgSizeStatus = 100;
+      // imgSizeStatus = 100;
       imgContainer.style.width = img.width + "px";
       imgContainer.style.height = img.height + "px";
       imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
@@ -909,6 +921,7 @@ let loadFile = function (event) {
       document.getElementById("currentImgSize").innerHTML =
         "<b>Current image size is:</b> " + img.width + "x" + img.height;
       tableWarning.innerHTML = "";
+      slider.value = 20;
     }
     // canvasInfo.innerHTML = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
     // document.getElementById("inputScreenInches").style.display = "";
@@ -1379,7 +1392,7 @@ let resetFile = function (event) {
   tableTitle.innerHTML = "<b>Table ID: <b>";
   document.getElementById("measureToCm").value = "";
   dist = 0;
-  imgSizeStatus = 0;
+  // imgSizeStatus = 0;
   document.getElementById('removeImage').style.display = "none";
   var elems = document.querySelectorAll(".active");
   [].forEach.call(elems, function (el) {
@@ -1389,18 +1402,6 @@ let resetFile = function (event) {
 };
 
 //---------------------------------------------------------//
-
-// Resolution section //
-
-function getUserResolution() {
-  document.getElementById("userResolution").innerHTML =
-    "<strong>Your resolution is:</strong> " +
-    window.screen.width * window.devicePixelRatio +
-    "x" +
-    window.screen.height * window.devicePixelRatio;
-}
-
-getUserResolution();
 
 //  function getScreenPPI(){
 //    let diagonal = Math.sqrt(Math.pow((window.screen.width * window.devicePixelRatio), 2)+Math.pow((window.screen.height * window.devicePixelRatio), 2));

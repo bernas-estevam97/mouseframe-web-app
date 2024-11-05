@@ -83,7 +83,7 @@ header .header-images .image-two{
 }
 
 header h1 {
-  font-size: 2.4vw;
+  font-size: clamp(1.5em, 2vw + 1em, 3em);
   color: black;
   font-family: "Oswald", sans-serif;
   font-weight: 400;
@@ -98,7 +98,7 @@ header h1 {
   background-color: var(--new-body-color);
   border-radius: 3px;
   border: 3px solid var(--new-color-border) !important;
-  font-size: 1.6vw;
+  font-size: clamp(0.8em, 1.2vw + 0.5em, 2em);
   padding: 0 10px !important;
   transition: box-shadow 0.25s !important;
 }
@@ -451,6 +451,10 @@ input[type='range']{
 } */
 
 input[type='range']::-webkit-slider-thumb:hover{
+  cursor: ew-resize !important;
+}
+
+input[type='range']::-moz-range-thumb:hover{
   cursor: ew-resize !important;
 }
 
