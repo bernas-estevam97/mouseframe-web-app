@@ -41,7 +41,7 @@
   </div>
   <p id="version">v1.1.2</p>
     <header>
-        <h1>MOUSEFRAME - <i>mus musculus</i> gait/footprint analysis</h1>
+        <h1>MOUSEFRAME - <i>Mus musculus</i> gait/footprint analysis</h1>
         <li class="nav-item dropdown" style="list-style-type: none;">
           <a class="nav-link dropdown-toggle" style="color: #000;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             More
@@ -85,7 +85,7 @@
                 <li>Check <button class="show-updates" id="showNews">News and updates</button> for this version.</li>
             </ul>
             <p id="loginName">Welcome! You are logged in as <b><u>{{ user.get_username }}</u></b></p>
-            <p id="userResolution"></p><a class="logout-button" href="{% url 'logout' %}">Logout</a><br>
+            <p id="userResolution"></p><a class="version-button" href="{% url 'version' %}">Change app version</a><a class="logout-button" href="{% url 'logout' %}">Logout</a><br>
         </div>
     <!-- </div> -->
     <!-- <div class="right-part"> -->
@@ -478,32 +478,5 @@
 
 </script>
 <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
-<script>
-
-  // let btnLinkOne = document.getElementById('btnLinkOne');
-  // let btnLinkTwo = document.getElementById('btnLinkTwo');
-  // let collapseOne = document.getElementById('collapseOne');
-  // let collapseTwo = document.getElementById('collapseTwo');
-
-
-  // btnLinkOne.addEventListener('click', ()=>{
-  //   if (collapseTwo.classList.contains('show')){
-  //     btnLinkOne.classList.toggle('active-new');
-  //     btnLinkTwo.classList.remove('active-new');
-  //   }else{
-  //     btnLinkOne.classList.toggle('active-new');
-  //   }
-  // })
-
-  // btnLinkTwo.addEventListener('click', ()=>{
-  //   if (collapseOne.classList.contains('show')){
-  //     btnLinkTwo.classList.toggle('active-new');
-  //     btnLinkOne.classList.remove('active-new');
-  //   }else{
-  //     btnLinkTwo.classList.toggle('active-new');
-  //   }
-  // })
-
-</script>
 </body>
 </html>

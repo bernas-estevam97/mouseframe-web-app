@@ -29,7 +29,7 @@ SECRET_KEY = key
 #key = os.environ.get('S_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '94.46.171.187', 'mouseframe.pt']
@@ -134,6 +134,7 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
 # #Brute force for IPLockoutMiddleWare
 LOGIN_URL = '/authenticate/login'
+LOGIN_REDIRECT_URL = 'version'
 MAX_FAILED_LOGIN_ATTEMPTS = 3
 FAILED_LOGIN_LOCK_DURATION = 30  # 1 hour is 3600s. Currently set to 30 seconds only for testing purposes, change in prod 
 
@@ -241,17 +242,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ------------------------- SECURITY CHECKS FOR PROD WITH SSL CERTIFICATE ---------------------------#
 
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# SECURE_BROWSER_XSS_FILTER = True
-# X_FRAME_OPTIONS = 'DENY'
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-# SECURE_SSL_REDIRECT = True
-# USE_X_FORWARDED_HOST = True
-# SECURE_HSTS_SECONDS = 86400
-# SECURE_HSTS_PRELOAD = True
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+USE_X_FORWARDED_HOST = True
+SECURE_HSTS_SECONDS = 86400
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
+# ------------------------------------------------------------- #
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 180 * 60  #3 hours

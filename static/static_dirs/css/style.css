@@ -270,6 +270,24 @@ header h1 {
   margin-top: 1em;
 }
 
+.version-button {
+  color: #000 !important;
+  font-weight: 400;
+  position: relative;
+  text-decoration: none;
+  padding: 10px 15px;
+  background: var(--new-color-bg);
+  left: 4em;
+  color: white;
+  border-radius: 5px;
+  border: 2px solid var(--new-color-border);
+  margin-right: 10px;
+}
+
+.version-button:hover {
+  background: var(--new-color-border);
+}
+
 .logout-button {
   position: relative;
   text-decoration: none;
