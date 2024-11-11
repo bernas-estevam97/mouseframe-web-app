@@ -21,13 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-load_dotenv()
-key = os.environ.get('S_KEY')
-SECRET_KEY = key
-#For ubuntu provide full path
-#load_dotenv('var/www/mouseframe/.env')
+#load_dotenv()
 #key = os.environ.get('S_KEY')
+#For ubuntu provide full path
+load_dotenv('var/www/mouseframe/.env')
+key = os.environ.get('S_KEY')
 
+SECRET_KEY=key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
@@ -87,6 +87,7 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
         "LOCATION": "cache_table",
+	"TIMEOUT": None,
     }
 }
 
@@ -136,7 +137,7 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 LOGIN_URL = '/authenticate/login'
 LOGIN_REDIRECT_URL = 'version'
 MAX_FAILED_LOGIN_ATTEMPTS = 3
-FAILED_LOGIN_LOCK_DURATION = 30  # 1 hour is 3600s. Currently set to 30 seconds only for testing purposes, change in prod 
+FAILED_LOGIN_LOCK_DURATION = 14400  # 1 hour is 3600s. Currently set to 30 seconds only for testing purposes, change in prod 
 
 ROOT_URLCONF = 'mouseapp.urls'
 
