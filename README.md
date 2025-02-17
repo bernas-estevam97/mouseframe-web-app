@@ -3,7 +3,7 @@
 This program accepts images of walking pattern from mice. These images are used to analyze walking behaviour of these animals that is further used for comparison studies between healthy and sick mice. 
 These comparison studies are usually done when studying diseases that affect the brain, such as neurodefenrative diseases and others that may affect motor functions.
 
-Example of one of these pieces of paper (akready digitalized):
+Example of one of these pieces of paper (already digitized):
 
 ![example mice](https://github.com/user-attachments/assets/e2a2e9a8-a5ec-4ac7-9bf2-8f45d67a7f60)
 
