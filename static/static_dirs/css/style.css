@@ -1117,8 +1117,21 @@ input::placeholder{
   text-align: center;
 }
 
-#exportEx {
-  margin-top: 20px;
+#resetUpload{
+  margin-left: 5px;
+  padding: 5px 20px;
+  background: #dc3545;
+  color: white;
+  border-radius: 5px;
+  border: 2px solid rgb(168, 30, 30);
+}
+
+#resetUpload:hover{
+  background: rgb(168, 30, 30);
+  color: white !important;
+}
+
+#exportEx{
   padding: 5px 20px;
   position: relative;
   border-radius: 2px;
@@ -1127,7 +1140,16 @@ input::placeholder{
   transition: all 0.2s;
 }
 
-#exportEx:hover {
+#copyTable {
+  padding: 5px 20px;
+  border-radius: 2px;
+  border: 1px solid #c1c1c1;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: black;
+}
+
+#exportEx:hover, #copyTable:hover{
   background: rgb(180, 180, 180);
 }
 

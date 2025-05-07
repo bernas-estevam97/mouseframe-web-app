@@ -21,11 +21,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#load_dotenv()
-#key = os.environ.get('S_KEY')
-#For ubuntu provide full path
-load_dotenv('var/www/mouseframe/.env')
+load_dotenv()
 key = os.environ.get('S_KEY')
+#For ubuntu provide full path
+# load_dotenv('var/www/mouseframe/.env')
+# key = os.environ.get('S_KEY')
 
 SECRET_KEY=key
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -243,16 +243,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ------------------------- SECURITY CHECKS FOR PROD WITH SSL CERTIFICATE ---------------------------#
 
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'DENY'
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
-USE_X_FORWARDED_HOST = True
-SECURE_HSTS_SECONDS = 86400
-SECURE_HSTS_PRELOAD = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# SECURE_BROWSER_XSS_FILTER = True
+# X_FRAME_OPTIONS = 'DENY'
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# USE_X_FORWARDED_HOST = True
+# SECURE_HSTS_SECONDS = 86400
+# SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # ------------------------------------------------------------- #
 

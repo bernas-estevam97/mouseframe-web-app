@@ -310,6 +310,7 @@
           <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordion">
             <div class="accordion-body">
               <div class="data-management" id="showData">
+                <div class="table-section">
                 <div class="table-results">
                 <h3 style="text-decoration: underline;">Data results Table</h3>
                 <table id="table">
@@ -329,12 +330,19 @@
                 </tbody>
                 </table>
                 <div id="imageResizeTableWarning"></div>
-                <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
-              </div>
+              </div><br>
+              <label for="excel-file"><i class="fa-solid fa-circle-info"></i> Add an excel file to add your table to one of your own excel files (the table is added in a new sheet) and then click the export button below.</label>
+              <input class="input-excel" name="excel-file" type="file" id="upload-excel" accept=".xlsx, .xls" /><button id="resetUpload">Remove</button><br><br>
+              <label for="button-export"><i class="fa-solid fa-circle-info"></i> Simply click the below button, without any provided, excel to export your table to a new excel file with the table name provided on the right.</label><br>
+              <button name="button-export" id="exportEx"> Export to excel file </button><br><br>
+              <label for="copy-table"><i class="fa-solid fa-circle-info"></i> Copy the table and add it to a file of your preference.</label><br>
+              <button name="copy-table" id="copyTable">Copy Table to Clipboard</button>
+            </div>
               <div class="select-options">
                   <h4 style="text-align: center;">Table management options</h4>
                   <div class="table-id">
-                    <p>1. Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()"><i class="fa-solid fa-check"></i></button>&nbsp<button onclick="removeTableID();"><i class="fa-solid fa-rotate-left"></i></button>
+                    <!-- <button onclick="updateTableID()"><i class="fa-solid fa-check"></i></button> -->
+                    <p>1. Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="removeTableID();"><i class="fa-solid fa-rotate-left"></i></button>
                   </div>
                   <div id="footstepsBeginning">
                   <label for="beginning">2. First set of footsteps:</label>
@@ -466,15 +474,109 @@
 <script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script>
-  let fileName = document.getElementById("entryTableID");
 
-  function ExportToExcel(type, fn, dl) {
-      var elt = document.getElementById('table');
-      var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
-      return dl ?
-          XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
-          XLSX.writeFile(wb, fn || (fileName.value != ""? fileName.value + "." + (type || 'xlsx'): "measurements." + (type || 'xlsx')));
-  }
+// THIS ENTIRE SCRIPT HANDLES EXCEL EXPORT //
+
+document.getElementById("entryTableID").addEventListener("input", function () {
+    const tableTitle = document.getElementById("titleImage");
+    const value = this.value.trim();
+    tableTitle.innerHTML = value !== "" ? "<b>Table ID:</b> " + value : "";
+});
+
+let uploadedWorkbook = null;
+let uploadedFileName = null;
+
+document.getElementById("upload-excel").addEventListener("change", function (e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        uploadedWorkbook = XLSX.read(data, { type: "array" });
+    };
+
+    reader.readAsArrayBuffer(file);
+});
+
+document.getElementById("exportEx").addEventListener("click", function () {
+    const manualID = document.getElementById("entryTableID");
+    const tableTitle = document.getElementById("titleImage");
+    const table = document.getElementById("table");
+
+    const baseFileName = manualID.value.trim() !== "" ? manualID.value.trim() : "measurements";
+    const fileName = baseFileName + ".xlsx";
+    const sheetName = baseFileName;
+
+    // Update table title
+    tableTitle.innerHTML = "<b>Table ID:</b> " + baseFileName;
+
+    const newSheet = XLSX.utils.table_to_sheet(table);
+
+    if (uploadedWorkbook) {
+        if (uploadedWorkbook.SheetNames.includes(sheetName)) {
+            const confirmOverwrite = confirm(`A sheet named "${sheetName}" already exists. Do you want to overwrite it and create a new file?`);
+            if (!confirmOverwrite) return;
+
+            // Remove existing sheet before replacing
+            const index = uploadedWorkbook.SheetNames.indexOf(sheetName);
+            delete uploadedWorkbook.Sheets[sheetName];
+            uploadedWorkbook.SheetNames.splice(index, 1);
+        }
+
+        XLSX.utils.book_append_sheet(uploadedWorkbook, newSheet, sheetName);
+        XLSX.writeFile(uploadedWorkbook, uploadedFileName || fileName); // Safe fallback
+    } else {
+        const newWb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(newWb, newSheet, sheetName);
+        XLSX.writeFile(newWb, fileName);
+    }
+
+    // Reset upload state
+    document.getElementById("upload-excel").value = "";
+    uploadedWorkbook = null;
+    uploadedFileName = null;
+});
+
+
+document.getElementById("resetUpload").addEventListener("click", function () {
+    document.getElementById("upload-excel").value = "";
+    uploadedWorkbook = null;
+});
+</script>
+<script>
+
+// THIS SCRIPT HANDLES COPYING ENTIRE HTML TABLE TO USER CLIPBOARD //
+
+document.getElementById("copyTable").addEventListener("click", function () {
+    const table = document.getElementById("table");
+    if (!table) {
+        alert("Table not found.");
+        return;
+    }
+
+    let tableText = "";
+    for (let row of table.rows) {
+        let rowText = [];
+        for (let cell of row.cells) {
+            rowText.push(cell.innerText.trim());
+        }
+        tableText += rowText.join("\t") + "\n"; // tab-delimited
+    }
+
+    // Copy to clipboard using Clipboard API
+    navigator.clipboard.writeText(tableText)
+        .then(() => {
+            alert("Table copied to clipboard! You can now paste it into Excel or another file.");
+        })
+        .catch(err => {
+            console.error("Failed to copy table:", err);
+            alert("Copying failed. Please try again.");
+        });
+});
+
+
+</script>
+
 
 </script>
 <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>

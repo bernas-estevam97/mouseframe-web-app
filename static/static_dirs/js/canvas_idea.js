@@ -714,9 +714,13 @@ document.addEventListener('keydown', function(event) {
         break;
       case 'r':
       // Trigger the button click
-        document.getElementById('resetCanvas').click();
-        break;
-      
+      // Ask for user confirmation
+        if (confirm("Are you sure you want to delete all points?")== true){
+          document.getElementById('resetCanvas').click();
+        } else{
+          return;
+        }
+        break; 
       default:
         // console.log("Key not mapped to any button");
     }
@@ -1964,10 +1968,10 @@ function removeAllEntries() {
   removeByEntriesOption.style.display = 'none', removeByMeasurementsOption.style.display = 'none';
 }
 
-function updateTableID() {
-  tableTitle.innerHTML = "<b>Table ID: <b>";
-  tableTitle.innerHTML += " " + manualID.value;
-}
+// function updateTableID() {
+//   tableTitle.innerHTML = "<b>Table ID: <b>";
+//   tableTitle.innerHTML += " " + manualID.value;
+// }
 
 function removeTableID() {
   tableTitle.innerHTML = "<b>Table ID: <b>";
