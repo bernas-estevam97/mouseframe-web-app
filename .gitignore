@@ -2,6 +2,7 @@ venv/
 mouseframe_venv/
 mouseframe_venv_310/
 venv312/
+venv_312/
 db.sqlite3
 staticfiles/
 .prettierignore
