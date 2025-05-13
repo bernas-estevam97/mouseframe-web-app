@@ -1082,6 +1082,10 @@ input::placeholder{
   justify-content: space-between;
 }
 
+.data-management .table-section{
+  max-width: 500px;
+}
+
 .data-management .table-results {
   background-color: #fff;
   padding: 5px 10px;
@@ -1192,15 +1196,29 @@ input::placeholder{
 } */
 
 .select-options button{
-  padding: 5px 10px;
+  padding: 5px 8px;
   border-radius: 1px !important;
   border: 1px solid #c1c1c1;
   cursor: pointer;
 }
 
-#addAll{
-  margin-top: 20px;
-  /* display: none; */
+.select-options .entry-table-id{
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.select-options .add-buttons{
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.select-options .add-buttons .add-all-block{
+  margin-right: 8px;
+}
+
+.select-options .add-buttons .add-all-block, .select-options .add-buttons .add-all-average-block{
+  display: flex;
+  margin-top: 10px;
 }
 
 
@@ -1328,3 +1346,12 @@ footer .footer-links a:hover{
     font-size: 3em;
   }
 }
+
+
+@media screen and (max-width: 1360px){
+  .select-options .add-buttons{
+  flex-direction: column;
+}
+}
+
+

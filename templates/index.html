@@ -342,7 +342,10 @@
                   <h4 style="text-align: center;">Table management options</h4>
                   <div class="table-id">
                     <!-- <button onclick="updateTableID()"><i class="fa-solid fa-check"></i></button> -->
-                    <p>1. Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="removeTableID();"><i class="fa-solid fa-rotate-left"></i></button>
+                    <p>1. Insert table ID:</p>
+                    <div class="entry-table-id">
+                      <input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="removeTableID();"><i class="fa-solid fa-rotate-left"></i></button>
+                    </div>
                   </div>
                   <div id="footstepsBeginning">
                   <label for="beginning">2. First set of footsteps:</label>
@@ -371,8 +374,14 @@
                     </ul>
                     <btn class="new-btn-close-modal" id="closeModalHelpAddEntriesAverage">Close</btn>
                   </section>
-                  
-                  <button id="addAll" type="submit" onclick="addEntriesAll()">Add Entries</button><button id="openAe" type="button"><i class="fa-solid fa-circle-question"></i></button>&nbsp&nbsp&nbsp<button id="addAllAverage" type="submit" onclick="addEntriesAllAverage()">Add Entries with average</button><button id="openAea" type="button"><i class="fa-solid fa-circle-question"></i></button><br>
+                  <div class="add-buttons">
+                  <div class="add-all-block">
+                    <button id="addAll" type="submit" onclick="addEntriesAll()">Add Entries</button><button id="openAe" type="button"><i class="fa-solid fa-circle-question"></i></button>
+                  </div>
+                  <div class="add-all-average-block">
+                    <button id="addAllAverage" type="submit" onclick="addEntriesAllAverage()">Add Entries with average</button><button id="openAea" type="button"><i class="fa-solid fa-circle-question"></i></button>
+                  </div><br>
+                  </div>
                   </div>
                   <!-- <input type="submit" onclick="addEntry();" value="Add Entries"><br> -->
                   <!-- <br><p id="entryPreview"></p> -->
@@ -480,7 +489,7 @@
 document.getElementById("entryTableID").addEventListener("input", function () {
     const tableTitle = document.getElementById("titleImage");
     const value = this.value.trim();
-    tableTitle.innerHTML = value !== "" ? "<b>Table ID:</b> " + value : "";
+    tableTitle.innerHTML = value !== "" ? "<b>Table ID:</b> " + value : "<b>Table ID:</b> ";
 });
 
 let uploadedWorkbook = null;
