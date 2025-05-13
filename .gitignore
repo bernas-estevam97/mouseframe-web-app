@@ -8,3 +8,10 @@ staticfiles/
 .prettierignore
 .env
 dbbk.sqlite3
+__pycache__/
+__pycache__/
+**/migrations/__pycache__/
+**/migrations/*.pyc
+*.pyc
+tests/
+.pytest_cache/
