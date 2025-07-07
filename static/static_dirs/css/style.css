@@ -389,9 +389,6 @@ header h1 {
   /* text-align: center; */
 }
 
-.buttons-plus-options .mouse-scheme{
-}
-
 .buttons-plus-options .mouse-scheme .mouse-image{
   border: 2px solid #000;
   box-shadow: 4px 6px 18px; /* blur */
@@ -415,6 +412,7 @@ header h1 {
 }
 
 .right-side-options{
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding-left: 32px;
@@ -445,7 +443,7 @@ header h1 {
   padding: 32px 64px 64px 64px;
   font-size: 1.3rem;
   text-align: center;
-  width: 70vw;
+  width: 1350px;
   
 }
 
@@ -509,8 +507,14 @@ input[type='range']::-moz-range-thumb:hover{
   font-size: 1.1em;
 }
 
+
+.accordion{
+  width: 1300px;
+}
+
 .accordion-item{
-  border: 2px solid rgba(0,0,0,.125) !important; 
+  width: 1300px;
+  border: 2px solid rgba(0,0,0,.125) !important;
 }
 
 .accordion-header button{
@@ -1083,20 +1087,19 @@ input::placeholder{
 }
 
 .data-management .table-section{
-  max-width: 500px;
+  width: 90%;
 }
 
 .data-management .table-results {
   background-color: #fff;
   padding: 5px 10px;
   margin: 5px;
-}
-
-.table-results{
   max-height: 500px;
   overflow-y: scroll;
   overflow-x: hidden;
 }
+
+
 
 .data-management h3 {
   text-align: center;
@@ -1104,6 +1107,7 @@ input::placeholder{
 
 .data-management table {
   border: 1px solid #000;
+  width: 100%;
 }
 
 .data-management table th {
@@ -1159,7 +1163,7 @@ input::placeholder{
 
 .data-management .select-options {
   position: relative;
-  width: 50%;
+  width: 70%;
   text-align: left;
   font-size: 1em;
   border: 7px double #c1c1c1;
@@ -1313,6 +1317,11 @@ footer .footer-links a:hover{
   text-decoration: underline;
 }
 
+#zoomNotice {
+  transition: opacity 0.3s ease;
+}
+
+
 
 
 
@@ -1354,4 +1363,15 @@ footer .footer-links a:hover{
 }
 }
 
+@media (min-width:1101px) and (max-width: 1400px){
+  .accordion{
+    width: 80vw !important;
+  }
+  .accordion-item{
+  width: 80vw;
+  }
 
+  .image-resize{
+    width: 90vw;
+  }
+}

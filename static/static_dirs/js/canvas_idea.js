@@ -831,114 +831,64 @@ let loadFile = function (event) {
   });
   refreshRemoveList();
   // IMAGE ONLOAD SECTION - //
-  img.onload = () => {
-    event.target.value = null;
-    imgWidth.innerHTML =
-      img.width;
-    imgHeight.innerHTML =
-      img.height;
-    imgContainer.style.border = "2px solid black";
-    // If statements for automatically resizing images too big for 1080p screens. Need to work on more resizing function accoridng to user resolution : Function in line 730
+img.onload = () => {
+  event.target.value = null;
+  originalImageWidth = img.naturalWidth;
+  originalImageHeight = img.naturalHeight;
 
-    if (img.width >= (window.screen.width * window.devicePixelRatio)*2 || img.height >= (window.screen.height * window.devicePixelRatio)*2) {
-      // imgSizeStatus = 25;
-      imgContainer.style.width = img.width * 0.4 + "px";
-      imgContainer.style.height = img.height * 0.4 + "px";
-      imgContainer.style.backgroundSize =
-        img.width * 0.4 + "px " + img.height * 0.4 + "px";
-      canvas.height = img.height * 0.4;
-      canvas.width = img.width * 0.4;
-      document.getElementById("currentImgSize").innerHTML =
-        "<b>Current image size is:</b> " +
-        img.width * 0.4 +
-        "x" +
-        img.height * 0.4 +
-        " (40% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 40% of the size.</i>";
-      // tableDynamicValuePx.innerHTML = "Value(px) at 25%";
-      // tableDynamicValueCm.innerHTML = "Value(cm) at 25%";
-      // let originalValueCm = table.rows[1].insertCell();
-      // originalValueCm.outerHTML =
-      //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 40% of its original size!`; //\n
-      //A new column with original image size values in cm added.`;
-      // document.getElementById("titleImage").colSpan = "6";
-      slider.value = 8;
-    } else if (
-      (img.width >= (window.screen.width * window.devicePixelRatio) && img.width < (window.screen.width * window.devicePixelRatio)*1.3) ||
-      (img.height >= (window.screen.height * window.devicePixelRatio) && img.height < (window.screen.height * window.devicePixelRatio)*1.3)
-    ) {
-      // imgSizeStatus = 75;
-      imgContainer.style.width = img.width * 0.75 + "px";
-      imgContainer.style.height = img.height * 0.75 + "px";
-      imgContainer.style.backgroundSize =
-        img.width * 0.75 + "px " + img.height * 0.75 + "px";
-      canvas.height = img.height * 0.75;
-      canvas.width = img.width * 0.75;
-      document.getElementById("currentImgSize").innerHTML =
-        "<b>Current image size is:</b> " +
-        img.width * 0.75 +
-        "x" +
-        img.height * 0.75 +
-        " (75% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 75% of the size.</i>";
-      // tableDynamicValuePx.innerHTML = "Value(px) at 75%";
-      // tableDynamicValueCm.innerHTML = "Value(cm) at 75%";
-      // let originalValueCm = table.rows[1].insertCell();
-      // originalValueCm.outerHTML =
-      //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
-      //A new column with original image size values in cm added.`;
-      // document.getElementById("titleImage").colSpan = "6";
-      slider.value = 15;
-    } else if (
-      (img.width >= (window.screen.width * window.devicePixelRatio)*1.3 && img.width < (window.screen.width * window.devicePixelRatio)*2) ||
-      (img.height >= (window.screen.height * window.devicePixelRatio)*1.3 && img.height < (window.screen.height * window.devicePixelRatio)*2)
-    ) {
-      // imgSizeStatus = 50;
-      imgContainer.style.width = img.width * 0.5 + "px";
-      imgContainer.style.height = img.height * 0.5 + "px";
-      imgContainer.style.backgroundSize =
-        img.width * 0.5 + "px " + img.height * 0.5 + "px";
-      canvas.height = img.height * 0.5;
-      canvas.width = img.width * 0.5;
-      document.getElementById("currentImgSize").innerHTML =
-        "<b>Current image size is:</b> " +
-        img.width * 0.5 +
-        "x" +
-        img.height * 0.5 +
-        " (50% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 50% of the size.</i>";
-      tableDynamicValuePx.innerHTML = "Value(px) at 50%";
-      tableDynamicValueCm.innerHTML = "Value(cm) at 50%";
-      // let originalValueCm = table.rows[1].insertCell();
-      // originalValueCm.outerHTML =
-      //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-      // document.getElementById("titleImage").colSpan = "6";
-      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
-      //A new column with original image size values in cm added.`;
-      slider.value = 10;
-    } else {
-      // imgSizeStatus = 100;
-      imgContainer.style.width = img.width + "px";
-      imgContainer.style.height = img.height + "px";
-      imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
-      canvas.height = img.height;
-      canvas.width = img.width;
-      document.getElementById("currentImgSize").innerHTML =
-        "<b>Current image size is:</b> " + img.width + "x" + img.height;
-      tableWarning.innerHTML = "";
-      slider.value = 20;
-    }
-    // canvasInfo.innerHTML = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
-    // document.getElementById("inputScreenInches").style.display = "";
-    // document.getElementById("screenPPI").style.display = "";
-    // document.getElementById("imageDimInches").style.display = "";
-    // document.getElementById("imageDimCm").style.display = "";
-    // document.getElementById("labelInput").style.display = "";
-    // document.getElementById("ppiCalculus").style.display = "";
-    document.getElementById('removeImage').style.display = "";
-    document.getElementById('accordion').style.display = '';
-    // ------------------------------------------------------ //
-  };
+  imgWidth.innerHTML = originalImageWidth;
+  imgHeight.innerHTML = originalImageHeight;
+  imgContainer.style.border = "2px solid black";
+
+  resizeImageToFitViewport(img);
+
+  document.getElementById('removeImage').style.display = "";
+  document.getElementById('accordion').style.display = '';
 };
+
+function resizeImageToFitViewport(img) {
+  const maxViewportWidth = window.innerWidth * 0.9;
+  const maxViewportHeight = window.innerHeight * 0.9;
+
+  const widthScale = maxViewportWidth / img.width;
+  const heightScale = maxViewportHeight / img.height;
+  const scale = Math.min(widthScale, heightScale, 1); // Don't upscale, only downscale
+
+  const resizedWidth = Math.round(img.width * scale);
+  const resizedHeight = Math.round(img.height * scale);
+
+  // Apply resized dimensions
+  imgContainer.style.width = `${resizedWidth}px`;
+  imgContainer.style.height = `${resizedHeight}px`;
+  imgContainer.style.backgroundSize = `${resizedWidth}px ${resizedHeight}px`;
+
+  canvas.width = resizedWidth;
+  canvas.height = resizedHeight;
+
+  // Update UI
+  const scalePercent = Math.round(scale * 100);
+  document.getElementById("currentImgSize").innerHTML =
+    `<b>Current image size is:</b> ${resizedWidth}x${resizedHeight}` +
+    (scale < 1
+      ? ` <br>&#x26A0;&nbsp;<i>Image scaled down to ${scalePercent}% to fit your screen</i>`
+      : "");
+
+  tableWarning.innerHTML = scale < 1
+    ? `<span style="color: red;"><b>&#x26A0;</b></span> Image was resized to ${scalePercent}% of its original size!`
+    : "";
+
+   // Slider default logic: set slider.value to the actual percent scale (1-100)
+  slider.value = scalePercent;
+
+  // Example table update
+  if (scale < 1) {
+    tableDynamicValuePx.innerHTML = `Value(px) at ${scalePercent}%`;
+    tableDynamicValueCm.innerHTML = `Value(cm) at ${scalePercent}%`;
+  }
+  // Also trigger the slider input event so all related resizing happens consistently
+  slider.dispatchEvent(new Event('input'));
+}
+}
 
 
 // ALERT USER BEFORE LEAVING ANALYSIS PAGE //
@@ -1283,52 +1233,139 @@ let originalValueCell = document.getElementById("originalValueCell");
 // IMAGE RESIZE SECTION
 // SLIDER IMAGE RESIZING IS STOPPING BUTTON EVENT LISTENERS --- WORK ON FIX 
 
+let originalImageWidth, originalImageHeight; // Track these after loading
+
 const slider = document.getElementById('mySlider');
 slider.addEventListener('input', handleChange);
 
+function handleChange(event) {
+  resetCanvas();
 
-function handleChange(drag) {
-  // remove all listeners and reset canvas on resize
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener("click", drawMeasurePoint);
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
-  });
-  pointsRedLeft.length = 0;
-  pointsRedRight.length = 0;
-  pointsBlueLeft.length = 0;
-  pointsBlueRight.length = 0;
-  pointsMeasure.length = 0;
-  canvas.style.cursor = "auto";
-  pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize+"px";
-  const {value} = drag.target;
-  imgContainer.style.backgroundSize = img.width*(value/20) + "px " + img.height*(value/20) + "px";
-  imgContainer.style.width = img.width*(value/20) + "px";
-  imgContainer.style.height = img.height*(value/20) + "px";
-  canvas.width = img.width*(value/20);
-  canvas.height = img.height*(value/20);
-  document.getElementById("currentImgSize").innerHTML = document.getElementById('currentImgSize').innerHTML = "<b>Current image size is:</b> " +
-  Math.round((img.width*(value*100/20))/100)+
-  "x" +
-  Math.round((img.height*(value*100/20))/100)+
-  " ("+ Math.round((value)*5)+ "% of size!)";
-  if (value==20){
+  const scaleFactor = event.target.value / 100;
+  const resizedWidth = Math.round(originalImageWidth * scaleFactor);
+  const resizedHeight = Math.round(originalImageHeight * scaleFactor);
+
+  imgContainer.style.backgroundSize = `${resizedWidth}px ${resizedHeight}px`;
+  imgContainer.style.width = `${resizedWidth}px`;
+  imgContainer.style.height = `${resizedHeight}px`;
+
+  canvas.width = resizedWidth;
+  canvas.height = resizedHeight;
+
+  // UI updates
+  const scalePercent = Math.round(scaleFactor * 100);
+  document.getElementById("currentImgSize").innerHTML = 
+    `<b>Current image size is:</b> ${resizedWidth}x${resizedHeight}` + 
+    (scalePercent !== 100 ? ` (${scalePercent}% of size!)` : "");
+
+  if (scalePercent === 100) {
     tableWarning.style.display = 'none';
-    document.getElementById("currentImgSize").innerHTML = document.getElementById('currentImgSize').innerHTML = "<b>Current image size is:</b> " +
-    Math.round((img.width*(value*100/20))/100)+
-    "x" +
-    Math.round((img.height*(value*100/20))/100);
-  } else{
+  } else {
     tableWarning.style.display = '';
-    tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to ` + Math.round((value)*5)+ `% of its original size!`;
+    tableWarning.innerHTML = 
+      `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to ${scalePercent}% of its original size!`;
   }
+
+  tableDynamicValuePx.innerHTML = `Value(px) at ${scalePercent}%`;
+  tableDynamicValueCm.innerHTML = `Value(cm) at ${scalePercent}%`;
 }
+
+// function resetCanvasOnDrag() {
+//   canvas.removeEventListener("click", drawBlueLeft);
+//   canvas.removeEventListener("click", drawBlueRight);
+//   canvas.removeEventListener("click", drawRedLeft);
+//   canvas.removeEventListener("click", drawRedRight);
+//   canvas.removeEventListener("click", printMousePos);
+//   canvas.removeEventListener("click", drawMeasurePoint);
+
+//   const elems = document.querySelectorAll(".active");
+//   elems.forEach(el => el.classList.remove("active"));
+
+//   pointsRedLeft.length = 0;
+//   pointsRedRight.length = 0;
+//   pointsBlueLeft.length = 0;
+//   pointsBlueRight.length = 0;
+//   pointsMeasure.length = 0;
+
+//   canvas.style.cursor = "auto";
+//   pointSize = 4;
+//   showSize.innerHTML = "Current point size is: " + pointSize + "px";
+// }
+
+
+// -------------- ZOOM MODE --------------------- //
+
+let zoomMode = false;
+const zoomNotice = document.createElement('div');
+
+// ZOOM NOTICE
+zoomNotice.id = 'zoomNotice';
+zoomNotice.innerText = '🔍 Zoom Mode is ON — use + / - / 0 to resize image by 1%. Press Z to toggle zoom mode.';
+zoomNotice.style.cssText = `
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fffae6;
+  border: 1px solid #f0c36d;
+  padding: 10px 15px;
+  z-index: 1000;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  font-family: sans-serif;
+  font-size: 14px;
+  display: none;
+`;
+document.body.appendChild(zoomNotice);
+
+document.addEventListener('keydown', function (e) {
+  // 🚫 Prevent zoom mode activation inside input/textarea/editable content
+  const active = document.activeElement;
+  const isEditable = (
+    active.tagName === 'INPUT' ||
+    active.tagName === 'TEXTAREA' ||
+    active.isContentEditable
+  );
+
+  if (isEditable) {
+    return; // Do nothing if focus is in an editable field
+  }
+
+  const key = e.key;
+  let current = parseInt(slider.value, 10);
+  let newValue = current;
+
+  // 🔁 Toggle Zoom Mode
+  if (key.toLowerCase() === 'z') {
+    zoomMode = !zoomMode; // If it was off (false), it turns on (true) and vice versa.
+    zoomNotice.style.display = zoomMode ? 'block' : 'none'; // We show/hide the zoom notice depending on the mode.
+
+    if (zoomMode && !slider.dataset.warned) {
+      console.log("Zoom mode active — use + / - / 0 keys to resize image by 1%");
+      slider.dataset.warned = "true";
+    }
+
+    return;
+  }
+
+  if (!zoomMode) return;
+
+  // 🔍 Zoom In / Out
+  if (key === '+' || key === '=') {
+    newValue = Math.min(current + 1, 100); // +1%
+  } else if (key === '-') {
+    newValue = Math.max(current - 1, 1); // -1%
+  } else if (key === '0') {
+    newValue = 100; // Reset to 100%
+  }
+
+  if (newValue !== current) {
+    e.preventDefault();
+    slider.value = newValue;
+    slider.dispatchEvent(new Event('input'));
+  }
+});
+
 
 
 

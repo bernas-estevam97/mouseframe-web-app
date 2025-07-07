@@ -113,6 +113,9 @@
         <h3 style="font-size: 2rem; margin:0 0 10px 0;"><i class="fa-solid fa-left-right"></i>&nbspImage resizing&nbsp<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContent">
           <!-- <i class="fa-solid fa-caret-down"></i> --><i class="fa-solid fa-circle-question"></i>
         </button>:</h3>
+        <small style="display: block; margin-top: 10px; margin-bottom:20px; color: #555;">
+        💡  Press <kbd>Z</kbd> to enter Zoom Mode. Then use <kbd>+</kbd>, <kbd>-</kbd>, or <kbd>0</kbd> to resize the image or use the slider underneath.
+          </small>
         <div class="collapse" id="collapseContent">
           <ul>
             <li style="font-size: 1.2rem; text-align: left;">Be sure to resize to your ideal size before working on any measurements.</li>
@@ -120,11 +123,13 @@
             <li style="font-size: 1.2rem; text-align: left;">If the image has a 1 cm scale to be converted to pixels it can be safely resized since you can measure the resized 1cm line and use it.</li>
             <li style="font-size: 1.2rem; text-align: left;">If the image does not have a 1cm line and you do not have a saved value for the new resized image resolution, it is recommended not to resize as you will not be able to get a cm to px correct conversion value.</li>
             <li style="font-size: 1.2rem; text-align: left;">You can use the resize function by dragging the scroll or by clicking a scrollbar position or even use your arrow keys after clicking the scrollbar pointer.</li>
+            <li style="font-size: 1.2rem; text-align: left;">You can also use the zoom mode if you prefer to do so.</li>
           </ul>
+          
           <span style="color:red;"><b>&#9888;</b></span> <b><u>Caution:</u></b>&nbspAny data in the table below will be removed along with the dots marked in the image when resizing!</p>
         </div>
         <div class="slider-container">
-        <input type="range" min="1" max="20" value="20" id="mySlider" class="slider" style="padding:0;">
+        <input type="range" min="1" max="100" value="100" id="mySlider" class="slider" style="padding:0;">
         </div>
         <!-- <button id="seventyFiveP" onclick="resizeSF();">75% Size</button>
         <button id="fiftyP" onclick="resizeFifty();">50% Size</button>
@@ -138,7 +143,7 @@
        </div>  
       
        <!--- BREAK-->
-       <div id="accordion" style="width: 70vw;">
+       <div id="accordion">
         <div class="accordion-item">
           <h2 class="accordion-header" id="headingOne">
             <!-- <h5 class="mb-0"> -->
