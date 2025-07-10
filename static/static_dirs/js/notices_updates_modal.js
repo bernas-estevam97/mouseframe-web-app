@@ -1,15 +1,29 @@
+// function to give time for all initial functions to load without flashing any element.
+
+window.addEventListener('load', function () {
+    document.getElementsByTagName("html")[0].style.visibility = "visible";
+});
+
+
 let closeBtn = document.getElementById("closeModal");
 let modalNews = document.getElementById("modalNews"); 
 let showNews = document.getElementById("showNews");
-let modalStorage = localStorage.getItem('modalNews')
 
-if (modalStorage){
-    modalNews.classList.add("hidden");
-} else{
-    localStorage.setItem('modalNews','true');
+const CURRENT_VERSION = "1.1.3";
+
+document.querySelectorAll('[data-version]').forEach(el => {
+  el.textContent = CURRENT_VERSION;
+});
+
+const SAVED_VERSION = localStorage.getItem("modalNewsVersion");
+
+if (SAVED_VERSION !== CURRENT_VERSION) {
+  // New version or first visit — show modal
+  modalNews.classList.remove("hidden");
+  localStorage.setItem("modalNewsVersion", CURRENT_VERSION);
+} else {
+  modalNews.classList.add("hidden"); // Already seen this version
 }
-
-// console.log(modalStorage);
 
 // MODAL FOR NEWS AND VERSION UPDATES
 
@@ -23,8 +37,6 @@ showNews.onclick = function displayNews(){
 
 
 
-// function to give time for all initial functions to load without flashing any element.
 
-window.addEventListener('load', function () {
-    document.getElementsByTagName("html")[0].style.visibility = "visible";
-});
+
+
