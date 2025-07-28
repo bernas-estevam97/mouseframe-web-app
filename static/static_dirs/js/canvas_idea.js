@@ -744,6 +744,21 @@ getUserResolution();
 
 // ----------------------- MOST VARIABLES ASSIGNED --------------------------- //
 
+function getShortenedFilename(filename, maxLength = 50) {
+  if (filename.length <= maxLength) return filename;
+
+  const extIndex = filename.lastIndexOf('.');
+  const extension = extIndex !== -1 ? filename.slice(extIndex) : '';
+  const nameOnly = extIndex !== -1 ? filename.slice(0, extIndex) : filename;
+
+  const visibleChars = maxLength - extension.length - 3; // 3 for "..."
+  const startChars = Math.ceil(visibleChars / 2);
+  const endChars = Math.floor(visibleChars / 2);
+
+  return `${nameOnly.slice(0, startChars)}...${nameOnly.slice(-endChars)}${extension}`;
+}
+
+
 // let imgSizeStatus = 0;
 let imgWidth = document.getElementById("imageUploadedWidth");
 let imgHeight = document.getElementById("imageUploadedHeight");
@@ -794,15 +809,9 @@ let loadFile = function (event) {
     //   "<strong>Uploaded image size:</strong> " +
     //   (event.target.files[0].size / 1024).toFixed(2) +
     //   " kb";
-    if (event.target.files[0].name.length > 30) {
-      imgName.innerHTML =
-        event.target.files[0].name.slice(
-          event.target.files[0].name.length / 2,
-          event.target.files[0].name.length + 1
-        );
-    } else {
-      imgName.innerHTML = event.target.files[0].name;
-    }
+    const fileInput = event.target.files[0];
+    const shortened = getShortenedFilename(fileInput.name);
+    imgName.innerHTML = shortened;
 
     canvas.style.display = "";
     // document.getElementById("canvasWidth").value = '';

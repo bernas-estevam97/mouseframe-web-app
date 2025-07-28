@@ -351,12 +351,12 @@ header h1 {
 
 .image-info{
   position: relative;
-  padding: 5px;
+  display: inline-block;
+  padding: 5px 20px;
   background: #fff;
   border: 4px double #000;
   margin: 3px 0 10px 0;
   text-align: center;
-  max-width: 450px;
   left:50%;
   transform: translateX(-50%);
 }
