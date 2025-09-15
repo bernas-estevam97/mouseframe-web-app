@@ -12,9 +12,9 @@
         <title>MOUSEFRAME - Analysis</title>
     </head>
 <body>
-    <p id="version">v1.1.2</p>
+    <p id="version">v<span data-version></span></p>
     <header>
-        <h1>MOUSEFRAME - Contact</h1>
+        <h1><div class="header-images"><img class="image-one" src="{% static 'img/mouse.png' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}"></div><div class="text-title">&nbsp&nbsp&nbspMOUSEFRAME - Contact details</div> </h1>
         <li class="nav-item dropdown" style="list-style-type: none;">
           <a class="nav-link dropdown-toggle" style="color: #000;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             More
@@ -26,10 +26,6 @@
             <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank">ABC-RI</a></li>
           </ul>
         </li>
-        <div class="header-images"> 
-        <img class="image-one" src="{% static 'img/mouse.png' %}">
-        <img class="image-two" src="{% static 'img/mouse-paws.png' %}"  
-        </div>
     </header>
     <main>
     <div class="container-full">
@@ -68,5 +64,24 @@
       </footer>
       <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
       <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+      <script type="text/javascript" >
+        window.addEventListener('load', function () {
+        document.getElementsByTagName("html")[0].style.visibility = "visible";
+    });
+
+
+        let closeBtn = document.getElementById("closeModal");
+        let modalNews = document.getElementById("modalNews"); 
+        let showNews = document.getElementById("showNews");
+
+        const CURRENT_VERSION = "1.1.3";
+
+        document.querySelectorAll('[data-version]').forEach(el => {
+          el.textContent = CURRENT_VERSION;
+        });
+
+        const SAVED_VERSION = localStorage.getItem("modalNewsVersion");
+      </script>
+      <script type="text/javascript" src="{% static 'js/js-cookie.js' %}"></script>
 </body>
 </html>
