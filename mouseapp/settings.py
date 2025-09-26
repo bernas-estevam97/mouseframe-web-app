@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# load_dotenv()
+#load_dotenv()
 # key = os.environ.get('S_KEY')
 #For ubuntu provide full path
 load_dotenv('var/www/mouseframe/django_image_analysis/mouseapp/.env')
@@ -32,8 +32,8 @@ SECRET_KEY=key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-# ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '94.46.171.187', 'mouseframe.pt']
+
+ALLOWED_HOSTS = ['mouseframe.pt', 'www.mouseframe.pt']
 
 # Application definition
 
@@ -54,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -64,13 +65,6 @@ MIDDLEWARE = [
     'mouseapp.middleware.IPLockMiddleware',
     # 'defender.middleware.FailedLoginMiddleware',
 ]
-
-STORAGES = {
-    # ...
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
 
 # ----------------------------------------------------------------------------#
 
@@ -161,6 +155,33 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mouseapp.wsgi.application'
 
 
+#CSP SECTION
+
+CSP_DEFAULT_SRC = ("'self'",)  # default fallback
+
+CSP_STYLE_SRC = (
+    "'self'",
+    'https://fonts.googleapis.com',  # for Google Fonts CSS
+)
+
+CSP_FONT_SRC = (
+    "'self'",
+    'https://fonts.gstatic.com',  # Google Fonts font files
+)
+
+CSP_IMG_SRC = (
+    "'self'",  # your own static folder images
+    'data:',   # allow base64-encoded images if any
+)
+
+CSP_SCRIPT_SRC = ("'self'",)  # your own JS files, add external domains if any
+
+CSP_CONNECT_SRC = ("'self'",)  # if you make AJAX or WebSocket connections
+
+CSP_FRAME_SRC = ("'none'",)  # block embedding your site into iframes by default
+
+
+
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -226,16 +247,34 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static', 'static_dirs'),)
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+
+# Where static files will be collected to (for production)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-#STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
-# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-#STATICFILES_DIRS = (
-#    os.path.join(BASE_DIR, 'static', 'static_dirs'),
-#)
+
+# Extra directories to look for static files (optional)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static', 'static_dirs'),
+]
+
+# Media files (uploads)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Storage settings (Django 4.2+)
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+        'OPTIONS': {
+            'location': MEDIA_ROOT,
+        },
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

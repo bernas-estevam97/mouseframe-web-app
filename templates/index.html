@@ -418,48 +418,6 @@
         </div>
       </div>
       </div>
-       <!--- BREAK-->
-       
-
-   <!-- <div class="resolution-info">
-    <label id="labelInput" for="inches">Your screen size in inches(in):</label>
-    <input name="inches" class="input-inches" id="inputScreenInches" type="text" maxlength="4" size="4" onkeypress="if(!event.key.match(/[1-9.]/)) event.preventDefault()">
-    <button class="ppi-calc" id="ppiCalculus" onclick="getScreenPPI();">Get Screen PPI</button>
-    <p id="screenPPI"></p>
-    <p id="imageUploadedDPI"></p>
-    <p id="imageDimInches"></p>
-    <p id="imageDimCm"></p>
-   </div> -->
-   <!-- <div class="buttons-change"> -->
-    <!-- <input id="canvasWidth" type="number" placeholder="Canvas Width">
-    <button id="changeW" onclick="changeWidth();">Change canvas width</button>
-    <button id="resetW" onclick="resetWidth();">Reset Width</button>
-    <input id="canvasHeight" type="number" placeholder="Canvas Height">
-    <button id="changeH" onclick="changeHeight();">Change canvas height</button>
-    <button id="resetH" onclick="resetHeight();">Reset Height</button><br><br> -->
-    <!-- <input id="containerWidth" type="number" placeholder="Image Width"> -->
-    <!-- <button id="changeImgW" onclick="changeImgW();">Change image width</button> -->
-    <!-- <button id="resetImgW" onclick="resetImgW();">Reset Image Width</button> -->
-    <!-- <input id="containerHeight" type="number" placeholder="Image Height"> -->
-    <!-- <button id="changeImgDim" onclick="changeImgDim();">Change Image dimensions</button> -->
-    
-   <!-- </div> -->
-   <!-- <div class="saved-distances" id="savedDistance">
-    <h2>Define how many pixels are in a centimeter.</h2>
-    <p>If there is a drawn line with the length of 1cm, measure it in pixels here:</p>
-    <p id="scaleDistance"></p>
-    <button id="measureButton" onclick="drawMeasureCircle();">Measure</button>
-    <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset</button>
-    <button type="submit">Save</button>
-    <button onclick = "distancePointRed();">DistanceRed</button>
-   </div> -->
-   <!-- <div class="dpi-ppi-conversion">
-
-   </div> -->
-   
-      <!-- <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button> -->
-
-    <!-- </form> -->
   </div>
 </div>
 <footer>
@@ -470,7 +428,7 @@
     <a href="https://abcri.pt/" target="_blank">ABC-RI</a>
     <a href="https://abcri.pt/mngt/" target="_blank">MNGT</a>
   </div>
-  <p>© MOUSEFRAME. All rights reserved 2022<script>new Date().getFullYear()>2010&&document.write("-"+new Date().getFullYear());</script></p>
+  <p>© MOUSEFRAME. All rights reserved 2022<span id="year"></span><br></p>
   <div class="footer-logos">
     <div class="img-one"><img src="{% static 'img/Logo_ABCRI.png' %}" alt=""></div>
     <div class="img-two"><img src="{% static 'img/Logo_MNGT.png' %}" alt=""></div>
@@ -485,112 +443,9 @@
 <script type="text/javascript" src="{% static 'js/js-cookie.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-<script>
-
-// THIS ENTIRE SCRIPT HANDLES EXCEL EXPORT //
-
-document.getElementById("entryTableID").addEventListener("input", function () {
-    const tableTitle = document.getElementById("titleImage");
-    const value = this.value.trim();
-    tableTitle.innerHTML = value !== "" ? "<b>Table ID:</b> " + value : "<b>Table ID:</b> ";
-});
-
-let uploadedWorkbook = null;
-let uploadedFileName = null;
-
-document.getElementById("upload-excel").addEventListener("change", function (e) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-        const data = new Uint8Array(e.target.result);
-        uploadedWorkbook = XLSX.read(data, { type: "array" });
-    };
-
-    reader.readAsArrayBuffer(file);
-});
-
-document.getElementById("exportEx").addEventListener("click", function () {
-    const manualID = document.getElementById("entryTableID");
-    const tableTitle = document.getElementById("titleImage");
-    const table = document.getElementById("table");
-
-    const baseFileName = manualID.value.trim() !== "" ? manualID.value.trim() : "measurements";
-    const fileName = baseFileName + ".xlsx";
-    const sheetName = baseFileName;
-
-    // Update table title
-    tableTitle.innerHTML = "<b>Table ID:</b> " + baseFileName;
-
-    const newSheet = XLSX.utils.table_to_sheet(table);
-
-    if (uploadedWorkbook) {
-        if (uploadedWorkbook.SheetNames.includes(sheetName)) {
-            const confirmOverwrite = confirm(`A sheet named "${sheetName}" already exists. Do you want to overwrite it and create a new file?`);
-            if (!confirmOverwrite) return;
-
-            // Remove existing sheet before replacing
-            const index = uploadedWorkbook.SheetNames.indexOf(sheetName);
-            delete uploadedWorkbook.Sheets[sheetName];
-            uploadedWorkbook.SheetNames.splice(index, 1);
-        }
-
-        XLSX.utils.book_append_sheet(uploadedWorkbook, newSheet, sheetName);
-        XLSX.writeFile(uploadedWorkbook, uploadedFileName || fileName); // Safe fallback
-    } else {
-        const newWb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(newWb, newSheet, sheetName);
-        XLSX.writeFile(newWb, fileName);
-    }
-
-    // Reset upload state
-    document.getElementById("upload-excel").value = "";
-    uploadedWorkbook = null;
-    uploadedFileName = null;
-});
-
-
-document.getElementById("resetUpload").addEventListener("click", function () {
-    document.getElementById("upload-excel").value = "";
-    uploadedWorkbook = null;
-});
-</script>
-<script>
-
-// THIS SCRIPT HANDLES COPYING ENTIRE HTML TABLE TO USER CLIPBOARD //
-
-document.getElementById("copyTable").addEventListener("click", function () {
-    const table = document.getElementById("table");
-    if (!table) {
-        alert("Table not found.");
-        return;
-    }
-
-    let tableText = "";
-    for (let row of table.rows) {
-        let rowText = [];
-        for (let cell of row.cells) {
-            rowText.push(cell.innerText.trim());
-        }
-        tableText += rowText.join("\t") + "\n"; // tab-delimited
-    }
-
-    // Copy to clipboard using Clipboard API
-    navigator.clipboard.writeText(tableText)
-        .then(() => {
-            alert("Table copied to clipboard! You can now paste it into Excel or another file.");
-        })
-        .catch(err => {
-            console.error("Failed to copy table:", err);
-            alert("Copying failed. Please try again.");
-        });
-});
-
-
-</script>
-
-
-</script>
+<script type="text/javascript" src="{% static 'js/get-data-year.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/excel-export.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/excel-clipboard.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
 </body>
 </html>
