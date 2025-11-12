@@ -15,7 +15,7 @@ function changeSize() {
   } else {
     pointSize = 4; // if no input is given 4 is default value
   }
-  showSize.innerHTML = "Current point radius size is: " + pointSize + "px";
+  showSize.textContent = "Current point radius size is: " + pointSize + "px";
 }
 
 changeSize(); // initiate function on page load/refresh ---- Still testing
@@ -23,7 +23,7 @@ changeSize(); // initiate function on page load/refresh ---- Still testing
 function resetSize() {
   document.getElementById("sizeInput").value = "";
   pointSize = 4;
-  showSize.innerHTML = "Current point radius size is: " + pointSize + "px";
+  showSize.textContent = "Current point radius size is: " + pointSize + "px";
 }
 // Canvas size changes
 
@@ -534,7 +534,7 @@ function removeAllMeasurePoints() {
   canvas.removeEventListener("click", drawMeasurePoint);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
-  document.getElementById("measureToCm").innerHTML = "";
+  document.getElementById("measureToCm").textContent = "";
   dist = 0;
 }
 
@@ -555,7 +555,7 @@ function resetCanvas() {
   pointsMeasure.length = 0;
   canvas.style.cursor = "auto";
   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize;
+  showSize.textContent = "Current point size is: " + pointSize;
 }
 
 //function clearCanvas(){
@@ -569,7 +569,7 @@ function resetCanvas() {
 //  alert("Clearing points from canvas but keeping indexes. If you want to start over entirely, remove the points from the image plus their indexes by clicking reset canvas instead.");
 //  canvas.style.cursor = "auto";
 //  pointSize = 4;  // when clicking reset canvas point size also goes to default --- can be changed
-//  showSize.innerHTML = "Current point size is: " + pointSize;
+//  showSize.textContent = "Current point size is: " + pointSize;
 //};
 
 // let distances = [];
@@ -591,19 +591,19 @@ function distanceMeasurePoint() {
       pointsMeasure[1].y - pointsMeasure[0].y
     ).toFixed(3);
     console.log(dist);
-    document.getElementById("measureToCm").innerHTML =
+    document.getElementById("measureToCm").textContent =
       "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
     // if (imgSizeStatus == 1){
-    //   document.getElementById("measureToCm").innerHTML = dist + "px equals 1 centimeter";
+    //   document.getElementById("measureToCm").textContent = dist + "px equals 1 centimeter";
     // }
     // if (imgSizeStatus == 0.75){
-    //   document.getElementById("measureToCm").innerHTML = dist + "px equals 0.75 centimeter";
+    //   document.getElementById("measureToCm").textContent = dist + "px equals 0.75 centimeter";
     // }
     // if (imgSizeStatus == 0.5){
-    //   document.getElementById("measureToCm").innerHTML = dist + "px equals 0.5 centimeter";
+    //   document.getElementById("measureToCm").textContent = dist + "px equals 0.5 centimeter";
     // }
     // if (imgSizeStatus == 0.25){
-    //   document.getElementById("measureToCm").innerHTML = dist + "px equals 0.25 centimeter";
+    //   document.getElementById("measureToCm").textContent = dist + "px equals 0.25 centimeter";
     // }
   } else {
     alert("Add 2 points and measure or manually input known values under.");
@@ -620,7 +620,7 @@ function manualInputMeasure() {
   ) {
     dist = inputPixelsManually.value;
     savedChoices.value = "None";
-    document.getElementById("measureToCm").innerHTML =
+    document.getElementById("measureToCm").textContent =
       "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
   }
   if (
@@ -628,7 +628,7 @@ function manualInputMeasure() {
     inputPixelsManually.value == ""
   ) {
     dist = savedChoices[savedChoices.selectedIndex].value;
-    document.getElementById("measureToCm").innerHTML =
+    document.getElementById("measureToCm").textContent =
       "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
   }
 }
@@ -637,7 +637,7 @@ function resetInput() {
   inputPixelsManually.value = "";
   savedChoices.value = "None";
   dist = 0;
-  document.getElementById("measureToCm").innerHTML = "";
+  document.getElementById("measureToCm").textContent = "";
 }
 
 // ------------------------------------------------------------------------------------- -------------------------------------------------------------//
@@ -688,19 +688,19 @@ let loadFile = function (event) {
     showData.style.display = "";
     // canvasInfo.style.display = "none";
     canvasUpload.style.display = "";
-    imgSize.innerHTML =
+    imgSize.textContent =
       "<strong>Uploaded image size:</strong> " +
       (event.target.files[0].size / 1024).toFixed(2) +
       " kb";
     if (event.target.files[0].name.length > 30) {
-      imgName.innerHTML =
+      imgName.textContent =
         "<b>Image name:</b> " +
         event.target.files[0].name.slice(
           event.target.files[0].name.length / 2,
           event.target.files[0].name.length + 1
         );
     } else {
-      imgName.innerHTML = "<b>Image name:</b> " + event.target.files[0].name;
+      imgName.textContent = "<b>Image name:</b> " + event.target.files[0].name;
     }
 
     canvas.style.display = "";
@@ -713,9 +713,9 @@ let loadFile = function (event) {
   // IMAGE ONLOAD SECTION - //
   img.onload = () => {
     event.target.value = null;
-    imgWidth.innerHTML =
+    imgWidth.textContent =
       "<strong>Uploaded image default width:</strong> " + img.width + "px";
-    imgHeight.innerHTML =
+    imgHeight.textContent =
       "<strong>Uploaded image default height:</strong> " + img.height + "px";
     imgContainer.style.border = "2px solid black";
     if (img.width >= 3000 || img.height >= 3000) {
@@ -726,18 +726,18 @@ let loadFile = function (event) {
         img.width * 0.25 + "px " + img.height * 0.25 + "px";
       canvas.height = img.height * 0.25;
       canvas.width = img.width * 0.25;
-      document.getElementById("currentImgSize").innerHTML =
+      document.getElementById("currentImgSize").textContent =
         "<b>Current image size is:</b> " +
         img.width * 0.25 +
         "x" +
         img.height * 0.25 +
         " (25% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 25% of the size.</i>";
-      // tableDynamicValuePx.innerHTML = "Value(px) at 25%";
-      // tableDynamicValueCm.innerHTML = "Value(cm) at 25%";
+      // tableDynamicValuePx.textContent = "Value(px) at 25%";
+      // tableDynamicValueCm.textContent = "Value(cm) at 25%";
       // let originalValueCm = table.rows[1].insertCell();
       // originalValueCm.outerHTML =
       //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
+      tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
       //A new column with original image size values in cm added.`;
       // document.getElementById("titleImage").colSpan = "6";
     } else if (
@@ -751,18 +751,18 @@ let loadFile = function (event) {
         img.width * 0.75 + "px " + img.height * 0.75 + "px";
       canvas.height = img.height * 0.75;
       canvas.width = img.width * 0.75;
-      document.getElementById("currentImgSize").innerHTML =
+      document.getElementById("currentImgSize").textContent =
         "<b>Current image size is:</b> " +
         img.width * 0.75 +
         "x" +
         img.height * 0.75 +
         " (75% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 75% of the size.</i>";
-      // tableDynamicValuePx.innerHTML = "Value(px) at 75%";
-      // tableDynamicValueCm.innerHTML = "Value(cm) at 75%";
+      // tableDynamicValuePx.textContent = "Value(px) at 75%";
+      // tableDynamicValueCm.textContent = "Value(cm) at 75%";
       // let originalValueCm = table.rows[1].insertCell();
       // originalValueCm.outerHTML =
       //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
+      tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
       //A new column with original image size values in cm added.`;
       // document.getElementById("titleImage").colSpan = "6";
     } else if (
@@ -776,19 +776,19 @@ let loadFile = function (event) {
         img.width * 0.5 + "px " + img.height * 0.5 + "px";
       canvas.height = img.height * 0.5;
       canvas.width = img.width * 0.5;
-      document.getElementById("currentImgSize").innerHTML =
+      document.getElementById("currentImgSize").textContent =
         "<b>Current image size is:</b> " +
         img.width * 0.5 +
         "x" +
         img.height * 0.5 +
         " (50% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 50% of the size.</i>";
-      tableDynamicValuePx.innerHTML = "Value(px) at 50%";
-      tableDynamicValueCm.innerHTML = "Value(cm) at 50%";
+      tableDynamicValuePx.textContent = "Value(px) at 50%";
+      tableDynamicValueCm.textContent = "Value(cm) at 50%";
       // let originalValueCm = table.rows[1].insertCell();
       // originalValueCm.outerHTML =
       //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
       // document.getElementById("titleImage").colSpan = "6";
-      tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
+      tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
       //A new column with original image size values in cm added.`;
     } else {
       imgSizeStatus = 100;
@@ -797,11 +797,11 @@ let loadFile = function (event) {
       imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
       canvas.height = img.height;
       canvas.width = img.width;
-      document.getElementById("currentImgSize").innerHTML =
+      document.getElementById("currentImgSize").textContent =
         "<b>Current image size is:</b> " + img.width + "x" + img.height;
-      tableWarning.innerHTML = "";
+      tableWarning.textContent = "";
     }
-    // canvasInfo.innerHTML = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
+    // canvasInfo.textContent = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
     document.getElementById("inputScreenInches").style.display = "";
     document.getElementById("screenPPI").style.display = "";
     document.getElementById("imageDimInches").style.display = "";
@@ -831,7 +831,7 @@ window.addEventListener("beforeunload", (event) => {
 //     if (canvasInputWidth){
 //         canvas.width = canvasInputWidth;
 //         imgContainer.style.width = canvasInputWidth + "px";
-//         canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
+//         canvasInfo.textContent = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
 //     } else{
 //         return;
 //     }
@@ -844,7 +844,7 @@ window.addEventListener("beforeunload", (event) => {
 //   if (canvasInputHeight){
 //     canvas.height = canvasInputHeight;
 //     imgContainer.style.height = canvasInputHeight + "px";
-//     canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
+//     canvasInfo.textContent = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
 //   } else{
 //     return;
 //   }
@@ -855,14 +855,14 @@ window.addEventListener("beforeunload", (event) => {
 //     function resetWidth(){
 //       canvas.width = img.width;
 //       imgContainer.style.width = canvas.width + "px";
-//       canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
+//       canvasInfo.textContent = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
 //       document.getElementById("canvasWidth").value = '';
 //     }
 
 //     function resetHeight(){
 //       canvas.height = img.height;
 //       imgContainer.style.height = canvas.height + "px";
-//       canvasInfo.innerHTML = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
+//       canvasInfo.textContent = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
 //       document.getElementById("canvasHeight").value = '';
 //     }
 
@@ -875,7 +875,7 @@ window.addEventListener("beforeunload", (event) => {
 //     imgContainer.style.backgroundSize = imgWidthInput + "px " + imgHeightInput + "px";
 //     imgContainer.style.width = imgWidthInput + "px";
 //     imgContainer.style.height = imgHeightInput + "px";
-//     document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + imgWidthInput + "x" + imgHeightInput;
+//     document.getElementById("currentImgSize").textContent = "<b>Current image size is:</b> " + imgWidthInput + "x" + imgHeightInput;
 //   } else{
 //     alert("Give both dimensions to change!");
 //   }
@@ -918,12 +918,12 @@ function resetImgDim() {
   imgContainer.style.height = img.height + "px";
   // imgWidthInput.value = '';
   // imgHeightInput.value = '';
-  document.getElementById("currentImgSize").innerHTML =
+  document.getElementById("currentImgSize").textContent =
     "<b>Current image size is:</b> " + img.width + "x" + img.height;
   document.getElementById("titleImage").colSpan = "5";
-  tableWarning.innerHTML = "";
-  tableDynamicValuePx.innerHTML = "Value(px)";
-  tableDynamicValueCm.innerHTML = "Value(cm)";
+  tableWarning.textContent = "";
+  tableDynamicValuePx.textContent = "Value(px)";
+  tableDynamicValueCm.textContent = "Value(cm)";
   // if (table.rows[1].cells.length == 6) {
   //   table.rows[1].deleteCell(-1);
   // } else {
@@ -951,23 +951,23 @@ function resizeFifty() {
   pointsMeasure.length = 0;
   canvas.style.cursor = "auto";
   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize;
+  showSize.textContent = "Current point size is: " + pointSize;
   imgContainer.style.backgroundSize =
     img.width * 0.5 + "px " + img.height * 0.5 + "px";
   imgContainer.style.width = img.width * 0.5 + "px";
   imgContainer.style.height = img.height * 0.5 + "px";
   canvas.width = img.width * 0.5;
   canvas.height = img.height * 0.5;
-  document.getElementById("currentImgSize").innerHTML =
+  document.getElementById("currentImgSize").textContent =
     "<b>Current image size is:</b> " +
     img.width * 0.5 +
     "x" +
     img.height * 0.5 +
     " (50% of size!)";
-  // tableDynamicValuePx.innerHTML = "Value(px) at 50%";
-  // tableDynamicValueCm.innerHTML = "Value(cm) at 50%";
+  // tableDynamicValuePx.textContent = "Value(px) at 50%";
+  // tableDynamicValueCm.textContent = "Value(cm) at 50%";
   // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
+  tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
   //A new column with original image size values in cm added.`;
   imgSizeStatus = 50;
   // if (table.rows[1].cells.length < 6) {
@@ -998,23 +998,23 @@ function resizeSF() {
   pointsMeasure.length = 0;
   canvas.style.cursor = "auto";
   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize;
+  showSize.textContent = "Current point size is: " + pointSize;
   imgContainer.style.backgroundSize =
     img.width * 0.75 + "px " + img.height * 0.75 + "px";
   imgContainer.style.width = img.width * 0.75 + "px";
   imgContainer.style.height = img.height * 0.75 + "px";
   canvas.width = img.width * 0.75;
   canvas.height = img.height * 0.75;
-  document.getElementById("currentImgSize").innerHTML =
+  document.getElementById("currentImgSize").textContent =
     "<b>Current image size is:</b> " +
     img.width * 0.75 +
     "x" +
     img.height * 0.75 +
     " (75% of size!)";
-  // tableDynamicValuePx.innerHTML = "Value(px) at 75%";
-  // tableDynamicValueCm.innerHTML = "Value(cm) at 75%";
+  // tableDynamicValuePx.textContent = "Value(px) at 75%";
+  // tableDynamicValueCm.textContent = "Value(cm) at 75%";
   // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
+  tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
   //A new column with original image size values in cm added.`;
   imgSizeStatus = 75;
   // if (table.rows[1].cells.length < 6) {
@@ -1045,23 +1045,23 @@ function resizeForty() {
   pointsMeasure.length = 0;
   canvas.style.cursor = "auto";
   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize;
+  showSize.textContent = "Current point size is: " + pointSize;
   imgContainer.style.backgroundSize =
     img.width * 0.4 + "px " + img.height * 0.4 + "px";
   imgContainer.style.width = img.width * 0.4 + "px";
   imgContainer.style.height = img.height * 0.4 + "px";
   canvas.width = img.width * 0.4;
   canvas.height = img.height * 0.4;
-  document.getElementById("currentImgSize").innerHTML =
+  document.getElementById("currentImgSize").textContent =
     "<b>Current image size is:</b> " +
     (img.width * 0.4).toFixed(0) +
     "x" +
     (img.height * 0.4).toFixed(0) +
     " (40% of size! Values are rounded)";
-  // tableDynamicValuePx.innerHTML = "Value(px) at 40%";
-  // tableDynamicValueCm.innerHTML = "Value(cm) at 40%";
+  // tableDynamicValuePx.textContent = "Value(px) at 40%";
+  // tableDynamicValueCm.textContent = "Value(cm) at 40%";
   // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 40% of its original size!`; //\n
+  tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 40% of its original size!`; //\n
   //A new column with original image size values in cm added.`;
   imgSizeStatus = 40;
   // if (table.rows[1].cells.length < 6) {
@@ -1092,23 +1092,23 @@ function resizeTwentyF() {
   pointsMeasure.length = 0;
   canvas.style.cursor = "auto";
   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.innerHTML = "Current point size is: " + pointSize;
+  showSize.textContent = "Current point size is: " + pointSize;
   imgContainer.style.backgroundSize =
     img.width * 0.25 + "px " + img.height * 0.25 + "px";
   imgContainer.style.width = img.width * 0.25 + "px";
   imgContainer.style.height = img.height * 0.25 + "px";
   canvas.width = img.width * 0.25;
   canvas.height = img.height * 0.25;
-  document.getElementById("currentImgSize").innerHTML =
+  document.getElementById("currentImgSize").textContent =
     "<b>Current image size is:</b> " +
     img.width * 0.25 +
     "x" +
     img.height * 0.25 +
     " (25% of size!)";
-  // tableDynamicValuePx.innerHTML = "Value(px) at 25%";
-  // tableDynamicValueCm.innerHTML = "Value(cm) at 25%";
+  // tableDynamicValuePx.textContent = "Value(px) at 25%";
+  // tableDynamicValueCm.textContent = "Value(cm) at 25%";
   // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.innerHTML = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
+  tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
   //A new column with original image size values in cm added.`;
   imgSizeStatus = 25;
   // if (table.rows[1].cells.length < 6) {
@@ -1126,19 +1126,19 @@ function resizeTwentyF() {
 // function warningResize() {
 //   imgSizeStatus;
 //   if (imgSizeStatus == 0.5) {
-//     tableWarning.innerHTML = `&#x26A0; Image was redimensioned to 50% of its original size!\n
+//     tableWarning.textContent = `&#x26A0; Image was redimensioned to 50% of its original size!\n
 //       A new column with original image size values in cm added.`;
 //   }
 //   if (imgSizeStatus == 0.25) {
-//     tableWarning.innerHTML = `&#x26A0; Image was redimensioned to 25% of its original size!\n
+//     tableWarning.textContent = `&#x26A0; Image was redimensioned to 25% of its original size!\n
 //       A new column with original image size values in cm added.`;
 //   }
 //   if (imgSizeStatus == 0.4) {
-//     tableWarning.innerHTML = `&#x26A0; Image was redimensioned to 40% of its original size!\n
+//     tableWarning.textContent = `&#x26A0; Image was redimensioned to 40% of its original size!\n
 //       A new column with original image size values in cm added.`;
 //   }
 //   if (imgSizeStatus == 0.75) {
-//     tableWarning.innerHTML = `&#x26A0; Image was redimensioned to 75% of its original size!\n
+//     tableWarning.textContent = `&#x26A0; Image was redimensioned to 75% of its original size!\n
 //     A new column with original image size values in cm added.`;
 //   } else {
 //     tableWarning.remove();
@@ -1161,7 +1161,7 @@ function resizeTwentyF() {
 //   imgContainer.style.height = img.height*(value/20) + "px";
 //   canvas.width = img.width*(value/20) + "px";
 //   canvas.height = img.height*(value/20) + "px";
-//   document.getElementById("currentImgSize").innerHTML = "<b>Current image size is:</b> " + img.width*(value/20) + "x" + img.height*(value/20) + " (" +Math.round((value/20*100))+ "% of size!)";
+//   document.getElementById("currentImgSize").textContent = "<b>Current image size is:</b> " + img.width*(value/20) + "x" + img.height*(value/20) + " (" +Math.round((value/20*100))+ "% of size!)";
 // }
 
 //-------------------------------------------------------------------------------------//
@@ -1194,7 +1194,7 @@ let resetFile = function (event) {
   canvas.removeEventListener("click", printMousePos);
   canvas.removeEventListener("click", drawMeasurePoint);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // canvasInfo.innerHTML = "<strong>Canvas size is:</strong> ";
+  // canvasInfo.textContent = "<strong>Canvas size is:</strong> ";
   canvasUpload.style.display = "none";
   canvas.width = 0;
   canvas.height = 0;
@@ -1207,9 +1207,9 @@ let resetFile = function (event) {
   imgContainer.style.height = "0";
   document.getElementById("inputScreenInches").value = "";
   document.getElementById("inputScreenInches").style.display = "none";
-  document.getElementById("screenPPI").innerHTML = "";
-  document.getElementById("imageDimInches").innerHTML = "";
-  document.getElementById("imageDimCm").innerHTML = "";
+  document.getElementById("screenPPI").textContent = "";
+  document.getElementById("imageDimInches").textContent = "";
+  document.getElementById("imageDimCm").textContent = "";
   document.getElementById("labelInput").style.display = "none";
   document.getElementById("ppiCalculus").style.display = "none";
   document.getElementById("savedDistance").style.display = "none";
@@ -1222,8 +1222,8 @@ let resetFile = function (event) {
   // let imgHeightInput = document.getElementById("containerHeight");
   // imgWidthInput.value = '';
   // imgHeightInput.value = '';
-  tableTitle.innerHTML = "<b>Table ID: <b>";
-  document.getElementById("measureToCm").innerHTML = "";
+  tableTitle.textContent = "<b>Table ID: <b>";
+  document.getElementById("measureToCm").textContent = "";
   dist = 0;
   imgSizeStatus = 0;
 };
@@ -1233,7 +1233,7 @@ let resetFile = function (event) {
 // Resolution section //
 
 function getUserResolution() {
-  document.getElementById("userResolution").innerHTML =
+  document.getElementById("userResolution").textContent =
     "<strong>Your resolution is:</strong> " +
     window.screen.width * window.devicePixelRatio +
     "x" +
@@ -1245,10 +1245,10 @@ getUserResolution();
 //  function getScreenPPI(){
 //    let diagonal = Math.sqrt(Math.pow((window.screen.width * window.devicePixelRatio), 2)+Math.pow((window.screen.height * window.devicePixelRatio), 2));
 //    if (document.getElementById("inputScreenInches").value != ''){
-//      document.getElementById("screenPPI").innerHTML = "<b>Your screen PPI is:</b> " + (diagonal/document.getElementById("inputScreenInches").value).toFixed(2);
-//      document.getElementById("imageDimInches").innerHTML = "<b>Your image dimensions in inches are:</b> " + (img.width/(diagonal/document.getElementById("inputScreenInches").value)).toFixed(2)
+//      document.getElementById("screenPPI").textContent = "<b>Your screen PPI is:</b> " + (diagonal/document.getElementById("inputScreenInches").value).toFixed(2);
+//      document.getElementById("imageDimInches").textContent = "<b>Your image dimensions in inches are:</b> " + (img.width/(diagonal/document.getElementById("inputScreenInches").value)).toFixed(2)
 //      + "x" + (img.height/(diagonal/document.getElementById("inputScreenInches").value)).toFixed(2);
-//      document.getElementById("imageDimCm").innerHTML = "<b>Your image dimensions in cm are:</b> " + ((img.width/(diagonal/document.getElementById("inputScreenInches").value)) * 2.54).toFixed(2)
+//      document.getElementById("imageDimCm").textContent = "<b>Your image dimensions in cm are:</b> " + ((img.width/(diagonal/document.getElementById("inputScreenInches").value)) * 2.54).toFixed(2)
 //      + "x" + ((img.height/(diagonal/document.getElementById("inputScreenInches").value)) * 2.54).toFixed(2);
 //    } else
 //    alert("No screen size in inches was given");
@@ -1297,9 +1297,9 @@ getUserResolution();
 //     var cellThree = newRow.insertCell();
 //     var cellFour = newRow.insertCell();
 //     var cellFive = newRow.insertCell();
-//     cellOne.innerHTML = indexRow-1;
-//     cellTwo.innerHTML = value1 + "|" + value2;
-//     cellThree.innerHTML = value3;
+//     cellOne.textContent = indexRow-1;
+//     cellTwo.textContent = value1 + "|" + value2;
+//     cellThree.textContent = value3;
 //     var index1 = document.getElementById("pointChosen1").selectedIndex;
 //     var index2 = document.getElementById("pointChosen2").selectedIndex;
 //     let option1 = pointsChosen1.value;
@@ -1327,12 +1327,12 @@ getUserResolution();
 //     }
 //     distance = (Math.hypot(point1.x - point2.x, point1.y - point2.y)).toFixed(2);
 //     value4 = distance;
-//     cellFour.innerHTML = value4;
+//     cellFour.textContent = value4;
 //     if (dist != 0){
-//       cellFive.innerHTML = (value4/dist).toFixed(2);
+//       cellFive.textContent = (value4/dist).toFixed(2);
 //     }
 //     if (dist == 0){
-//       cellFive.innerHTML = "-----";
+//       cellFive.textContent = "-----";
 //     }
 
 //     // console.log(value1, value2, value3, value4, value5);
@@ -1372,17 +1372,17 @@ let measurementType = document.getElementById("measurement");
 //      var cellThree = newRow.insertCell();
 //      var cellFour = newRow.insertCell();
 //      var cellFive = newRow.insertCell();
-//      cellOne.innerHTML = indexRow-1;
-//      cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Red L' + (i+2);
-//      cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//      cellOne.textContent = indexRow-1;
+//      cellTwo.textContent = 'Red L' + (i+1) + ' &#x2192 Red L' + (i+2);
+//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //      distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i+1].x, pointsRedLeft[i].y - pointsRedLeft[i+1].y)).toFixed(2);
-//      cellFour.innerHTML = distance;
+//      cellFour.textContent = distance;
 //      if (dist != 0){
-//        cellFive.innerHTML = (distance/dist).toFixed(2);
+//        cellFive.textContent = (distance/dist).toFixed(2);
 //      } else{
-//        cellFive.innerHTML = "Undefined";
+//        cellFive.textContent = "Undefined";
 //      }
-//     //  cellRemove.innerHTML = '&#x2718;';
+//     //  cellRemove.textContent = '&#x2718;';
 //     //  cellRemove.style.cursor = 'pointer';
 //     //  cellRemove.style.fontSize = 'x-large';
 //     //  cellRemove.style.color = 'red';
@@ -1390,7 +1390,7 @@ let measurementType = document.getElementById("measurement");
 //     //   tbody.deleteRow(indexRow-2);
 //     //   for (var i = 0; i < tbody.rows.length; i++){
 //     //     let updatedCell = tbody.rows[i].cells[0];
-//     //     updatedCell.innerHTML = i+1;
+//     //     updatedCell.textContent = i+1;
 //     //   }
 //     // };
 //    }
@@ -1407,15 +1407,15 @@ let measurementType = document.getElementById("measurement");
 //      var cellThree = newRow.insertCell();
 //      var cellFour = newRow.insertCell();
 //      var cellFive = newRow.insertCell();
-//      cellOne.innerHTML = indexRow-1;
-//      cellTwo.innerHTML = 'Red R' + (i+1) + ' &#x2192 Red R' + (i+2);
-//      cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//      cellOne.textContent = indexRow-1;
+//      cellTwo.textContent = 'Red R' + (i+1) + ' &#x2192 Red R' + (i+2);
+//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //      distance = (Math.hypot(pointsRedRight[i].x - pointsRedRight[i+1].x, pointsRedRight[i].y - pointsRedRight[i+1].y)).toFixed(2);
-//      cellFour.innerHTML = distance;
+//      cellFour.textContent = distance;
 //      if (dist != 0){
-//        cellFive.innerHTML = (distance/dist).toFixed(2);
+//        cellFive.textContent = (distance/dist).toFixed(2);
 //      } else{
-//        cellFive.innerHTML = 'Undefined';
+//        cellFive.textContent = 'Undefined';
 //      }
 //    }
 //  }  else{
@@ -1431,15 +1431,15 @@ let measurementType = document.getElementById("measurement");
 //      var cellThree = newRow.insertCell();
 //      var cellFour = newRow.insertCell();
 //      var cellFive = newRow.insertCell();
-//      cellOne.innerHTML = indexRow-1;
-//      cellTwo.innerHTML = 'Blue L' + (i+1) + ' &#x2192 Blue L' + (i+2);
-//      cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//      cellOne.textContent = indexRow-1;
+//      cellTwo.textContent = 'Blue L' + (i+1) + ' &#x2192 Blue L' + (i+2);
+//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //      distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i+1].x, pointsBlueLeft[i].y - pointsBlueLeft[i+1].y)).toFixed(2);
-//      cellFour.innerHTML = distance;
+//      cellFour.textContent = distance;
 //      if (dist != 0){
-//        cellFive.innerHTML = (distance/dist).toFixed(2);
+//        cellFive.textContent = (distance/dist).toFixed(2);
 //      } else{
-//        cellFive.innerHTML = 'Undefined';
+//        cellFive.textContent = 'Undefined';
 //      }
 //    }
 //  }  else{
@@ -1455,15 +1455,15 @@ let measurementType = document.getElementById("measurement");
 //      var cellThree = newRow.insertCell();
 //      var cellFour = newRow.insertCell();
 //      var cellFive = newRow.insertCell();
-//      cellOne.innerHTML = indexRow-1;
-//      cellTwo.innerHTML = 'Blue R' + (i+1) + ' &#x2192 Blue R' + (i+2);
-//      cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//      cellOne.textContent = indexRow-1;
+//      cellTwo.textContent = 'Blue R' + (i+1) + ' &#x2192 Blue R' + (i+2);
+//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //      distance = (Math.hypot(pointsBlueRight[i].x - pointsBlueRight[i+1].x, pointsBlueRight[i].y - pointsBlueRight[i+1].y)).toFixed(2);
-//      cellFour.innerHTML = distance;
+//      cellFour.textContent = distance;
 //      if (dist != 0){
-//        cellFive.innerHTML = (distance/dist).toFixed(2);
+//        cellFive.textContent = (distance/dist).toFixed(2);
 //      } else{
-//        cellFive.innerHTML = 'Undefined';
+//        cellFive.textContent = 'Undefined';
 //      }
 //    }
 //  }  else{
@@ -1481,15 +1481,15 @@ let measurementType = document.getElementById("measurement");
 //       var cellThree = newRow.insertCell();
 //       var cellFour = newRow.insertCell();
 //       var cellFive = newRow.insertCell();
-//       cellOne.innerHTML = indexRow-1;
-//       cellTwo.innerHTML = 'Red L' + (i+1) + ' &#x2192 Blue L' + (j+1);
-//       cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//       cellOne.textContent = indexRow-1;
+//       cellTwo.textContent = 'Red L' + (i+1) + ' &#x2192 Blue L' + (j+1);
+//       cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //       distance = (Math.hypot(pointsRedLeft[i].x - pointsBlueLeft[j].x, pointsRedLeft[i].y - pointsBlueLeft[j].y)).toFixed(2);
-//       cellFour.innerHTML = distance;
+//       cellFour.textContent = distance;
 //       if (dist != 0){
-//         cellFive.innerHTML = (distance/dist).toFixed(2);
+//         cellFive.textContent = (distance/dist).toFixed(2);
 //       } else{
-//         cellFive.innerHTML = 'Undefined';
+//         cellFive.textContent = 'Undefined';
 //       }
 //    }
 //  }
@@ -1509,15 +1509,15 @@ let measurementType = document.getElementById("measurement");
 //      var cellThree = newRow.insertCell();
 //      var cellFour = newRow.insertCell();
 //      var cellFive = newRow.insertCell();
-//      cellOne.innerHTML = indexRow-1;
-//      cellTwo.innerHTML = 'Red R' + (i+1) + ' &#x2192 Blue R' + (j+1);
-//      cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//      cellOne.textContent = indexRow-1;
+//      cellTwo.textContent = 'Red R' + (i+1) + ' &#x2192 Blue R' + (j+1);
+//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //      distance = (Math.hypot(pointsRedRight[i].x - pointsBlueRight[j].x, pointsRedRight[i].y - pointsBlueRight[j].y)).toFixed(2);
-//      cellFour.innerHTML = distance;
+//      cellFour.textContent = distance;
 //      if (dist != 0){
-//        cellFive.innerHTML = (distance/dist).toFixed(2);
+//        cellFive.textContent = (distance/dist).toFixed(2);
 //      } else{
-//        cellFive.innerHTML = 'Undefined';
+//        cellFive.textContent = 'Undefined';
 //      }
 //    }
 //  }
@@ -1538,15 +1538,15 @@ let measurementType = document.getElementById("measurement");
 //          var cellThree = newRow.insertCell();
 //          var cellFour = newRow.insertCell();
 //          var cellFive = newRow.insertCell();
-//          cellOne.innerHTML = indexRow-1;
-//          cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red R' + (j+1);
-//          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//          cellOne.textContent = indexRow-1;
+//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red R' + (j+1);
+//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
-//          cellFour.innerHTML = distance;
+//          cellFour.textContent = distance;
 //          if (dist != 0){
-//            cellFive.innerHTML = (distance/dist).toFixed(2);
+//            cellFive.textContent = (distance/dist).toFixed(2);
 //          } else{
-//            cellFive.innerHTML = 'Undefined';
+//            cellFive.textContent = 'Undefined';
 //          }
 //      } if (i == j+1){
 //        var newRow = tbody.insertRow(-1);
@@ -1556,15 +1556,15 @@ let measurementType = document.getElementById("measurement");
 //          var cellThree = newRow.insertCell();
 //          var cellFour = newRow.insertCell();
 //          var cellFive = newRow.insertCell();
-//          cellOne.innerHTML = indexRow-1;
-//          cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red L' + (i+1);
-//          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//          cellOne.textContent = indexRow-1;
+//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red L' + (i+1);
+//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
-//          cellFour.innerHTML = distance;
+//          cellFour.textContent = distance;
 //          if (dist != 0){
-//            cellFive.innerHTML = (distance/dist).toFixed(2);
+//            cellFive.textContent = (distance/dist).toFixed(2);
 //          }else{
-//            cellFive.innerHTML = 'Undefined';
+//            cellFive.textContent = 'Undefined';
 //          }
 //      }
 //      }
@@ -1585,15 +1585,15 @@ let measurementType = document.getElementById("measurement");
 //          var cellThree = newRow.insertCell();
 //          var cellFour = newRow.insertCell();
 //          var cellFive = newRow.insertCell();
-//          cellOne.innerHTML = indexRow-1;
-//          cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red L' + (i+1);
-//          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//          cellOne.textContent = indexRow-1;
+//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red L' + (i+1);
+//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedRight[j].y - pointsRedLeft[i].y)).toFixed(2);
-//          cellFour.innerHTML = distance;
+//          cellFour.textContent = distance;
 //          if (dist != 0){
-//            cellFive.innerHTML = (distance/dist).toFixed(2);
+//            cellFive.textContent = (distance/dist).toFixed(2);
 //          } else{
-//            cellFive.innerHTML = 'Undefined';
+//            cellFive.textContent = 'Undefined';
 //          }
 //      } if (j == i+1){
 //        var newRow = tbody.insertRow(-1);
@@ -1603,15 +1603,15 @@ let measurementType = document.getElementById("measurement");
 //          var cellThree = newRow.insertCell();
 //          var cellFour = newRow.insertCell();
 //          var cellFive = newRow.insertCell();
-//          cellOne.innerHTML = indexRow-1;
-//          cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red R' + (j+1);
-//          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//          cellOne.textContent = indexRow-1;
+//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red R' + (j+1);
+//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
-//          cellFour.innerHTML = distance;
+//          cellFour.textContent = distance;
 //          if (dist != 0){
-//            cellFive.innerHTML = (distance/dist).toFixed(2);
+//            cellFive.textContent = (distance/dist).toFixed(2);
 //          }else{
-//            cellFive.innerHTML = 'Undefined';
+//            cellFive.textContent = 'Undefined';
 //          }
 //      }
 //      }
@@ -1633,15 +1633,15 @@ let measurementType = document.getElementById("measurement");
 //          var cellThree = newRow.insertCell();
 //          var cellFour = newRow.insertCell();
 //          var cellFive = newRow.insertCell();
-//          cellOne.innerHTML = indexRow-1;
-//          cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue R' + (j+1);
-//          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//          cellOne.textContent = indexRow-1;
+//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue R' + (j+1);
+//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
-//          cellFour.innerHTML = distance;
+//          cellFour.textContent = distance;
 //          if (dist != 0){
-//            cellFive.innerHTML = (distance/dist).toFixed(2);
+//            cellFive.textContent = (distance/dist).toFixed(2);
 //          } else{
-//            cellFive.innerHTML = 'Undefined';
+//            cellFive.textContent = 'Undefined';
 //          }
 //      } if (i == j+1){
 //        var newRow = tbody.insertRow(-1);
@@ -1651,15 +1651,15 @@ let measurementType = document.getElementById("measurement");
 //          var cellThree = newRow.insertCell();
 //          var cellFour = newRow.insertCell();
 //          var cellFive = newRow.insertCell();
-//          cellOne.innerHTML = indexRow-1;
-//          cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue L' + (i+1);
-//          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//          cellOne.textContent = indexRow-1;
+//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue L' + (i+1);
+//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
-//          cellFour.innerHTML = distance;
+//          cellFour.textContent = distance;
 //          if (dist != 0){
-//            cellFive.innerHTML = (distance/dist).toFixed(2);
+//            cellFive.textContent = (distance/dist).toFixed(2);
 //          }else{
-//            cellFive.innerHTML = 'Undefined';
+//            cellFive.textContent = 'Undefined';
 //          }
 //      }
 //      }
@@ -1680,15 +1680,15 @@ let measurementType = document.getElementById("measurement");
 //          var cellThree = newRow.insertCell();
 //          var cellFour = newRow.insertCell();
 //          var cellFive = newRow.insertCell();
-//          cellOne.innerHTML = indexRow-1;
-//          cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue L' + (i+1);
-//          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//          cellOne.textContent = indexRow-1;
+//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue L' + (i+1);
+//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueRight[j].y - pointsBlueLeft[i].y)).toFixed(2);
-//          cellFour.innerHTML = distance;
+//          cellFour.textContent = distance;
 //          if (dist != 0){
-//            cellFive.innerHTML = (distance/dist).toFixed(2);
+//            cellFive.textContent = (distance/dist).toFixed(2);
 //          } else{
-//            cellFive.innerHTML = 'Undefined';
+//            cellFive.textContent = 'Undefined';
 //          }
 //      } if (j == i+1){
 //        var newRow = tbody.insertRow(-1);
@@ -1698,15 +1698,15 @@ let measurementType = document.getElementById("measurement");
 //          var cellThree = newRow.insertCell();
 //          var cellFour = newRow.insertCell();
 //          var cellFive = newRow.insertCell();
-//          cellOne.innerHTML = indexRow-1;
-//          cellTwo.innerHTML = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue R' + (j+1);
-//          cellThree.innerHTML = measurementType.options[measurementType.selectedIndex].value;
+//          cellOne.textContent = indexRow-1;
+//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue R' + (j+1);
+//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
 //          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
-//          cellFour.innerHTML = distance;
+//          cellFour.textContent = distance;
 //          if (dist != 0){
-//            cellFive.innerHTML = (distance/dist).toFixed(2);
+//            cellFive.textContent = (distance/dist).toFixed(2);
 //          }else{
-//            cellFive.innerHTML = 'Undefined';
+//            cellFive.textContent = 'Undefined';
 //          }
 //        }
 //      }
@@ -1728,20 +1728,20 @@ function removeEntry() {
     for (var i = 0; i < tbody.rows.length; i++) {
       let updatedCell = tbody.rows[i].cells[0];
       if (
-        updatedCell.innerHTML ===
+        updatedCell.textContent ===
         "------------------------------BREAK------------------------------"
       ) {
-        updatedCell.innerHTML =
+        updatedCell.textContent =
           "------------------------------BREAK------------------------------";
       } else {
-        updatedCell.innerHTML = i + 1;
+        updatedCell.textContent = i + 1;
       }
     }
   } else if (tbody.rows.length == 1) {
     tbody.deleteRow(-1);
   } else {
     if (
-      lastRow.cells[0].innerHTML ===
+      lastRow.cells[0].textContent ===
       "------------------------------BREAK------------------------------"
     ) {
       $("#tbody tr:nth-last-child(2)").remove();
@@ -1756,12 +1756,12 @@ function removeAllEntries() {
 }
 
 function updateTableID() {
-  tableTitle.innerHTML = "<b>Table ID: <b>";
-  tableTitle.innerHTML += " " + manualID.value;
+  tableTitle.textContent = "<b>Table ID: <b>";
+  tableTitle.textContent += " " + manualID.value;
 }
 
 function removeTableID() {
-  tableTitle.innerHTML = "<b>Table ID: <b>";
+  tableTitle.textContent = "<b>Table ID: <b>";
   manualID.value = "";
 }
 
@@ -2044,15 +2044,15 @@ function removeByMeasurement() {
     for (var i = 0; i < tbody.rows.length; i++) {
       let updatedCell = tbody.rows[i].cells[0];
       if (
-        updatedCell.innerHTML ===
+        updatedCell.textContent ===
         "------------------------------BREAK------------------------------"
       ) {
-        updatedCell.innerHTML =
+        updatedCell.textContent =
           "------------------------------BREAK------------------------------";
-      } else if (updatedCell.innerHTML.indexOf(":") != -1) {
+      } else if (updatedCell.textContent.indexOf(":") != -1) {
         // pass
       } else {
-        updatedCell.innerHTML = i + 1;
+        updatedCell.textContent = i + 1;
       }
     }
   }
@@ -2068,15 +2068,15 @@ function removeByMeasurement() {
     for (var i = 0; i < tbody.rows.length; i++) {
       let updatedCell = tbody.rows[i].cells[0];
       if (
-        updatedCell.innerHTML ===
+        updatedCell.textContent ===
         "------------------------------BREAK------------------------------"
       ) {
-        updatedCell.innerHTML =
+        updatedCell.textContent =
           "------------------------------BREAK------------------------------";
-      } else if (updatedCell.innerHTML.indexOf(":") != -1) {
+      } else if (updatedCell.textContent.indexOf(":") != -1) {
         // pass
       } else {
-        updatedCell.innerHTML = i + 1;
+        updatedCell.textContent = i + 1;
       }
     }
   }
@@ -2095,15 +2095,15 @@ function removeByMeasurement() {
     for (var i = 0; i < tbody.rows.length; i++) {
       let updatedCell = tbody.rows[i].cells[0];
       if (
-        updatedCell.innerHTML ===
+        updatedCell.textContent ===
         "------------------------------BREAK------------------------------"
       ) {
-        updatedCell.innerHTML =
+        updatedCell.textContent =
           "------------------------------BREAK------------------------------";
-      } else if (updatedCell.innerHTML.indexOf(":") != -1) {
+      } else if (updatedCell.textContent.indexOf(":") != -1) {
         // pass
       } else {
-        updatedCell.innerHTML = i + 1;
+        updatedCell.textContent = i + 1;
       }
     }
   }
@@ -2122,15 +2122,15 @@ function removeByMeasurement() {
     for (var i = 0; i < tbody.rows.length; i++) {
       let updatedCell = tbody.rows[i].cells[0];
       if (
-        updatedCell.innerHTML ===
+        updatedCell.textContent ===
         "------------------------------BREAK------------------------------"
       ) {
-        updatedCell.innerHTML =
+        updatedCell.textContent =
           "------------------------------BREAK------------------------------";
-      } else if (updatedCell.innerHTML.indexOf(":") != -1) {
+      } else if (updatedCell.textContent.indexOf(":") != -1) {
         // pass
       } else {
-        updatedCell.innerHTML = i + 1;
+        updatedCell.textContent = i + 1;
       }
     }
   }
@@ -2149,15 +2149,15 @@ function removeByMeasurement() {
     for (var i = 0; i < tbody.rows.length; i++) {
       let updatedCell = tbody.rows[i].cells[0];
       if (
-        updatedCell.innerHTML ===
+        updatedCell.textContent ===
         "------------------------------BREAK------------------------------"
       ) {
-        updatedCell.innerHTML =
+        updatedCell.textContent =
           "------------------------------BREAK------------------------------";
-      } else if (updatedCell.innerHTML.indexOf(":") != -1) {
+      } else if (updatedCell.textContent.indexOf(":") != -1) {
         // pass
       } else {
-        updatedCell.innerHTML = i + 1;
+        updatedCell.textContent = i + 1;
       }
     }
   }
@@ -2176,15 +2176,15 @@ function removeByMeasurement() {
     for (var i = 0; i < tbody.rows.length; i++) {
       let updatedCell = tbody.rows[i].cells[0];
       if (
-        updatedCell.innerHTML ===
+        updatedCell.textContent ===
         "------------------------------BREAK------------------------------"
       ) {
-        updatedCell.innerHTML =
+        updatedCell.textContent =
           "------------------------------BREAK------------------------------";
-      } else if (updatedCell.innerHTML.indexOf(":") != -1) {
+      } else if (updatedCell.textContent.indexOf(":") != -1) {
         // pass
       } else {
-        updatedCell.innerHTML = i + 1;
+        updatedCell.textContent = i + 1;
       }
     }
   }
@@ -2211,15 +2211,15 @@ function removeByMeasurement() {
     for (var i = 0; i < tbody.rows.length; i++) {
       let updatedCell = tbody.rows[i].cells[0];
       if (
-        updatedCell.innerHTML ===
+        updatedCell.textContent ===
         "------------------------------BREAK------------------------------"
       ) {
-        updatedCell.innerHTML =
+        updatedCell.textContent =
           "------------------------------BREAK------------------------------";
-      } else if (updatedCell.innerHTML.indexOf(":") != -1) {
+      } else if (updatedCell.textContent.indexOf(":") != -1) {
         // pass
       } else {
-        updatedCell.innerHTML = i + 1;
+        updatedCell.textContent = i + 1;
       }
     }
   }
@@ -2246,15 +2246,15 @@ function removeByMeasurement() {
     for (var i = 0; i < tbody.rows.length; i++) {
       let updatedCell = tbody.rows[i].cells[0];
       if (
-        updatedCell.innerHTML ===
+        updatedCell.textContent ===
         "------------------------------BREAK------------------------------"
       ) {
-        updatedCell.innerHTML =
+        updatedCell.textContent =
           "------------------------------BREAK------------------------------";
-      } else if (updatedCell.innerHTML.indexOf(":") != -1) {
+      } else if (updatedCell.textContent.indexOf(":") != -1) {
         // pass
       } else {
-        updatedCell.innerHTML = i + 1;
+        updatedCell.textContent = i + 1;
       }
     }
   }
@@ -2298,28 +2298,28 @@ function removeByMeasurement() {
 //       } else {
 //       }
 //       // let distance = 0;
-//       cellOne.innerHTML = indexRow - 1;
-//       cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
-//       cellThree.innerHTML = "Stride length left front";
+//       cellOne.textContent = indexRow - 1;
+//       cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
+//       cellThree.textContent = "Stride length left front";
 //       distance = Math.hypot(
 //         pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
 //         pointsRedLeft[i].y - pointsRedLeft[i + 1].y
 //       ).toFixed(3);
-//       cellFour.innerHTML = distance;
-//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       cellFour.textContent = distance;
+//       cellFive.textContent = (distance / dist).toFixed(3);
 //       distValuesSLLF.push(distance / dist);
 //       switch (imgSizeStatus) {
 //         case 50:
-//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //           break;
 //         case 75:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //           break;
 //         case 25:
-//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //           break;
 //         case 40:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //       }
 //     }
 //     console.log(distValuesSLLF);
@@ -2327,9 +2327,9 @@ function removeByMeasurement() {
 //     var strideLeftFrontRowCellOne = strideLeftFrontMeanRow.insertCell();
 //     var strideLeftFrontRowCellTwo = strideLeftFrontMeanRow.insertCell();
 //     strideLeftFrontRowCellOne.colSpan = "4";
-//     strideLeftFrontRowCellOne.innerHTML =
+//     strideLeftFrontRowCellOne.textContent =
 //       "<b>Stride length left front average in cm:</b> ";
-//     strideLeftFrontRowCellTwo.innerHTML = (
+//     strideLeftFrontRowCellTwo.textContent = (
 //       distValuesSLLF.reduce((a, b) => a + b, 0) / distValuesSLLF.length
 //     ).toFixed(3);
 //     if (imgSizeStatus != 100) {
@@ -2337,14 +2337,14 @@ function removeByMeasurement() {
 //         strideLeftFrontMeanRow.insertCell();
 //       switch (imgSizeStatus) {
 //         case 50:
-//           strideLeftFrontRowCellThreeOriginal.innerHTML = (
+//           strideLeftFrontRowCellThreeOriginal.textContent = (
 //             (distValuesSLLF.reduce((a, b) => a + b, 0) /
 //               distValuesSLLF.length) *
 //             2
 //           ).toFixed(3);
 //           break;
 //         case 75:
-//           strideLeftFrontRowCellThreeOriginal.innerHTML = (
+//           strideLeftFrontRowCellThreeOriginal.textContent = (
 //             ((distValuesSLLF.reduce((a, b) => a + b, 0) /
 //               distValuesSLLF.length) *
 //               100) /
@@ -2352,14 +2352,14 @@ function removeByMeasurement() {
 //           ).toFixed(3);
 //           break;
 //         case 25:
-//           strideLeftFrontRowCellThreeOriginal.innerHTML = (
+//           strideLeftFrontRowCellThreeOriginal.textContent = (
 //             (distValuesSLLF.reduce((a, b) => a + b, 0) /
 //               distValuesSLLF.length) *
 //             4
 //           ).toFixed(3);
 //           break;
 //         case 40:
-//           strideLeftFrontRowCellThreeOriginal.innerHTML = (
+//           strideLeftFrontRowCellThreeOriginal.textContent = (
 //             ((distValuesSLLF.reduce((a, b) => a + b, 0) /
 //               distValuesSLLF.length) *
 //               100) /
@@ -2380,28 +2380,28 @@ function removeByMeasurement() {
 //         var cellSix = newRow.insertCell();
 //       } else {
 //       }
-//       cellOne.innerHTML = indexRow - 1;
-//       cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
-//       cellThree.innerHTML = "Stride length right front";
+//       cellOne.textContent = indexRow - 1;
+//       cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
+//       cellThree.textContent = "Stride length right front";
 //       distance = Math.hypot(
 //         pointsRedRight[i].x - pointsRedRight[i + 1].x,
 //         pointsRedRight[i].y - pointsRedRight[i + 1].y
 //       ).toFixed(3);
-//       cellFour.innerHTML = distance;
-//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       cellFour.textContent = distance;
+//       cellFive.textContent = (distance / dist).toFixed(3);
 //       distValuesSLRF.push(distance / dist);
 //       switch (imgSizeStatus) {
 //         case 50:
-//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //           break;
 //         case 75:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //           break;
 //         case 25:
-//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //           break;
 //         case 40:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //       }
 //     }
 //     console.log(distValuesSLRF);
@@ -2409,9 +2409,9 @@ function removeByMeasurement() {
 //     var strideRightFrontRowCellOne = strideRightFrontMeanRow.insertCell();
 //     var strideRightFrontRowCellTwo = strideRightFrontMeanRow.insertCell();
 //     strideRightFrontRowCellOne.colSpan = "4";
-//     strideRightFrontRowCellOne.innerHTML =
+//     strideRightFrontRowCellOne.textContent =
 //       "<b>Stride length right front average in cm:</b> ";
-//     strideRightFrontRowCellTwo.innerHTML = (
+//     strideRightFrontRowCellTwo.textContent = (
 //       distValuesSLRF.reduce((a, b) => a + b, 0) / distValuesSLRF.length
 //     ).toFixed(3);
 //     if (imgSizeStatus != 100) {
@@ -2419,14 +2419,14 @@ function removeByMeasurement() {
 //         strideRightFrontMeanRow.insertCell();
 //       switch (imgSizeStatus) {
 //         case 50:
-//           strideRightFrontRowCellThreeOriginal.innerHTML = (
+//           strideRightFrontRowCellThreeOriginal.textContent = (
 //             (distValuesSLRF.reduce((a, b) => a + b, 0) /
 //               distValuesSLRF.length) *
 //             2
 //           ).toFixed(3);
 //           break;
 //         case 75:
-//           strideRightFrontRowCellThreeOriginal.innerHTML = (
+//           strideRightFrontRowCellThreeOriginal.textContent = (
 //             ((distValuesSLRF.reduce((a, b) => a + b, 0) /
 //               distValuesSLRF.length) *
 //               100) /
@@ -2434,14 +2434,14 @@ function removeByMeasurement() {
 //           ).toFixed(3);
 //           break;
 //         case 25:
-//           strideRightFrontRowCellThreeOriginal.innerHTML = (
+//           strideRightFrontRowCellThreeOriginal.textContent = (
 //             (distValuesSLRF.reduce((a, b) => a + b, 0) /
 //               distValuesSLRF.length) *
 //             4
 //           ).toFixed(3);
 //           break;
 //         case 40:
-//           strideRightFrontRowCellThreeOriginal.innerHTML = (
+//           strideRightFrontRowCellThreeOriginal.textContent = (
 //             ((distValuesSLRF.reduce((a, b) => a + b, 0) /
 //               distValuesSLRF.length) *
 //               100) /
@@ -2462,28 +2462,28 @@ function removeByMeasurement() {
 //         var cellSix = newRow.insertCell();
 //       } else {
 //       }
-//       cellOne.innerHTML = indexRow - 1;
-//       cellTwo.innerHTML = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
-//       cellThree.innerHTML = "Stride length left hind";
+//       cellOne.textContent = indexRow - 1;
+//       cellTwo.textContent = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
+//       cellThree.textContent = "Stride length left hind";
 //       distance = Math.hypot(
 //         pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
 //         pointsBlueLeft[i].y - pointsBlueLeft[i + 1].y
 //       ).toFixed(3);
-//       cellFour.innerHTML = distance;
-//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       cellFour.textContent = distance;
+//       cellFive.textContent = (distance / dist).toFixed(3);
 //       distValuesSLLH.push(distance / dist);
 //       switch (imgSizeStatus) {
 //         case 50:
-//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //           break;
 //         case 75:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //           break;
 //         case 25:
-//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //           break;
 //         case 40:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //       }
 //     }
 //     console.log(distValuesSLLH);
@@ -2491,9 +2491,9 @@ function removeByMeasurement() {
 //     var strideLeftHindRowCellOne = strideLeftHindMeanRow.insertCell();
 //     var strideLeftHindRowCellTwo = strideLeftHindMeanRow.insertCell();
 //     strideLeftHindRowCellOne.colSpan = "4";
-//     strideLeftHindRowCellOne.innerHTML =
+//     strideLeftHindRowCellOne.textContent =
 //       "<b>Stride length left hind average in cm:</b> ";
-//     strideLeftHindRowCellTwo.innerHTML = (
+//     strideLeftHindRowCellTwo.textContent = (
 //       distValuesSLLH.reduce((a, b) => a + b, 0) / distValuesSLLH.length
 //     ).toFixed(3);
 //     if (imgSizeStatus != 100) {
@@ -2501,14 +2501,14 @@ function removeByMeasurement() {
 //         strideLeftHindMeanRow.insertCell();
 //       switch (imgSizeStatus) {
 //         case 50:
-//           strideLeftHindRowCellThreeOriginal.innerHTML = (
+//           strideLeftHindRowCellThreeOriginal.textContent = (
 //             (distValuesSLLH.reduce((a, b) => a + b, 0) /
 //               distValuesSLLH.length) *
 //             2
 //           ).toFixed(3);
 //           break;
 //         case 75:
-//           strideLeftHindRowCellThreeOriginal.innerHTML = (
+//           strideLeftHindRowCellThreeOriginal.textContent = (
 //             ((distValuesSLLH.reduce((a, b) => a + b, 0) /
 //               distValuesSLLH.length) *
 //               100) /
@@ -2516,14 +2516,14 @@ function removeByMeasurement() {
 //           ).toFixed(3);
 //           break;
 //         case 25:
-//           strideLeftHindRowCellThreeOriginal.innerHTML = (
+//           strideLeftHindRowCellThreeOriginal.textContent = (
 //             (distValuesSLLH.reduce((a, b) => a + b, 0) /
 //               distValuesSLLH.length) *
 //             4
 //           ).toFixed(3);
 //           break;
 //         case 40:
-//           strideLeftHindRowCellThreeOriginal.innerHTML = (
+//           strideLeftHindRowCellThreeOriginal.textContent = (
 //             ((distValuesSLLH.reduce((a, b) => a + b, 0) /
 //               distValuesSLLH.length) *
 //               100) /
@@ -2544,28 +2544,28 @@ function removeByMeasurement() {
 //         var cellSix = newRow.insertCell();
 //       } else {
 //       }
-//       cellOne.innerHTML = indexRow - 1;
-//       cellTwo.innerHTML = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
-//       cellThree.innerHTML = "Stride length right hind";
+//       cellOne.textContent = indexRow - 1;
+//       cellTwo.textContent = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
+//       cellThree.textContent = "Stride length right hind";
 //       distance = Math.hypot(
 //         pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
 //         pointsBlueRight[i].y - pointsBlueRight[i + 1].y
 //       ).toFixed(3);
-//       cellFour.innerHTML = distance;
-//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       cellFour.textContent = distance;
+//       cellFive.textContent = (distance / dist).toFixed(3);
 //       distValuesSLRH.push(distance / dist);
 //       switch (imgSizeStatus) {
 //         case 50:
-//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //           break;
 //         case 75:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //           break;
 //         case 25:
-//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //           break;
 //         case 40:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //       }
 //     }
 //     console.log(distValuesSLRH);
@@ -2573,9 +2573,9 @@ function removeByMeasurement() {
 //     var strideRightHindRowCellOne = strideRightHindMeanRow.insertCell();
 //     var strideRightHindRowCellTwo = strideRightHindMeanRow.insertCell();
 //     strideRightHindRowCellOne.colSpan = "4";
-//     strideRightHindRowCellOne.innerHTML =
+//     strideRightHindRowCellOne.textContent =
 //       "<b>Stride length right hind average in cm:</b> ";
-//     strideRightHindRowCellTwo.innerHTML = (
+//     strideRightHindRowCellTwo.textContent = (
 //       distValuesSLRH.reduce((a, b) => a + b, 0) / distValuesSLRH.length
 //     ).toFixed(3);
 //     if (imgSizeStatus != 100) {
@@ -2583,14 +2583,14 @@ function removeByMeasurement() {
 //         strideRightHindMeanRow.insertCell();
 //       switch (imgSizeStatus) {
 //         case 50:
-//           strideRightHindRowCellThreeOriginal.innerHTML = (
+//           strideRightHindRowCellThreeOriginal.textContent = (
 //             (distValuesSLRH.reduce((a, b) => a + b, 0) /
 //               distValuesSLRH.length) *
 //             2
 //           ).toFixed(3);
 //           break;
 //         case 75:
-//           strideRightHindRowCellThreeOriginal.innerHTML = (
+//           strideRightHindRowCellThreeOriginal.textContent = (
 //             ((distValuesSLRH.reduce((a, b) => a + b, 0) /
 //               distValuesSLRH.length) *
 //               100) /
@@ -2598,14 +2598,14 @@ function removeByMeasurement() {
 //           ).toFixed(3);
 //           break;
 //         case 25:
-//           strideRightHindRowCellThreeOriginal.innerHTML = (
+//           strideRightHindRowCellThreeOriginal.textContent = (
 //             (distValuesSLRH.reduce((a, b) => a + b, 0) /
 //               distValuesSLRH.length) *
 //             4
 //           ).toFixed(3);
 //           break;
 //         case 40:
-//           strideRightHindRowCellThreeOriginal.innerHTML = (
+//           strideRightHindRowCellThreeOriginal.textContent = (
 //             ((distValuesSLRH.reduce((a, b) => a + b, 0) /
 //               distValuesSLRH.length) *
 //               100) /
@@ -2628,28 +2628,28 @@ function removeByMeasurement() {
 //             var cellSix = newRow.insertCell();
 //           } else {
 //           }
-//           cellOne.innerHTML = indexRow - 1;
-//           cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
-//           cellThree.innerHTML = "Overlap Left";
+//           cellOne.textContent = indexRow - 1;
+//           cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
+//           cellThree.textContent = "Overlap Left";
 //           distance = Math.hypot(
 //             pointsRedLeft[i].x - pointsBlueLeft[j].x,
 //             pointsRedLeft[i].y - pointsBlueLeft[j].y
 //           ).toFixed(3);
-//           cellFour.innerHTML = distance;
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellFour.textContent = distance;
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           distValuesOL.push(distance / dist);
 //           switch (imgSizeStatus) {
 //             case 50:
-//               cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //               break;
 //             case 75:
-//               cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //               break;
 //             case 25:
-//               cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //               break;
 //             case 40:
-//               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //           }
 //         }
 //       }
@@ -2659,34 +2659,34 @@ function removeByMeasurement() {
 //     var overlapLeftRowCellOne = overlapLeftMeanRow.insertCell();
 //     var overlapLeftRowCellTwo = overlapLeftMeanRow.insertCell();
 //     overlapLeftRowCellOne.colSpan = "4";
-//     overlapLeftRowCellOne.innerHTML = "<b>Overlap left average in cm:</b> ";
-//     overlapLeftRowCellTwo.innerHTML = (
+//     overlapLeftRowCellOne.textContent = "<b>Overlap left average in cm:</b> ";
+//     overlapLeftRowCellTwo.textContent = (
 //       distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length
 //     ).toFixed(3);
 //     if (imgSizeStatus != 100) {
 //       var overlapLeftRowCellThreeOriginal = overlapLeftMeanRow.insertCell();
 //       switch (imgSizeStatus) {
 //         case 50:
-//           overlapLeftRowCellThreeOriginal.innerHTML = (
+//           overlapLeftRowCellThreeOriginal.textContent = (
 //             (distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
 //             2
 //           ).toFixed(3);
 //           break;
 //         case 75:
-//           overlapLeftRowCellThreeOriginal.innerHTML = (
+//           overlapLeftRowCellThreeOriginal.textContent = (
 //             ((distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
 //               100) /
 //             75
 //           ).toFixed(3);
 //           break;
 //         case 25:
-//           overlapLeftRowCellThreeOriginal.innerHTML = (
+//           overlapLeftRowCellThreeOriginal.textContent = (
 //             (distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
 //             4
 //           ).toFixed(3);
 //           break;
 //         case 40:
-//           overlapLeftRowCellThreeOriginal.innerHTML = (
+//           overlapLeftRowCellThreeOriginal.textContent = (
 //             ((distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
 //               100) /
 //             40
@@ -2708,28 +2708,28 @@ function removeByMeasurement() {
 //             var cellSix = newRow.insertCell();
 //           } else {
 //           }
-//           cellOne.innerHTML = indexRow - 1;
-//           cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
-//           cellThree.innerHTML = "Overlap Right";
+//           cellOne.textContent = indexRow - 1;
+//           cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
+//           cellThree.textContent = "Overlap Right";
 //           distance = Math.hypot(
 //             pointsRedRight[i].x - pointsBlueRight[j].x,
 //             pointsRedRight[i].y - pointsBlueRight[j].y
 //           ).toFixed(3);
-//           cellFour.innerHTML = distance;
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellFour.textContent = distance;
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           distValuesOR.push(distance / dist);
 //           switch (imgSizeStatus) {
 //             case 50:
-//               cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //               break;
 //             case 75:
-//               cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //               break;
 //             case 25:
-//               cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //               break;
 //             case 40:
-//               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //           }
 //         }
 //       }
@@ -2739,34 +2739,34 @@ function removeByMeasurement() {
 //     var overlapRightRowCellOne = overlapRightMeanRow.insertCell();
 //     var overlapRightRowCellTwo = overlapRightMeanRow.insertCell();
 //     overlapRightRowCellOne.colSpan = "4";
-//     overlapRightRowCellOne.innerHTML = "<b>Overlap Right average in cm:</b> ";
-//     overlapRightRowCellTwo.innerHTML = (
+//     overlapRightRowCellOne.textContent = "<b>Overlap Right average in cm:</b> ";
+//     overlapRightRowCellTwo.textContent = (
 //       distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length
 //     ).toFixed(3);
 //     if (imgSizeStatus != 100) {
 //       var overlapRightRowCellThreeOriginal = overlapRightMeanRow.insertCell();
 //       switch (imgSizeStatus) {
 //         case 50:
-//           overlapRightRowCellThreeOriginal.innerHTML = (
+//           overlapRightRowCellThreeOriginal.textContent = (
 //             (distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
 //             2
 //           ).toFixed(3);
 //           break;
 //         case 75:
-//           overlapRightRowCellThreeOriginal.innerHTML = (
+//           overlapRightRowCellThreeOriginal.textContent = (
 //             ((distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
 //               100) /
 //             75
 //           ).toFixed(3);
 //           break;
 //         case 25:
-//           overlapRightRowCellThreeOriginal.innerHTML = (
+//           overlapRightRowCellThreeOriginal.textContent = (
 //             (distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
 //             4
 //           ).toFixed(3);
 //           break;
 //         case 40:
-//           overlapRightRowCellThreeOriginal.innerHTML = (
+//           overlapRightRowCellThreeOriginal.textContent = (
 //             ((distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
 //               100) /
 //             40
@@ -2792,13 +2792,13 @@ function removeByMeasurement() {
 //             } else {
 //             }
 //             indexImaginaryFrontLeft += 1;
-//             cellOne.innerHTML = indexRow - 1;
-//             cellTwo.innerHTML =
+//             cellOne.textContent = indexRow - 1;
+//             cellTwo.textContent =
 //               "Imaginary Front " +
 //               indexImaginaryFrontLeft +
 //               " &#x2192 Red R" +
 //               (j + 1);
-//             cellThree.innerHTML = "Stride Width Front(L)";
+//             cellThree.textContent = "Stride Width Front(L)";
 //             if (i < pointsRedLeft.length - 1) {
 //               distance = Math.hypot(
 //                 pointsRedRight[j].x - pointsRedRight[j].x,
@@ -2811,21 +2811,21 @@ function removeByMeasurement() {
 //                 pointsRedLeft[i].y - pointsRedRight[j].y
 //               ).toFixed(3);
 //             }
-//             cellFour.innerHTML = distance;
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFour.textContent = distance;
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             distValuesSWFL.push(distance / dist);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //             }
 //           }
 //           if (i == j + 1) {
@@ -2841,13 +2841,13 @@ function removeByMeasurement() {
 //             } else {
 //             }
 //             indexImaginaryFrontLeft += 1;
-//             cellOne.innerHTML = indexRow - 1;
-//             cellTwo.innerHTML =
+//             cellOne.textContent = indexRow - 1;
+//             cellTwo.textContent =
 //               "Imaginary Front " +
 //               indexImaginaryFrontLeft +
 //               " &#x2192 Red L" +
 //               (i + 1);
-//             cellThree.innerHTML = "Stride Width Front(L)";
+//             cellThree.textContent = "Stride Width Front(L)";
 //             if (j < pointsRedRight.length - 1) {
 //               distance = Math.hypot(
 //                 pointsRedLeft[i].x - pointsRedLeft[i].x,
@@ -2860,21 +2860,21 @@ function removeByMeasurement() {
 //                 pointsRedLeft[i].y - pointsRedRight[j].y
 //               ).toFixed(3);
 //             }
-//             cellFour.innerHTML = distance;
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFour.textContent = distance;
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             distValuesSWFL.push(distance / dist);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //             }
 //           }
 //         }
@@ -2886,9 +2886,9 @@ function removeByMeasurement() {
 //       var strideWidthFrontLeftRowCellTwo =
 //         strideWidthFrontLeftMeanRow.insertCell();
 //       strideWidthFrontLeftRowCellOne.colSpan = "4";
-//       strideWidthFrontLeftRowCellOne.innerHTML =
+//       strideWidthFrontLeftRowCellOne.textContent =
 //         "<b>Stride Width Front(L) average in cm:</b> ";
-//       strideWidthFrontLeftRowCellTwo.innerHTML = (
+//       strideWidthFrontLeftRowCellTwo.textContent = (
 //         distValuesSWFL.reduce((a, b) => a + b, 0) / distValuesSWFL.length
 //       ).toFixed(3);
 //       if (imgSizeStatus != 100) {
@@ -2896,14 +2896,14 @@ function removeByMeasurement() {
 //           strideWidthFrontLeftMeanRow.insertCell();
 //         switch (imgSizeStatus) {
 //           case 50:
-//             strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
+//             strideWidthFrontLeftRowCellThreeOriginal.textContent = (
 //               (distValuesSWFL.reduce((a, b) => a + b, 0) /
 //                 distValuesSWFL.length) *
 //               2
 //             ).toFixed(3);
 //             break;
 //           case 75:
-//             strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
+//             strideWidthFrontLeftRowCellThreeOriginal.textContent = (
 //               ((distValuesSWFL.reduce((a, b) => a + b, 0) /
 //                 distValuesSWFL.length) *
 //                 100) /
@@ -2911,14 +2911,14 @@ function removeByMeasurement() {
 //             ).toFixed(3);
 //             break;
 //           case 25:
-//             strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
+//             strideWidthFrontLeftRowCellThreeOriginal.textContent = (
 //               (distValuesSWFL.reduce((a, b) => a + b, 0) /
 //                 distValuesSWFL.length) *
 //               4
 //             ).toFixed(3);
 //             break;
 //           case 40:
-//             strideWidthFrontLeftRowCellThreeOriginal.innerHTML = (
+//             strideWidthFrontLeftRowCellThreeOriginal.textContent = (
 //               ((distValuesSWFL.reduce((a, b) => a + b, 0) /
 //                 distValuesSWFL.length) *
 //                 100) /
@@ -2942,13 +2942,13 @@ function removeByMeasurement() {
 //             } else {
 //             }
 //             indexImaginaryHindLeft += 1;
-//             cellOne.innerHTML = indexRow - 1;
-//             cellTwo.innerHTML =
+//             cellOne.textContent = indexRow - 1;
+//             cellTwo.textContent =
 //               "Imaginary Hind " +
 //               indexImaginaryHindLeft +
 //               " &#x2192 Blue R" +
 //               (j + 1);
-//             cellThree.innerHTML = "Stride Width Hind(L)";
+//             cellThree.textContent = "Stride Width Hind(L)";
 //             if (i < pointsBlueLeft.length - 1) {
 //               distance = Math.hypot(
 //                 pointsBlueRight[j].x - pointsBlueRight[j].x,
@@ -2961,21 +2961,21 @@ function removeByMeasurement() {
 //                 pointsBlueLeft[i].y - pointsBlueRight[j].y
 //               ).toFixed(3);
 //             }
-//             cellFour.innerHTML = distance;
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFour.textContent = distance;
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             distValuesSWHL.push(distance / dist);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //             }
 //           }
 //           if (i == j + 1) {
@@ -2991,13 +2991,13 @@ function removeByMeasurement() {
 //             } else {
 //             }
 //             indexImaginaryHindLeft += 1;
-//             cellOne.innerHTML = indexRow - 1;
-//             cellTwo.innerHTML =
+//             cellOne.textContent = indexRow - 1;
+//             cellTwo.textContent =
 //               "Imaginary Hind " +
 //               indexImaginaryHindLeft +
 //               " &#x2192 Blue L" +
 //               (i + 1);
-//             cellThree.innerHTML = "Stride Width Hind(L)";
+//             cellThree.textContent = "Stride Width Hind(L)";
 //             if (j < pointsBlueRight.length - 1) {
 //               distance = Math.hypot(
 //                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
@@ -3010,21 +3010,21 @@ function removeByMeasurement() {
 //                 pointsBlueLeft[i].y - pointsBlueRight[j].y
 //               ).toFixed(3);
 //             }
-//             cellFour.innerHTML = distance;
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFour.textContent = distance;
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             distValuesSWHL.push(distance / dist);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //             }
 //           }
 //         }
@@ -3036,9 +3036,9 @@ function removeByMeasurement() {
 //       var strideWidthHindLeftRowCellTwo =
 //         strideWidthHindLeftMeanRow.insertCell();
 //       strideWidthHindLeftRowCellOne.colSpan = "4";
-//       strideWidthHindLeftRowCellOne.innerHTML =
+//       strideWidthHindLeftRowCellOne.textContent =
 //         "<b>Stride Width Hind(L) average in cm:</b> ";
-//       strideWidthHindLeftRowCellTwo.innerHTML = (
+//       strideWidthHindLeftRowCellTwo.textContent = (
 //         distValuesSWHL.reduce((a, b) => a + b, 0) / distValuesSWHL.length
 //       ).toFixed(3);
 //       if (imgSizeStatus != 100) {
@@ -3046,14 +3046,14 @@ function removeByMeasurement() {
 //           strideWidthHindLeftMeanRow.insertCell();
 //         switch (imgSizeStatus) {
 //           case 50:
-//             strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
+//             strideWidthHindLeftRowCellThreeOriginal.textContent = (
 //               (distValuesSWHL.reduce((a, b) => a + b, 0) /
 //                 distValuesSWHL.length) *
 //               2
 //             ).toFixed(3);
 //             break;
 //           case 75:
-//             strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
+//             strideWidthHindLeftRowCellThreeOriginal.textContent = (
 //               ((distValuesSWHL.reduce((a, b) => a + b, 0) /
 //                 distValuesSWHL.length) *
 //                 100) /
@@ -3061,14 +3061,14 @@ function removeByMeasurement() {
 //             ).toFixed(3);
 //             break;
 //           case 25:
-//             strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
+//             strideWidthHindLeftRowCellThreeOriginal.textContent = (
 //               (distValuesSWHL.reduce((a, b) => a + b, 0) /
 //                 distValuesSWHL.length) *
 //               4
 //             ).toFixed(3);
 //             break;
 //           case 40:
-//             strideWidthHindLeftRowCellThreeOriginal.innerHTML = (
+//             strideWidthHindLeftRowCellThreeOriginal.textContent = (
 //               ((distValuesSWHL.reduce((a, b) => a + b, 0) /
 //                 distValuesSWHL.length) *
 //                 100) /
@@ -3096,13 +3096,13 @@ function removeByMeasurement() {
 //             } else {
 //             }
 //             indexImaginaryFrontRight += 1;
-//             cellOne.innerHTML = indexRow - 1;
-//             cellTwo.innerHTML =
+//             cellOne.textContent = indexRow - 1;
+//             cellTwo.textContent =
 //               "Imaginary Front " +
 //               indexImaginaryFrontRight +
 //               " &#x2192 Red L" +
 //               (i + 1);
-//             cellThree.innerHTML = "Stride Width Front(R)";
+//             cellThree.textContent = "Stride Width Front(R)";
 //             if (j < pointsRedRight.length - 1) {
 //               distance = Math.hypot(
 //                 pointsRedLeft[i].x - pointsRedLeft[i].x,
@@ -3115,21 +3115,21 @@ function removeByMeasurement() {
 //                 pointsRedRight[j].y - pointsRedLeft[i].y
 //               ).toFixed(3);
 //             }
-//             cellFour.innerHTML = distance;
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFour.textContent = distance;
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             distValuesSWFR.push(distance / dist);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //             }
 //           }
 //           if (j == i + 1) {
@@ -3145,13 +3145,13 @@ function removeByMeasurement() {
 //             } else {
 //             }
 //             indexImaginaryFrontRight += 1;
-//             cellOne.innerHTML = indexRow - 1;
-//             cellTwo.innerHTML =
+//             cellOne.textContent = indexRow - 1;
+//             cellTwo.textContent =
 //               "Imaginary Front " +
 //               indexImaginaryFrontRight +
 //               " &#x2192 Red R" +
 //               (j + 1);
-//             cellThree.innerHTML = "Stride Width Front(R)";
+//             cellThree.textContent = "Stride Width Front(R)";
 //             if (i < pointsRedLeft.length - 1) {
 //               distance = Math.hypot(
 //                 pointsRedRight[j].x - pointsRedRight[j].x,
@@ -3164,21 +3164,21 @@ function removeByMeasurement() {
 //                 pointsRedLeft[i].y - pointsRedRight[j].y
 //               ).toFixed(3);
 //             }
-//             cellFour.innerHTML = distance;
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFour.textContent = distance;
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             distValuesSWFR.push(distance / dist);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //             }
 //           }
 //         }
@@ -3190,9 +3190,9 @@ function removeByMeasurement() {
 //       var strideWidthFrontRightRowCellTwo =
 //         strideWidthFrontRightMeanRow.insertCell();
 //       strideWidthFrontRightRowCellOne.colSpan = "4";
-//       strideWidthFrontRightRowCellOne.innerHTML =
+//       strideWidthFrontRightRowCellOne.textContent =
 //         "<b>Stride Width Front(R) average in cm:</b> ";
-//       strideWidthFrontRightRowCellTwo.innerHTML = (
+//       strideWidthFrontRightRowCellTwo.textContent = (
 //         distValuesSWFR.reduce((a, b) => a + b, 0) / distValuesSWFR.length
 //       ).toFixed(3);
 //       if (imgSizeStatus != 100) {
@@ -3200,14 +3200,14 @@ function removeByMeasurement() {
 //           strideWidthFrontRightMeanRow.insertCell();
 //         switch (imgSizeStatus) {
 //           case 50:
-//             strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
+//             strideWidthFrontRightRowCellThreeOriginal.textContent = (
 //               (distValuesSWFR.reduce((a, b) => a + b, 0) /
 //                 distValuesSWFR.length) *
 //               2
 //             ).toFixed(3);
 //             break;
 //           case 75:
-//             strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
+//             strideWidthFrontRightRowCellThreeOriginal.textContent = (
 //               ((distValuesSWFR.reduce((a, b) => a + b, 0) /
 //                 distValuesSWFR.length) *
 //                 100) /
@@ -3215,14 +3215,14 @@ function removeByMeasurement() {
 //             ).toFixed(3);
 //             break;
 //           case 25:
-//             strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
+//             strideWidthFrontRightRowCellThreeOriginal.textContent = (
 //               (distValuesSWFR.reduce((a, b) => a + b, 0) /
 //                 distValuesSWFR.length) *
 //               4
 //             ).toFixed(3);
 //             break;
 //           case 40:
-//             strideWidthFrontRightRowCellThreeOriginal.innerHTML = (
+//             strideWidthFrontRightRowCellThreeOriginal.textContent = (
 //               ((distValuesSWFR.reduce((a, b) => a + b, 0) /
 //                 distValuesSWFR.length) *
 //                 100) /
@@ -3246,13 +3246,13 @@ function removeByMeasurement() {
 //             } else {
 //             }
 //             indexImaginaryHindRight += 1;
-//             cellOne.innerHTML = indexRow - 1;
-//             cellTwo.innerHTML =
+//             cellOne.textContent = indexRow - 1;
+//             cellTwo.textContent =
 //               "Imaginary Hind " +
 //               indexImaginaryHindRight +
 //               " &#x2192 Blue L" +
 //               (i + 1);
-//             cellThree.innerHTML = "Stride Width Hind(R)";
+//             cellThree.textContent = "Stride Width Hind(R)";
 //             if (j < pointsBlueRight.length - 1) {
 //               distance = Math.hypot(
 //                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
@@ -3265,21 +3265,21 @@ function removeByMeasurement() {
 //                 pointsBlueRight[j].y - pointsBlueLeft[i].y
 //               ).toFixed(3);
 //             }
-//             cellFour.innerHTML = distance;
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFour.textContent = distance;
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             distValuesSWHR.push(distance / dist);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //             }
 //           }
 //           if (j == i + 1) {
@@ -3295,13 +3295,13 @@ function removeByMeasurement() {
 //             } else {
 //             }
 //             indexImaginaryHindRight += 1;
-//             cellOne.innerHTML = indexRow - 1;
-//             cellTwo.innerHTML =
+//             cellOne.textContent = indexRow - 1;
+//             cellTwo.textContent =
 //               "Imaginary Hind " +
 //               indexImaginaryHindRight +
 //               " &#x2192 Blue R" +
 //               (j + 1);
-//             cellThree.innerHTML = "Stride Width Hind(R)";
+//             cellThree.textContent = "Stride Width Hind(R)";
 //             if (i < pointsBlueLeft.length - 1) {
 //               distance = Math.hypot(
 //                 pointsBlueRight[j].x - pointsBlueRight[j].x,
@@ -3314,21 +3314,21 @@ function removeByMeasurement() {
 //                 pointsBlueLeft[i].y - pointsBlueRight[j].y
 //               ).toFixed(3);
 //             }
-//             cellFour.innerHTML = distance;
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFour.textContent = distance;
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             distValuesSWHR.push(distance / dist);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //             }
 //           }
 //         }
@@ -3340,9 +3340,9 @@ function removeByMeasurement() {
 //       var strideWidthHindRightRowCellTwo =
 //         strideWidthHindRightMeanRow.insertCell();
 //       strideWidthHindRightRowCellOne.colSpan = "4";
-//       strideWidthHindRightRowCellOne.innerHTML =
+//       strideWidthHindRightRowCellOne.textContent =
 //         "<b>Stride Width Hind(R) average in cm:</b> ";
-//       strideWidthHindRightRowCellTwo.innerHTML = (
+//       strideWidthHindRightRowCellTwo.textContent = (
 //         distValuesSWHR.reduce((a, b) => a + b, 0) / distValuesSWHR.length
 //       ).toFixed(3);
 //       if (imgSizeStatus != 100) {
@@ -3350,14 +3350,14 @@ function removeByMeasurement() {
 //           strideWidthHindRightMeanRow.insertCell();
 //         switch (imgSizeStatus) {
 //           case 50:
-//             strideWidthHindRightRowCellThreeOriginal.innerHTML = (
+//             strideWidthHindRightRowCellThreeOriginal.textContent = (
 //               (distValuesSWHR.reduce((a, b) => a + b, 0) /
 //                 distValuesSWHR.length) *
 //               2
 //             ).toFixed(3);
 //             break;
 //           case 75:
-//             strideWidthHindRightRowCellThreeOriginal.innerHTML = (
+//             strideWidthHindRightRowCellThreeOriginal.textContent = (
 //               ((distValuesSWHR.reduce((a, b) => a + b, 0) /
 //                 distValuesSWHR.length) *
 //                 100) /
@@ -3365,14 +3365,14 @@ function removeByMeasurement() {
 //             ).toFixed(3);
 //             break;
 //           case 25:
-//             strideWidthHindRightRowCellThreeOriginal.innerHTML = (
+//             strideWidthHindRightRowCellThreeOriginal.textContent = (
 //               (distValuesSWHR.reduce((a, b) => a + b, 0) /
 //                 distValuesSWHR.length) *
 //               4
 //             ).toFixed(3);
 //             break;
 //           case 40:
-//             strideWidthHindRightRowCellThreeOriginal.innerHTML = (
+//             strideWidthHindRightRowCellThreeOriginal.textContent = (
 //               ((distValuesSWHR.reduce((a, b) => a + b, 0) /
 //                 distValuesSWHR.length) *
 //                 100) /
@@ -3385,7 +3385,7 @@ function removeByMeasurement() {
 //   }
 //   var lastRow = tbody.insertRow(-1);
 //   var lastCell = lastRow.insertCell();
-//   lastCell.innerHTML =
+//   lastCell.textContent =
 //     "------------------------------BREAK------------------------------";
 //   if (imgSizeStatus != 100) {
 //     lastCell.colSpan = "6";
@@ -3410,42 +3410,42 @@ function removeByMeasurement() {
 //       var cellSix = newRow.insertCell();
 //     } else {
 //     }
-//     if (imgSizeStatus) cellOne.innerHTML = indexRow - 1;
-//     cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
-//     cellThree.innerHTML = "Stride length left front";
+//     if (imgSizeStatus) cellOne.textContent = indexRow - 1;
+//     cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
+//     cellThree.textContent = "Stride length left front";
 //     distance = Math.hypot(
 //       pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
 //       pointsRedLeft[i].y - pointsRedLeft[i + 1].y
 //     ).toFixed(3);
-//     cellFour.innerHTML = distance;
+//     cellFour.textContent = distance;
 //     if (dist != 0 && imgSizeStatus == 100) {
-//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       cellFive.textContent = (distance / dist).toFixed(3);
 //     }
 //     if (dist != 0 && imgSizeStatus != 100) {
 //       switch (imgSizeStatus) {
 //         case 50:
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
-//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
 //           break;
 //         case 75:
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
-//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
 //           break;
 //         case 25:
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
-//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
 //           break;
 //         case 40:
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
-//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
 //       }
 //     }
 //     if (dist == 0 && imgSizeStatus != 100) {
-//       cellFive.innerHTML = "Undefined";
-//       cellSix.innerHTML = "Undefined";
+//       cellFive.textContent = "Undefined";
+//       cellSix.textContent = "Undefined";
 //     }
 //     if (dist == 0 && imgSizeStatus == 100) {
-//       cellFive.innerHTML = "Undefined";
+//       cellFive.textContent = "Undefined";
 //     }
 //   }
 //   for (var i = 0; i < pointsRedRight.length - 1; i++) {
@@ -3460,40 +3460,40 @@ function removeByMeasurement() {
 //       var cellSix = newRow.insertCell();
 //     } else {
 //     }
-//     cellOne.innerHTML = indexRow - 1;
-//     cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
-//     cellThree.innerHTML = "Stride length right front";
+//     cellOne.textContent = indexRow - 1;
+//     cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
+//     cellThree.textContent = "Stride length right front";
 //     distance = Math.hypot(
 //       pointsRedRight[i].x - pointsRedRight[i + 1].x,
 //       pointsRedRight[i].y - pointsRedRight[i + 1].y
 //     ).toFixed(3);
-//     cellFour.innerHTML = distance;
+//     cellFour.textContent = distance;
 //     if (dist != 0) {
-//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       cellFive.textContent = (distance / dist).toFixed(3);
 //       switch (imgSizeStatus) {
 //         case 50:
-//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           break;
 //         case 75:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           break;
 //         case 25:
-//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           break;
 //         case 40:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //       }
 //     }
 //     if (dist == 0 && imgSizeStatus != 100) {
-//       cellFive.innerHTML = "Undefined";
-//       cellSix.innerHTML = "Undefined";
+//       cellFive.textContent = "Undefined";
+//       cellSix.textContent = "Undefined";
 //     }
 //     if (dist == 0 && imgSizeStatus == 100) {
-//       cellFive.innerHTML = "Undefined";
+//       cellFive.textContent = "Undefined";
 //     }
 //   }
 //   for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
@@ -3508,40 +3508,40 @@ function removeByMeasurement() {
 //       var cellSix = newRow.insertCell();
 //     } else {
 //     }
-//     cellOne.innerHTML = indexRow - 1;
-//     cellTwo.innerHTML = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
-//     cellThree.innerHTML = "Stride length left hind";
+//     cellOne.textContent = indexRow - 1;
+//     cellTwo.textContent = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
+//     cellThree.textContent = "Stride length left hind";
 //     distance = Math.hypot(
 //       pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
 //       pointsBlueLeft[i].y - pointsBlueLeft[i + 1].y
 //     ).toFixed(3);
-//     cellFour.innerHTML = distance;
+//     cellFour.textContent = distance;
 //     if (dist != 0) {
-//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       cellFive.textContent = (distance / dist).toFixed(3);
 //       switch (imgSizeStatus) {
 //         case 50:
-//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           break;
 //         case 75:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           break;
 //         case 25:
-//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           break;
 //         case 40:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //       }
 //     }
 //     if (dist == 0 && imgSizeStatus != 100) {
-//       cellFive.innerHTML = "Undefined";
-//       cellSix.innerHTML = "Undefined";
+//       cellFive.textContent = "Undefined";
+//       cellSix.textContent = "Undefined";
 //     }
 //     if (dist == 0 && imgSizeStatus == 100) {
-//       cellFive.innerHTML = "Undefined";
+//       cellFive.textContent = "Undefined";
 //     }
 //   }
 //   for (var i = 0; i < pointsBlueRight.length - 1; i++) {
@@ -3556,40 +3556,40 @@ function removeByMeasurement() {
 //       var cellSix = newRow.insertCell();
 //     } else {
 //     }
-//     cellOne.innerHTML = indexRow - 1;
-//     cellTwo.innerHTML = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
-//     cellThree.innerHTML = "Stride length right hind";
+//     cellOne.textContent = indexRow - 1;
+//     cellTwo.textContent = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
+//     cellThree.textContent = "Stride length right hind";
 //     distance = Math.hypot(
 //       pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
 //       pointsBlueRight[i].y - pointsBlueRight[i + 1].y
 //     ).toFixed(3);
-//     cellFour.innerHTML = distance;
+//     cellFour.textContent = distance;
 //     if (dist != 0) {
-//       cellFive.innerHTML = (distance / dist).toFixed(3);
+//       cellFive.textContent = (distance / dist).toFixed(3);
 //       switch (imgSizeStatus) {
 //         case 50:
-//           cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           break;
 //         case 75:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           break;
 //         case 25:
-//           cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           break;
 //         case 40:
-//           cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //       }
 //     }
 //     if (dist == 0 && imgSizeStatus != 100) {
-//       cellFive.innerHTML = "Undefined";
-//       cellSix.innerHTML = "Undefined";
+//       cellFive.textContent = "Undefined";
+//       cellSix.textContent = "Undefined";
 //     }
 //     if (dist == 0 && imgSizeStatus == 100) {
-//       cellFive.innerHTML = "Undefined";
+//       cellFive.textContent = "Undefined";
 //     }
 //   }
 //   for (var i = 0; i < pointsRedLeft.length; i++) {
@@ -3606,40 +3606,40 @@ function removeByMeasurement() {
 //           var cellSix = newRow.insertCell();
 //         } else {
 //         }
-//         cellOne.innerHTML = indexRow - 1;
-//         cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
-//         cellThree.innerHTML = "Overlap Left";
+//         cellOne.textContent = indexRow - 1;
+//         cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
+//         cellThree.textContent = "Overlap Left";
 //         distance = Math.hypot(
 //           pointsRedLeft[i].x - pointsBlueLeft[j].x,
 //           pointsRedLeft[i].y - pointsBlueLeft[j].y
 //         ).toFixed(3);
-//         cellFour.innerHTML = distance;
+//         cellFour.textContent = distance;
 //         if (dist != 0) {
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           switch (imgSizeStatus) {
 //             case 50:
-//               cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//               cellFive.textContent = (distance / dist).toFixed(3);
 //               break;
 //             case 75:
-//               cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//               cellFive.textContent = (distance / dist).toFixed(3);
 //               break;
 //             case 25:
-//               cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//               cellFive.textContent = (distance / dist).toFixed(3);
 //               break;
 //             case 40:
-//               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//               cellFive.textContent = (distance / dist).toFixed(3);
 //           }
 //         }
 //         if (dist == 0 && imgSizeStatus != 100) {
-//           cellFive.innerHTML = "Undefined";
-//           cellSix.innerHTML = "Undefined";
+//           cellFive.textContent = "Undefined";
+//           cellSix.textContent = "Undefined";
 //         }
 //         if (dist == 0 && imgSizeStatus == 100) {
-//           cellFive.innerHTML = "Undefined";
+//           cellFive.textContent = "Undefined";
 //         }
 //       }
 //     }
@@ -3658,40 +3658,40 @@ function removeByMeasurement() {
 //           var cellSix = newRow.insertCell();
 //         } else {
 //         }
-//         cellOne.innerHTML = indexRow - 1;
-//         cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
-//         cellThree.innerHTML = "Overlap Right";
+//         cellOne.textContent = indexRow - 1;
+//         cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
+//         cellThree.textContent = "Overlap Right";
 //         distance = Math.hypot(
 //           pointsRedRight[i].x - pointsBlueRight[j].x,
 //           pointsRedRight[i].y - pointsBlueRight[j].y
 //         ).toFixed(3);
-//         cellFour.innerHTML = distance;
+//         cellFour.textContent = distance;
 //         if (dist != 0) {
-//           cellFive.innerHTML = (distance / dist).toFixed(3);
+//           cellFive.textContent = (distance / dist).toFixed(3);
 //           switch (imgSizeStatus) {
 //             case 50:
-//               cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//               cellFive.textContent = (distance / dist).toFixed(3);
 //               break;
 //             case 75:
-//               cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//               cellFive.textContent = (distance / dist).toFixed(3);
 //               break;
 //             case 25:
-//               cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//               cellFive.textContent = (distance / dist).toFixed(3);
 //               break;
 //             case 40:
-//               cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//               cellFive.innerHTML = (distance / dist).toFixed(3);
+//               cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//               cellFive.textContent = (distance / dist).toFixed(3);
 //           }
 //         }
 //         if (dist == 0 && imgSizeStatus != 100) {
-//           cellFive.innerHTML = "Undefined";
-//           cellSix.innerHTML = "Undefined";
+//           cellFive.textContent = "Undefined";
+//           cellSix.textContent = "Undefined";
 //         }
 //         if (dist == 0 && imgSizeStatus == 100) {
-//           cellFive.innerHTML = "Undefined";
+//           cellFive.textContent = "Undefined";
 //         }
 //       }
 //     }
@@ -3714,13 +3714,13 @@ function removeByMeasurement() {
 //           } else {
 //           }
 //           indexImaginaryFrontLeft += 1;
-//           cellOne.innerHTML = indexRow - 1;
-//           cellTwo.innerHTML =
+//           cellOne.textContent = indexRow - 1;
+//           cellTwo.textContent =
 //             "Imaginary Front " +
 //             indexImaginaryFrontLeft +
 //             " &#x2192 Red R" +
 //             (j + 1);
-//           cellThree.innerHTML = "Stride Width Front(L)";
+//           cellThree.textContent = "Stride Width Front(L)";
 //           if (i < pointsRedLeft.length - 1) {
 //             distance = Math.hypot(
 //               pointsRedRight[j].x - pointsRedRight[j].x,
@@ -3733,33 +3733,33 @@ function removeByMeasurement() {
 //               pointsRedLeft[i].y - pointsRedRight[j].y
 //             ).toFixed(3);
 //           }
-//           cellFour.innerHTML = distance;
+//           cellFour.textContent = distance;
 //           if (dist != 0) {
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //             }
 //           }
 //           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.innerHTML = "Undefined";
-//             cellSix.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
+//             cellSix.textContent = "Undefined";
 //           }
 //           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
 //           }
 //         }
 //         if (i == j + 1) {
@@ -3775,13 +3775,13 @@ function removeByMeasurement() {
 //           } else {
 //           }
 //           indexImaginaryFrontLeft += 1;
-//           cellOne.innerHTML = indexRow - 1;
-//           cellTwo.innerHTML =
+//           cellOne.textContent = indexRow - 1;
+//           cellTwo.textContent =
 //             "Imaginary Front " +
 //             indexImaginaryFrontLeft +
 //             " &#x2192 Red L" +
 //             (i + 1);
-//           cellThree.innerHTML = "Stride Width Front(L)";
+//           cellThree.textContent = "Stride Width Front(L)";
 //           if (j < pointsRedRight.length - 1) {
 //             distance = Math.hypot(
 //               pointsRedLeft[i].x - pointsRedLeft[i].x,
@@ -3794,33 +3794,33 @@ function removeByMeasurement() {
 //               pointsRedLeft[i].y - pointsRedRight[j].y
 //             ).toFixed(3);
 //           }
-//           cellFour.innerHTML = distance;
+//           cellFour.textContent = distance;
 //           if (dist != 0) {
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //             }
 //           }
 //           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.innerHTML = "Undefined";
-//             cellSix.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
+//             cellSix.textContent = "Undefined";
 //           }
 //           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
 //           }
 //         }
 //       }
@@ -3840,13 +3840,13 @@ function removeByMeasurement() {
 //           } else {
 //           }
 //           indexImaginaryHindLeft += 1;
-//           cellOne.innerHTML = indexRow - 1;
-//           cellTwo.innerHTML =
+//           cellOne.textContent = indexRow - 1;
+//           cellTwo.textContent =
 //             "Imaginary Hind " +
 //             indexImaginaryHindLeft +
 //             " &#x2192 Blue R" +
 //             (j + 1);
-//           cellThree.innerHTML = "Stride Width Hind(L)";
+//           cellThree.textContent = "Stride Width Hind(L)";
 //           if (i < pointsBlueLeft.length - 1) {
 //             distance = Math.hypot(
 //               pointsBlueRight[j].x - pointsBlueRight[j].x,
@@ -3859,33 +3859,33 @@ function removeByMeasurement() {
 //               pointsBlueLeft[i].y - pointsBlueRight[j].y
 //             ).toFixed(3);
 //           }
-//           cellFour.innerHTML = distance;
+//           cellFour.textContent = distance;
 //           if (dist != 0) {
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //             }
 //           }
 //           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.innerHTML = "Undefined";
-//             cellSix.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
+//             cellSix.textContent = "Undefined";
 //           }
 //           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
 //           }
 //         }
 //         if (i == j + 1) {
@@ -3901,13 +3901,13 @@ function removeByMeasurement() {
 //           } else {
 //           }
 //           indexImaginaryHindLeft += 1;
-//           cellOne.innerHTML = indexRow - 1;
-//           cellTwo.innerHTML =
+//           cellOne.textContent = indexRow - 1;
+//           cellTwo.textContent =
 //             "Imaginary Hind " +
 //             indexImaginaryHindLeft +
 //             " &#x2192 Blue L" +
 //             (i + 1);
-//           cellThree.innerHTML = "Stride Width Hind(L)";
+//           cellThree.textContent = "Stride Width Hind(L)";
 //           if (j < pointsBlueRight.length - 1) {
 //             distance = Math.hypot(
 //               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
@@ -3920,33 +3920,33 @@ function removeByMeasurement() {
 //               pointsBlueLeft[i].y - pointsBlueRight[j].y
 //             ).toFixed(3);
 //           }
-//           cellFour.innerHTML = distance;
+//           cellFour.textContent = distance;
 //           if (dist != 0) {
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //             }
 //           }
 //           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.innerHTML = "Undefined";
-//             cellSix.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
+//             cellSix.textContent = "Undefined";
 //           }
 //           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
 //           }
 //         }
 //       }
@@ -3970,13 +3970,13 @@ function removeByMeasurement() {
 //           } else {
 //           }
 //           indexImaginaryFrontRight += 1;
-//           cellOne.innerHTML = indexRow - 1;
-//           cellTwo.innerHTML =
+//           cellOne.textContent = indexRow - 1;
+//           cellTwo.textContent =
 //             "Imaginary Front " +
 //             indexImaginaryFrontRight +
 //             " &#x2192 Red L" +
 //             (i + 1);
-//           cellThree.innerHTML = "Stride Width Front(R)";
+//           cellThree.textContent = "Stride Width Front(R)";
 //           if (j < pointsRedRight.length - 1) {
 //             distance = Math.hypot(
 //               pointsRedLeft[i].x - pointsRedLeft[i].x,
@@ -3989,33 +3989,33 @@ function removeByMeasurement() {
 //               pointsRedRight[j].y - pointsRedLeft[i].y
 //             ).toFixed(3);
 //           }
-//           cellFour.innerHTML = distance;
+//           cellFour.textContent = distance;
 //           if (dist != 0) {
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //             }
 //           }
 //           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.innerHTML = "Undefined";
-//             cellSix.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
+//             cellSix.textContent = "Undefined";
 //           }
 //           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
 //           }
 //         }
 //         if (j == i + 1) {
@@ -4031,13 +4031,13 @@ function removeByMeasurement() {
 //           } else {
 //           }
 //           indexImaginaryFrontRight += 1;
-//           cellOne.innerHTML = indexRow - 1;
-//           cellTwo.innerHTML =
+//           cellOne.textContent = indexRow - 1;
+//           cellTwo.textContent =
 //             "Imaginary Front " +
 //             indexImaginaryFrontRight +
 //             " &#x2192 Red R" +
 //             (j + 1);
-//           cellThree.innerHTML = "Stride Width Front(R)";
+//           cellThree.textContent = "Stride Width Front(R)";
 //           if (i < pointsRedLeft.length - 1) {
 //             distance = Math.hypot(
 //               pointsRedRight[j].x - pointsRedRight[j].x,
@@ -4050,33 +4050,33 @@ function removeByMeasurement() {
 //               pointsRedLeft[i].y - pointsRedRight[j].y
 //             ).toFixed(3);
 //           }
-//           cellFour.innerHTML = distance;
+//           cellFour.textContent = distance;
 //           if (dist != 0) {
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //             }
 //           }
 //           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.innerHTML = "Undefined";
-//             cellSix.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
+//             cellSix.textContent = "Undefined";
 //           }
 //           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
 //           }
 //         }
 //       }
@@ -4096,13 +4096,13 @@ function removeByMeasurement() {
 //           } else {
 //           }
 //           indexImaginaryHindRight += 1;
-//           cellOne.innerHTML = indexRow - 1;
-//           cellTwo.innerHTML =
+//           cellOne.textContent = indexRow - 1;
+//           cellTwo.textContent =
 //             "Imaginary Hind " +
 //             indexImaginaryHindRight +
 //             " &#x2192 Blue L" +
 //             (i + 1);
-//           cellThree.innerHTML = "Stride Width Hind(R)";
+//           cellThree.textContent = "Stride Width Hind(R)";
 //           if (j < pointsBlueRight.length - 1) {
 //             distance = Math.hypot(
 //               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
@@ -4115,33 +4115,33 @@ function removeByMeasurement() {
 //               pointsBlueRight[j].y - pointsBlueLeft[i].y
 //             ).toFixed(3);
 //           }
-//           cellFour.innerHTML = distance;
+//           cellFour.textContent = distance;
 //           if (dist != 0) {
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //             }
 //           }
 //           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.innerHTML = "Undefined";
-//             cellSix.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
+//             cellSix.textContent = "Undefined";
 //           }
 //           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
 //           }
 //         }
 //         if (j == i + 1) {
@@ -4157,13 +4157,13 @@ function removeByMeasurement() {
 //           } else {
 //           }
 //           indexImaginaryHindRight += 1;
-//           cellOne.innerHTML = indexRow - 1;
-//           cellTwo.innerHTML =
+//           cellOne.textContent = indexRow - 1;
+//           cellTwo.textContent =
 //             "Imaginary Hind " +
 //             indexImaginaryHindRight +
 //             " &#x2192 Blue R" +
 //             (j + 1);
-//           cellThree.innerHTML = "Stride Width Hind(R)";
+//           cellThree.textContent = "Stride Width Hind(R)";
 //           if (i < pointsBlueLeft.length - 1) {
 //             distance = Math.hypot(
 //               pointsBlueRight[j].x - pointsBlueRight[j].x,
@@ -4176,33 +4176,33 @@ function removeByMeasurement() {
 //               pointsBlueLeft[i].y - pointsBlueRight[j].y
 //             ).toFixed(3);
 //           }
-//           cellFour.innerHTML = distance;
+//           cellFour.textContent = distance;
 //           if (dist != 0) {
-//             cellFive.innerHTML = (distance / dist).toFixed(3);
+//             cellFive.textContent = (distance / dist).toFixed(3);
 //             switch (imgSizeStatus) {
 //               case 50:
-//                 cellSix.innerHTML = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 75:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 25:
-//                 cellSix.innerHTML = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //                 break;
 //               case 40:
-//                 cellSix.innerHTML = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.innerHTML = (distance / dist).toFixed(3);
+//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
+//                 cellFive.textContent = (distance / dist).toFixed(3);
 //             }
 //           }
 //           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.innerHTML = "Undefined";
-//             cellSix.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
+//             cellSix.textContent = "Undefined";
 //           }
 //           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.innerHTML = "Undefined";
+//             cellFive.textContent = "Undefined";
 //           }
 //         }
 //       }
@@ -4218,7 +4218,7 @@ function removeByMeasurement() {
 //   }
 //   var lastRow = tbody.insertRow(-1);
 //   var lastCell = lastRow.insertCell();
-//   lastCell.innerHTML =
+//   lastCell.textContent =
 //     "------------------------------BREAK------------------------------";
 //   if (imgSizeStatus != 100) {
 //     lastCell.colSpan = "6";
@@ -4262,15 +4262,15 @@ function addEntriesAllAverage() {
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
       // let distance = 0;
-      cellOne.innerHTML = indexRow - 1;
-      cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
-      cellThree.innerHTML = "Stride length left front";
+      cellOne.textContent = indexRow - 1;
+      cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
+      cellThree.textContent = "Stride length left front";
       distance = Math.hypot(
         pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
         pointsRedLeft[i].y - pointsRedLeft[i + 1].y
       ).toFixed(3);
-      cellFour.innerHTML = distance;
-      cellFive.innerHTML = (distance / dist).toFixed(3);
+      cellFour.textContent = distance;
+      cellFive.textContent = (distance / dist).toFixed(3);
       distValuesSLLF.push(distance / dist);
     }
     console.log(distValuesSLLF);
@@ -4278,9 +4278,9 @@ function addEntriesAllAverage() {
     var strideLeftFrontRowCellOne = strideLeftFrontMeanRow.insertCell();
     var strideLeftFrontRowCellTwo = strideLeftFrontMeanRow.insertCell();
     strideLeftFrontRowCellOne.colSpan = "4";
-    strideLeftFrontRowCellOne.innerHTML =
+    strideLeftFrontRowCellOne.textContent =
       "<b>Stride length left front average in cm:</b> ";
-    strideLeftFrontRowCellTwo.innerHTML = (
+    strideLeftFrontRowCellTwo.textContent = (
       distValuesSLLF.reduce((a, b) => a + b) / distValuesSLLF.length
     ).toFixed(3);
     for (var i = 0; i < pointsRedRight.length - 1; i++) {
@@ -4291,15 +4291,15 @@ function addEntriesAllAverage() {
       var cellThree = newRow.insertCell();
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
-      cellOne.innerHTML = indexRow - 1;
-      cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
-      cellThree.innerHTML = "Stride length right front";
+      cellOne.textContent = indexRow - 1;
+      cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
+      cellThree.textContent = "Stride length right front";
       distance = Math.hypot(
         pointsRedRight[i].x - pointsRedRight[i + 1].x,
         pointsRedRight[i].y - pointsRedRight[i + 1].y
       ).toFixed(3);
-      cellFour.innerHTML = distance;
-      cellFive.innerHTML = (distance / dist).toFixed(3);
+      cellFour.textContent = distance;
+      cellFive.textContent = (distance / dist).toFixed(3);
       distValuesSLRF.push(distance / dist);
     }
     console.log(distValuesSLRF);
@@ -4307,9 +4307,9 @@ function addEntriesAllAverage() {
     var strideRightFrontRowCellOne = strideRightFrontMeanRow.insertCell();
     var strideRightFrontRowCellTwo = strideRightFrontMeanRow.insertCell();
     strideRightFrontRowCellOne.colSpan = "4";
-    strideRightFrontRowCellOne.innerHTML =
+    strideRightFrontRowCellOne.textContent =
       "<b>Stride length right front average in cm:</b> ";
-    strideRightFrontRowCellTwo.innerHTML = (
+    strideRightFrontRowCellTwo.textContent = (
       distValuesSLRF.reduce((a, b) => a + b) / distValuesSLRF.length
     ).toFixed(3);
     for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
@@ -4320,15 +4320,15 @@ function addEntriesAllAverage() {
       var cellThree = newRow.insertCell();
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
-      cellOne.innerHTML = indexRow - 1;
-      cellTwo.innerHTML = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
-      cellThree.innerHTML = "Stride length left hind";
+      cellOne.textContent = indexRow - 1;
+      cellTwo.textContent = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
+      cellThree.textContent = "Stride length left hind";
       distance = Math.hypot(
         pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
         pointsBlueLeft[i].y - pointsBlueLeft[i + 1].y
       ).toFixed(3);
-      cellFour.innerHTML = distance;
-      cellFive.innerHTML = (distance / dist).toFixed(3);
+      cellFour.textContent = distance;
+      cellFive.textContent = (distance / dist).toFixed(3);
       distValuesSLLH.push(distance / dist);
     }
     console.log(distValuesSLLH);
@@ -4336,9 +4336,9 @@ function addEntriesAllAverage() {
     var strideLeftHindRowCellOne = strideLeftHindMeanRow.insertCell();
     var strideLeftHindRowCellTwo = strideLeftHindMeanRow.insertCell();
     strideLeftHindRowCellOne.colSpan = "4";
-    strideLeftHindRowCellOne.innerHTML =
+    strideLeftHindRowCellOne.textContent =
       "<b>Stride length left hind average in cm:</b> ";
-    strideLeftHindRowCellTwo.innerHTML = (
+    strideLeftHindRowCellTwo.textContent = (
       distValuesSLLH.reduce((a, b) => a + b) / distValuesSLLH.length
     ).toFixed(3);
     for (var i = 0; i < pointsBlueRight.length - 1; i++) {
@@ -4349,15 +4349,15 @@ function addEntriesAllAverage() {
       var cellThree = newRow.insertCell();
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
-      cellOne.innerHTML = indexRow - 1;
-      cellTwo.innerHTML = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
-      cellThree.innerHTML = "Stride length right hind";
+      cellOne.textContent = indexRow - 1;
+      cellTwo.textContent = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
+      cellThree.textContent = "Stride length right hind";
       distance = Math.hypot(
         pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
         pointsBlueRight[i].y - pointsBlueRight[i + 1].y
       ).toFixed(3);
-      cellFour.innerHTML = distance;
-      cellFive.innerHTML = (distance / dist).toFixed(3);
+      cellFour.textContent = distance;
+      cellFive.textContent = (distance / dist).toFixed(3);
       distValuesSLRH.push(distance / dist);
     }
     console.log(distValuesSLRH);
@@ -4365,9 +4365,9 @@ function addEntriesAllAverage() {
     var strideRightHindRowCellOne = strideRightHindMeanRow.insertCell();
     var strideRightHindRowCellTwo = strideRightHindMeanRow.insertCell();
     strideRightHindRowCellOne.colSpan = "4";
-    strideRightHindRowCellOne.innerHTML =
+    strideRightHindRowCellOne.textContent =
       "<b>Stride length right hind average in cm:</b> ";
-    strideRightHindRowCellTwo.innerHTML = (
+    strideRightHindRowCellTwo.textContent = (
       distValuesSLRH.reduce((a, b) => a + b) / distValuesSLRH.length
     ).toFixed(3);
     for (var i = 0; i < pointsRedLeft.length; i++) {
@@ -4380,15 +4380,15 @@ function addEntriesAllAverage() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          cellOne.innerHTML = indexRow - 1;
-          cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
-          cellThree.innerHTML = "Overlap Left";
+          cellOne.textContent = indexRow - 1;
+          cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
+          cellThree.textContent = "Overlap Left";
           distance = Math.hypot(
             pointsRedLeft[i].x - pointsBlueLeft[j].x,
             pointsRedLeft[i].y - pointsBlueLeft[j].y
           ).toFixed(3);
-          cellFour.innerHTML = distance;
-          cellFive.innerHTML = (distance / dist).toFixed(3);
+          cellFour.textContent = distance;
+          cellFive.textContent = (distance / dist).toFixed(3);
           distValuesOL.push(distance / dist);
         }
       }
@@ -4398,8 +4398,8 @@ function addEntriesAllAverage() {
     var overlapLeftRowCellOne = overlapLeftMeanRow.insertCell();
     var overlapLeftRowCellTwo = overlapLeftMeanRow.insertCell();
     overlapLeftRowCellOne.colSpan = "4";
-    overlapLeftRowCellOne.innerHTML = "<b>Overlap left average in cm:</b> ";
-    overlapLeftRowCellTwo.innerHTML = (
+    overlapLeftRowCellOne.textContent = "<b>Overlap left average in cm:</b> ";
+    overlapLeftRowCellTwo.textContent = (
       distValuesOL.reduce((a, b) => a + b) / distValuesOL.length
     ).toFixed(3);
     for (var i = 0; i < pointsRedRight.length; i++) {
@@ -4412,15 +4412,15 @@ function addEntriesAllAverage() {
           var cellThree = newRow.insertCell();
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
-          cellOne.innerHTML = indexRow - 1;
-          cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
-          cellThree.innerHTML = "Overlap Right";
+          cellOne.textContent = indexRow - 1;
+          cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
+          cellThree.textContent = "Overlap Right";
           distance = Math.hypot(
             pointsRedRight[i].x - pointsBlueRight[j].x,
             pointsRedRight[i].y - pointsBlueRight[j].y
           ).toFixed(3);
-          cellFour.innerHTML = distance;
-          cellFive.innerHTML = (distance / dist).toFixed(3);
+          cellFour.textContent = distance;
+          cellFive.textContent = (distance / dist).toFixed(3);
           distValuesOR.push(distance / dist);
         }
       }
@@ -4430,8 +4430,8 @@ function addEntriesAllAverage() {
     var overlapRightRowCellOne = overlapRightMeanRow.insertCell();
     var overlapRightRowCellTwo = overlapRightMeanRow.insertCell();
     overlapRightRowCellOne.colSpan = "4";
-    overlapRightRowCellOne.innerHTML = "<b>Overlap Right average in cm:</b> ";
-    overlapRightRowCellTwo.innerHTML = (
+    overlapRightRowCellOne.textContent = "<b>Overlap Right average in cm:</b> ";
+    overlapRightRowCellTwo.textContent = (
       distValuesOR.reduce((a, b) => a + b) / distValuesOR.length
     ).toFixed(3);
     if (footstepStart.options[footstepStart.selectedIndex].value == "Left") {
@@ -4448,13 +4448,13 @@ function addEntriesAllAverage() {
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
             indexImaginaryFrontLeft += 1;
-            cellOne.innerHTML = indexRow - 1;
-            cellTwo.innerHTML =
+            cellOne.textContent = indexRow - 1;
+            cellTwo.textContent =
               "Imaginary Front " +
               indexImaginaryFrontLeft +
               " &#x2192 Red R" +
               (j + 1);
-            cellThree.innerHTML = "Stride Width Front(L)";
+            cellThree.textContent = "Stride Width Front(L)";
             if (i < pointsRedLeft.length - 1) {
               distance = Math.hypot(
                 pointsRedRight[j].x - pointsRedRight[j].x,
@@ -4467,8 +4467,8 @@ function addEntriesAllAverage() {
                 pointsRedLeft[i].y - pointsRedRight[j].y
               ).toFixed(3);
             }
-            cellFour.innerHTML = distance;
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFour.textContent = distance;
+            cellFive.textContent = (distance / dist).toFixed(3);
             distValuesSWFL.push(distance / dist);
           }
           if (i == j + 1) {
@@ -4480,13 +4480,13 @@ function addEntriesAllAverage() {
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
             indexImaginaryFrontLeft += 1;
-            cellOne.innerHTML = indexRow - 1;
-            cellTwo.innerHTML =
+            cellOne.textContent = indexRow - 1;
+            cellTwo.textContent =
               "Imaginary Front " +
               indexImaginaryFrontLeft +
               " &#x2192 Red L" +
               (i + 1);
-            cellThree.innerHTML = "Stride Width Front(L)";
+            cellThree.textContent = "Stride Width Front(L)";
             if (j < pointsRedRight.length - 1) {
               distance = Math.hypot(
                 pointsRedLeft[i].x - pointsRedLeft[i].x,
@@ -4499,8 +4499,8 @@ function addEntriesAllAverage() {
                 pointsRedLeft[i].y - pointsRedRight[j].y
               ).toFixed(3);
             }
-            cellFour.innerHTML = distance;
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFour.textContent = distance;
+            cellFive.textContent = (distance / dist).toFixed(3);
             distValuesSWFL.push(distance / dist);
           }
         }
@@ -4512,9 +4512,9 @@ function addEntriesAllAverage() {
       var strideWidthFrontLeftRowCellTwo =
         strideWidthFrontLeftMeanRow.insertCell();
       strideWidthFrontLeftRowCellOne.colSpan = "4";
-      strideWidthFrontLeftRowCellOne.innerHTML =
+      strideWidthFrontLeftRowCellOne.textContent =
         "<b>Stride Width Front(L) average in cm:</b> ";
-      strideWidthFrontLeftRowCellTwo.innerHTML = (
+      strideWidthFrontLeftRowCellTwo.textContent = (
         distValuesSWFL.reduce((a, b) => a + b) / distValuesSWFL.length
       ).toFixed(3);
       for (var i = 0; i < pointsBlueLeft.length; i++) {
@@ -4528,13 +4528,13 @@ function addEntriesAllAverage() {
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
             indexImaginaryHindLeft += 1;
-            cellOne.innerHTML = indexRow - 1;
-            cellTwo.innerHTML =
+            cellOne.textContent = indexRow - 1;
+            cellTwo.textContent =
               "Imaginary Hind " +
               indexImaginaryHindLeft +
               " &#x2192 Blue R" +
               (j + 1);
-            cellThree.innerHTML = "Stride Width Hind(L)";
+            cellThree.textContent = "Stride Width Hind(L)";
             if (i < pointsBlueLeft.length - 1) {
               distance = Math.hypot(
                 pointsBlueRight[j].x - pointsBlueRight[j].x,
@@ -4547,8 +4547,8 @@ function addEntriesAllAverage() {
                 pointsBlueLeft[i].y - pointsBlueRight[j].y
               ).toFixed(3);
             }
-            cellFour.innerHTML = distance;
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFour.textContent = distance;
+            cellFive.textContent = (distance / dist).toFixed(3);
             distValuesSWHL.push(distance / dist);
           }
           if (i == j + 1) {
@@ -4560,13 +4560,13 @@ function addEntriesAllAverage() {
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
             indexImaginaryHindLeft += 1;
-            cellOne.innerHTML = indexRow - 1;
-            cellTwo.innerHTML =
+            cellOne.textContent = indexRow - 1;
+            cellTwo.textContent =
               "Imaginary Hind " +
               indexImaginaryHindLeft +
               " &#x2192 Blue L" +
               (i + 1);
-            cellThree.innerHTML = "Stride Width Hind(L)";
+            cellThree.textContent = "Stride Width Hind(L)";
             if (j < pointsBlueRight.length - 1) {
               distance = Math.hypot(
                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
@@ -4579,8 +4579,8 @@ function addEntriesAllAverage() {
                 pointsBlueLeft[i].y - pointsBlueRight[j].y
               ).toFixed(3);
             }
-            cellFour.innerHTML = distance;
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFour.textContent = distance;
+            cellFive.textContent = (distance / dist).toFixed(3);
             distValuesSWHL.push(distance / dist);
           }
         }
@@ -4592,9 +4592,9 @@ function addEntriesAllAverage() {
       var strideWidthHindLeftRowCellTwo =
         strideWidthHindLeftMeanRow.insertCell();
       strideWidthHindLeftRowCellOne.colSpan = "4";
-      strideWidthHindLeftRowCellOne.innerHTML =
+      strideWidthHindLeftRowCellOne.textContent =
         "<b>Stride Width Hind(L) average in cm:</b> ";
-      strideWidthHindLeftRowCellTwo.innerHTML = (
+      strideWidthHindLeftRowCellTwo.textContent = (
         distValuesSWHL.reduce((a, b) => a + b) / distValuesSWHL.length
       ).toFixed(3);
     }
@@ -4612,13 +4612,13 @@ function addEntriesAllAverage() {
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
             indexImaginaryFrontRight += 1;
-            cellOne.innerHTML = indexRow - 1;
-            cellTwo.innerHTML =
+            cellOne.textContent = indexRow - 1;
+            cellTwo.textContent =
               "Imaginary Front " +
               indexImaginaryFrontRight +
               " &#x2192 Red L" +
               (i + 1);
-            cellThree.innerHTML = "Stride Width Front(R)";
+            cellThree.textContent = "Stride Width Front(R)";
             if (j < pointsRedRight.length - 1) {
               distance = Math.hypot(
                 pointsRedLeft[i].x - pointsRedLeft[i].x,
@@ -4631,8 +4631,8 @@ function addEntriesAllAverage() {
                 pointsRedRight[j].y - pointsRedLeft[i].y
               ).toFixed(3);
             }
-            cellFour.innerHTML = distance;
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFour.textContent = distance;
+            cellFive.textContent = (distance / dist).toFixed(3);
             distValuesSWFR.push(distance / dist);
           }
           if (j == i + 1) {
@@ -4644,13 +4644,13 @@ function addEntriesAllAverage() {
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
             indexImaginaryFrontRight += 1;
-            cellOne.innerHTML = indexRow - 1;
-            cellTwo.innerHTML =
+            cellOne.textContent = indexRow - 1;
+            cellTwo.textContent =
               "Imaginary Front " +
               indexImaginaryFrontRight +
               " &#x2192 Red R" +
               (j + 1);
-            cellThree.innerHTML = "Stride Width Front(R)";
+            cellThree.textContent = "Stride Width Front(R)";
             if (i < pointsRedLeft.length - 1) {
               distance = Math.hypot(
                 pointsRedRight[j].x - pointsRedRight[j].x,
@@ -4663,8 +4663,8 @@ function addEntriesAllAverage() {
                 pointsRedLeft[i].y - pointsRedRight[j].y
               ).toFixed(3);
             }
-            cellFour.innerHTML = distance;
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFour.textContent = distance;
+            cellFive.textContent = (distance / dist).toFixed(3);
             distValuesSWFR.push(distance / dist);
           }
         }
@@ -4676,9 +4676,9 @@ function addEntriesAllAverage() {
       var strideWidthFrontRightRowCellTwo =
         strideWidthFrontRightMeanRow.insertCell();
       strideWidthFrontRightRowCellOne.colSpan = "4";
-      strideWidthFrontRightRowCellOne.innerHTML =
+      strideWidthFrontRightRowCellOne.textContent =
         "<b>Stride Width Front(R) average in cm:</b> ";
-      strideWidthFrontRightRowCellTwo.innerHTML = (
+      strideWidthFrontRightRowCellTwo.textContent = (
         distValuesSWFR.reduce((a, b) => a + b) / distValuesSWFR.length
       ).toFixed(3);
       for (var i = 0; i < pointsBlueLeft.length; i++) {
@@ -4692,13 +4692,13 @@ function addEntriesAllAverage() {
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
             indexImaginaryHindRight += 1;
-            cellOne.innerHTML = indexRow - 1;
-            cellTwo.innerHTML =
+            cellOne.textContent = indexRow - 1;
+            cellTwo.textContent =
               "Imaginary Hind " +
               indexImaginaryHindRight +
               " &#x2192 Blue L" +
               (i + 1);
-            cellThree.innerHTML = "Stride Width Hind(R)";
+            cellThree.textContent = "Stride Width Hind(R)";
             if (j < pointsBlueRight.length - 1) {
               distance = Math.hypot(
                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
@@ -4711,8 +4711,8 @@ function addEntriesAllAverage() {
                 pointsBlueRight[j].y - pointsBlueLeft[i].y
               ).toFixed(3);
             }
-            cellFour.innerHTML = distance;
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFour.textContent = distance;
+            cellFive.textContent = (distance / dist).toFixed(3);
             distValuesSWHR.push(distance / dist);
           }
           if (j == i + 1) {
@@ -4724,13 +4724,13 @@ function addEntriesAllAverage() {
             var cellFour = newRow.insertCell();
             var cellFive = newRow.insertCell();
             indexImaginaryHindRight += 1;
-            cellOne.innerHTML = indexRow - 1;
-            cellTwo.innerHTML =
+            cellOne.textContent = indexRow - 1;
+            cellTwo.textContent =
               "Imaginary Hind " +
               indexImaginaryHindRight +
               " &#x2192 Blue R" +
               (j + 1);
-            cellThree.innerHTML = "Stride Width Hind(R)";
+            cellThree.textContent = "Stride Width Hind(R)";
             if (i < pointsBlueLeft.length - 1) {
               distance = Math.hypot(
                 pointsBlueRight[j].x - pointsBlueRight[j].x,
@@ -4743,8 +4743,8 @@ function addEntriesAllAverage() {
                 pointsBlueLeft[i].y - pointsBlueRight[j].y
               ).toFixed(3);
             }
-            cellFour.innerHTML = distance;
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFour.textContent = distance;
+            cellFive.textContent = (distance / dist).toFixed(3);
             distValuesSWHR.push(distance / dist);
           }
         }
@@ -4756,16 +4756,16 @@ function addEntriesAllAverage() {
       var strideWidthHindRightRowCellTwo =
         strideWidthHindRightMeanRow.insertCell();
       strideWidthHindRightRowCellOne.colSpan = "4";
-      strideWidthHindRightRowCellOne.innerHTML =
+      strideWidthHindRightRowCellOne.textContent =
         "<b>Stride Width Hind(R) average in cm:</b> ";
-      strideWidthHindRightRowCellTwo.innerHTML = (
+      strideWidthHindRightRowCellTwo.textContent = (
         distValuesSWHR.reduce((a, b) => a + b) / distValuesSWHR.length
       ).toFixed(3);
     }
   }
   var lastRow = tbody.insertRow(-1);
   var lastCell = lastRow.insertCell();
-  lastCell.innerHTML =
+  lastCell.textContent =
     "------------------------------BREAK------------------------------";
   lastCell.colSpan = "5";
   lastCell.style.textAlign = "center";
@@ -4782,18 +4782,18 @@ function addEntriesAll() {
     var cellThree = newRow.insertCell();
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
-    cellOne.innerHTML = indexRow - 1;
-    cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
-    cellThree.innerHTML = "Stride length left front";
+    cellOne.textContent = indexRow - 1;
+    cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
+    cellThree.textContent = "Stride length left front";
     distance = Math.hypot(
       pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
       pointsRedLeft[i].y - pointsRedLeft[i + 1].y
     ).toFixed(3);
-    cellFour.innerHTML = distance;
+    cellFour.textContent = distance;
     if (dist != 0) {
-      cellFive.innerHTML = (distance / dist).toFixed(3);
+      cellFive.textContent = (distance / dist).toFixed(3);
     } else {
-      cellFive.innerHTML = "Undefined";
+      cellFive.textContent = "Undefined";
     }
   }
   for (var i = 0; i < pointsRedRight.length - 1; i++) {
@@ -4804,18 +4804,18 @@ function addEntriesAll() {
     var cellThree = newRow.insertCell();
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
-    cellOne.innerHTML = indexRow - 1;
-    cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
-    cellThree.innerHTML = "Stride length right front";
+    cellOne.textContent = indexRow - 1;
+    cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
+    cellThree.textContent = "Stride length right front";
     distance = Math.hypot(
       pointsRedRight[i].x - pointsRedRight[i + 1].x,
       pointsRedRight[i].y - pointsRedRight[i + 1].y
     ).toFixed(3);
-    cellFour.innerHTML = distance;
+    cellFour.textContent = distance;
     if (dist != 0) {
-      cellFive.innerHTML = (distance / dist).toFixed(3);
+      cellFive.textContent = (distance / dist).toFixed(3);
     } else {
-      cellFive.innerHTML = "Undefined";
+      cellFive.textContent = "Undefined";
     }
   }
   for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
@@ -4826,18 +4826,18 @@ function addEntriesAll() {
     var cellThree = newRow.insertCell();
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
-    cellOne.innerHTML = indexRow - 1;
-    cellTwo.innerHTML = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
-    cellThree.innerHTML = "Stride length left hind";
+    cellOne.textContent = indexRow - 1;
+    cellTwo.textContent = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
+    cellThree.textContent = "Stride length left hind";
     distance = Math.hypot(
       pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
       pointsBlueLeft[i].y - pointsBlueLeft[i + 1].y
     ).toFixed(3);
-    cellFour.innerHTML = distance;
+    cellFour.textContent = distance;
     if (dist != 0) {
-      cellFive.innerHTML = (distance / dist).toFixed(3);
+      cellFive.textContent = (distance / dist).toFixed(3);
     } else {
-      cellFive.innerHTML = "Undefined";
+      cellFive.textContent = "Undefined";
     }
   }
   for (var i = 0; i < pointsBlueRight.length - 1; i++) {
@@ -4848,18 +4848,18 @@ function addEntriesAll() {
     var cellThree = newRow.insertCell();
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
-    cellOne.innerHTML = indexRow - 1;
-    cellTwo.innerHTML = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
-    cellThree.innerHTML = "Stride length right hind";
+    cellOne.textContent = indexRow - 1;
+    cellTwo.textContent = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
+    cellThree.textContent = "Stride length right hind";
     distance = Math.hypot(
       pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
       pointsBlueRight[i].y - pointsBlueRight[i + 1].y
     ).toFixed(3);
-    cellFour.innerHTML = distance;
+    cellFour.textContent = distance;
     if (dist != 0) {
-      cellFive.innerHTML = (distance / dist).toFixed(3);
+      cellFive.textContent = (distance / dist).toFixed(3);
     } else {
-      cellFive.innerHTML = "Undefined";
+      cellFive.textContent = "Undefined";
     }
   }
   for (var i = 0; i < pointsRedLeft.length; i++) {
@@ -4872,18 +4872,18 @@ function addEntriesAll() {
         var cellThree = newRow.insertCell();
         var cellFour = newRow.insertCell();
         var cellFive = newRow.insertCell();
-        cellOne.innerHTML = indexRow - 1;
-        cellTwo.innerHTML = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
-        cellThree.innerHTML = "Overlap Left";
+        cellOne.textContent = indexRow - 1;
+        cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
+        cellThree.textContent = "Overlap Left";
         distance = Math.hypot(
           pointsRedLeft[i].x - pointsBlueLeft[j].x,
           pointsRedLeft[i].y - pointsBlueLeft[j].y
         ).toFixed(3);
-        cellFour.innerHTML = distance;
+        cellFour.textContent = distance;
         if (dist != 0) {
-          cellFive.innerHTML = (distance / dist).toFixed(3);
+          cellFive.textContent = (distance / dist).toFixed(3);
         } else {
-          cellFive.innerHTML = "Undefined";
+          cellFive.textContent = "Undefined";
         }
       }
     }
@@ -4898,18 +4898,18 @@ function addEntriesAll() {
         var cellThree = newRow.insertCell();
         var cellFour = newRow.insertCell();
         var cellFive = newRow.insertCell();
-        cellOne.innerHTML = indexRow - 1;
-        cellTwo.innerHTML = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
-        cellThree.innerHTML = "Overlap Right";
+        cellOne.textContent = indexRow - 1;
+        cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
+        cellThree.textContent = "Overlap Right";
         distance = Math.hypot(
           pointsRedRight[i].x - pointsBlueRight[j].x,
           pointsRedRight[i].y - pointsBlueRight[j].y
         ).toFixed(3);
-        cellFour.innerHTML = distance;
+        cellFour.textContent = distance;
         if (dist != 0) {
-          cellFive.innerHTML = (distance / dist).toFixed(3);
+          cellFive.textContent = (distance / dist).toFixed(3);
         } else {
-          cellFive.innerHTML = "Undefined";
+          cellFive.textContent = "Undefined";
         }
       }
     }
@@ -4928,13 +4928,13 @@ function addEntriesAll() {
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
           indexImaginaryFrontLeft += 1;
-          cellOne.innerHTML = indexRow - 1;
-          cellTwo.innerHTML =
+          cellOne.textContent = indexRow - 1;
+          cellTwo.textContent =
             "Imaginary Front " +
             indexImaginaryFrontLeft +
             " &#x2192 Red R" +
             (j + 1);
-          cellThree.innerHTML = "Stride Width Front(L)";
+          cellThree.textContent = "Stride Width Front(L)";
           if (i < pointsRedLeft.length - 1) {
             distance = Math.hypot(
               pointsRedRight[j].x - pointsRedRight[j].x,
@@ -4947,11 +4947,11 @@ function addEntriesAll() {
               pointsRedLeft[i].y - pointsRedRight[j].y
             ).toFixed(3);
           }
-          cellFour.innerHTML = distance;
+          cellFour.textContent = distance;
           if (dist != 0) {
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFive.textContent = (distance / dist).toFixed(3);
           } else {
-            cellFive.innerHTML = "Undefined";
+            cellFive.textContent = "Undefined";
           }
         }
         if (i == j + 1) {
@@ -4963,13 +4963,13 @@ function addEntriesAll() {
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
           indexImaginaryFrontLeft += 1;
-          cellOne.innerHTML = indexRow - 1;
-          cellTwo.innerHTML =
+          cellOne.textContent = indexRow - 1;
+          cellTwo.textContent =
             "Imaginary Front " +
             indexImaginaryFrontLeft +
             " &#x2192 Red L" +
             (i + 1);
-          cellThree.innerHTML = "Stride Width Front(L)";
+          cellThree.textContent = "Stride Width Front(L)";
           if (j < pointsRedRight.length - 1) {
             distance = Math.hypot(
               pointsRedLeft[i].x - pointsRedLeft[i].x,
@@ -4982,11 +4982,11 @@ function addEntriesAll() {
               pointsRedLeft[i].y - pointsRedRight[j].y
             ).toFixed(3);
           }
-          cellFour.innerHTML = distance;
+          cellFour.textContent = distance;
           if (dist != 0) {
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFive.textContent = (distance / dist).toFixed(3);
           } else {
-            cellFive.innerHTML = "Undefined";
+            cellFive.textContent = "Undefined";
           }
         }
       }
@@ -5002,13 +5002,13 @@ function addEntriesAll() {
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
           indexImaginaryHindLeft += 1;
-          cellOne.innerHTML = indexRow - 1;
-          cellTwo.innerHTML =
+          cellOne.textContent = indexRow - 1;
+          cellTwo.textContent =
             "Imaginary Hind " +
             indexImaginaryHindLeft +
             " &#x2192 Blue R" +
             (j + 1);
-          cellThree.innerHTML = "Stride Width Hind(L)";
+          cellThree.textContent = "Stride Width Hind(L)";
           if (i < pointsBlueLeft.length - 1) {
             distance = Math.hypot(
               pointsBlueRight[j].x - pointsBlueRight[j].x,
@@ -5021,11 +5021,11 @@ function addEntriesAll() {
               pointsBlueLeft[i].y - pointsBlueRight[j].y
             ).toFixed(3);
           }
-          cellFour.innerHTML = distance;
+          cellFour.textContent = distance;
           if (dist != 0) {
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFive.textContent = (distance / dist).toFixed(3);
           } else {
-            cellFive.innerHTML = "Undefined";
+            cellFive.textContent = "Undefined";
           }
         }
         if (i == j + 1) {
@@ -5037,13 +5037,13 @@ function addEntriesAll() {
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
           indexImaginaryHindLeft += 1;
-          cellOne.innerHTML = indexRow - 1;
-          cellTwo.innerHTML =
+          cellOne.textContent = indexRow - 1;
+          cellTwo.textContent =
             "Imaginary Hind " +
             indexImaginaryHindLeft +
             " &#x2192 Blue L" +
             (i + 1);
-          cellThree.innerHTML = "Stride Width Hind(L)";
+          cellThree.textContent = "Stride Width Hind(L)";
           if (j < pointsBlueRight.length - 1) {
             distance = Math.hypot(
               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
@@ -5056,11 +5056,11 @@ function addEntriesAll() {
               pointsBlueLeft[i].y - pointsBlueRight[j].y
             ).toFixed(3);
           }
-          cellFour.innerHTML = distance;
+          cellFour.textContent = distance;
           if (dist != 0) {
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFive.textContent = (distance / dist).toFixed(3);
           } else {
-            cellFive.innerHTML = "Undefined";
+            cellFive.textContent = "Undefined";
           }
         }
       }
@@ -5080,13 +5080,13 @@ function addEntriesAll() {
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
           indexImaginaryFrontRight += 1;
-          cellOne.innerHTML = indexRow - 1;
-          cellTwo.innerHTML =
+          cellOne.textContent = indexRow - 1;
+          cellTwo.textContent =
             "Imaginary Front " +
             indexImaginaryFrontRight +
             " &#x2192 Red L" +
             (i + 1);
-          cellThree.innerHTML = "Stride Width Front(R)";
+          cellThree.textContent = "Stride Width Front(R)";
           if (j < pointsRedRight.length - 1) {
             distance = Math.hypot(
               pointsRedLeft[i].x - pointsRedLeft[i].x,
@@ -5099,11 +5099,11 @@ function addEntriesAll() {
               pointsRedRight[j].y - pointsRedLeft[i].y
             ).toFixed(3);
           }
-          cellFour.innerHTML = distance;
+          cellFour.textContent = distance;
           if (dist != 0) {
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFive.textContent = (distance / dist).toFixed(3);
           } else {
-            cellFive.innerHTML = "Undefined";
+            cellFive.textContent = "Undefined";
           }
         }
         if (j == i + 1) {
@@ -5115,13 +5115,13 @@ function addEntriesAll() {
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
           indexImaginaryFrontRight += 1;
-          cellOne.innerHTML = indexRow - 1;
-          cellTwo.innerHTML =
+          cellOne.textContent = indexRow - 1;
+          cellTwo.textContent =
             "Imaginary Front " +
             indexImaginaryFrontRight +
             " &#x2192 Red R" +
             (j + 1);
-          cellThree.innerHTML = "Stride Width Front(R)";
+          cellThree.textContent = "Stride Width Front(R)";
           if (i < pointsRedLeft.length - 1) {
             distance = Math.hypot(
               pointsRedRight[j].x - pointsRedRight[j].x,
@@ -5134,11 +5134,11 @@ function addEntriesAll() {
               pointsRedLeft[i].y - pointsRedRight[j].y
             ).toFixed(3);
           }
-          cellFour.innerHTML = distance;
+          cellFour.textContent = distance;
           if (dist != 0) {
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFive.textContent = (distance / dist).toFixed(3);
           } else {
-            cellFive.innerHTML = "Undefined";
+            cellFive.textContent = "Undefined";
           }
         }
       }
@@ -5154,13 +5154,13 @@ function addEntriesAll() {
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
           indexImaginaryHindRight += 1;
-          cellOne.innerHTML = indexRow - 1;
-          cellTwo.innerHTML =
+          cellOne.textContent = indexRow - 1;
+          cellTwo.textContent =
             "Imaginary Hind " +
             indexImaginaryHindRight +
             " &#x2192 Blue L" +
             (i + 1);
-          cellThree.innerHTML = "Stride Width Hind(R)";
+          cellThree.textContent = "Stride Width Hind(R)";
           if (j < pointsBlueRight.length - 1) {
             distance = Math.hypot(
               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
@@ -5173,11 +5173,11 @@ function addEntriesAll() {
               pointsBlueRight[j].y - pointsBlueLeft[i].y
             ).toFixed(3);
           }
-          cellFour.innerHTML = distance;
+          cellFour.textContent = distance;
           if (dist != 0) {
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFive.textContent = (distance / dist).toFixed(3);
           } else {
-            cellFive.innerHTML = "Undefined";
+            cellFive.textContent = "Undefined";
           }
         }
         if (j == i + 1) {
@@ -5189,13 +5189,13 @@ function addEntriesAll() {
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
           indexImaginaryHindRight += 1;
-          cellOne.innerHTML = indexRow - 1;
-          cellTwo.innerHTML =
+          cellOne.textContent = indexRow - 1;
+          cellTwo.textContent =
             "Imaginary Hind " +
             indexImaginaryHindRight +
             " &#x2192 Blue R" +
             (j + 1);
-          cellThree.innerHTML = "Stride Width Hind(R)";
+          cellThree.textContent = "Stride Width Hind(R)";
           if (i < pointsBlueLeft.length - 1) {
             distance = Math.hypot(
               pointsBlueRight[j].x - pointsBlueRight[j].x,
@@ -5208,11 +5208,11 @@ function addEntriesAll() {
               pointsBlueLeft[i].y - pointsBlueRight[j].y
             ).toFixed(3);
           }
-          cellFour.innerHTML = distance;
+          cellFour.textContent = distance;
           if (dist != 0) {
-            cellFive.innerHTML = (distance / dist).toFixed(3);
+            cellFive.textContent = (distance / dist).toFixed(3);
           } else {
-            cellFive.innerHTML = "Undefined";
+            cellFive.textContent = "Undefined";
           }
         }
       }
@@ -5228,7 +5228,7 @@ function addEntriesAll() {
   }
   var lastRow = tbody.insertRow(-1);
   var lastCell = lastRow.insertCell();
-  lastCell.innerHTML =
+  lastCell.textContent =
     "------------------------------BREAK------------------------------";
   lastCell.colSpan = "5";
   lastCell.style.textAlign = "center";

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+from csp.constants import SELF, NONE, NONCE
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,19 +23,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#load_dotenv()
+load_dotenv()
 # key = os.environ.get('S_KEY')
 #For ubuntu provide full path
-load_dotenv('var/www/mouseframe/django_image_analysis/mouseapp/.env')
+#load_dotenv('var/www/mouseframe/django_image_analysis/mouseapp/.env')
 key = os.environ.get('S_KEY')
 
 
 SECRET_KEY=key
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
-ALLOWED_HOSTS = ['mouseframe.pt', 'www.mouseframe.pt']
+ALLOWED_HOSTS = ['127.0.0.1','mouseframe.pt', 'www.mouseframe.pt']
 
 # Application definition
 
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     'import_export',
     'accounts',
     'cache_cleaner',
+    'csp',
     # 'defender',
 ]
 
@@ -155,30 +158,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mouseapp.wsgi.application'
 
 
-#CSP SECTION
 
-CSP_DEFAULT_SRC = ("'self'",)  # default fallback
-
-CSP_STYLE_SRC = (
-    "'self'",
-    'https://fonts.googleapis.com',  # for Google Fonts CSS
-)
-
-CSP_FONT_SRC = (
-    "'self'",
-    'https://fonts.gstatic.com',  # Google Fonts font files
-)
-
-CSP_IMG_SRC = (
-    "'self'",  # your own static folder images
-    'data:',   # allow base64-encoded images if any
-)
-
-CSP_SCRIPT_SRC = ("'self'",)  # your own JS files, add external domains if any
-
-CSP_CONNECT_SRC = ("'self'",)  # if you make AJAX or WebSocket connections
-
-CSP_FRAME_SRC = ("'none'",)  # block embedding your site into iframes by default
 
 
 
@@ -276,6 +256,24 @@ STORAGES = {
 }
 
 
+
+
+#CSP SECTION
+
+
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": [SELF],
+        "script-src": [SELF, "https://www.google.com", "https://www.gstatic.com", NONCE],
+        "style-src": [SELF, "https://fonts.googleapis.com", "https://www.gstatic.com", NONCE],
+        "connect-src": [SELF, "https://www.google.com", "https://www.gstatic.com"],
+        "img-src": [SELF, "data:", "blob:"],
+        "font-src": [SELF, "https://fonts.gstatic.com"],
+        "frame-src": ["https://www.google.com", "https://www.google.com/maps/embed"],
+    },
+}
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -283,16 +281,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ------------------------- SECURITY CHECKS FOR PROD WITH SSL CERTIFICATE FOR PRODUCTION ONLY ---------------------------#
 
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'DENY'
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
-USE_X_FORWARDED_HOST = True
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_PRELOAD = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# SECURE_BROWSER_XSS_FILTER = True
+# X_FRAME_OPTIONS = 'DENY'
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_SSL_REDIRECT = True
+# USE_X_FORWARDED_HOST = True
+# SECURE_HSTS_SECONDS = 31536000
+# SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # ------------------------------------------------------------- #
 
