@@ -19,7 +19,7 @@
         <div class="container py-5 h-100">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-              <style nonce="{{ request.csp_nonce }}">.card bg-dark text-white {border-radius: 1rem;}</style>
+              <style nonce="{{ request.csp_nonce }}">.card{border-radius: 1rem;}</style>
               <div class="card bg-dark text-white">
                 <div class="card-body p-5 text-center">
       
@@ -27,7 +27,12 @@
                     <form action="" method="POST">
                     {% csrf_token %}
                     <h3>Welcome to the Mouseframe Application!</h3>
-                    <style nonce="{{ request.csp_nonce }}">.image-one {width: 100px; height: 100px;}</style>
+
+                    <style nonce="{{ request.csp_nonce }}">
+                    .image-one {width: 100px; height: 100px;}
+                    .p1-error{margin-top: 10px; color: red;}
+                    </style>
+
                     <img class="image-one" src="{% static 'img/logo.png' %}">
                    <br><br><h2 class="fw-bold mb-2 text-uppercase">APP Login</h2>
                     <p class="text-white-50 mb-5">Please enter your given login credentials<br>(Private version)</p>
@@ -49,7 +54,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                       </div>
                       {% endfor %}
-                    <p style="margin-top: 10px; color: red;">{{error}}</p>
+                    <p class="p1-error">{{error}}</p>
                     {% endif %}
                     </form>
                   </div>

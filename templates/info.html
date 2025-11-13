@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load csp %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,7 +19,10 @@
           <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
               <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <style nonce="{{ request.csp_nonce }}">
+                  .card bg-dark text-white{border-radius: 1rem;}
+                </style>
+                <div class="card bg-dark text-white">
                   <div class="card-body p-5 text-center">
         
                     <div class="mb-md-5 mt-md-4">
@@ -35,9 +39,15 @@
       </div>
     <p id="version">v<span data-version></span></p>
     <header>
+                <style nonce="{{ request.csp_nonce }}">
+                  .nav-item{list-style-type: none;}
+                  .nav-link{color: #000;}
+                  .nav-link:hover{color:#000 !important;}
+                  .nav-link:focus{color:#000 !important;}
+                </style>
         <h1><div class="header-images"><img class="image-one" src="{% static 'img/mouse.png' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}"></div><div class="text-title">&nbsp&nbsp&nbspMOUSEFRAME - Info and details</div> </h1>
-        <li class="nav-item dropdown" style="list-style-type: none;">
-          <a class="nav-link dropdown-toggle" style="color: #000;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             More
           </a>
           <ul class="dropdown-menu">
@@ -62,7 +72,11 @@
       </div>
       <div class="container-elems">
         <h3>Information on mice walking behaviour analysis</h3>
-        <p>The front paws of the mice are marked in <a style="color:red; text-decoration:underline;">red</a> and the hind paws in <a style="color:blue;text-decoration:underline;">blue</a>. 
+                <style nonce="{{ request.csp_nonce }}">
+                  .a-ref-1{color:red; text-decoration:underline;}
+                  .a-ref-2{color:blue;text-decoration:underline;}
+                </style>
+        <p>The front paws of the mice are marked in <a class="a-ref-1">red</a> and the hind paws in <a class="a-ref-2">blue</a>. 
            This analysis goes through 8 different types of measurements that are all manually calculated in a laboratory setting. 
            The 8 measures are the following:</p>
         <ul class="measurements">
@@ -79,7 +93,10 @@
         <div class="img-container">
         <figure><a class="download-image" href="{% static 'img/image-vector.png' %}" target="_blank">
         <img src="{% static 'img/image-vector.png' %}"></a>
-        <figcaption style="font-size: 1.1em;"><b>Figure 1:</b> Every measurement calculated using this online tool. L stands for left side. R stands for right side. Vectors x and y are represented with its respective directions. The coordinates saved are according to its x and y values where the origin is always the top left corner of the images.</figcaption>
+                <style nonce="{{ request.csp_nonce }}">
+                  figcaption{font-size: 1.1em;}
+                </style>
+        <figcaption><b>Figure 1:</b> Every measurement calculated using this online tool. L stands for left side. R stands for right side. Vectors x and y are represented with its respective directions. The coordinates saved are according to its x and y values where the origin is always the top left corner of the images.</figcaption>
         </figure>
         </div>
       </div>
@@ -94,24 +111,28 @@
             of footprints and perform all the calculations programmed (it is important to 
             emphasize that if the order is somehow changed, the program may not calculate 
             the right measurements). Knowing the way this all works helps avoid wrong measurements.</p>
+            <style nonce="{{ request.csp_nonce }}">
+                  .measure-ref{text-decoration: underline;color:black;}
+                  .measure-ref:hover{color:black;}
+            </style>
             <ul>
-                <li><a style="text-decoration: underline;" id="sllf">Stride length left front</a>: Uses only the red dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
-                <li><a style="text-decoration: underline;" id="sllh">Stride length left hind</a>: Uses only the blue dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
-                <li><a style="text-decoration: underline;" id="slrf">Stride length right front</a>: Uses only the red dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
-                <li><a style="text-decoration: underline;" id="slrh">Stride length right hind</a>: Uses only the blue dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
-                <li><a style="text-decoration: underline;" id="ol">Overlap Left</a>: It uses both the red and blue dots on the left side with equal index and calculates the distance between them.</li>
-                <li><a style="text-decoration: underline;" id="or">Overlap Right</a>: It uses both the red and blue dots on the right side with equal index and calculates the distance between them.</li>
-                <li><a style="text-decoration: underline;" id="swf">Stride Width Front</a>: It uses the red dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both red dots in where the measurement is being made. There is an example in figure 2. This method will be improved with time.</li>
-                <li><a style="text-decoration: underline;" id="swh">Stride Width Hind</a>: It uses the blue dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both blue dots in where the measurement is being made. There is an example in figure 3. This method will be improved with time.</li>
+                <li><a class="measure-ref" id="sllf">Stride length left front</a>: Uses only the red dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
+                <li><a class="measure-ref" id="sllh">Stride length left hind</a>: Uses only the blue dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
+                <li><a class="measure-ref" id="slrf">Stride length right front</a>: Uses only the red dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
+                <li><a class="measure-ref" id="slrh">Stride length right hind</a>: Uses only the blue dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
+                <li><a class="measure-ref" id="ol">Overlap Left</a>: It uses both the red and blue dots on the left side with equal index and calculates the distance between them.</li>
+                <li><a class="measure-ref" id="or">Overlap Right</a>: It uses both the red and blue dots on the right side with equal index and calculates the distance between them.</li>
+                <li><a class="measure-ref" id="swf">Stride Width Front</a>: It uses the red dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both red dots in where the measurement is being made. There is an example in figure 2. This method will be improved with time.</li>
+                <li><a class="measure-ref" id="swh">Stride Width Hind</a>: It uses the blue dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both blue dots in where the measurement is being made. There is an example in figure 3. This method will be improved with time.</li>
             </ul>
             
             <figure><a class="download-image" href="{% static 'img/swfrstart.jpg' %}" target="_blank"><img src="{% static 'img/swfrstart.jpg' %}"></a>
-                <figcaption style="font-size: 1.1em;"><b>Figure 2:</b> Stride width front with the first set of footsteps on the right. The measurement is done between L1 and I1 where this has the same value of X of L1 but the average of R1y and R2y (in this example).</figcaption>
+                <figcaption><b>Figure 2:</b> Stride width front with the first set of footsteps on the right. The measurement is done between L1 and I1 where this has the same value of X of L1 but the average of R1y and R2y (in this example).</figcaption>
             </figure>
             
            
             <figure><a class="download-image" href="{% static 'img/swhlstart.jpg' %}" target="_blank"><img src="{% static 'img/swhlstart.jpg' %}"></a>
-                <figcaption style="font-size: 1.1em;"><b>Figure 3:</b> Stride width hind with the first set of footsteps on the left. The measurement is done between R1 and I1 where this has the same value of X of L1 but the average of L1y and L2y (in this example).</figcaption>
+                <figcaption><b>Figure 3:</b> Stride width hind with the first set of footsteps on the left. The measurement is done between R1 and I1 where this has the same value of X of L1 but the average of L1y and L2y (in this example).</figcaption>
             </figure>
             
     </div>

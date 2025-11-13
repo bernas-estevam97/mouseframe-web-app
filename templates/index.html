@@ -334,7 +334,7 @@
                 <button id="measureDistance"><i class="fa-solid fa-ruler"></i></button>
                 <h5>2. Manually input a value or use previous saved values</h5>
                 <p>Manually input known value of pixels in 1 cm or use saved values (choose only one of the options and click use):</p>
-                <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" onKeyPress="if(this.value.length==8) return false;" placeholder="Px in cm...">&nbspOR&nbsp
+                <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" placeholder="Px in cm...">&nbspOR&nbsp
                 <select id="savedChoices" form="savedDistancesForm" class="custom-select">
                     <option value="None" disabled selected>Select a value</option>
                   {% for distance in saved_distances %}

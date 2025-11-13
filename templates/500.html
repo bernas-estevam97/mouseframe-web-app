@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load csp %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,9 +17,13 @@
     <section class="vh-100 gradient-custom">
         
         <div class="container py-5 h-100">
+          <style nonce="{{ request.csp_nonce }}">
+            .card bg-dark text-white{border-radius: 1rem;}
+            .form-outline img{height: 200px; width: 200px;}
+        </style>
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-              <div class="card bg-dark text-white" style="border-radius: 1rem;">
+              <div class="card bg-dark text-white">
                 <div class="card-body p-5 text-center">
       
                   <div class="mb-md-5 mt-md-4">
@@ -29,18 +34,9 @@
                     <p class="text-white-50 mb-5">Internal server error</p>
                     
                     <div class="form-outline form-white mb-4">
-                    <img src="{% static 'img/server-down.png' %}" style="height: 200px; width: 200px;">
+                    <img src="{% static 'img/server-down.png' %}">
                     </div>
                     <p class="text-white-50 mb-5">Contact the admin, with the previously provided details, for more information.</p>
-                    <!-- {% if messages %}
-                      {% for message in messages %}
-                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        {{message}}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
-                      {% endfor %}
-                    <p style="margin-top: 10px; color: red;">{{error}}</p>
-                    {% endif %} -->
                   </div>
       
                 </div>

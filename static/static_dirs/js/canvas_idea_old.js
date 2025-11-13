@@ -5,6 +5,19 @@
 
 // Set point Size.  pointSize is the radius of the dots created and need to be dynamic and chosen by the user
 
+
+function appendSafeHTML(container, fragments) {
+  container.textContent = ''; // Clear
+  fragments.forEach(f => {
+    if (typeof f === 'string') {
+      container.append(f);
+    } else if (f instanceof HTMLElement) {
+      container.appendChild(f);
+    }
+  });
+}
+
+
 let pointSize;
 let showSize = document.getElementById("dynamicSize");
 
@@ -2859,14 +2872,10 @@ function addEntriesAllAverage() {
   }
   var lastRow = tbody.insertRow(-1);
   var lastCell = lastRow.insertCell();
-  lastCell.textContent =
+  lastCell.innerHTML =
     "------------------------------BREAK------------------------------";
   lastCell.colSpan = "5";
   lastCell.style.textAlign = "center";
-  if (tbody.rows.length >= 1){
-    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
-  } else{
-  }
 }
 
 // FUNCTION TO ADD ALL ENTRIES IN ONE CLICK WITHOUT AVERAGE
@@ -3438,12 +3447,8 @@ function addEntriesAll() {
   }
   var lastRow = tbody.insertRow(-1);
   var lastCell = lastRow.insertCell();
-  lastCell.textContent =
+  lastCell.innerHTML =
     "------------------------------BREAK------------------------------";
   lastCell.colSpan = "5";
   lastCell.style.textAlign = "center";
-  if (tbody.rows.length >= 1){
-    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
-  } else{
-  }
 }

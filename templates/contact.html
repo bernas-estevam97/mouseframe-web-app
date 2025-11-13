@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load csp %}
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -14,9 +15,15 @@
 <body>
     <p id="version">v<span data-version></span></p>
     <header>
+                <style nonce="{{ request.csp_nonce }}">
+                  .nav-item{list-style-type: none;}
+                  .nav-link{color: #000;}
+                  .nav-link:hover{color:#000 !important;}
+                  .nav-link:focus{color:#000 !important;}
+                </style>
         <h1><div class="header-images"><img class="image-one" src="{% static 'img/mouse.png' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}"></div><div class="text-title">&nbsp&nbsp&nbspMOUSEFRAME - Contact details</div> </h1>
-        <li class="nav-item dropdown" style="list-style-type: none;">
-          <a class="nav-link dropdown-toggle" style="color: #000;" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             More
           </a>
           <ul class="dropdown-menu">
@@ -31,14 +38,18 @@
     <div class="container-full">
         <div class="container-contact">
             <div class="left-side-contact">
+              <style nonce="{{ request.csp_nonce }}">
+                  .p1-left dropdown{font-size:1.5em;}
+                  .div-left dropdown-toggle{font-size:2em;}
+              </style>
                 <h3>Contact details</h3>
-                <p style="font-size:1.5em;">For more information or any questions <br>that may arise don't hesitate to contact.</p>
-                <div style="font-size:2em;">Contact directly via email <i class="fas fa-envelope"></i>:</div>
+                <p class="p1-left">For more information or any questions <br>that may arise don't hesitate to contact.</p>
+                <div class="div-left">Contact directly via email <i class="fas fa-envelope"></i>:</div>
                 <ul>
                     <li><a href="mailto:polyqdatabase@mail.com">polyqdatabase@gmail.com</a></li>
                     <li><a href="mailto:mouseframe.app@gmail.com">mouseframe.app@gmail.com</a></li>
                 </ul>
-                <div style="font-size:2em;">Available social links <i class="fa-solid fa-user"></i>:</div>
+                <div class="div-left">Available social links <i class="fa-solid fa-user"></i>:</div>
                 <div class="logos">
                 <a href="https://www.linkedin.com/in/bernas-estevam97/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
                 </div>

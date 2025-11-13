@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load csp %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,6 +19,10 @@
         <div class="container py-5 h-100">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+              <style nonce="{{ request.csp_nonce }}">
+                  .card bg-dark text-white{border-radius: 1rem;}
+                  .form-outline img{height: 200px; width: 200px;}
+              </style>
               <div class="card bg-dark text-white" style="border-radius: 1rem;">
                 <div class="card-body p-5 text-center">
       
@@ -29,20 +34,10 @@
                     <p class="text-white-50 mb-5">This page does not exist</p>
                     
                     <div class="form-outline form-white mb-4">
-                    <img src="{% static 'img/notfound.png' %}" style="height: 200px; width: 200px;">
+                    <img src="{% static 'img/notfound.png' %}">
                     </div>
                     <p class="text-white-50 mb-5">Follow this <a href="{% url 'home' %}">link</a> to go to the home page</p>
-                    <!-- {% if messages %}
-                      {% for message in messages %}
-                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        {{message}}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
-                      {% endfor %}
-                    <p style="margin-top: 10px; color: red;">{{error}}</p>
-                    {% endif %} -->
                   </div>
-      
                 </div>
               </div>
             </div>
