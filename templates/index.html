@@ -356,8 +356,9 @@
                 <form action="saved" method="POST" id="savedDistancesForm">{% csrf_token %}
                   <ol>
                     <li>Value(px):
-                      <input type="text" name="saved_distance_value" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="8" placeholder="Save value..." required></li>
-                    <li>Image size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required></li>
+                      <input type="text" name="saved_distance_value" id="saveDistance" maxlength="8" placeholder="Save value..." required></li>
+                      
+                    <li>Image size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" placeholder="E.g. 1920x1080" required></li>
                   </ol>
                   <button class="save-button" id="saveDistanceButton" type="submit"><i class="fa-solid fa-floppy-disk"></i></button> 
                 </form>
@@ -519,40 +520,62 @@
 <script type="text/javascript" src="{% static 'js/excel-clipboard.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
 <script nonce="{{ request.csp_nonce }}">
-              const uploadInput = document.getElementById('uploadImage');
-              const uploadButton = document.querySelector('.upload-btn');
-              const resetInputButton = document.querySelector('.reset-button');
+      const uploadInput = document.getElementById('uploadImage');
+      const uploadButton = document.querySelector('.upload-btn');
+      const resetInputButton = document.querySelector('.reset-button');
 
-              uploadInput.addEventListener('change', loadFile);
-              uploadButton.addEventListener('click', () => uploadInput.click());
-              resetInputButton.addEventListener('click', resetFile);
+      uploadInput.addEventListener('change', loadFile);
+      uploadButton.addEventListener('click', () => uploadInput.click());
+      resetInputButton.addEventListener('click', resetFile);
 
-              document.getElementById('redCircleLeft').addEventListener('click', drawRedCircleLeft);
-              document.getElementById('redCircleRight').addEventListener('click', drawRedCircleRight);
-              document.getElementById('blueCircleLeft').addEventListener('click', drawBlueCircleLeft);
-              document.getElementById('blueCircleRight').addEventListener('click', drawBlueCircleRight);
-              document.getElementById('toggleInactive').addEventListener('click', toggleInactive);
-              document.getElementById('resetCanvas').addEventListener('click', resetCanvas);
-              document.getElementById('removePoint').addEventListener('click', removeChosenPoint);
-              document.getElementById('replacePoint').addEventListener('click', replaceChosenPoint);
-              document.getElementById('deleteAllCircleRedLeft').addEventListener('click', removeAllRedCircleLeft);
-              document.getElementById('deleteAllCircleRedRight').addEventListener('click', removeAllRedCircleRight);
-              document.getElementById('deleteAllCircleBlueLeft').addEventListener('click', removeAllBlueCircleLeft);
-              document.getElementById('deleteAllCircleBlueRight').addEventListener('click', removeAllBlueCircleRight);
-              document.getElementById('changeS').addEventListener('click', changeSize);
-              document.getElementById('resetS').addEventListener('click', resetSize);
-              document.getElementById('measureButton').addEventListener('click', drawMeasureCircle);
-              document.getElementById('resetMeasure').addEventListener('click', removeAllMeasurePoints);
-              document.getElementById('measureDistance').addEventListener('click', distanceMeasurePoint);
-              document.getElementById('manualUse').addEventListener('click', manualInputMeasure);
-              document.getElementById('resetManual').addEventListener('click', resetInput);
-              document.getElementById('removeTableIdButton').addEventListener('click', removeTableID);
-              document.getElementById('addAll').addEventListener('click', addEntriesAll);
-              document.getElementById('addAllAverage').addEventListener('click', addEntriesAllAverage);
-              document.getElementById('removeEntry').addEventListener('click', removeEntry);
-              document.getElementById('removeAllEntries').addEventListener('click', removeAllEntries);
-              document.getElementById('removeByMeasurementButton').addEventListener('click', removeByMeasurement);
+      document.getElementById('redCircleLeft').addEventListener('click', drawRedCircleLeft);
+      document.getElementById('redCircleRight').addEventListener('click', drawRedCircleRight);
+      document.getElementById('blueCircleLeft').addEventListener('click', drawBlueCircleLeft);
+      document.getElementById('blueCircleRight').addEventListener('click', drawBlueCircleRight);
+      document.getElementById('toggleInactive').addEventListener('click', toggleInactive);
+      document.getElementById('resetCanvas').addEventListener('click', resetCanvas);
+      document.getElementById('removePoint').addEventListener('click', removeChosenPoint);
+      document.getElementById('replacePoint').addEventListener('click', replaceChosenPoint);
+      document.getElementById('deleteAllCircleRedLeft').addEventListener('click', removeAllRedCircleLeft);
+      document.getElementById('deleteAllCircleRedRight').addEventListener('click', removeAllRedCircleRight);
+      document.getElementById('deleteAllCircleBlueLeft').addEventListener('click', removeAllBlueCircleLeft);
+      document.getElementById('deleteAllCircleBlueRight').addEventListener('click', removeAllBlueCircleRight);
+      document.getElementById('changeS').addEventListener('click', changeSize);
+      document.getElementById('resetS').addEventListener('click', resetSize);
+      document.getElementById('measureButton').addEventListener('click', drawMeasureCircle);
+      document.getElementById('resetMeasure').addEventListener('click', removeAllMeasurePoints);
+      document.getElementById('measureDistance').addEventListener('click', distanceMeasurePoint);
+      document.getElementById('manualUse').addEventListener('click', manualInputMeasure);
+      document.getElementById('resetManual').addEventListener('click', resetInput);
+      document.getElementById('removeTableIdButton').addEventListener('click', removeTableID);
+      document.getElementById('addAll').addEventListener('click', addEntriesAll);
+      document.getElementById('addAllAverage').addEventListener('click', addEntriesAllAverage);
+      document.getElementById('removeEntry').addEventListener('click', removeEntry);
+      document.getElementById('removeAllEntries').addEventListener('click', removeAllEntries);
+      document.getElementById('removeByMeasurementButton').addEventListener('click', removeByMeasurement);
 
+  
+      document.getElementById('saveDistance').addEventListener('keypress', event => {
+          if (!/[0-9.]/.test(event.key)) {
+            event.preventDefault();
+          }
+        });
+      
+      document.getElementById('imgSizeInfo').addEventListener('keypress', event => {
+          if (!/[0-9.x]/i.test(event.key)) {
+          event.preventDefault();
+          }
+        });
+      
+      const input = document.getElementById('pixelsInCmMan');
+        input.addEventListener('keypress', event => {
+          if (input.value.length >= 8) {
+            event.preventDefault();
+          }
+        });
+
+
+          
 </script>
 </body>
 </html>

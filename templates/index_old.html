@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load csp %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -45,13 +46,31 @@
         </div>
     <!-- </div> -->
     <!-- <div class="right-part"> -->
-      <div class="img-selection">
+      <!-- <div class="img-selection">
         <div class="img-upload">
             <label for="img" style="font-size: 1.1em;">Upload your image here:</label>
             <p id="canvasUpload">Canvas starts with same size as the image uploaded. Change below if necessary.</p>
             <input type="file" id="uploadImage" name="img" alt="Upload" accept="image/*" onchange="loadFile(event);" style="display:none;">
-            <!-- <input type="file" onchange="previewFile();"> -->
+            
             <input class="upload-btn" type="button" value="Select Image" onclick="document.getElementById('uploadImage').click();" style="cursor: pointer;"/>
+        </div>
+        <div id="imgContainer" class="image-container">
+          <canvas id="canvas"></canvas>
+        </div>
+      </div> -->
+      <div class="img-selection">
+        <div class="img-upload">
+            <style nonce="{{ request.csp_nonce }}">
+                      .label-upload{font-size: 1.1em;}
+            </style>
+            <label class="label-upload" for="img">Upload your image here:</label>
+            <style nonce="{{ request.csp_nonce }}">
+            #uploadImage{display:none;}
+            #removeImage{cursor: pointer;}
+            </style>
+            <p id="canvasUpload">Canvas starts with same size as the image uploaded. Change below if necessary.</p>
+            <input type="file" id="uploadImage" name="img" alt="Upload" accept="image/*">
+            <input class="upload-btn" type="button" value="Select Image"/>           
         </div>
         <div id="imgContainer" class="image-container">
           <canvas id="canvas"></canvas>
@@ -59,21 +78,21 @@
       </div>
     <div class="bottom-functions">
       <div class="buttons">
-         <button class="marker" type="button" id="redCircleLeft" onclick="drawRedCircleLeft();">Red (front) - Left</button>
-         <button class="button" type="button" id="deleteCircleRedLeft" onclick="removeRedCircleLeft();">Delete last added left red dot</button>
-         <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete all left red dots</button><br>
-         <button class="marker" type="button" id="redCircleRight" onclick="drawRedCircleRight();">Red (front) - Right</button>
-         <button class="button" type="button" id="deleteCircleRedRight" onclick="removeRedCircleRight();">Delete last added right red dot</button>
-         <button class="button" type="button" id="deleteAllCircleRedRight" onclick="removeAllRedCircleRight();">Delete all right red dots</button><br>
-         <button class="marker" type="button" id="blueCircleLeft" onclick="drawBlueCircleLeft();">Blue (hind) - Left</button>
-         <button class="button" type="button" id="deleteCircleBlueLeft" onclick="removeBlueCircleLeft();">Delete last added left blue dot</button>
-         <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllBlueCircleLeft();">Delete all left blue dots</button><br>
-         <button class="marker" type="button" id="blueCircleRight" onclick="drawBlueCircleRight();">Blue (hind) - Right</button>
-         <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
-         <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br>
+         <button class="marker" type="button" id="redCircleLeft">Red (front) - Left</button>
+         <button class="button" type="button" id="deleteCircleRedLeft">Delete last added left red dot</button>
+         <button class="button" type="button" id="deleteAllCircleRedLeft">Delete all left red dots</button><br>
+         <button class="marker" type="button" id="redCircleRight">Red (front) - Right</button>
+         <button class="button" type="button" id="deleteCircleRedRight">Delete last added right red dot</button>
+         <button class="button" type="button" id="deleteAllCircleRedRight">Delete all right red dots</button><br>
+         <button class="marker" type="button" id="blueCircleLeft">Blue (hind) - Left</button>
+         <button class="button" type="button" id="deleteCircleBlueLeft">Delete last added left blue dot</button>
+         <button class="button" type="button" id="deleteAllCircleBlueLeft">Delete all left blue dots</button><br>
+         <button class="marker" type="button" id="blueCircleRight">Blue (hind) - Right</button>
+         <button class="button" type="button" id="deleteCircleBlueRight">Delete last added right blue dot</button>
+         <button class="button" type="button" id="deleteAllCircleBlueRight">Delete all right blue dots</button><br>
          <!---<button class="button" type="button" id="resetCanvasNotIdx" onclick="clearCanvas()">Clear Canvas</button>-->
-         <button class="button" type="button" id="resetCanvas" onclick="resetCanvas();">Reset Canvas/Indexes</button>
-         <button class="button" type="button" id="resetFile" onclick="resetFile();">Reset Image</button>
+         <button class="button" type="button" id="resetCanvas">Reset Canvas/Indexes</button>
+         <button class="button" type="button" id="resetFile">Reset Image</button>
          <div class="point-removal">
          <h4>Remove a point of choice:</h4>
          <p>Instructions for manual removal:</p>
@@ -83,17 +102,17 @@
           <li>After choosing your desired point for removal click the Remove Point button.</li>
           <li>By deleting a button, the group that it made part of will update.</li>
          </ul>
-         <button id="refreshButton" onclick="refreshRemoveList();">Refresh</button>
-         <button id="emptyListRemoval" onclick="emptyRemoveList();">Empty</button>
+         <button id="refreshButton">Refresh</button>
+         <button id="emptyListRemoval">Empty</button>
          <select id="selectPoint">
          </select>
-         &nbsp<button id="removePoint" onclick="removeChosenPoint();">Remove Point</button>
+         &nbsp<button id="removePoint">Remove Point</button>
         </div>
         <div class="point-size">
           <h2>Change dimensions of your marking points:</h2>
           <input id="sizeInput" type="number" placeholder="Dot Size">
-          <button id="changeS" onclick="changeSize();">Change point size</button>
-          <button id="resetS" onclick="resetSize();">Reset point size</button>
+          <button id="changeS">Change point size</button>
+          <button id="resetS">Reset point size</button>
           <p> Default point radius size is set to 4px</p>
           <p id="dynamicSize"></p>
           <p><strong>Note:</strong>When deleting buttons make sure you don't change radius size. Only delete points when working with a fixed size</p>
@@ -101,16 +120,21 @@
        </div>
        <div class="image-resize" id="imageEdit">
         <h3>Image resizing(*):</h3>
-        <p style="font-size: 0.9em;">(*)Be sure to resize to your ideal size before working on any measurements.
+        <style nonce="{{ request.csp_nonce }}">
+                      .image-resize .p-one-ir{font-size: 0.9em;}
+                      .image-resize .span-ir{color:red;}
+                      
+                   </style>
+        <p class="p-one-ir">(*)Be sure to resize to your ideal size before working on any measurements.
           <br>(*)By resizing you delete any progress done on the current image size.
           <br>(*)When changing image original size make sure that image has a 1 cm scale to be <br>converted to pixels. <br>(*)Do not work with different image sizes if you can't get a 1 cm value in pixels<br> for all sizes. And do not use saved values acquired from images with sizes different<br> from the one you are working on. 
-          <br><span style="color:red;"><b>&#9888;</b></span> <b><u>Caution:</u></b>&nbspAny data in the table below will be removed along with the dots marked
+          <br><span class="span-ir"><b>&#9888;</b></span> <b><u>Caution:</u></b>&nbspAny data in the table below will be removed along with the dots marked
           <br> in the image when resizing!</p>
-        <button id="seventyFiveP" onclick="resizeSF();">75% Size</button>
-        <button id="fiftyP" onclick="resizeFifty();">50% Size</button>
-        <button id="fortyP" onclick="resizeForty();">40% Size</button>
-        <button id="twentyFiveP" onclick="resizeTwentyF();">25% Size</button>
-        <button id="resetImgDim" onclick="resetImgDim();">Reset Dimensions</button><br><br>
+        <button id="seventyFiveP">75% Size</button>
+        <button id="fiftyP">50% Size</button>
+        <button id="fortyP">40% Size</button>
+        <button id="twentyFiveP">25% Size</button>
+        <button id="resetImgDim">Reset Dimensions</button><br><br>
         <p id="currentImgSize" name="image_size"></p>
         <!-- <br><br><h3>Image resizing slider:</h3>
         <input type="range" min="1" max="20" value="1" class="slider" id="Slider">
@@ -129,28 +153,33 @@
     <h3>Define how many pixels are in a centimeter.</h3>
     <p>If there is a drawn line with the length of 1cm, measure it in pixels here:</p>
     <p id="scaleDistance"></p>
-    <button id="measureButton" class="measure" onclick="drawMeasureCircle();">Add measuring points</button>
-    <button id="resetMeasure" onclick="removeAllMeasurePoints();">Reset points</button>
-    <button onclick = "distanceMeasurePoint()" id="measureDistance">Measure</button>
+    <button id="measureButton" class="measure">Add measuring points</button>
+    <button id="resetMeasure">Reset points</button>
+    <button id="measureDistance">Measure</button>
     <p>Manually input known value of pixels in 1 cm or use saved values (choose only one value before clicking use):</p>
-    <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" onKeyPress="if(this.value.length==8) return false;" placeholder="Px in cm...">&nbspOR&nbsp
+    <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" placeholder="Px in cm...">&nbspOR&nbsp
     <select id="savedChoices" form="savedDistancesForm">
         <option value="None" selected>-- Select value --</option>
       {% for distance in saved_distances %}
         <option id="{{forloop.counter}}" value="{{distance.conversion_value}}">{{distance.conversion_value}} - {{distance.image_size}}</option>
       {% endfor %}
     </select>
-    <button onclick="manualInputMeasure();" id="manualUse">Use</button>
-    <button onclick="resetInput();" id="resetManual">Reset</button>
+    <button id="manualUse">Use</button>
+    <button id="resetManual">Reset</button>
     <!-- <button id="removeOption" type="submit">Delete</button> -->
+     <style nonce="{{ request.csp_nonce }}">
+                      .saved-distances h4{font-size: 1.5em;}
+                      .saved-distances .saved-distance-warning{font-size: 0.9em;}
+                      
+     </style>
     <div class="measure-info"><div id="measureIntro">Measurement result:</div><div id="measureToCm"></div></div>
-    <h4 style="font-size: 1.5em;">Save section</h4>
+    <h4>Save section</h4>
     <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from.</p>
-    <p style="font-size: 0.9em">(!) Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
+    <p class="saved-distance-warning">(!) Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
     <form action="saved" method="POST" id="savedDistancesForm">{% csrf_token %}
       Value in pixels:&nbsp
-      <input type="text" name="saved_distance_value" id="saveDistance" onkeypress="return /[0-9.]/i.test(event.key)" maxlength="8" placeholder="Save value..." required>
-      <br><br>&nbspImage Size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" onkeypress="return /[0-9.x]/i.test(event.key)" placeholder="E.g. 1920x1080" required>
+      <input type="text" name="saved_distance_value" id="saveDistance" maxlength="8" placeholder="Save value..." required>
+      <br><br>&nbspImage Size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" placeholder="E.g. 1920x1080" required>
       <br><br><button class="save-button" id="saveDistanceButton" type="submit">Save</button> 
     </form>
     <div id="messageSave"></div>
@@ -158,8 +187,8 @@
   </div>
    <div class="resolution-info">
     <label id="labelInput" for="inches">Your screen size in inches(in):</label>
-    <input name="inches" class="input-inches" id="inputScreenInches" type="text" maxlength="4" size="4" onkeypress="if(!event.key.match(/[1-9.]/)) event.preventDefault()">
-    <button class="ppi-calc" id="ppiCalculus" onclick="getScreenPPI();">Get Screen PPI</button>
+    <input name="inches" class="input-inches" id="inputScreenInches" type="text" maxlength="4" size="4">
+    <button class="ppi-calc" id="ppiCalculus">Get Screen PPI</button>
     <p id="screenPPI"></p>
     <p id="imageUploadedDPI"></p>
     <p id="imageDimInches"></p>
@@ -188,9 +217,9 @@
     <button type="submit">Save</button>
     <button onclick = "distancePointRed();">DistanceRed</button>
    </div> -->
-   <div class="dpi-ppi-conversion">
+   <!-- <div class="dpi-ppi-conversion">
 
-   </div>
+   </div> -->
    <div class="data-management" id="showData">
     <div class="table-results">
     <h3>Data results table:</h3>
@@ -211,7 +240,7 @@
     </tbody>
     </table>
     <div id="imageResizeTableWarning"></div>
-    <button id="exportEx" onclick="ExportToExcel('xlsx');"> Export to excel file </button>
+    <button id="exportEx"> Export to excel file </button>
   </div>
   <div class="select-options">
     <!-- <form action="/"> -->
@@ -238,7 +267,7 @@
         <option value="Left">Left</option>
         <option value="Right">Right</option>
       </select>
-      <input id="addAll" type="submit" onclick="addEntriesAll()" value="Add Entries">&nbsp<input id="addAll" type="submit" onclick="addEntriesAllAverage()" value="Add Entries with average"><br>
+      <input id="addAll" type="submit" value="Add Entries">&nbsp<input id="addAllAverage" type="submit" value="Add Entries with average"><br>
       </div>
       <!-- <input type="submit" onclick="addEntry();" value="Add Entries"><br> -->
       <!-- <br><p id="entryPreview"></p> -->
@@ -247,8 +276,8 @@
       <div class="remove-by-entries">
       <p>Remove by entries &#8628;</p>
       <input id="entryNumber" placeholder="Entry nº" size="3" maxlength="3">
-      <button id="removeEntry" onclick="removeEntry();">Remove Entry</button>
-      <button id="removeAllEntries" onclick="removeAllEntries();">Remove All Entries</button>
+      <button id="removeEntry">Remove Entry</button>
+      <button id="removeAllEntries">Remove All Entries</button>
       </div>
       <div class="remove-by-measurement">
       <p>Remove by measurement type &#8628;</p>
@@ -262,10 +291,10 @@
         <option value="Stride Width Front">Stride Width Front</option>
         <option value="Stride Width Hind">Stride Width Hind</option>
       </select>
-      <button onclick="removeByMeasurement();">Remove</button>
+      <button id="removeByMeasurementButton">Remove</button>
       </div>
       <div class="table-id">
-      <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button onclick="updateTableID()">Submit</button>&nbsp<button onclick="removeTableID();">Remove</button>
+      <p>Insert table ID:</p><input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button id="updateTableId">Submit</button>&nbsp<button id="removeTableId">Remove</button>
       </div>
       <!-- <button id="test" onclick="distanceBetweenPoints();">Calculate Distance</button> -->
 
@@ -282,7 +311,7 @@
 <script type="text/javascript" src="{% static 'js/js-cookie.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/jquery.modal.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-<script>
+<script nonce="{{ request.csp_nonce }}">
   let fileName = document.getElementById("entryTableID");
 
   function ExportToExcel(type, fn, dl) {
@@ -292,6 +321,93 @@
           XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
           XLSX.writeFile(wb, fn || (fileName.value != ""? fileName.value + "." + (type || 'xlsx'): "measurements." + (type || 'xlsx')));
   }
+
+</script>
+<script nonce="{{ request.csp_nonce }}">
+        const uploadInput = document.getElementById('uploadImage');
+        const uploadButton = document.querySelector('.upload-btn');
+
+        uploadInput.addEventListener('change', loadFile);
+        uploadButton.addEventListener('click', () => uploadInput.click());
+
+        document.getElementById('redCircleLeft').addEventListener('click', drawRedCircleLeft);
+        document.getElementById('deleteCircleRedLeft').addEventListener('click', removeRedCircleLeft);
+        document.getElementById('redCircleRight').addEventListener('click', drawRedCircleRight);
+        document.getElementById('deleteCircleRedRight').addEventListener('click', removeRedCircleRight);
+        document.getElementById('blueCircleLeft').addEventListener('click', drawBlueCircleLeft);
+        document.getElementById('deleteCircleBlueLeft').addEventListener('click', removeBlueCircleLeft);
+        document.getElementById('blueCircleRight').addEventListener('click', drawBlueCircleRight);
+        document.getElementById('deleteCircleBlueRight').addEventListener('click', removeBlueCircleRight);
+        document.getElementById('resetCanvas').addEventListener('click', resetCanvas);
+        document.getElementById('deleteAllCircleRedLeft').addEventListener('click', removeAllRedCircleLeft);
+        document.getElementById('deleteAllCircleRedRight').addEventListener('click', removeAllRedCircleRight);
+        document.getElementById('deleteAllCircleBlueLeft').addEventListener('click', removeAllBlueCircleLeft);
+        document.getElementById('deleteAllCircleBlueRight').addEventListener('click', removeAllBlueCircleRight);
+        document.getElementById('resetFile').addEventListener('click', resetFile);
+        document.getElementById('changeS').addEventListener('click', changeSize);
+        document.getElementById('resetS').addEventListener('click', resetSize);
+        document.getElementById('measureButton').addEventListener('click', drawMeasureCircle);
+        document.getElementById('resetMeasure').addEventListener('click', removeAllMeasurePoints);
+        document.getElementById('measureDistance').addEventListener('click', distanceMeasurePoint);
+        document.getElementById('manualUse').addEventListener('click', manualInputMeasure);
+        document.getElementById('resetManual').addEventListener('click', resetInput);
+        document.getElementById('addAll').addEventListener('click', addEntriesAll);
+        document.getElementById('addAllAverage').addEventListener('click', addEntriesAllAverage);
+        document.getElementById('removeEntry').addEventListener('click', removeEntry);
+        document.getElementById('removeAllEntries').addEventListener('click', removeAllEntries);
+        document.getElementById('removeByMeasurementButton').addEventListener('click', removeByMeasurement);
+        document.getElementById('refreshButton').addEventListener('click', refreshRemoveList);
+        document.getElementById('emptyListRemoval').addEventListener('click', emptyRemoveList);
+        document.getElementById('removePoint').addEventListener('click', removeChosenPoint);
+
+        document.getElementById('seventyFiveP').addEventListener('click', resizeSF);
+        document.getElementById('fiftyP').addEventListener('click', resizeFifty);
+        document.getElementById('fortyP').addEventListener('click', resizeForty);
+        document.getElementById('twentyFiveP').addEventListener('click', resizeTwentyF);
+        document.getElementById('resetImgDim').addEventListener('click', resetImgDim);
+        document.getElementById('resetImgDim').addEventListener('click', resetImgDim);
+
+        document.getElementById('resetImgDim').addEventListener('click', resetImgDim);
+        document.getElementById('exportEx').addEventListener('click', ExportToExcel);
+        // document.getElementById('ppiCalculus').addEventListener('click', getScreenPPI);
+
+        document.getElementById('updateTableId').addEventListener('click', updateTableID);
+        document.getElementById('removeTableId').addEventListener('click', removeTableID);
+
+
+        document.getElementById('saveDistance').addEventListener('keypress', event => {
+          if (!/[0-9.]/.test(event.key)) {
+            event.preventDefault();
+          }
+        });
+      
+      document.getElementById('imgSizeInfo').addEventListener('keypress', event => {
+          if (!/[0-9.x]/i.test(event.key)) {
+          event.preventDefault();
+          }
+        });
+      
+  
+      document.getElementById('pixelsInCmMan').addEventListener('keypress', event => {
+        if (input.value.length >= 8) {
+          event.preventDefault();
+        }
+      });
+
+      document.getElementById('inputScreenInches').addEventListener('keypress', event => {
+        if (!/[1-9.x]/i.test(event.key)) {
+          event.preventDefault();
+          }
+        });
+        
+
+      document.getElementById('imgSizeInfo').addEventListener('keypress', event => {
+        if (!/[0-9.x]/i.test(event.key)) {
+        event.preventDefault();
+        }
+      });
+
+
 
 </script>
 <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>

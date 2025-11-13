@@ -591,8 +591,11 @@ function distanceMeasurePoint() {
       pointsMeasure[1].y - pointsMeasure[0].y
     ).toFixed(3);
     console.log(dist);
-    document.getElementById("measureToCm").textContent =
-      "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
+    appendSafeHTML(document.getElementById("measureToCm"), [
+        '\u00A0', // non-breaking space (&nbsp;)
+        `${parseFloat(dist)}px equals 1 centimeter.`
+      ]);
+
     // if (imgSizeStatus == 1){
     //   document.getElementById("measureToCm").textContent = dist + "px equals 1 centimeter";
     // }
@@ -620,16 +623,22 @@ function manualInputMeasure() {
   ) {
     dist = inputPixelsManually.value;
     savedChoices.value = "None";
-    document.getElementById("measureToCm").textContent =
-      "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
+    appendSafeHTML(document.getElementById("measureToCm"), [
+      '\u00A0', // non-breaking space (&nbsp;)
+      `${parseFloat(dist)}px equals 1 centimeter.`
+    ]);
+
   }
   if (
     savedChoices.options[savedChoices.selectedIndex].value != "None" &&
     inputPixelsManually.value == ""
   ) {
     dist = savedChoices[savedChoices.selectedIndex].value;
-    document.getElementById("measureToCm").textContent =
-      "&nbsp" + parseFloat(dist) + "px equals 1 centimeter.";
+    appendSafeHTML(document.getElementById("measureToCm"), [
+      '\u00A0', // non-breaking space (&nbsp;)
+      `${parseFloat(dist)}px equals 1 centimeter.`
+    ]);
+
   }
 }
 
@@ -688,19 +697,39 @@ let loadFile = function (event) {
     showData.style.display = "";
     // canvasInfo.style.display = "none";
     canvasUpload.style.display = "";
-    imgSize.textContent =
-      "<strong>Uploaded image size:</strong> " +
-      (event.target.files[0].size / 1024).toFixed(2) +
-      " kb";
+    appendSafeHTML(imgSize, [
+        (() => {
+          const strong = document.createElement('strong');
+          strong.textContent = 'Uploaded image size:';
+          return strong;
+        })(),
+        ' ',
+        `${(event.target.files[0].size / 1024).toFixed(2)} kb`
+      ]);
+
     if (event.target.files[0].name.length > 30) {
-      imgName.textContent =
-        "<b>Image name:</b> " +
-        event.target.files[0].name.slice(
+      appendSafeHTML(imgName, [
+        (() => {
+          const strong = document.createElement('strong');
+          strong.textContent = 'Image name:';
+          return strong;
+        })(),
+        ' ',
+        `${event.target.files[0].name.slice(
           event.target.files[0].name.length / 2,
           event.target.files[0].name.length + 1
-        );
+        )}`
+      ]);
     } else {
-      imgName.textContent = "<b>Image name:</b> " + event.target.files[0].name;
+      appendSafeHTML(imgName, [
+        (() => {
+          const strong = document.createElement('strong');
+          strong.textContent = 'Image name:';
+          return strong;
+        })(),
+        ' ',
+        `${event.target.files[0].name}`
+      ]);
     }
 
     canvas.style.display = "";
@@ -713,10 +742,26 @@ let loadFile = function (event) {
   // IMAGE ONLOAD SECTION - //
   img.onload = () => {
     event.target.value = null;
-    imgWidth.textContent =
-      "<strong>Uploaded image default width:</strong> " + img.width + "px";
-    imgHeight.textContent =
-      "<strong>Uploaded image default height:</strong> " + img.height + "px";
+    appendSafeHTML(imgWidth, [
+        (() => {
+          const strong = document.createElement('strong');
+          strong.textContent = 'Uploaded image default width:';
+          return strong;
+        })(),
+        ' ',
+        `${img.width + "px"}`
+      ]);
+    
+    appendSafeHTML(imgHeight, [
+        (() => {
+          const strong = document.createElement('strong');
+          strong.textContent = 'Uploaded image default height:';
+          return strong;
+        })(),
+        ' ',
+        `${img.height + "px"}`
+      ]);
+    
     imgContainer.style.border = "2px solid black";
     if (img.width >= 3000 || img.height >= 3000) {
       imgSizeStatus = 25;
@@ -726,18 +771,40 @@ let loadFile = function (event) {
         img.width * 0.25 + "px " + img.height * 0.25 + "px";
       canvas.height = img.height * 0.25;
       canvas.width = img.width * 0.25;
-      document.getElementById("currentImgSize").textContent =
-        "<b>Current image size is:</b> " +
-        img.width * 0.25 +
-        "x" +
-        img.height * 0.25 +
-        " (25% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 25% of the size.</i>";
+      appendSafeHTML(document.getElementById("currentImgSize"), [
+        (() => {
+          const b = document.createElement('b');
+          b.textContent = 'Current image size is:';
+          return b;
+        })(),
+        ' ',
+        `${img.width * 0.25}x${img.height * 0.25} (25% of size!)`,
+        document.createElement('br'),
+        '\u26A0\u00A0', // ⚠ + non-breaking space
+        (() => {
+          const i = document.createElement('i');
+          i.textContent = 'Image was too big for your screen automatically set to 25% of the size.';
+          return i;
+        })()
+      ]);
       // tableDynamicValuePx.textContent = "Value(px) at 25%";
       // tableDynamicValueCm.textContent = "Value(cm) at 25%";
       // let originalValueCm = table.rows[1].insertCell();
       // originalValueCm.outerHTML =
       //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-      tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
+      appendSafeHTML(tableWarning, [
+        (() => {
+          const span = document.createElement('span');
+          span.style.color = 'red';
+          const b = document.createElement('b');
+          b.textContent = '\u26A0'; // ⚠
+          span.appendChild(b);
+          return span;
+        })(),
+        ' ',
+        'Image was redimensioned to 25% of its original size!'
+      ]);
+
       //A new column with original image size values in cm added.`;
       // document.getElementById("titleImage").colSpan = "6";
     } else if (
@@ -751,18 +818,39 @@ let loadFile = function (event) {
         img.width * 0.75 + "px " + img.height * 0.75 + "px";
       canvas.height = img.height * 0.75;
       canvas.width = img.width * 0.75;
-      document.getElementById("currentImgSize").textContent =
-        "<b>Current image size is:</b> " +
-        img.width * 0.75 +
-        "x" +
-        img.height * 0.75 +
-        " (75% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 75% of the size.</i>";
+      appendSafeHTML(document.getElementById("currentImgSize"), [
+        (() => {
+          const b = document.createElement('b');
+          b.textContent = 'Current image size is:';
+          return b;
+        })(),
+        ' ',
+        `${img.width * 0.75}x${img.height * 0.75} (75% of size!)`,
+        document.createElement('br'),
+        '\u26A0\u00A0', // ⚠ + non-breaking space
+        (() => {
+          const i = document.createElement('i');
+          i.textContent = 'Image was too big for your screen automatically set to 75% of the size.';
+          return i;
+        })()
+      ]);
       // tableDynamicValuePx.textContent = "Value(px) at 75%";
       // tableDynamicValueCm.textContent = "Value(cm) at 75%";
       // let originalValueCm = table.rows[1].insertCell();
       // originalValueCm.outerHTML =
       //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-      tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
+      appendSafeHTML(tableWarning, [
+        (() => {
+          const span = document.createElement('span');
+          span.style.color = 'red';
+          const b = document.createElement('b');
+          b.textContent = '\u26A0'; // ⚠
+          span.appendChild(b);
+          return span;
+        })(),
+        ' ',
+        'Image was redimensioned to 75% of its original size!'
+      ]);
       //A new column with original image size values in cm added.`;
       // document.getElementById("titleImage").colSpan = "6";
     } else if (
@@ -776,19 +864,40 @@ let loadFile = function (event) {
         img.width * 0.5 + "px " + img.height * 0.5 + "px";
       canvas.height = img.height * 0.5;
       canvas.width = img.width * 0.5;
-      document.getElementById("currentImgSize").textContent =
-        "<b>Current image size is:</b> " +
-        img.width * 0.5 +
-        "x" +
-        img.height * 0.5 +
-        " (50% of size!)<br>&#x26A0&nbsp<i>Image was too big for your screen automatically set to 50% of the size.</i>";
+      appendSafeHTML(document.getElementById("currentImgSize"), [
+        (() => {
+          const b = document.createElement('b');
+          b.textContent = 'Current image size is:';
+          return b;
+        })(),
+        ' ',
+        `${img.width * 0.50}x${img.height * 0.50} (50% of size!)`,
+        document.createElement('br'),
+        '\u26A0\u00A0', // ⚠ + non-breaking space
+        (() => {
+          const i = document.createElement('i');
+          i.textContent = 'Image was too big for your screen automatically set to 50% of the size.';
+          return i;
+        })()
+      ]);
       tableDynamicValuePx.textContent = "Value(px) at 50%";
       tableDynamicValueCm.textContent = "Value(cm) at 50%";
       // let originalValueCm = table.rows[1].insertCell();
       // originalValueCm.outerHTML =
       //   '<th id="originalValueCell">Value(cm) at 100% image size</th>';
       // document.getElementById("titleImage").colSpan = "6";
-      tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
+     appendSafeHTML(tableWarning, [
+        (() => {
+          const span = document.createElement('span');
+          span.style.color = 'red';
+          const b = document.createElement('b');
+          b.textContent = '\u26A0'; // ⚠
+          span.appendChild(b);
+          return span;
+        })(),
+        ' ',
+        'Image was redimensioned to 50% of its original size!'
+      ]);
       //A new column with original image size values in cm added.`;
     } else {
       imgSizeStatus = 100;
@@ -797,9 +906,17 @@ let loadFile = function (event) {
       imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
       canvas.height = img.height;
       canvas.width = img.width;
-      document.getElementById("currentImgSize").textContent =
-        "<b>Current image size is:</b> " + img.width + "x" + img.height;
-      tableWarning.textContent = "";
+
+      // Update current image size safely
+      appendSafeHTML(document.getElementById("currentImgSize"), [
+        (() => {
+          const b = document.createElement('b');
+          b.textContent = 'Current image size is:';
+          return b;
+        })(),
+        ' ',
+        `${img.width}x${img.height}`
+      ]);
     }
     // canvasInfo.textContent = "<strong>Canvas default size is:</strong> " + canvas.width + "x" + canvas.height;
     document.getElementById("inputScreenInches").style.display = "";
@@ -918,8 +1035,18 @@ function resetImgDim() {
   imgContainer.style.height = img.height + "px";
   // imgWidthInput.value = '';
   // imgHeightInput.value = '';
-  document.getElementById("currentImgSize").textContent =
-    "<b>Current image size is:</b> " + img.width + "x" + img.height;
+  // Update current image size safely
+  appendSafeHTML(document.getElementById("currentImgSize"), [
+    (() => {
+      const b = document.createElement('b');
+      b.textContent = 'Current image size is:';
+      return b;
+    })(),
+    ' ',
+    `${img.width}x${img.height}`
+  ]);
+
+
   document.getElementById("titleImage").colSpan = "5";
   tableWarning.textContent = "";
   tableDynamicValuePx.textContent = "Value(px)";
@@ -958,16 +1085,39 @@ function resizeFifty() {
   imgContainer.style.height = img.height * 0.5 + "px";
   canvas.width = img.width * 0.5;
   canvas.height = img.height * 0.5;
-  document.getElementById("currentImgSize").textContent =
-    "<b>Current image size is:</b> " +
-    img.width * 0.5 +
-    "x" +
-    img.height * 0.5 +
-    " (50% of size!)";
+  appendSafeHTML(document.getElementById("currentImgSize"), [
+        (() => {
+          const b = document.createElement('b');
+          b.textContent = 'Current image size is:';
+          return b;
+        })(),
+        ' ',
+        `${img.width * 0.50}x${img.height * 0.50} (50% of size!)`,
+        document.createElement('br'),
+        '\u26A0\u00A0', // ⚠ + non-breaking space
+        (() => {
+          const i = document.createElement('i');
+          i.textContent = 'Image was too big for your screen automatically set to 50% of the size.';
+          return i;
+        })()
+      ]);
   // tableDynamicValuePx.textContent = "Value(px) at 50%";
   // tableDynamicValueCm.textContent = "Value(cm) at 50%";
   // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
+
+  appendSafeHTML(tableWarning, [
+        (() => {
+          const span = document.createElement('span');
+          span.style.color = 'red';
+          const b = document.createElement('b');
+          b.textContent = '\u26A0'; // ⚠
+          span.appendChild(b);
+          return span;
+        })(),
+        ' ',
+        'Image was redimensioned to 50% of its original size!'
+      ]);
+
   //A new column with original image size values in cm added.`;
   imgSizeStatus = 50;
   // if (table.rows[1].cells.length < 6) {
@@ -1005,16 +1155,37 @@ function resizeSF() {
   imgContainer.style.height = img.height * 0.75 + "px";
   canvas.width = img.width * 0.75;
   canvas.height = img.height * 0.75;
-  document.getElementById("currentImgSize").textContent =
-    "<b>Current image size is:</b> " +
-    img.width * 0.75 +
-    "x" +
-    img.height * 0.75 +
-    " (75% of size!)";
+  appendSafeHTML(document.getElementById("currentImgSize"), [
+        (() => {
+          const b = document.createElement('b');
+          b.textContent = 'Current image size is:';
+          return b;
+        })(),
+        ' ',
+        `${img.width * 0.75}x${img.height * 0.75} (75% of size!)`,
+        document.createElement('br'),
+        '\u26A0\u00A0', // ⚠ + non-breaking space
+        (() => {
+          const i = document.createElement('i');
+          i.textContent = 'Image was too big for your screen automatically set to 75% of the size.';
+          return i;
+        })()
+      ]);
   // tableDynamicValuePx.textContent = "Value(px) at 75%";
   // tableDynamicValueCm.textContent = "Value(cm) at 75%";
   // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
+  appendSafeHTML(tableWarning, [
+        (() => {
+          const span = document.createElement('span');
+          span.style.color = 'red';
+          const b = document.createElement('b');
+          b.textContent = '\u26A0'; // ⚠
+          span.appendChild(b);
+          return span;
+        })(),
+        ' ',
+        'Image was redimensioned to 75% of its original size!'
+      ]);
   //A new column with original image size values in cm added.`;
   imgSizeStatus = 75;
   // if (table.rows[1].cells.length < 6) {
@@ -1052,16 +1223,37 @@ function resizeForty() {
   imgContainer.style.height = img.height * 0.4 + "px";
   canvas.width = img.width * 0.4;
   canvas.height = img.height * 0.4;
-  document.getElementById("currentImgSize").textContent =
-    "<b>Current image size is:</b> " +
-    (img.width * 0.4).toFixed(0) +
-    "x" +
-    (img.height * 0.4).toFixed(0) +
-    " (40% of size! Values are rounded)";
+  appendSafeHTML(document.getElementById("currentImgSize"), [
+        (() => {
+          const b = document.createElement('b');
+          b.textContent = 'Current image size is:';
+          return b;
+        })(),
+        ' ',
+        `${img.width * 0.40}x${img.height * 0.40} (40% of size!)`,
+        document.createElement('br'),
+        '\u26A0\u00A0', // ⚠ + non-breaking space
+        (() => {
+          const i = document.createElement('i');
+          i.textContent = 'Image was too big for your screen automatically set to 40% of the size.';
+          return i;
+        })()
+      ]);
   // tableDynamicValuePx.textContent = "Value(px) at 40%";
   // tableDynamicValueCm.textContent = "Value(cm) at 40%";
   // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 40% of its original size!`; //\n
+  appendSafeHTML(tableWarning, [
+        (() => {
+          const span = document.createElement('span');
+          span.style.color = 'red';
+          const b = document.createElement('b');
+          b.textContent = '\u26A0'; // ⚠
+          span.appendChild(b);
+          return span;
+        })(),
+        ' ',
+        'Image was redimensioned to 40% of its original size!'
+      ]);
   //A new column with original image size values in cm added.`;
   imgSizeStatus = 40;
   // if (table.rows[1].cells.length < 6) {
@@ -1099,16 +1291,38 @@ function resizeTwentyF() {
   imgContainer.style.height = img.height * 0.25 + "px";
   canvas.width = img.width * 0.25;
   canvas.height = img.height * 0.25;
-  document.getElementById("currentImgSize").textContent =
-    "<b>Current image size is:</b> " +
-    img.width * 0.25 +
-    "x" +
-    img.height * 0.25 +
-    " (25% of size!)";
+  appendSafeHTML(document.getElementById("currentImgSize"), [
+        (() => {
+          const b = document.createElement('b');
+          b.textContent = 'Current image size is:';
+          return b;
+        })(),
+        ' ',
+        `${img.width * 0.25}x${img.height * 0.25} (25% of size!)`,
+        document.createElement('br'),
+        '\u26A0\u00A0', // ⚠ + non-breaking space
+        (() => {
+          const i = document.createElement('i');
+          i.textContent = 'Image was too big for your screen automatically set to 25% of the size.';
+          return i;
+        })()
+      ]);
   // tableDynamicValuePx.textContent = "Value(px) at 25%";
   // tableDynamicValueCm.textContent = "Value(cm) at 25%";
   // document.getElementById("titleImage").colSpan = "6";
-  tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
+  appendSafeHTML(tableWarning, [
+        (() => {
+          const span = document.createElement('span');
+          span.style.color = 'red';
+          const b = document.createElement('b');
+          b.textContent = '\u26A0'; // ⚠
+          span.appendChild(b);
+          return span;
+        })(),
+        ' ',
+        'Image was redimensioned to 25% of its original size!'
+      ]);
+  //A new column with original image size values in cm added.`;
   //A new column with original image size values in cm added.`;
   imgSizeStatus = 25;
   // if (table.rows[1].cells.length < 6) {
@@ -1222,7 +1436,14 @@ let resetFile = function (event) {
   // let imgHeightInput = document.getElementById("containerHeight");
   // imgWidthInput.value = '';
   // imgHeightInput.value = '';
-  tableTitle.textContent = "<b>Table ID: <b>";
+  appendSafeHTML(tableTitle, [
+    (() => {
+      const b = document.createElement('b');
+      b.textContent = 'Table ID:';
+      return b;
+    })()
+  ]);
+
   document.getElementById("measureToCm").textContent = "";
   dist = 0;
   imgSizeStatus = 0;
@@ -1233,11 +1454,15 @@ let resetFile = function (event) {
 // Resolution section //
 
 function getUserResolution() {
-  document.getElementById("userResolution").textContent =
-    "<strong>Your resolution is:</strong> " +
-    window.screen.width * window.devicePixelRatio +
-    "x" +
-    window.screen.height * window.devicePixelRatio;
+    appendSafeHTML(document.getElementById("userResolution"), [
+    (() => {
+      const strong = document.createElement('strong');
+      strong.textContent = 'Your resolution is:';
+      return strong;
+    })(),
+    ' ',
+    `${window.screen.width * window.devicePixelRatio}x${window.screen.height * window.devicePixelRatio}`
+  ]);
 }
 
 getUserResolution();
@@ -1350,373 +1575,7 @@ let footstepsBeginning = document.getElementById("footstepsBeginning");
 let footstepStart = document.getElementById("footstepStart");
 let measurementType = document.getElementById("measurement");
 
-// SHOW OPTIONS OF RIGHT AND LEFT WHEN CHOOSING THE STRIDE WIDTH MEASUREMENT
 
-// measurementType.addEventListener("change", function(){
-// var options = measurementType.querySelectorAll('option');
-// if (measurementType.value == "Stride Width Front" || measurementType.value == "Stride Width Hind"){
-//  footstepsBeginning.style.display = '';
-// } else{
-//  footstepsBeginning.style.display = 'none';
-// }
-// })
-
-// function addEntry(){
-// if (measurementType.options[measurementType.selectedIndex].value == 'Stride length left front'){
-//  if (pointsRedLeft.length > 1){
-//    for (var i = 0; i < (pointsRedLeft.length-1); i++){
-//      var newRow = tbody.insertRow(-1);
-//      let indexRow = newRow.rowIndex;
-//      var cellOne = newRow.insertCell();
-//      var cellTwo = newRow.insertCell();
-//      var cellThree = newRow.insertCell();
-//      var cellFour = newRow.insertCell();
-//      var cellFive = newRow.insertCell();
-//      cellOne.textContent = indexRow-1;
-//      cellTwo.textContent = 'Red L' + (i+1) + ' &#x2192 Red L' + (i+2);
-//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//      distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i+1].x, pointsRedLeft[i].y - pointsRedLeft[i+1].y)).toFixed(2);
-//      cellFour.textContent = distance;
-//      if (dist != 0){
-//        cellFive.textContent = (distance/dist).toFixed(2);
-//      } else{
-//        cellFive.textContent = "Undefined";
-//      }
-//     //  cellRemove.textContent = '&#x2718;';
-//     //  cellRemove.style.cursor = 'pointer';
-//     //  cellRemove.style.fontSize = 'x-large';
-//     //  cellRemove.style.color = 'red';
-//     //  cellRemove.onclick = function removeOnClick(){
-//     //   tbody.deleteRow(indexRow-2);
-//     //   for (var i = 0; i < tbody.rows.length; i++){
-//     //     let updatedCell = tbody.rows[i].cells[0];
-//     //     updatedCell.textContent = i+1;
-//     //   }
-//     // };
-//    }
-//  } else{
-//    alert('Not enough points to perform this measurement');
-//  }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Stride length right front'){
-//  if (pointsRedRight.length > 1){
-//    for (var i = 0; i < (pointsRedRight.length-1); i++){
-//      var newRow = tbody.insertRow(-1);
-//      let indexRow = newRow.rowIndex;
-//      var cellOne = newRow.insertCell();
-//      var cellTwo = newRow.insertCell();
-//      var cellThree = newRow.insertCell();
-//      var cellFour = newRow.insertCell();
-//      var cellFive = newRow.insertCell();
-//      cellOne.textContent = indexRow-1;
-//      cellTwo.textContent = 'Red R' + (i+1) + ' &#x2192 Red R' + (i+2);
-//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//      distance = (Math.hypot(pointsRedRight[i].x - pointsRedRight[i+1].x, pointsRedRight[i].y - pointsRedRight[i+1].y)).toFixed(2);
-//      cellFour.textContent = distance;
-//      if (dist != 0){
-//        cellFive.textContent = (distance/dist).toFixed(2);
-//      } else{
-//        cellFive.textContent = 'Undefined';
-//      }
-//    }
-//  }  else{
-//    alert('Not enough points to perform this measurement');
-//  }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Stride length left hind'){
-//  if (pointsBlueLeft.length > 1){
-//    for (var i = 0; i < (pointsBlueLeft.length-1); i++){
-//      var newRow = tbody.insertRow(-1);
-//      let indexRow = newRow.rowIndex;
-//      var cellOne = newRow.insertCell();
-//      var cellTwo = newRow.insertCell();
-//      var cellThree = newRow.insertCell();
-//      var cellFour = newRow.insertCell();
-//      var cellFive = newRow.insertCell();
-//      cellOne.textContent = indexRow-1;
-//      cellTwo.textContent = 'Blue L' + (i+1) + ' &#x2192 Blue L' + (i+2);
-//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//      distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i+1].x, pointsBlueLeft[i].y - pointsBlueLeft[i+1].y)).toFixed(2);
-//      cellFour.textContent = distance;
-//      if (dist != 0){
-//        cellFive.textContent = (distance/dist).toFixed(2);
-//      } else{
-//        cellFive.textContent = 'Undefined';
-//      }
-//    }
-//  }  else{
-//    alert('Not enough points to perform this measurement');
-//  }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Stride length right hind'){
-//  if (pointsBlueRight.length > 1){
-//    for (var i = 0; i < (pointsBlueRight.length-1); i++){
-//      var newRow = tbody.insertRow(-1);
-//      let indexRow = newRow.rowIndex;
-//      var cellOne = newRow.insertCell();
-//      var cellTwo = newRow.insertCell();
-//      var cellThree = newRow.insertCell();
-//      var cellFour = newRow.insertCell();
-//      var cellFive = newRow.insertCell();
-//      cellOne.textContent = indexRow-1;
-//      cellTwo.textContent = 'Blue R' + (i+1) + ' &#x2192 Blue R' + (i+2);
-//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//      distance = (Math.hypot(pointsBlueRight[i].x - pointsBlueRight[i+1].x, pointsBlueRight[i].y - pointsBlueRight[i+1].y)).toFixed(2);
-//      cellFour.textContent = distance;
-//      if (dist != 0){
-//        cellFive.textContent = (distance/dist).toFixed(2);
-//      } else{
-//        cellFive.textContent = 'Undefined';
-//      }
-//    }
-//  }  else{
-//    alert('Not enough points to perform this measurement');
-//  }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Overlap Left'){
-//   if ((pointsRedLeft.length >= 1) && (pointsBlueLeft.length >= 1)){
-//   for (var i= 0; i < pointsRedLeft.length; i++){
-//     for (var j = 0; j < pointsBlueLeft.length; j++){
-//       if (i == j){
-//       var newRow = tbody.insertRow(-1);
-//       let indexRow = newRow.rowIndex;
-//       var cellOne = newRow.insertCell();
-//       var cellTwo = newRow.insertCell();
-//       var cellThree = newRow.insertCell();
-//       var cellFour = newRow.insertCell();
-//       var cellFive = newRow.insertCell();
-//       cellOne.textContent = indexRow-1;
-//       cellTwo.textContent = 'Red L' + (i+1) + ' &#x2192 Blue L' + (j+1);
-//       cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//       distance = (Math.hypot(pointsRedLeft[i].x - pointsBlueLeft[j].x, pointsRedLeft[i].y - pointsBlueLeft[j].y)).toFixed(2);
-//       cellFour.textContent = distance;
-//       if (dist != 0){
-//         cellFive.textContent = (distance/dist).toFixed(2);
-//       } else{
-//         cellFive.textContent = 'Undefined';
-//       }
-//    }
-//  }
-//  }
-// } else{
-//   alert('Not enough points to perform this measurement');
-// }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Overlap Right'){
-//   if ((pointsRedRight.length >= 1) && (pointsBlueRight.length >= 1)){
-//   for (var i= 0; i < pointsRedRight.length; i++){
-//    for (var j = 0; j < pointsBlueRight.length; j++){
-//      if (i == j){
-//      var newRow = tbody.insertRow(-1);
-//      let indexRow = newRow.rowIndex;
-//      var cellOne = newRow.insertCell();
-//      var cellTwo = newRow.insertCell();
-//      var cellThree = newRow.insertCell();
-//      var cellFour = newRow.insertCell();
-//      var cellFive = newRow.insertCell();
-//      cellOne.textContent = indexRow-1;
-//      cellTwo.textContent = 'Red R' + (i+1) + ' &#x2192 Blue R' + (j+1);
-//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//      distance = (Math.hypot(pointsRedRight[i].x - pointsBlueRight[j].x, pointsRedRight[i].y - pointsBlueRight[j].y)).toFixed(2);
-//      cellFour.textContent = distance;
-//      if (dist != 0){
-//        cellFive.textContent = (distance/dist).toFixed(2);
-//      } else{
-//        cellFive.textContent = 'Undefined';
-//      }
-//    }
-//  }
-//  }
-// } else{
-//   alert('Not enough points to perform this measurement');
-// }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Front'){
-//  if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
-//   if((pointsRedLeft.length >= 1) && (pointsRedRight.length >= 1)){
-//    for (var i = 0; i < pointsRedLeft.length; i++){
-//      for (var j = 0; j < pointsRedRight.length; j++){
-//        if (i == j){
-//          var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red R' + (j+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          } else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      } if (i == j+1){
-//        var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red L' + (i+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          }else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      }
-//      }
-//    }
-//   } else{
-//   alert('Not enough points to perform this measurement');
-//  }
-// }
-//  if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
-//   if((pointsRedLeft.length >= 1) && (pointsRedRight.length >= 1)){
-//   for (var i = 0; i < pointsRedLeft.length; i++){
-//      for (var j = 0; j < pointsRedRight.length; j++){
-//        if (i == j){
-//          var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red L' + (i+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedRight[j].y - pointsRedLeft[i].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          } else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      } if (j == i+1){
-//        var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red R' + (j+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          }else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      }
-//      }
-//    }
-//  } else{
-//   alert('Not enough points to perform this measurement');
-//  }
-// }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Hind'){
-//  if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
-//   if((pointsBlueLeft.length >= 1) &&(pointsBlueRight.length >= 1)){
-//    for (var i = 0; i < pointsBlueLeft.length; i++){
-//      for (var j = 0; j < pointsBlueRight.length; j++){
-//        if (i == j){
-//          var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue R' + (j+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          } else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      } if (i == j+1){
-//        var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue L' + (i+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          }else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      }
-//      }
-//    }
-//  } else{
-//   alert('Not enough points to perform this measurement');
-//  }
-// }
-//  if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
-//   if((pointsBlueLeft.length >= 1) &&(pointsBlueRight.length >= 1)){
-//    for (var i = 0; i < pointsBlueLeft.length; i++){
-//      for (var j = 0; j < pointsBlueRight.length; j++){
-//        if (i == j){
-//          var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue L' + (i+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueRight[j].y - pointsBlueLeft[i].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          } else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      } if (j == i+1){
-//        var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue R' + (j+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          }else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//        }
-//      }
-//    }
-//  }else{
-//   alert('Not enough points to perform this measurement');
-//  }
-// }
-// }
-// }
 
 let entryNumber = document.getElementById("entryNumber");
 
@@ -1756,12 +1615,26 @@ function removeAllEntries() {
 }
 
 function updateTableID() {
-  tableTitle.textContent = "<b>Table ID: <b>";
+    appendSafeHTML(tableTitle, [
+    (() => {
+      const b = document.createElement('b');
+      b.textContent = 'Table ID:';
+      return b;
+    })()
+  ]);
+
   tableTitle.textContent += " " + manualID.value;
 }
 
 function removeTableID() {
-  tableTitle.textContent = "<b>Table ID: <b>";
+    appendSafeHTML(tableTitle, [
+    (() => {
+      const b = document.createElement('b');
+      b.textContent = 'Table ID:';
+      return b;
+    })()
+  ]);
+
   manualID.value = "";
 }
 
@@ -2260,1973 +2133,7 @@ function removeByMeasurement() {
   }
 }
 
-// WORK IN PROGRESS -- ADD ALL ENTRIES WITH ONE CLICK WITH AVERAGE FOR EACH MEASUREMENT AND SENSIBLE TO RESIZING  (THIS IS NOT WORKING CORRECTLY!)
 
-// function addEntriesAllAverage() {
-//   var distValuesSLLF = [];
-//   var distValuesSLRF = [];
-//   var distValuesSLLH = [];
-//   var distValuesSLRH = [];
-//   var distValuesOL = [];
-//   var distValuesOR = [];
-//   var distValuesSWFL = [];
-//   var distValuesSWHL = [];
-//   var distValuesSWFR = [];
-//   var distValuesSWHR = [];
-//   if (dist == 0) {
-//     alert("Measure how many pixels are in a cm before using these option!");
-//     return;
-//   } else if (
-//     pointsRedLeft.length < 2 ||
-//     pointsRedRight.length < 2 ||
-//     pointsBlueLeft.length < 2 ||
-//     pointsBlueRight.length < 2
-//   ) {
-//     alert("Have enough points to perform at least one of each measurement.");
-//     return;
-//   } else {
-//     for (var i = 0; i < pointsRedLeft.length - 1; i++) {
-//       var newRow = tbody.insertRow(-1);
-//       let indexRow = newRow.rowIndex;
-//       var cellOne = newRow.insertCell();
-//       var cellTwo = newRow.insertCell();
-//       var cellThree = newRow.insertCell();
-//       var cellFour = newRow.insertCell();
-//       var cellFive = newRow.insertCell();
-//       if (imgSizeStatus != 100) {
-//         var cellSix = newRow.insertCell();
-//       } else {
-//       }
-//       // let distance = 0;
-//       cellOne.textContent = indexRow - 1;
-//       cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
-//       cellThree.textContent = "Stride length left front";
-//       distance = Math.hypot(
-//         pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
-//         pointsRedLeft[i].y - pointsRedLeft[i + 1].y
-//       ).toFixed(3);
-//       cellFour.textContent = distance;
-//       cellFive.textContent = (distance / dist).toFixed(3);
-//       distValuesSLLF.push(distance / dist);
-//       switch (imgSizeStatus) {
-//         case 50:
-//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//           break;
-//         case 75:
-//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//           break;
-//         case 25:
-//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//           break;
-//         case 40:
-//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//       }
-//     }
-//     console.log(distValuesSLLF);
-//     var strideLeftFrontMeanRow = tbody.insertRow(-1);
-//     var strideLeftFrontRowCellOne = strideLeftFrontMeanRow.insertCell();
-//     var strideLeftFrontRowCellTwo = strideLeftFrontMeanRow.insertCell();
-//     strideLeftFrontRowCellOne.colSpan = "4";
-//     strideLeftFrontRowCellOne.textContent =
-//       "<b>Stride length left front average in cm:</b> ";
-//     strideLeftFrontRowCellTwo.textContent = (
-//       distValuesSLLF.reduce((a, b) => a + b, 0) / distValuesSLLF.length
-//     ).toFixed(3);
-//     if (imgSizeStatus != 100) {
-//       var strideLeftFrontRowCellThreeOriginal =
-//         strideLeftFrontMeanRow.insertCell();
-//       switch (imgSizeStatus) {
-//         case 50:
-//           strideLeftFrontRowCellThreeOriginal.textContent = (
-//             (distValuesSLLF.reduce((a, b) => a + b, 0) /
-//               distValuesSLLF.length) *
-//             2
-//           ).toFixed(3);
-//           break;
-//         case 75:
-//           strideLeftFrontRowCellThreeOriginal.textContent = (
-//             ((distValuesSLLF.reduce((a, b) => a + b, 0) /
-//               distValuesSLLF.length) *
-//               100) /
-//             75
-//           ).toFixed(3);
-//           break;
-//         case 25:
-//           strideLeftFrontRowCellThreeOriginal.textContent = (
-//             (distValuesSLLF.reduce((a, b) => a + b, 0) /
-//               distValuesSLLF.length) *
-//             4
-//           ).toFixed(3);
-//           break;
-//         case 40:
-//           strideLeftFrontRowCellThreeOriginal.textContent = (
-//             ((distValuesSLLF.reduce((a, b) => a + b, 0) /
-//               distValuesSLLF.length) *
-//               100) /
-//             40
-//           ).toFixed(3);
-//           break;
-//       }
-//     }
-//     for (var i = 0; i < pointsRedRight.length - 1; i++) {
-//       var newRow = tbody.insertRow(-1);
-//       let indexRow = newRow.rowIndex;
-//       var cellOne = newRow.insertCell();
-//       var cellTwo = newRow.insertCell();
-//       var cellThree = newRow.insertCell();
-//       var cellFour = newRow.insertCell();
-//       var cellFive = newRow.insertCell();
-//       if (imgSizeStatus != 100) {
-//         var cellSix = newRow.insertCell();
-//       } else {
-//       }
-//       cellOne.textContent = indexRow - 1;
-//       cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
-//       cellThree.textContent = "Stride length right front";
-//       distance = Math.hypot(
-//         pointsRedRight[i].x - pointsRedRight[i + 1].x,
-//         pointsRedRight[i].y - pointsRedRight[i + 1].y
-//       ).toFixed(3);
-//       cellFour.textContent = distance;
-//       cellFive.textContent = (distance / dist).toFixed(3);
-//       distValuesSLRF.push(distance / dist);
-//       switch (imgSizeStatus) {
-//         case 50:
-//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//           break;
-//         case 75:
-//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//           break;
-//         case 25:
-//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//           break;
-//         case 40:
-//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//       }
-//     }
-//     console.log(distValuesSLRF);
-//     var strideRightFrontMeanRow = tbody.insertRow(-1);
-//     var strideRightFrontRowCellOne = strideRightFrontMeanRow.insertCell();
-//     var strideRightFrontRowCellTwo = strideRightFrontMeanRow.insertCell();
-//     strideRightFrontRowCellOne.colSpan = "4";
-//     strideRightFrontRowCellOne.textContent =
-//       "<b>Stride length right front average in cm:</b> ";
-//     strideRightFrontRowCellTwo.textContent = (
-//       distValuesSLRF.reduce((a, b) => a + b, 0) / distValuesSLRF.length
-//     ).toFixed(3);
-//     if (imgSizeStatus != 100) {
-//       var strideRightFrontRowCellThreeOriginal =
-//         strideRightFrontMeanRow.insertCell();
-//       switch (imgSizeStatus) {
-//         case 50:
-//           strideRightFrontRowCellThreeOriginal.textContent = (
-//             (distValuesSLRF.reduce((a, b) => a + b, 0) /
-//               distValuesSLRF.length) *
-//             2
-//           ).toFixed(3);
-//           break;
-//         case 75:
-//           strideRightFrontRowCellThreeOriginal.textContent = (
-//             ((distValuesSLRF.reduce((a, b) => a + b, 0) /
-//               distValuesSLRF.length) *
-//               100) /
-//             75
-//           ).toFixed(3);
-//           break;
-//         case 25:
-//           strideRightFrontRowCellThreeOriginal.textContent = (
-//             (distValuesSLRF.reduce((a, b) => a + b, 0) /
-//               distValuesSLRF.length) *
-//             4
-//           ).toFixed(3);
-//           break;
-//         case 40:
-//           strideRightFrontRowCellThreeOriginal.textContent = (
-//             ((distValuesSLRF.reduce((a, b) => a + b, 0) /
-//               distValuesSLRF.length) *
-//               100) /
-//             40
-//           ).toFixed(3);
-//           break;
-//       }
-//     }
-//     for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
-//       var newRow = tbody.insertRow(-1);
-//       let indexRow = newRow.rowIndex;
-//       var cellOne = newRow.insertCell();
-//       var cellTwo = newRow.insertCell();
-//       var cellThree = newRow.insertCell();
-//       var cellFour = newRow.insertCell();
-//       var cellFive = newRow.insertCell();
-//       if (imgSizeStatus != 100) {
-//         var cellSix = newRow.insertCell();
-//       } else {
-//       }
-//       cellOne.textContent = indexRow - 1;
-//       cellTwo.textContent = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
-//       cellThree.textContent = "Stride length left hind";
-//       distance = Math.hypot(
-//         pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
-//         pointsBlueLeft[i].y - pointsBlueLeft[i + 1].y
-//       ).toFixed(3);
-//       cellFour.textContent = distance;
-//       cellFive.textContent = (distance / dist).toFixed(3);
-//       distValuesSLLH.push(distance / dist);
-//       switch (imgSizeStatus) {
-//         case 50:
-//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//           break;
-//         case 75:
-//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//           break;
-//         case 25:
-//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//           break;
-//         case 40:
-//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//       }
-//     }
-//     console.log(distValuesSLLH);
-//     var strideLeftHindMeanRow = tbody.insertRow(-1);
-//     var strideLeftHindRowCellOne = strideLeftHindMeanRow.insertCell();
-//     var strideLeftHindRowCellTwo = strideLeftHindMeanRow.insertCell();
-//     strideLeftHindRowCellOne.colSpan = "4";
-//     strideLeftHindRowCellOne.textContent =
-//       "<b>Stride length left hind average in cm:</b> ";
-//     strideLeftHindRowCellTwo.textContent = (
-//       distValuesSLLH.reduce((a, b) => a + b, 0) / distValuesSLLH.length
-//     ).toFixed(3);
-//     if (imgSizeStatus != 100) {
-//       var strideLeftHindRowCellThreeOriginal =
-//         strideLeftHindMeanRow.insertCell();
-//       switch (imgSizeStatus) {
-//         case 50:
-//           strideLeftHindRowCellThreeOriginal.textContent = (
-//             (distValuesSLLH.reduce((a, b) => a + b, 0) /
-//               distValuesSLLH.length) *
-//             2
-//           ).toFixed(3);
-//           break;
-//         case 75:
-//           strideLeftHindRowCellThreeOriginal.textContent = (
-//             ((distValuesSLLH.reduce((a, b) => a + b, 0) /
-//               distValuesSLLH.length) *
-//               100) /
-//             75
-//           ).toFixed(3);
-//           break;
-//         case 25:
-//           strideLeftHindRowCellThreeOriginal.textContent = (
-//             (distValuesSLLH.reduce((a, b) => a + b, 0) /
-//               distValuesSLLH.length) *
-//             4
-//           ).toFixed(3);
-//           break;
-//         case 40:
-//           strideLeftHindRowCellThreeOriginal.textContent = (
-//             ((distValuesSLLH.reduce((a, b) => a + b, 0) /
-//               distValuesSLLH.length) *
-//               100) /
-//             40
-//           ).toFixed(3);
-//           break;
-//       }
-//     }
-//     for (var i = 0; i < pointsBlueRight.length - 1; i++) {
-//       var newRow = tbody.insertRow(-1);
-//       let indexRow = newRow.rowIndex;
-//       var cellOne = newRow.insertCell();
-//       var cellTwo = newRow.insertCell();
-//       var cellThree = newRow.insertCell();
-//       var cellFour = newRow.insertCell();
-//       var cellFive = newRow.insertCell();
-//       if (imgSizeStatus != 100) {
-//         var cellSix = newRow.insertCell();
-//       } else {
-//       }
-//       cellOne.textContent = indexRow - 1;
-//       cellTwo.textContent = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
-//       cellThree.textContent = "Stride length right hind";
-//       distance = Math.hypot(
-//         pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
-//         pointsBlueRight[i].y - pointsBlueRight[i + 1].y
-//       ).toFixed(3);
-//       cellFour.textContent = distance;
-//       cellFive.textContent = (distance / dist).toFixed(3);
-//       distValuesSLRH.push(distance / dist);
-//       switch (imgSizeStatus) {
-//         case 50:
-//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//           break;
-//         case 75:
-//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//           break;
-//         case 25:
-//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//           break;
-//         case 40:
-//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//       }
-//     }
-//     console.log(distValuesSLRH);
-//     var strideRightHindMeanRow = tbody.insertRow(-1);
-//     var strideRightHindRowCellOne = strideRightHindMeanRow.insertCell();
-//     var strideRightHindRowCellTwo = strideRightHindMeanRow.insertCell();
-//     strideRightHindRowCellOne.colSpan = "4";
-//     strideRightHindRowCellOne.textContent =
-//       "<b>Stride length right hind average in cm:</b> ";
-//     strideRightHindRowCellTwo.textContent = (
-//       distValuesSLRH.reduce((a, b) => a + b, 0) / distValuesSLRH.length
-//     ).toFixed(3);
-//     if (imgSizeStatus != 100) {
-//       var strideRightHindRowCellThreeOriginal =
-//         strideRightHindMeanRow.insertCell();
-//       switch (imgSizeStatus) {
-//         case 50:
-//           strideRightHindRowCellThreeOriginal.textContent = (
-//             (distValuesSLRH.reduce((a, b) => a + b, 0) /
-//               distValuesSLRH.length) *
-//             2
-//           ).toFixed(3);
-//           break;
-//         case 75:
-//           strideRightHindRowCellThreeOriginal.textContent = (
-//             ((distValuesSLRH.reduce((a, b) => a + b, 0) /
-//               distValuesSLRH.length) *
-//               100) /
-//             75
-//           ).toFixed(3);
-//           break;
-//         case 25:
-//           strideRightHindRowCellThreeOriginal.textContent = (
-//             (distValuesSLRH.reduce((a, b) => a + b, 0) /
-//               distValuesSLRH.length) *
-//             4
-//           ).toFixed(3);
-//           break;
-//         case 40:
-//           strideRightHindRowCellThreeOriginal.textContent = (
-//             ((distValuesSLRH.reduce((a, b) => a + b, 0) /
-//               distValuesSLRH.length) *
-//               100) /
-//             40
-//           ).toFixed(3);
-//           break;
-//       }
-//     }
-//     for (var i = 0; i < pointsRedLeft.length; i++) {
-//       for (var j = 0; j < pointsBlueLeft.length; j++) {
-//         if (i == j) {
-//           var newRow = tbody.insertRow(-1);
-//           let indexRow = newRow.rowIndex;
-//           var cellOne = newRow.insertCell();
-//           var cellTwo = newRow.insertCell();
-//           var cellThree = newRow.insertCell();
-//           var cellFour = newRow.insertCell();
-//           var cellFive = newRow.insertCell();
-//           if (imgSizeStatus != 100) {
-//             var cellSix = newRow.insertCell();
-//           } else {
-//           }
-//           cellOne.textContent = indexRow - 1;
-//           cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
-//           cellThree.textContent = "Overlap Left";
-//           distance = Math.hypot(
-//             pointsRedLeft[i].x - pointsBlueLeft[j].x,
-//             pointsRedLeft[i].y - pointsBlueLeft[j].y
-//           ).toFixed(3);
-//           cellFour.textContent = distance;
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           distValuesOL.push(distance / dist);
-//           switch (imgSizeStatus) {
-//             case 50:
-//               cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//               break;
-//             case 75:
-//               cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//               break;
-//             case 25:
-//               cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//               break;
-//             case 40:
-//               cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//           }
-//         }
-//       }
-//     }
-//     console.log(distValuesOL);
-//     var overlapLeftMeanRow = tbody.insertRow(-1);
-//     var overlapLeftRowCellOne = overlapLeftMeanRow.insertCell();
-//     var overlapLeftRowCellTwo = overlapLeftMeanRow.insertCell();
-//     overlapLeftRowCellOne.colSpan = "4";
-//     overlapLeftRowCellOne.textContent = "<b>Overlap left average in cm:</b> ";
-//     overlapLeftRowCellTwo.textContent = (
-//       distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length
-//     ).toFixed(3);
-//     if (imgSizeStatus != 100) {
-//       var overlapLeftRowCellThreeOriginal = overlapLeftMeanRow.insertCell();
-//       switch (imgSizeStatus) {
-//         case 50:
-//           overlapLeftRowCellThreeOriginal.textContent = (
-//             (distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
-//             2
-//           ).toFixed(3);
-//           break;
-//         case 75:
-//           overlapLeftRowCellThreeOriginal.textContent = (
-//             ((distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
-//               100) /
-//             75
-//           ).toFixed(3);
-//           break;
-//         case 25:
-//           overlapLeftRowCellThreeOriginal.textContent = (
-//             (distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
-//             4
-//           ).toFixed(3);
-//           break;
-//         case 40:
-//           overlapLeftRowCellThreeOriginal.textContent = (
-//             ((distValuesOL.reduce((a, b) => a + b, 0) / distValuesOL.length) *
-//               100) /
-//             40
-//           ).toFixed(3);
-//           break;
-//       }
-//     }
-//     for (var i = 0; i < pointsRedRight.length; i++) {
-//       for (var j = 0; j < pointsBlueRight.length; j++) {
-//         if (i == j) {
-//           var newRow = tbody.insertRow(-1);
-//           let indexRow = newRow.rowIndex;
-//           var cellOne = newRow.insertCell();
-//           var cellTwo = newRow.insertCell();
-//           var cellThree = newRow.insertCell();
-//           var cellFour = newRow.insertCell();
-//           var cellFive = newRow.insertCell();
-//           if (imgSizeStatus != 100) {
-//             var cellSix = newRow.insertCell();
-//           } else {
-//           }
-//           cellOne.textContent = indexRow - 1;
-//           cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
-//           cellThree.textContent = "Overlap Right";
-//           distance = Math.hypot(
-//             pointsRedRight[i].x - pointsBlueRight[j].x,
-//             pointsRedRight[i].y - pointsBlueRight[j].y
-//           ).toFixed(3);
-//           cellFour.textContent = distance;
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           distValuesOR.push(distance / dist);
-//           switch (imgSizeStatus) {
-//             case 50:
-//               cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//               break;
-//             case 75:
-//               cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//               break;
-//             case 25:
-//               cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//               break;
-//             case 40:
-//               cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//           }
-//         }
-//       }
-//     }
-//     console.log(distValuesOR);
-//     var overlapRightMeanRow = tbody.insertRow(-1);
-//     var overlapRightRowCellOne = overlapRightMeanRow.insertCell();
-//     var overlapRightRowCellTwo = overlapRightMeanRow.insertCell();
-//     overlapRightRowCellOne.colSpan = "4";
-//     overlapRightRowCellOne.textContent = "<b>Overlap Right average in cm:</b> ";
-//     overlapRightRowCellTwo.textContent = (
-//       distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length
-//     ).toFixed(3);
-//     if (imgSizeStatus != 100) {
-//       var overlapRightRowCellThreeOriginal = overlapRightMeanRow.insertCell();
-//       switch (imgSizeStatus) {
-//         case 50:
-//           overlapRightRowCellThreeOriginal.textContent = (
-//             (distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
-//             2
-//           ).toFixed(3);
-//           break;
-//         case 75:
-//           overlapRightRowCellThreeOriginal.textContent = (
-//             ((distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
-//               100) /
-//             75
-//           ).toFixed(3);
-//           break;
-//         case 25:
-//           overlapRightRowCellThreeOriginal.textContent = (
-//             (distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
-//             4
-//           ).toFixed(3);
-//           break;
-//         case 40:
-//           overlapRightRowCellThreeOriginal.textContent = (
-//             ((distValuesOR.reduce((a, b) => a + b, 0) / distValuesOR.length) *
-//               100) /
-//             40
-//           ).toFixed(3);
-//           break;
-//       }
-//     }
-//     if (footstepStart.options[footstepStart.selectedIndex].value == "Left") {
-//       var indexImaginaryFrontLeft = 0;
-//       var indexImaginaryHindLeft = 0;
-//       for (var i = 0; i < pointsRedLeft.length; i++) {
-//         for (var j = 0; j < pointsRedRight.length; j++) {
-//           if (i == j) {
-//             var newRow = tbody.insertRow(-1);
-//             let indexRow = newRow.rowIndex;
-//             var cellOne = newRow.insertCell();
-//             var cellTwo = newRow.insertCell();
-//             var cellThree = newRow.insertCell();
-//             var cellFour = newRow.insertCell();
-//             var cellFive = newRow.insertCell();
-//             if (imgSizeStatus != 100) {
-//               var cellSix = newRow.insertCell();
-//             } else {
-//             }
-//             indexImaginaryFrontLeft += 1;
-//             cellOne.textContent = indexRow - 1;
-//             cellTwo.textContent =
-//               "Imaginary Front " +
-//               indexImaginaryFrontLeft +
-//               " &#x2192 Red R" +
-//               (j + 1);
-//             cellThree.textContent = "Stride Width Front(L)";
-//             if (i < pointsRedLeft.length - 1) {
-//               distance = Math.hypot(
-//                 pointsRedRight[j].x - pointsRedRight[j].x,
-//                 (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
-//                   pointsRedRight[j].y
-//               ).toFixed(3);
-//             } else {
-//               distance = Math.hypot(
-//                 pointsRedRight[j].x - pointsRedRight[j].x,
-//                 pointsRedLeft[i].y - pointsRedRight[j].y
-//               ).toFixed(3);
-//             }
-//             cellFour.textContent = distance;
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             distValuesSWFL.push(distance / dist);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//             }
-//           }
-//           if (i == j + 1) {
-//             var newRow = tbody.insertRow(-1);
-//             let indexRow = newRow.rowIndex;
-//             var cellOne = newRow.insertCell();
-//             var cellTwo = newRow.insertCell();
-//             var cellThree = newRow.insertCell();
-//             var cellFour = newRow.insertCell();
-//             var cellFive = newRow.insertCell();
-//             if (imgSizeStatus != 100) {
-//               var cellSix = newRow.insertCell();
-//             } else {
-//             }
-//             indexImaginaryFrontLeft += 1;
-//             cellOne.textContent = indexRow - 1;
-//             cellTwo.textContent =
-//               "Imaginary Front " +
-//               indexImaginaryFrontLeft +
-//               " &#x2192 Red L" +
-//               (i + 1);
-//             cellThree.textContent = "Stride Width Front(L)";
-//             if (j < pointsRedRight.length - 1) {
-//               distance = Math.hypot(
-//                 pointsRedLeft[i].x - pointsRedLeft[i].x,
-//                 pointsRedLeft[i].y -
-//                   (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2
-//               ).toFixed(3);
-//             } else {
-//               distance = Math.hypot(
-//                 pointsRedLeft[i].x - pointsRedLeft[i].x,
-//                 pointsRedLeft[i].y - pointsRedRight[j].y
-//               ).toFixed(3);
-//             }
-//             cellFour.textContent = distance;
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             distValuesSWFL.push(distance / dist);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//             }
-//           }
-//         }
-//       }
-//       console.log(distValuesSWFL);
-//       var strideWidthFrontLeftMeanRow = tbody.insertRow(-1);
-//       var strideWidthFrontLeftRowCellOne =
-//         strideWidthFrontLeftMeanRow.insertCell();
-//       var strideWidthFrontLeftRowCellTwo =
-//         strideWidthFrontLeftMeanRow.insertCell();
-//       strideWidthFrontLeftRowCellOne.colSpan = "4";
-//       strideWidthFrontLeftRowCellOne.textContent =
-//         "<b>Stride Width Front(L) average in cm:</b> ";
-//       strideWidthFrontLeftRowCellTwo.textContent = (
-//         distValuesSWFL.reduce((a, b) => a + b, 0) / distValuesSWFL.length
-//       ).toFixed(3);
-//       if (imgSizeStatus != 100) {
-//         var strideWidthFrontLeftRowCellThreeOriginal =
-//           strideWidthFrontLeftMeanRow.insertCell();
-//         switch (imgSizeStatus) {
-//           case 50:
-//             strideWidthFrontLeftRowCellThreeOriginal.textContent = (
-//               (distValuesSWFL.reduce((a, b) => a + b, 0) /
-//                 distValuesSWFL.length) *
-//               2
-//             ).toFixed(3);
-//             break;
-//           case 75:
-//             strideWidthFrontLeftRowCellThreeOriginal.textContent = (
-//               ((distValuesSWFL.reduce((a, b) => a + b, 0) /
-//                 distValuesSWFL.length) *
-//                 100) /
-//               75
-//             ).toFixed(3);
-//             break;
-//           case 25:
-//             strideWidthFrontLeftRowCellThreeOriginal.textContent = (
-//               (distValuesSWFL.reduce((a, b) => a + b, 0) /
-//                 distValuesSWFL.length) *
-//               4
-//             ).toFixed(3);
-//             break;
-//           case 40:
-//             strideWidthFrontLeftRowCellThreeOriginal.textContent = (
-//               ((distValuesSWFL.reduce((a, b) => a + b, 0) /
-//                 distValuesSWFL.length) *
-//                 100) /
-//               40
-//             ).toFixed(3);
-//             break;
-//         }
-//       }
-//       for (var i = 0; i < pointsBlueLeft.length; i++) {
-//         for (var j = 0; j < pointsBlueRight.length; j++) {
-//           if (i == j) {
-//             var newRow = tbody.insertRow(-1);
-//             let indexRow = newRow.rowIndex;
-//             var cellOne = newRow.insertCell();
-//             var cellTwo = newRow.insertCell();
-//             var cellThree = newRow.insertCell();
-//             var cellFour = newRow.insertCell();
-//             var cellFive = newRow.insertCell();
-//             if (imgSizeStatus != 100) {
-//               var cellSix = newRow.insertCell();
-//             } else {
-//             }
-//             indexImaginaryHindLeft += 1;
-//             cellOne.textContent = indexRow - 1;
-//             cellTwo.textContent =
-//               "Imaginary Hind " +
-//               indexImaginaryHindLeft +
-//               " &#x2192 Blue R" +
-//               (j + 1);
-//             cellThree.textContent = "Stride Width Hind(L)";
-//             if (i < pointsBlueLeft.length - 1) {
-//               distance = Math.hypot(
-//                 pointsBlueRight[j].x - pointsBlueRight[j].x,
-//                 (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
-//                   pointsBlueRight[j].y
-//               ).toFixed(3);
-//             } else {
-//               distance = Math.hypot(
-//                 pointsBlueRight[j].x - pointsBlueRight[j].x,
-//                 pointsBlueLeft[i].y - pointsBlueRight[j].y
-//               ).toFixed(3);
-//             }
-//             cellFour.textContent = distance;
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             distValuesSWHL.push(distance / dist);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//             }
-//           }
-//           if (i == j + 1) {
-//             var newRow = tbody.insertRow(-1);
-//             let indexRow = newRow.rowIndex;
-//             var cellOne = newRow.insertCell();
-//             var cellTwo = newRow.insertCell();
-//             var cellThree = newRow.insertCell();
-//             var cellFour = newRow.insertCell();
-//             var cellFive = newRow.insertCell();
-//             if (imgSizeStatus != 100) {
-//               var cellSix = newRow.insertCell();
-//             } else {
-//             }
-//             indexImaginaryHindLeft += 1;
-//             cellOne.textContent = indexRow - 1;
-//             cellTwo.textContent =
-//               "Imaginary Hind " +
-//               indexImaginaryHindLeft +
-//               " &#x2192 Blue L" +
-//               (i + 1);
-//             cellThree.textContent = "Stride Width Hind(L)";
-//             if (j < pointsBlueRight.length - 1) {
-//               distance = Math.hypot(
-//                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-//                 pointsBlueLeft[i].y -
-//                   (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2
-//               ).toFixed(3);
-//             } else {
-//               distance = Math.hypot(
-//                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-//                 pointsBlueLeft[i].y - pointsBlueRight[j].y
-//               ).toFixed(3);
-//             }
-//             cellFour.textContent = distance;
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             distValuesSWHL.push(distance / dist);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//             }
-//           }
-//         }
-//       }
-//       console.log(distValuesSWHL);
-//       var strideWidthHindLeftMeanRow = tbody.insertRow(-1);
-//       var strideWidthHindLeftRowCellOne =
-//         strideWidthHindLeftMeanRow.insertCell();
-//       var strideWidthHindLeftRowCellTwo =
-//         strideWidthHindLeftMeanRow.insertCell();
-//       strideWidthHindLeftRowCellOne.colSpan = "4";
-//       strideWidthHindLeftRowCellOne.textContent =
-//         "<b>Stride Width Hind(L) average in cm:</b> ";
-//       strideWidthHindLeftRowCellTwo.textContent = (
-//         distValuesSWHL.reduce((a, b) => a + b, 0) / distValuesSWHL.length
-//       ).toFixed(3);
-//       if (imgSizeStatus != 100) {
-//         var strideWidthHindLeftRowCellThreeOriginal =
-//           strideWidthHindLeftMeanRow.insertCell();
-//         switch (imgSizeStatus) {
-//           case 50:
-//             strideWidthHindLeftRowCellThreeOriginal.textContent = (
-//               (distValuesSWHL.reduce((a, b) => a + b, 0) /
-//                 distValuesSWHL.length) *
-//               2
-//             ).toFixed(3);
-//             break;
-//           case 75:
-//             strideWidthHindLeftRowCellThreeOriginal.textContent = (
-//               ((distValuesSWHL.reduce((a, b) => a + b, 0) /
-//                 distValuesSWHL.length) *
-//                 100) /
-//               75
-//             ).toFixed(3);
-//             break;
-//           case 25:
-//             strideWidthHindLeftRowCellThreeOriginal.textContent = (
-//               (distValuesSWHL.reduce((a, b) => a + b, 0) /
-//                 distValuesSWHL.length) *
-//               4
-//             ).toFixed(3);
-//             break;
-//           case 40:
-//             strideWidthHindLeftRowCellThreeOriginal.textContent = (
-//               ((distValuesSWHL.reduce((a, b) => a + b, 0) /
-//                 distValuesSWHL.length) *
-//                 100) /
-//               40
-//             ).toFixed(3);
-//             break;
-//         }
-//       }
-//     }
-//     if (footstepStart.options[footstepStart.selectedIndex].value == "Right") {
-//       var indexImaginaryFrontRight = 0;
-//       var indexImaginaryHindRight = 0;
-//       for (var i = 0; i < pointsRedLeft.length; i++) {
-//         for (var j = 0; j < pointsRedRight.length; j++) {
-//           if (i == j) {
-//             var newRow = tbody.insertRow(-1);
-//             let indexRow = newRow.rowIndex;
-//             var cellOne = newRow.insertCell();
-//             var cellTwo = newRow.insertCell();
-//             var cellThree = newRow.insertCell();
-//             var cellFour = newRow.insertCell();
-//             var cellFive = newRow.insertCell();
-//             if (imgSizeStatus != 100) {
-//               var cellSix = newRow.insertCell();
-//             } else {
-//             }
-//             indexImaginaryFrontRight += 1;
-//             cellOne.textContent = indexRow - 1;
-//             cellTwo.textContent =
-//               "Imaginary Front " +
-//               indexImaginaryFrontRight +
-//               " &#x2192 Red L" +
-//               (i + 1);
-//             cellThree.textContent = "Stride Width Front(R)";
-//             if (j < pointsRedRight.length - 1) {
-//               distance = Math.hypot(
-//                 pointsRedLeft[i].x - pointsRedLeft[i].x,
-//                 (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2 -
-//                   pointsRedLeft[i].y
-//               ).toFixed(3);
-//             } else {
-//               distance = Math.hypot(
-//                 pointsRedLeft[i].x - pointsRedLeft[i].x,
-//                 pointsRedRight[j].y - pointsRedLeft[i].y
-//               ).toFixed(3);
-//             }
-//             cellFour.textContent = distance;
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             distValuesSWFR.push(distance / dist);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//             }
-//           }
-//           if (j == i + 1) {
-//             var newRow = tbody.insertRow(-1);
-//             let indexRow = newRow.rowIndex;
-//             var cellOne = newRow.insertCell();
-//             var cellTwo = newRow.insertCell();
-//             var cellThree = newRow.insertCell();
-//             var cellFour = newRow.insertCell();
-//             var cellFive = newRow.insertCell();
-//             if (imgSizeStatus != 100) {
-//               var cellSix = newRow.insertCell();
-//             } else {
-//             }
-//             indexImaginaryFrontRight += 1;
-//             cellOne.textContent = indexRow - 1;
-//             cellTwo.textContent =
-//               "Imaginary Front " +
-//               indexImaginaryFrontRight +
-//               " &#x2192 Red R" +
-//               (j + 1);
-//             cellThree.textContent = "Stride Width Front(R)";
-//             if (i < pointsRedLeft.length - 1) {
-//               distance = Math.hypot(
-//                 pointsRedRight[j].x - pointsRedRight[j].x,
-//                 (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
-//                   pointsRedRight[j].y
-//               ).toFixed(3);
-//             } else {
-//               distance = Math.hypot(
-//                 pointsRedRight[j].x - pointsRedRight[j].x,
-//                 pointsRedLeft[i].y - pointsRedRight[j].y
-//               ).toFixed(3);
-//             }
-//             cellFour.textContent = distance;
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             distValuesSWFR.push(distance / dist);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//             }
-//           }
-//         }
-//       }
-//       console.log(distValuesSWFR);
-//       var strideWidthFrontRightMeanRow = tbody.insertRow(-1);
-//       var strideWidthFrontRightRowCellOne =
-//         strideWidthFrontRightMeanRow.insertCell();
-//       var strideWidthFrontRightRowCellTwo =
-//         strideWidthFrontRightMeanRow.insertCell();
-//       strideWidthFrontRightRowCellOne.colSpan = "4";
-//       strideWidthFrontRightRowCellOne.textContent =
-//         "<b>Stride Width Front(R) average in cm:</b> ";
-//       strideWidthFrontRightRowCellTwo.textContent = (
-//         distValuesSWFR.reduce((a, b) => a + b, 0) / distValuesSWFR.length
-//       ).toFixed(3);
-//       if (imgSizeStatus != 100) {
-//         var strideWidthFrontRightRowCellThreeOriginal =
-//           strideWidthFrontRightMeanRow.insertCell();
-//         switch (imgSizeStatus) {
-//           case 50:
-//             strideWidthFrontRightRowCellThreeOriginal.textContent = (
-//               (distValuesSWFR.reduce((a, b) => a + b, 0) /
-//                 distValuesSWFR.length) *
-//               2
-//             ).toFixed(3);
-//             break;
-//           case 75:
-//             strideWidthFrontRightRowCellThreeOriginal.textContent = (
-//               ((distValuesSWFR.reduce((a, b) => a + b, 0) /
-//                 distValuesSWFR.length) *
-//                 100) /
-//               75
-//             ).toFixed(3);
-//             break;
-//           case 25:
-//             strideWidthFrontRightRowCellThreeOriginal.textContent = (
-//               (distValuesSWFR.reduce((a, b) => a + b, 0) /
-//                 distValuesSWFR.length) *
-//               4
-//             ).toFixed(3);
-//             break;
-//           case 40:
-//             strideWidthFrontRightRowCellThreeOriginal.textContent = (
-//               ((distValuesSWFR.reduce((a, b) => a + b, 0) /
-//                 distValuesSWFR.length) *
-//                 100) /
-//               40
-//             ).toFixed(3);
-//             break;
-//         }
-//       }
-//       for (var i = 0; i < pointsBlueLeft.length; i++) {
-//         for (var j = 0; j < pointsBlueRight.length; j++) {
-//           if (i == j) {
-//             var newRow = tbody.insertRow(-1);
-//             let indexRow = newRow.rowIndex;
-//             var cellOne = newRow.insertCell();
-//             var cellTwo = newRow.insertCell();
-//             var cellThree = newRow.insertCell();
-//             var cellFour = newRow.insertCell();
-//             var cellFive = newRow.insertCell();
-//             if (imgSizeStatus != 100) {
-//               var cellSix = newRow.insertCell();
-//             } else {
-//             }
-//             indexImaginaryHindRight += 1;
-//             cellOne.textContent = indexRow - 1;
-//             cellTwo.textContent =
-//               "Imaginary Hind " +
-//               indexImaginaryHindRight +
-//               " &#x2192 Blue L" +
-//               (i + 1);
-//             cellThree.textContent = "Stride Width Hind(R)";
-//             if (j < pointsBlueRight.length - 1) {
-//               distance = Math.hypot(
-//                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-//                 (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2 -
-//                   pointsBlueLeft[i].y
-//               ).toFixed(3);
-//             } else {
-//               distance = Math.hypot(
-//                 pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-//                 pointsBlueRight[j].y - pointsBlueLeft[i].y
-//               ).toFixed(3);
-//             }
-//             cellFour.textContent = distance;
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             distValuesSWHR.push(distance / dist);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//             }
-//           }
-//           if (j == i + 1) {
-//             var newRow = tbody.insertRow(-1);
-//             let indexRow = newRow.rowIndex;
-//             var cellOne = newRow.insertCell();
-//             var cellTwo = newRow.insertCell();
-//             var cellThree = newRow.insertCell();
-//             var cellFour = newRow.insertCell();
-//             var cellFive = newRow.insertCell();
-//             if (imgSizeStatus != 100) {
-//               var cellSix = newRow.insertCell();
-//             } else {
-//             }
-//             indexImaginaryHindRight += 1;
-//             cellOne.textContent = indexRow - 1;
-//             cellTwo.textContent =
-//               "Imaginary Hind " +
-//               indexImaginaryHindRight +
-//               " &#x2192 Blue R" +
-//               (j + 1);
-//             cellThree.textContent = "Stride Width Hind(R)";
-//             if (i < pointsBlueLeft.length - 1) {
-//               distance = Math.hypot(
-//                 pointsBlueRight[j].x - pointsBlueRight[j].x,
-//                 (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
-//                   pointsBlueRight[j].y
-//               ).toFixed(3);
-//             } else {
-//               distance = Math.hypot(
-//                 pointsBlueRight[j].x - pointsBlueRight[j].x,
-//                 pointsBlueLeft[i].y - pointsBlueRight[j].y
-//               ).toFixed(3);
-//             }
-//             cellFour.textContent = distance;
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             distValuesSWHR.push(distance / dist);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//             }
-//           }
-//         }
-//       }
-//       console.log(distValuesSWHR);
-//       var strideWidthHindRightMeanRow = tbody.insertRow(-1);
-//       var strideWidthHindRightRowCellOne =
-//         strideWidthHindRightMeanRow.insertCell();
-//       var strideWidthHindRightRowCellTwo =
-//         strideWidthHindRightMeanRow.insertCell();
-//       strideWidthHindRightRowCellOne.colSpan = "4";
-//       strideWidthHindRightRowCellOne.textContent =
-//         "<b>Stride Width Hind(R) average in cm:</b> ";
-//       strideWidthHindRightRowCellTwo.textContent = (
-//         distValuesSWHR.reduce((a, b) => a + b, 0) / distValuesSWHR.length
-//       ).toFixed(3);
-//       if (imgSizeStatus != 100) {
-//         var strideWidthHindRightRowCellThreeOriginal =
-//           strideWidthHindRightMeanRow.insertCell();
-//         switch (imgSizeStatus) {
-//           case 50:
-//             strideWidthHindRightRowCellThreeOriginal.textContent = (
-//               (distValuesSWHR.reduce((a, b) => a + b, 0) /
-//                 distValuesSWHR.length) *
-//               2
-//             ).toFixed(3);
-//             break;
-//           case 75:
-//             strideWidthHindRightRowCellThreeOriginal.textContent = (
-//               ((distValuesSWHR.reduce((a, b) => a + b, 0) /
-//                 distValuesSWHR.length) *
-//                 100) /
-//               75
-//             ).toFixed(3);
-//             break;
-//           case 25:
-//             strideWidthHindRightRowCellThreeOriginal.textContent = (
-//               (distValuesSWHR.reduce((a, b) => a + b, 0) /
-//                 distValuesSWHR.length) *
-//               4
-//             ).toFixed(3);
-//             break;
-//           case 40:
-//             strideWidthHindRightRowCellThreeOriginal.textContent = (
-//               ((distValuesSWHR.reduce((a, b) => a + b, 0) /
-//                 distValuesSWHR.length) *
-//                 100) /
-//               40
-//             ).toFixed(3);
-//             break;
-//         }
-//       }
-//     }
-//   }
-//   var lastRow = tbody.insertRow(-1);
-//   var lastCell = lastRow.insertCell();
-//   lastCell.textContent =
-//     "------------------------------BREAK------------------------------";
-//   if (imgSizeStatus != 100) {
-//     lastCell.colSpan = "6";
-//   } else {
-//     lastCell.colSpan = "5";
-//   }
-//   lastCell.style.textAlign = "center";
-// }
-
-// // FUNCTION TO ADD ALL ENTRIES IN ONE CLICK WITHOUT AVERAGE
-
-// function addEntriesAll() {
-//   for (var i = 0; i < pointsRedLeft.length - 1; i++) {
-//     var newRow = tbody.insertRow(-1);
-//     let indexRow = newRow.rowIndex;
-//     var cellOne = newRow.insertCell();
-//     var cellTwo = newRow.insertCell();
-//     var cellThree = newRow.insertCell();
-//     var cellFour = newRow.insertCell();
-//     var cellFive = newRow.insertCell();
-//     if (imgSizeStatus != 100) {
-//       var cellSix = newRow.insertCell();
-//     } else {
-//     }
-//     if (imgSizeStatus) cellOne.textContent = indexRow - 1;
-//     cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
-//     cellThree.textContent = "Stride length left front";
-//     distance = Math.hypot(
-//       pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
-//       pointsRedLeft[i].y - pointsRedLeft[i + 1].y
-//     ).toFixed(3);
-//     cellFour.textContent = distance;
-//     if (dist != 0 && imgSizeStatus == 100) {
-//       cellFive.textContent = (distance / dist).toFixed(3);
-//     }
-//     if (dist != 0 && imgSizeStatus != 100) {
-//       switch (imgSizeStatus) {
-//         case 50:
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//           break;
-//         case 75:
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//           break;
-//         case 25:
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//           break;
-//         case 40:
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//       }
-//     }
-//     if (dist == 0 && imgSizeStatus != 100) {
-//       cellFive.textContent = "Undefined";
-//       cellSix.textContent = "Undefined";
-//     }
-//     if (dist == 0 && imgSizeStatus == 100) {
-//       cellFive.textContent = "Undefined";
-//     }
-//   }
-//   for (var i = 0; i < pointsRedRight.length - 1; i++) {
-//     var newRow = tbody.insertRow(-1);
-//     let indexRow = newRow.rowIndex;
-//     var cellOne = newRow.insertCell();
-//     var cellTwo = newRow.insertCell();
-//     var cellThree = newRow.insertCell();
-//     var cellFour = newRow.insertCell();
-//     var cellFive = newRow.insertCell();
-//     if (imgSizeStatus != 100) {
-//       var cellSix = newRow.insertCell();
-//     } else {
-//     }
-//     cellOne.textContent = indexRow - 1;
-//     cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
-//     cellThree.textContent = "Stride length right front";
-//     distance = Math.hypot(
-//       pointsRedRight[i].x - pointsRedRight[i + 1].x,
-//       pointsRedRight[i].y - pointsRedRight[i + 1].y
-//     ).toFixed(3);
-//     cellFour.textContent = distance;
-//     if (dist != 0) {
-//       cellFive.textContent = (distance / dist).toFixed(3);
-//       switch (imgSizeStatus) {
-//         case 50:
-//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           break;
-//         case 75:
-//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           break;
-//         case 25:
-//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           break;
-//         case 40:
-//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//       }
-//     }
-//     if (dist == 0 && imgSizeStatus != 100) {
-//       cellFive.textContent = "Undefined";
-//       cellSix.textContent = "Undefined";
-//     }
-//     if (dist == 0 && imgSizeStatus == 100) {
-//       cellFive.textContent = "Undefined";
-//     }
-//   }
-//   for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
-//     var newRow = tbody.insertRow(-1);
-//     let indexRow = newRow.rowIndex;
-//     var cellOne = newRow.insertCell();
-//     var cellTwo = newRow.insertCell();
-//     var cellThree = newRow.insertCell();
-//     var cellFour = newRow.insertCell();
-//     var cellFive = newRow.insertCell();
-//     if (imgSizeStatus != 100) {
-//       var cellSix = newRow.insertCell();
-//     } else {
-//     }
-//     cellOne.textContent = indexRow - 1;
-//     cellTwo.textContent = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
-//     cellThree.textContent = "Stride length left hind";
-//     distance = Math.hypot(
-//       pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
-//       pointsBlueLeft[i].y - pointsBlueLeft[i + 1].y
-//     ).toFixed(3);
-//     cellFour.textContent = distance;
-//     if (dist != 0) {
-//       cellFive.textContent = (distance / dist).toFixed(3);
-//       switch (imgSizeStatus) {
-//         case 50:
-//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           break;
-//         case 75:
-//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           break;
-//         case 25:
-//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           break;
-//         case 40:
-//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//       }
-//     }
-//     if (dist == 0 && imgSizeStatus != 100) {
-//       cellFive.textContent = "Undefined";
-//       cellSix.textContent = "Undefined";
-//     }
-//     if (dist == 0 && imgSizeStatus == 100) {
-//       cellFive.textContent = "Undefined";
-//     }
-//   }
-//   for (var i = 0; i < pointsBlueRight.length - 1; i++) {
-//     var newRow = tbody.insertRow(-1);
-//     let indexRow = newRow.rowIndex;
-//     var cellOne = newRow.insertCell();
-//     var cellTwo = newRow.insertCell();
-//     var cellThree = newRow.insertCell();
-//     var cellFour = newRow.insertCell();
-//     var cellFive = newRow.insertCell();
-//     if (imgSizeStatus != 100) {
-//       var cellSix = newRow.insertCell();
-//     } else {
-//     }
-//     cellOne.textContent = indexRow - 1;
-//     cellTwo.textContent = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
-//     cellThree.textContent = "Stride length right hind";
-//     distance = Math.hypot(
-//       pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
-//       pointsBlueRight[i].y - pointsBlueRight[i + 1].y
-//     ).toFixed(3);
-//     cellFour.textContent = distance;
-//     if (dist != 0) {
-//       cellFive.textContent = (distance / dist).toFixed(3);
-//       switch (imgSizeStatus) {
-//         case 50:
-//           cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           break;
-//         case 75:
-//           cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           break;
-//         case 25:
-//           cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           break;
-//         case 40:
-//           cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//       }
-//     }
-//     if (dist == 0 && imgSizeStatus != 100) {
-//       cellFive.textContent = "Undefined";
-//       cellSix.textContent = "Undefined";
-//     }
-//     if (dist == 0 && imgSizeStatus == 100) {
-//       cellFive.textContent = "Undefined";
-//     }
-//   }
-//   for (var i = 0; i < pointsRedLeft.length; i++) {
-//     for (var j = 0; j < pointsBlueLeft.length; j++) {
-//       if (i == j) {
-//         var newRow = tbody.insertRow(-1);
-//         let indexRow = newRow.rowIndex;
-//         var cellOne = newRow.insertCell();
-//         var cellTwo = newRow.insertCell();
-//         var cellThree = newRow.insertCell();
-//         var cellFour = newRow.insertCell();
-//         var cellFive = newRow.insertCell();
-//         if (imgSizeStatus != 100) {
-//           var cellSix = newRow.insertCell();
-//         } else {
-//         }
-//         cellOne.textContent = indexRow - 1;
-//         cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
-//         cellThree.textContent = "Overlap Left";
-//         distance = Math.hypot(
-//           pointsRedLeft[i].x - pointsBlueLeft[j].x,
-//           pointsRedLeft[i].y - pointsBlueLeft[j].y
-//         ).toFixed(3);
-//         cellFour.textContent = distance;
-//         if (dist != 0) {
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           switch (imgSizeStatus) {
-//             case 50:
-//               cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//               cellFive.textContent = (distance / dist).toFixed(3);
-//               break;
-//             case 75:
-//               cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//               cellFive.textContent = (distance / dist).toFixed(3);
-//               break;
-//             case 25:
-//               cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//               cellFive.textContent = (distance / dist).toFixed(3);
-//               break;
-//             case 40:
-//               cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//               cellFive.textContent = (distance / dist).toFixed(3);
-//           }
-//         }
-//         if (dist == 0 && imgSizeStatus != 100) {
-//           cellFive.textContent = "Undefined";
-//           cellSix.textContent = "Undefined";
-//         }
-//         if (dist == 0 && imgSizeStatus == 100) {
-//           cellFive.textContent = "Undefined";
-//         }
-//       }
-//     }
-//   }
-//   for (var i = 0; i < pointsRedRight.length; i++) {
-//     for (var j = 0; j < pointsBlueRight.length; j++) {
-//       if (i == j) {
-//         var newRow = tbody.insertRow(-1);
-//         let indexRow = newRow.rowIndex;
-//         var cellOne = newRow.insertCell();
-//         var cellTwo = newRow.insertCell();
-//         var cellThree = newRow.insertCell();
-//         var cellFour = newRow.insertCell();
-//         var cellFive = newRow.insertCell();
-//         if (imgSizeStatus != 100) {
-//           var cellSix = newRow.insertCell();
-//         } else {
-//         }
-//         cellOne.textContent = indexRow - 1;
-//         cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
-//         cellThree.textContent = "Overlap Right";
-//         distance = Math.hypot(
-//           pointsRedRight[i].x - pointsBlueRight[j].x,
-//           pointsRedRight[i].y - pointsBlueRight[j].y
-//         ).toFixed(3);
-//         cellFour.textContent = distance;
-//         if (dist != 0) {
-//           cellFive.textContent = (distance / dist).toFixed(3);
-//           switch (imgSizeStatus) {
-//             case 50:
-//               cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//               cellFive.textContent = (distance / dist).toFixed(3);
-//               break;
-//             case 75:
-//               cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//               cellFive.textContent = (distance / dist).toFixed(3);
-//               break;
-//             case 25:
-//               cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//               cellFive.textContent = (distance / dist).toFixed(3);
-//               break;
-//             case 40:
-//               cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//               cellFive.textContent = (distance / dist).toFixed(3);
-//           }
-//         }
-//         if (dist == 0 && imgSizeStatus != 100) {
-//           cellFive.textContent = "Undefined";
-//           cellSix.textContent = "Undefined";
-//         }
-//         if (dist == 0 && imgSizeStatus == 100) {
-//           cellFive.textContent = "Undefined";
-//         }
-//       }
-//     }
-//   }
-//   if (footstepStart.options[footstepStart.selectedIndex].value == "Left") {
-//     var indexImaginaryFrontLeft = 0;
-//     var indexImaginaryHindLeft = 0;
-//     for (var i = 0; i < pointsRedLeft.length; i++) {
-//       for (var j = 0; j < pointsRedRight.length; j++) {
-//         if (i == j) {
-//           var newRow = tbody.insertRow(-1);
-//           let indexRow = newRow.rowIndex;
-//           var cellOne = newRow.insertCell();
-//           var cellTwo = newRow.insertCell();
-//           var cellThree = newRow.insertCell();
-//           var cellFour = newRow.insertCell();
-//           var cellFive = newRow.insertCell();
-//           if (imgSizeStatus != 100) {
-//             var cellSix = newRow.insertCell();
-//           } else {
-//           }
-//           indexImaginaryFrontLeft += 1;
-//           cellOne.textContent = indexRow - 1;
-//           cellTwo.textContent =
-//             "Imaginary Front " +
-//             indexImaginaryFrontLeft +
-//             " &#x2192 Red R" +
-//             (j + 1);
-//           cellThree.textContent = "Stride Width Front(L)";
-//           if (i < pointsRedLeft.length - 1) {
-//             distance = Math.hypot(
-//               pointsRedRight[j].x - pointsRedRight[j].x,
-//               (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
-//                 pointsRedRight[j].y
-//             ).toFixed(3);
-//           } else {
-//             distance = Math.hypot(
-//               pointsRedRight[j].x - pointsRedRight[j].x,
-//               pointsRedLeft[i].y - pointsRedRight[j].y
-//             ).toFixed(3);
-//           }
-//           cellFour.textContent = distance;
-//           if (dist != 0) {
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//             }
-//           }
-//           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.textContent = "Undefined";
-//             cellSix.textContent = "Undefined";
-//           }
-//           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.textContent = "Undefined";
-//           }
-//         }
-//         if (i == j + 1) {
-//           var newRow = tbody.insertRow(-1);
-//           let indexRow = newRow.rowIndex;
-//           var cellOne = newRow.insertCell();
-//           var cellTwo = newRow.insertCell();
-//           var cellThree = newRow.insertCell();
-//           var cellFour = newRow.insertCell();
-//           var cellFive = newRow.insertCell();
-//           if (imgSizeStatus != 100) {
-//             var cellSix = newRow.insertCell();
-//           } else {
-//           }
-//           indexImaginaryFrontLeft += 1;
-//           cellOne.textContent = indexRow - 1;
-//           cellTwo.textContent =
-//             "Imaginary Front " +
-//             indexImaginaryFrontLeft +
-//             " &#x2192 Red L" +
-//             (i + 1);
-//           cellThree.textContent = "Stride Width Front(L)";
-//           if (j < pointsRedRight.length - 1) {
-//             distance = Math.hypot(
-//               pointsRedLeft[i].x - pointsRedLeft[i].x,
-//               pointsRedLeft[i].y -
-//                 (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2
-//             ).toFixed(3);
-//           } else {
-//             distance = Math.hypot(
-//               pointsRedLeft[i].x - pointsRedLeft[i].x,
-//               pointsRedLeft[i].y - pointsRedRight[j].y
-//             ).toFixed(3);
-//           }
-//           cellFour.textContent = distance;
-//           if (dist != 0) {
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//             }
-//           }
-//           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.textContent = "Undefined";
-//             cellSix.textContent = "Undefined";
-//           }
-//           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.textContent = "Undefined";
-//           }
-//         }
-//       }
-//     }
-//     for (var i = 0; i < pointsBlueLeft.length; i++) {
-//       for (var j = 0; j < pointsBlueRight.length; j++) {
-//         if (i == j) {
-//           var newRow = tbody.insertRow(-1);
-//           let indexRow = newRow.rowIndex;
-//           var cellOne = newRow.insertCell();
-//           var cellTwo = newRow.insertCell();
-//           var cellThree = newRow.insertCell();
-//           var cellFour = newRow.insertCell();
-//           var cellFive = newRow.insertCell();
-//           if (imgSizeStatus != 100) {
-//             var cellSix = newRow.insertCell();
-//           } else {
-//           }
-//           indexImaginaryHindLeft += 1;
-//           cellOne.textContent = indexRow - 1;
-//           cellTwo.textContent =
-//             "Imaginary Hind " +
-//             indexImaginaryHindLeft +
-//             " &#x2192 Blue R" +
-//             (j + 1);
-//           cellThree.textContent = "Stride Width Hind(L)";
-//           if (i < pointsBlueLeft.length - 1) {
-//             distance = Math.hypot(
-//               pointsBlueRight[j].x - pointsBlueRight[j].x,
-//               (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
-//                 pointsBlueRight[j].y
-//             ).toFixed(3);
-//           } else {
-//             distance = Math.hypot(
-//               pointsBlueRight[j].x - pointsBlueRight[j].x,
-//               pointsBlueLeft[i].y - pointsBlueRight[j].y
-//             ).toFixed(3);
-//           }
-//           cellFour.textContent = distance;
-//           if (dist != 0) {
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//             }
-//           }
-//           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.textContent = "Undefined";
-//             cellSix.textContent = "Undefined";
-//           }
-//           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.textContent = "Undefined";
-//           }
-//         }
-//         if (i == j + 1) {
-//           var newRow = tbody.insertRow(-1);
-//           let indexRow = newRow.rowIndex;
-//           var cellOne = newRow.insertCell();
-//           var cellTwo = newRow.insertCell();
-//           var cellThree = newRow.insertCell();
-//           var cellFour = newRow.insertCell();
-//           var cellFive = newRow.insertCell();
-//           if (imgSizeStatus != 100) {
-//             var cellSix = newRow.insertCell();
-//           } else {
-//           }
-//           indexImaginaryHindLeft += 1;
-//           cellOne.textContent = indexRow - 1;
-//           cellTwo.textContent =
-//             "Imaginary Hind " +
-//             indexImaginaryHindLeft +
-//             " &#x2192 Blue L" +
-//             (i + 1);
-//           cellThree.textContent = "Stride Width Hind(L)";
-//           if (j < pointsBlueRight.length - 1) {
-//             distance = Math.hypot(
-//               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-//               pointsBlueLeft[i].y -
-//                 (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2
-//             ).toFixed(3);
-//           } else {
-//             distance = Math.hypot(
-//               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-//               pointsBlueLeft[i].y - pointsBlueRight[j].y
-//             ).toFixed(3);
-//           }
-//           cellFour.textContent = distance;
-//           if (dist != 0) {
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//             }
-//           }
-//           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.textContent = "Undefined";
-//             cellSix.textContent = "Undefined";
-//           }
-//           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.textContent = "Undefined";
-//           }
-//         }
-//       }
-//     }
-//   }
-//   if (footstepStart.options[footstepStart.selectedIndex].value == "Right") {
-//     var indexImaginaryFrontRight = 0;
-//     var indexImaginaryHindRight = 0;
-//     for (var i = 0; i < pointsRedLeft.length; i++) {
-//       for (var j = 0; j < pointsRedRight.length; j++) {
-//         if (i == j) {
-//           var newRow = tbody.insertRow(-1);
-//           let indexRow = newRow.rowIndex;
-//           var cellOne = newRow.insertCell();
-//           var cellTwo = newRow.insertCell();
-//           var cellThree = newRow.insertCell();
-//           var cellFour = newRow.insertCell();
-//           var cellFive = newRow.insertCell();
-//           if (imgSizeStatus != 100) {
-//             var cellSix = newRow.insertCell();
-//           } else {
-//           }
-//           indexImaginaryFrontRight += 1;
-//           cellOne.textContent = indexRow - 1;
-//           cellTwo.textContent =
-//             "Imaginary Front " +
-//             indexImaginaryFrontRight +
-//             " &#x2192 Red L" +
-//             (i + 1);
-//           cellThree.textContent = "Stride Width Front(R)";
-//           if (j < pointsRedRight.length - 1) {
-//             distance = Math.hypot(
-//               pointsRedLeft[i].x - pointsRedLeft[i].x,
-//               (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2 -
-//                 pointsRedLeft[i].y
-//             ).toFixed(3);
-//           } else {
-//             distance = Math.hypot(
-//               pointsRedLeft[i].x - pointsRedLeft[i].x,
-//               pointsRedRight[j].y - pointsRedLeft[i].y
-//             ).toFixed(3);
-//           }
-//           cellFour.textContent = distance;
-//           if (dist != 0) {
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//             }
-//           }
-//           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.textContent = "Undefined";
-//             cellSix.textContent = "Undefined";
-//           }
-//           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.textContent = "Undefined";
-//           }
-//         }
-//         if (j == i + 1) {
-//           var newRow = tbody.insertRow(-1);
-//           let indexRow = newRow.rowIndex;
-//           var cellOne = newRow.insertCell();
-//           var cellTwo = newRow.insertCell();
-//           var cellThree = newRow.insertCell();
-//           var cellFour = newRow.insertCell();
-//           var cellFive = newRow.insertCell();
-//           if (imgSizeStatus != 100) {
-//             var cellSix = newRow.insertCell();
-//           } else {
-//           }
-//           indexImaginaryFrontRight += 1;
-//           cellOne.textContent = indexRow - 1;
-//           cellTwo.textContent =
-//             "Imaginary Front " +
-//             indexImaginaryFrontRight +
-//             " &#x2192 Red R" +
-//             (j + 1);
-//           cellThree.textContent = "Stride Width Front(R)";
-//           if (i < pointsRedLeft.length - 1) {
-//             distance = Math.hypot(
-//               pointsRedRight[j].x - pointsRedRight[j].x,
-//               (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
-//                 pointsRedRight[j].y
-//             ).toFixed(3);
-//           } else {
-//             distance = Math.hypot(
-//               pointsRedRight[j].x - pointsRedRight[j].x,
-//               pointsRedLeft[i].y - pointsRedRight[j].y
-//             ).toFixed(3);
-//           }
-//           cellFour.textContent = distance;
-//           if (dist != 0) {
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//             }
-//           }
-//           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.textContent = "Undefined";
-//             cellSix.textContent = "Undefined";
-//           }
-//           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.textContent = "Undefined";
-//           }
-//         }
-//       }
-//     }
-//     for (var i = 0; i < pointsBlueLeft.length; i++) {
-//       for (var j = 0; j < pointsBlueRight.length; j++) {
-//         if (i == j) {
-//           var newRow = tbody.insertRow(-1);
-//           let indexRow = newRow.rowIndex;
-//           var cellOne = newRow.insertCell();
-//           var cellTwo = newRow.insertCell();
-//           var cellThree = newRow.insertCell();
-//           var cellFour = newRow.insertCell();
-//           var cellFive = newRow.insertCell();
-//           if (imgSizeStatus != 100) {
-//             var cellSix = newRow.insertCell();
-//           } else {
-//           }
-//           indexImaginaryHindRight += 1;
-//           cellOne.textContent = indexRow - 1;
-//           cellTwo.textContent =
-//             "Imaginary Hind " +
-//             indexImaginaryHindRight +
-//             " &#x2192 Blue L" +
-//             (i + 1);
-//           cellThree.textContent = "Stride Width Hind(R)";
-//           if (j < pointsBlueRight.length - 1) {
-//             distance = Math.hypot(
-//               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-//               (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2 -
-//                 pointsBlueLeft[i].y
-//             ).toFixed(3);
-//           } else {
-//             distance = Math.hypot(
-//               pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-//               pointsBlueRight[j].y - pointsBlueLeft[i].y
-//             ).toFixed(3);
-//           }
-//           cellFour.textContent = distance;
-//           if (dist != 0) {
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//             }
-//           }
-//           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.textContent = "Undefined";
-//             cellSix.textContent = "Undefined";
-//           }
-//           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.textContent = "Undefined";
-//           }
-//         }
-//         if (j == i + 1) {
-//           var newRow = tbody.insertRow(-1);
-//           let indexRow = newRow.rowIndex;
-//           var cellOne = newRow.insertCell();
-//           var cellTwo = newRow.insertCell();
-//           var cellThree = newRow.insertCell();
-//           var cellFour = newRow.insertCell();
-//           var cellFive = newRow.insertCell();
-//           if (imgSizeStatus != 100) {
-//             var cellSix = newRow.insertCell();
-//           } else {
-//           }
-//           indexImaginaryHindRight += 1;
-//           cellOne.textContent = indexRow - 1;
-//           cellTwo.textContent =
-//             "Imaginary Hind " +
-//             indexImaginaryHindRight +
-//             " &#x2192 Blue R" +
-//             (j + 1);
-//           cellThree.textContent = "Stride Width Hind(R)";
-//           if (i < pointsBlueLeft.length - 1) {
-//             distance = Math.hypot(
-//               pointsBlueRight[j].x - pointsBlueRight[j].x,
-//               (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
-//                 pointsBlueRight[j].y
-//             ).toFixed(3);
-//           } else {
-//             distance = Math.hypot(
-//               pointsBlueRight[j].x - pointsBlueRight[j].x,
-//               pointsBlueLeft[i].y - pointsBlueRight[j].y
-//             ).toFixed(3);
-//           }
-//           cellFour.textContent = distance;
-//           if (dist != 0) {
-//             cellFive.textContent = (distance / dist).toFixed(3);
-//             switch (imgSizeStatus) {
-//               case 50:
-//                 cellSix.textContent = ((distance / dist) * 2).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 75:
-//                 cellSix.textContent = ((distance / dist) * (100 / 75)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 25:
-//                 cellSix.textContent = ((distance / dist) * 4).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//                 break;
-//               case 40:
-//                 cellSix.textContent = ((distance / dist) * (100 / 40)).toFixed(3);
-//                 cellFive.textContent = (distance / dist).toFixed(3);
-//             }
-//           }
-//           if (dist == 0 && imgSizeStatus != 100) {
-//             cellFive.textContent = "Undefined";
-//             cellSix.textContent = "Undefined";
-//           }
-//           if (dist == 0 && imgSizeStatus == 100) {
-//             cellFive.textContent = "Undefined";
-//           }
-//         }
-//       }
-//     }
-//   }
-//   if (
-//     pointsRedLeft.length < 1 ||
-//     pointsRedRight.length < 1 ||
-//     pointsBlueLeft.length < 1 ||
-//     pointsBlueRight.length < 1
-//   ) {
-//     alert("Points missing in some measurements.");
-//   }
-//   var lastRow = tbody.insertRow(-1);
-//   var lastCell = lastRow.insertCell();
-//   lastCell.textContent =
-//     "------------------------------BREAK------------------------------";
-//   if (imgSizeStatus != 100) {
-//     lastCell.colSpan = "6";
-//   } else {
-//     lastCell.colSpan = "5";
-//   }
-//   lastCell.style.textAlign = "center";
-// }
 
 // ADD ALL ENTRIES WITH ONE CLICK WITH AVERAGE FOR EACH MEASUREMENT
 
@@ -4252,6 +2159,9 @@ function addEntriesAllAverage() {
   ) {
     alert("Have enough points to perform at least one of each measurement.");
     return;
+  
+  // Stride Length left front  
+    
   } else {
     for (var i = 0; i < pointsRedLeft.length - 1; i++) {
       var newRow = tbody.insertRow(-1);
@@ -4263,7 +2173,14 @@ function addEntriesAllAverage() {
       var cellFive = newRow.insertCell();
       // let distance = 0;
       cellOne.textContent = indexRow - 1;
-      cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
+      appendSafeHTML(cellTwo, [
+        `Red L${i + 1} `,
+        (() => {
+          const arrow = document.createTextNode(' → ');
+          return arrow;
+        })(),
+        `Red L${i + 2}`
+      ]);
       cellThree.textContent = "Stride length left front";
       distance = Math.hypot(
         pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
@@ -4278,11 +2195,20 @@ function addEntriesAllAverage() {
     var strideLeftFrontRowCellOne = strideLeftFrontMeanRow.insertCell();
     var strideLeftFrontRowCellTwo = strideLeftFrontMeanRow.insertCell();
     strideLeftFrontRowCellOne.colSpan = "4";
-    strideLeftFrontRowCellOne.textContent =
-      "<b>Stride length left front average in cm:</b> ";
+    appendSafeHTML(strideLeftFrontRowCellOne, [
+    (() => {
+      const b = document.createElement('b');
+      b.textContent = 'Stride length left front average in cm:';
+      return b;
+    })()
+    ]);
+
     strideLeftFrontRowCellTwo.textContent = (
       distValuesSLLF.reduce((a, b) => a + b) / distValuesSLLF.length
     ).toFixed(3);
+
+    // Stride Length Right front
+
     for (var i = 0; i < pointsRedRight.length - 1; i++) {
       var newRow = tbody.insertRow(-1);
       let indexRow = newRow.rowIndex;
@@ -4292,7 +2218,14 @@ function addEntriesAllAverage() {
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
       cellOne.textContent = indexRow - 1;
-      cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
+      appendSafeHTML(cellTwo, [
+        `Red R${i + 1} `,
+        (() => {
+          const arrow = document.createTextNode(' → ');
+          return arrow;
+        })(),
+        `Red R${i + 2}`
+      ]);
       cellThree.textContent = "Stride length right front";
       distance = Math.hypot(
         pointsRedRight[i].x - pointsRedRight[i + 1].x,
@@ -4307,11 +2240,19 @@ function addEntriesAllAverage() {
     var strideRightFrontRowCellOne = strideRightFrontMeanRow.insertCell();
     var strideRightFrontRowCellTwo = strideRightFrontMeanRow.insertCell();
     strideRightFrontRowCellOne.colSpan = "4";
-    strideRightFrontRowCellOne.textContent =
-      "<b>Stride length right front average in cm:</b> ";
+    appendSafeHTML(strideRightFrontRowCellOne, [
+    (() => {
+      const b = document.createElement('b');
+      b.textContent = 'Stride length right front average in cm:';
+      return b;
+    })()
+    ]);
     strideRightFrontRowCellTwo.textContent = (
       distValuesSLRF.reduce((a, b) => a + b) / distValuesSLRF.length
     ).toFixed(3);
+
+    // Stride Length left hind
+
     for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
       var newRow = tbody.insertRow(-1);
       let indexRow = newRow.rowIndex;
@@ -4321,7 +2262,14 @@ function addEntriesAllAverage() {
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
       cellOne.textContent = indexRow - 1;
-      cellTwo.textContent = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
+      appendSafeHTML(cellTwo, [
+        `Blue L${i + 1} `,
+        (() => {
+          const arrow = document.createTextNode(' → ');
+          return arrow;
+        })(),
+        `Blue L${i + 2}`
+      ]);
       cellThree.textContent = "Stride length left hind";
       distance = Math.hypot(
         pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
@@ -4336,11 +2284,19 @@ function addEntriesAllAverage() {
     var strideLeftHindRowCellOne = strideLeftHindMeanRow.insertCell();
     var strideLeftHindRowCellTwo = strideLeftHindMeanRow.insertCell();
     strideLeftHindRowCellOne.colSpan = "4";
-    strideLeftHindRowCellOne.textContent =
-      "<b>Stride length left hind average in cm:</b> ";
+    appendSafeHTML(strideLeftHindRowCellOne, [
+    (() => {
+      const b = document.createElement('b');
+      b.textContent = 'Stride length left hind average in cm:';
+      return b;
+    })()
+    ]);
     strideLeftHindRowCellTwo.textContent = (
       distValuesSLLH.reduce((a, b) => a + b) / distValuesSLLH.length
     ).toFixed(3);
+
+    // Stride length right hind
+
     for (var i = 0; i < pointsBlueRight.length - 1; i++) {
       var newRow = tbody.insertRow(-1);
       let indexRow = newRow.rowIndex;
@@ -4350,7 +2306,15 @@ function addEntriesAllAverage() {
       var cellFour = newRow.insertCell();
       var cellFive = newRow.insertCell();
       cellOne.textContent = indexRow - 1;
-      cellTwo.textContent = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
+      appendSafeHTML(cellTwo, [
+        `Blue R${i + 1} `,
+        (() => {
+          const arrow = document.createTextNode(' → ');
+          return arrow;
+        })(),
+        `Blue R${i + 2}`
+      ]);
+      
       cellThree.textContent = "Stride length right hind";
       distance = Math.hypot(
         pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
@@ -4365,11 +2329,19 @@ function addEntriesAllAverage() {
     var strideRightHindRowCellOne = strideRightHindMeanRow.insertCell();
     var strideRightHindRowCellTwo = strideRightHindMeanRow.insertCell();
     strideRightHindRowCellOne.colSpan = "4";
-    strideRightHindRowCellOne.textContent =
-      "<b>Stride length right hind average in cm:</b> ";
+    appendSafeHTML(strideRightHindRowCellOne, [
+    (() => {
+      const b = document.createElement('b');
+      b.textContent = 'Stride length right hind average in cm:';
+      return b;
+    })()
+    ]);
     strideRightHindRowCellTwo.textContent = (
       distValuesSLRH.reduce((a, b) => a + b) / distValuesSLRH.length
     ).toFixed(3);
+
+    // Overlap Left
+
     for (var i = 0; i < pointsRedLeft.length; i++) {
       for (var j = 0; j < pointsBlueLeft.length; j++) {
         if (i == j) {
@@ -4381,7 +2353,15 @@ function addEntriesAllAverage() {
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
           cellOne.textContent = indexRow - 1;
-          cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
+          appendSafeHTML(cellTwo, [
+            `Red L${i + 1} `,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Blue L${j + 1}`
+          ]);
+          //cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
           cellThree.textContent = "Overlap Left";
           distance = Math.hypot(
             pointsRedLeft[i].x - pointsBlueLeft[j].x,
@@ -4398,7 +2378,14 @@ function addEntriesAllAverage() {
     var overlapLeftRowCellOne = overlapLeftMeanRow.insertCell();
     var overlapLeftRowCellTwo = overlapLeftMeanRow.insertCell();
     overlapLeftRowCellOne.colSpan = "4";
-    overlapLeftRowCellOne.textContent = "<b>Overlap left average in cm:</b> ";
+    appendSafeHTML(overlapLeftRowCellOne, [
+    (() => {
+      const b = document.createElement('b');
+      b.textContent = 'Overlap left average in cm:';
+      return b;
+    })()
+    ]);
+    //overlapLeftRowCellOne.textContent = "<b>Overlap left average in cm:</b> ";
     overlapLeftRowCellTwo.textContent = (
       distValuesOL.reduce((a, b) => a + b) / distValuesOL.length
     ).toFixed(3);
@@ -4413,7 +2400,15 @@ function addEntriesAllAverage() {
           var cellFour = newRow.insertCell();
           var cellFive = newRow.insertCell();
           cellOne.textContent = indexRow - 1;
-          cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
+          appendSafeHTML(cellTwo, [
+            `Red R${i + 1} `,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Blue R${j + 1}`
+          ]);
+          //cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
           cellThree.textContent = "Overlap Right";
           distance = Math.hypot(
             pointsRedRight[i].x - pointsBlueRight[j].x,
@@ -4430,7 +2425,14 @@ function addEntriesAllAverage() {
     var overlapRightRowCellOne = overlapRightMeanRow.insertCell();
     var overlapRightRowCellTwo = overlapRightMeanRow.insertCell();
     overlapRightRowCellOne.colSpan = "4";
-    overlapRightRowCellOne.textContent = "<b>Overlap Right average in cm:</b> ";
+    appendSafeHTML(overlapRightRowCellOne, [
+    (() => {
+      const b = document.createElement('b');
+      b.textContent = 'Overlap Right average in cm:';
+      return b;
+    })()
+    ]);
+    //overlapRightRowCellOne.textContent = "<b>Overlap Right average in cm:</b> ";
     overlapRightRowCellTwo.textContent = (
       distValuesOR.reduce((a, b) => a + b) / distValuesOR.length
     ).toFixed(3);
@@ -4449,11 +2451,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryFrontLeft += 1;
             cellOne.textContent = indexRow - 1;
-            cellTwo.textContent =
-              "Imaginary Front " +
-              indexImaginaryFrontLeft +
-              " &#x2192 Red R" +
-              (j + 1);
+            appendSafeHTML(cellTwo, [
+            "Imaginary Front " + indexImaginaryFrontLeft,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Red R${j + 1}`
+            ]);
+            // cellTwo.textContent =
+            //   "Imaginary Front " +
+            //   indexImaginaryFrontLeft +
+            //   " &#x2192 Red R" +
+            //   (j + 1);
             cellThree.textContent = "Stride Width Front(L)";
             if (i < pointsRedLeft.length - 1) {
               distance = Math.hypot(
@@ -4481,11 +2491,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryFrontLeft += 1;
             cellOne.textContent = indexRow - 1;
-            cellTwo.textContent =
-              "Imaginary Front " +
-              indexImaginaryFrontLeft +
-              " &#x2192 Red L" +
-              (i + 1);
+            appendSafeHTML(cellTwo, [
+            "Imaginary Front " + indexImaginaryFrontLeft,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Red L${i + 1}`
+            ]);
+            // cellTwo.textContent =
+            //   "Imaginary Front " +
+            //   indexImaginaryFrontLeft +
+            //   " &#x2192 Red L" +
+            //   (i + 1);
             cellThree.textContent = "Stride Width Front(L)";
             if (j < pointsRedRight.length - 1) {
               distance = Math.hypot(
@@ -4512,8 +2530,15 @@ function addEntriesAllAverage() {
       var strideWidthFrontLeftRowCellTwo =
         strideWidthFrontLeftMeanRow.insertCell();
       strideWidthFrontLeftRowCellOne.colSpan = "4";
-      strideWidthFrontLeftRowCellOne.textContent =
-        "<b>Stride Width Front(L) average in cm:</b> ";
+      appendSafeHTML(strideWidthFrontLeftRowCellOne, [
+      (() => {
+        const b = document.createElement('b');
+        b.textContent = 'Stride Width Front(L) average in cm:';
+        return b;
+      })()
+      ]);
+      // strideWidthFrontLeftRowCellOne.textContent =
+      //   "<b>Stride Width Front(L) average in cm:</b> ";
       strideWidthFrontLeftRowCellTwo.textContent = (
         distValuesSWFL.reduce((a, b) => a + b) / distValuesSWFL.length
       ).toFixed(3);
@@ -4529,11 +2554,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryHindLeft += 1;
             cellOne.textContent = indexRow - 1;
-            cellTwo.textContent =
-              "Imaginary Hind " +
-              indexImaginaryHindLeft +
-              " &#x2192 Blue R" +
-              (j + 1);
+            appendSafeHTML(cellTwo, [
+              "Imaginary Hind " + indexImaginaryHindLeft,
+              (() => {
+                const arrow = document.createTextNode(' → ');
+                return arrow;
+              })(),
+              `Blue R${j + 1}`
+              ]);
+            // cellTwo.textContent =
+            //   "Imaginary Hind " +
+            //   indexImaginaryHindLeft +
+            //   " &#x2192 Blue R" +
+            //   (j + 1);
             cellThree.textContent = "Stride Width Hind(L)";
             if (i < pointsBlueLeft.length - 1) {
               distance = Math.hypot(
@@ -4561,11 +2594,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryHindLeft += 1;
             cellOne.textContent = indexRow - 1;
-            cellTwo.textContent =
-              "Imaginary Hind " +
-              indexImaginaryHindLeft +
-              " &#x2192 Blue L" +
-              (i + 1);
+            appendSafeHTML(cellTwo, [
+              "Imaginary Hind " + indexImaginaryHindLeft,
+              (() => {
+                const arrow = document.createTextNode(' → ');
+                return arrow;
+              })(),
+              `Blue L${i + 1}`
+              ]);
+            // cellTwo.textContent =
+            //   "Imaginary Hind " +
+            //   indexImaginaryHindLeft +
+            //   " &#x2192 Blue L" +
+            //   (i + 1);
             cellThree.textContent = "Stride Width Hind(L)";
             if (j < pointsBlueRight.length - 1) {
               distance = Math.hypot(
@@ -4592,8 +2633,15 @@ function addEntriesAllAverage() {
       var strideWidthHindLeftRowCellTwo =
         strideWidthHindLeftMeanRow.insertCell();
       strideWidthHindLeftRowCellOne.colSpan = "4";
-      strideWidthHindLeftRowCellOne.textContent =
-        "<b>Stride Width Hind(L) average in cm:</b> ";
+      appendSafeHTML(strideWidthHindLeftRowCellOne, [
+      (() => {
+        const b = document.createElement('b');
+        b.textContent = 'Stride Width Hind(L) average in cm:';
+        return b;
+      })()
+      ]);
+      // strideWidthHindLeftRowCellOne.textContent =
+      //   "<b>Stride Width Hind(L) average in cm:</b> ";
       strideWidthHindLeftRowCellTwo.textContent = (
         distValuesSWHL.reduce((a, b) => a + b) / distValuesSWHL.length
       ).toFixed(3);
@@ -4613,11 +2661,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryFrontRight += 1;
             cellOne.textContent = indexRow - 1;
-            cellTwo.textContent =
-              "Imaginary Front " +
-              indexImaginaryFrontRight +
-              " &#x2192 Red L" +
-              (i + 1);
+            appendSafeHTML(cellTwo, [
+              "Imaginary Front " + indexImaginaryFrontRight,
+              (() => {
+                const arrow = document.createTextNode(' → ');
+                return arrow;
+              })(),
+              `Red L${i + 1}`
+              ]);
+            // cellTwo.textContent =
+            //   "Imaginary Front " +
+            //   indexImaginaryFrontRight +
+            //   " &#x2192 Red L" +
+            //   (i + 1);
             cellThree.textContent = "Stride Width Front(R)";
             if (j < pointsRedRight.length - 1) {
               distance = Math.hypot(
@@ -4645,11 +2701,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryFrontRight += 1;
             cellOne.textContent = indexRow - 1;
-            cellTwo.textContent =
-              "Imaginary Front " +
-              indexImaginaryFrontRight +
-              " &#x2192 Red R" +
-              (j + 1);
+            appendSafeHTML(cellTwo, [
+              "Imaginary Front " + indexImaginaryFrontRight,
+              (() => {
+                const arrow = document.createTextNode(' → ');
+                return arrow;
+              })(),
+              `Red R${j + 1}`
+              ]);
+            // cellTwo.textContent =
+            //   "Imaginary Front " +
+            //   indexImaginaryFrontRight +
+            //   " &#x2192 Red R" +
+            //   (j + 1);
             cellThree.textContent = "Stride Width Front(R)";
             if (i < pointsRedLeft.length - 1) {
               distance = Math.hypot(
@@ -4676,8 +2740,15 @@ function addEntriesAllAverage() {
       var strideWidthFrontRightRowCellTwo =
         strideWidthFrontRightMeanRow.insertCell();
       strideWidthFrontRightRowCellOne.colSpan = "4";
-      strideWidthFrontRightRowCellOne.textContent =
-        "<b>Stride Width Front(R) average in cm:</b> ";
+      appendSafeHTML(strideWidthFrontRightRowCellOne, [
+      (() => {
+        const b = document.createElement('b');
+        b.textContent = 'Stride Width Front(R) average in cm:';
+        return b;
+      })()
+      ]);
+      // strideWidthFrontRightRowCellOne.textContent =
+      //   "<b>Stride Width Front(R) average in cm:</b> ";
       strideWidthFrontRightRowCellTwo.textContent = (
         distValuesSWFR.reduce((a, b) => a + b) / distValuesSWFR.length
       ).toFixed(3);
@@ -4693,11 +2764,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryHindRight += 1;
             cellOne.textContent = indexRow - 1;
-            cellTwo.textContent =
-              "Imaginary Hind " +
-              indexImaginaryHindRight +
-              " &#x2192 Blue L" +
-              (i + 1);
+            appendSafeHTML(cellTwo, [
+              "Imaginary Hind " + indexImaginaryHindRight,
+              (() => {
+                const arrow = document.createTextNode(' → ');
+                return arrow;
+              })(),
+              `Blue L${i + 1}`
+              ]);
+            // cellTwo.textContent =
+            //   "Imaginary Hind " +
+            //   indexImaginaryHindRight +
+            //   " &#x2192 Blue L" +
+            //   (i + 1);
             cellThree.textContent = "Stride Width Hind(R)";
             if (j < pointsBlueRight.length - 1) {
               distance = Math.hypot(
@@ -4725,11 +2804,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryHindRight += 1;
             cellOne.textContent = indexRow - 1;
-            cellTwo.textContent =
-              "Imaginary Hind " +
-              indexImaginaryHindRight +
-              " &#x2192 Blue R" +
-              (j + 1);
+            appendSafeHTML(cellTwo, [
+              "Imaginary Hind " + indexImaginaryHindRight,
+              (() => {
+                const arrow = document.createTextNode(' → ');
+                return arrow;
+              })(),
+              `Blue R${j + 1}`
+              ]);
+            // cellTwo.textContent =
+            //   "Imaginary Hind " +
+            //   indexImaginaryHindRight +
+            //   " &#x2192 Blue R" +
+            //   (j + 1);
             cellThree.textContent = "Stride Width Hind(R)";
             if (i < pointsBlueLeft.length - 1) {
               distance = Math.hypot(
@@ -4756,8 +2843,15 @@ function addEntriesAllAverage() {
       var strideWidthHindRightRowCellTwo =
         strideWidthHindRightMeanRow.insertCell();
       strideWidthHindRightRowCellOne.colSpan = "4";
-      strideWidthHindRightRowCellOne.textContent =
-        "<b>Stride Width Hind(R) average in cm:</b> ";
+      appendSafeHTML(strideWidthHindRightRowCellOne, [
+      (() => {
+        const b = document.createElement('b');
+        b.textContent = 'Stride Width Hind(R) average in cm:';
+        return b;
+      })()
+      ]);
+      // strideWidthHindRightRowCellOne.textContent =
+      //   "<b>Stride Width Hind(R) average in cm:</b> ";
       strideWidthHindRightRowCellTwo.textContent = (
         distValuesSWHR.reduce((a, b) => a + b) / distValuesSWHR.length
       ).toFixed(3);
@@ -4769,6 +2863,10 @@ function addEntriesAllAverage() {
     "------------------------------BREAK------------------------------";
   lastCell.colSpan = "5";
   lastCell.style.textAlign = "center";
+  if (tbody.rows.length >= 1){
+    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
+  } else{
+  }
 }
 
 // FUNCTION TO ADD ALL ENTRIES IN ONE CLICK WITHOUT AVERAGE
@@ -4783,7 +2881,15 @@ function addEntriesAll() {
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
     cellOne.textContent = indexRow - 1;
-    cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
+    appendSafeHTML(cellTwo, [
+        `Red L${i + 1} `,
+        (() => {
+          const arrow = document.createTextNode(' → ');
+          return arrow;
+        })(),
+        `Red L${i + 2}`
+      ]);
+    // cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
     cellThree.textContent = "Stride length left front";
     distance = Math.hypot(
       pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
@@ -4805,7 +2911,15 @@ function addEntriesAll() {
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
     cellOne.textContent = indexRow - 1;
-    cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
+    appendSafeHTML(cellTwo, [
+        `Red R${i + 1} `,
+        (() => {
+          const arrow = document.createTextNode(' → ');
+          return arrow;
+        })(),
+        `Red R${i + 2}`
+      ]);
+    // cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
     cellThree.textContent = "Stride length right front";
     distance = Math.hypot(
       pointsRedRight[i].x - pointsRedRight[i + 1].x,
@@ -4827,7 +2941,15 @@ function addEntriesAll() {
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
     cellOne.textContent = indexRow - 1;
-    cellTwo.textContent = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
+    appendSafeHTML(cellTwo, [
+        `Blue L${i + 1} `,
+        (() => {
+          const arrow = document.createTextNode(' → ');
+          return arrow;
+        })(),
+        `Blue L${i + 2}`
+      ]);
+    // cellTwo.textContent = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
     cellThree.textContent = "Stride length left hind";
     distance = Math.hypot(
       pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
@@ -4849,7 +2971,15 @@ function addEntriesAll() {
     var cellFour = newRow.insertCell();
     var cellFive = newRow.insertCell();
     cellOne.textContent = indexRow - 1;
-    cellTwo.textContent = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
+    appendSafeHTML(cellTwo, [
+        `Blue R${i + 1} `,
+        (() => {
+          const arrow = document.createTextNode(' → ');
+          return arrow;
+        })(),
+        `Blue R${i + 2}`
+      ]);
+    // cellTwo.textContent = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
     cellThree.textContent = "Stride length right hind";
     distance = Math.hypot(
       pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
@@ -4873,7 +3003,15 @@ function addEntriesAll() {
         var cellFour = newRow.insertCell();
         var cellFive = newRow.insertCell();
         cellOne.textContent = indexRow - 1;
-        cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
+        appendSafeHTML(cellTwo, [
+        `Red L${i + 1} `,
+          (() => {
+            const arrow = document.createTextNode(' → ');
+            return arrow;
+          })(),
+          `Blue L${j + 1}`
+        ]);
+        // cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
         cellThree.textContent = "Overlap Left";
         distance = Math.hypot(
           pointsRedLeft[i].x - pointsBlueLeft[j].x,
@@ -4899,7 +3037,15 @@ function addEntriesAll() {
         var cellFour = newRow.insertCell();
         var cellFive = newRow.insertCell();
         cellOne.textContent = indexRow - 1;
-        cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
+        appendSafeHTML(cellTwo, [
+        `Red R${i + 1} `,
+          (() => {
+            const arrow = document.createTextNode(' → ');
+            return arrow;
+          })(),
+          `Blue R${j + 1}`
+        ]);
+        // cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
         cellThree.textContent = "Overlap Right";
         distance = Math.hypot(
           pointsRedRight[i].x - pointsBlueRight[j].x,
@@ -4929,11 +3075,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryFrontLeft += 1;
           cellOne.textContent = indexRow - 1;
-          cellTwo.textContent =
-            "Imaginary Front " +
-            indexImaginaryFrontLeft +
-            " &#x2192 Red R" +
-            (j + 1);
+          appendSafeHTML(cellTwo, [
+          `Imaginary Front ${indexImaginaryFrontLeft} `,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Red R${j + 1}`
+          ]);
+          // cellTwo.textContent =
+          //   "Imaginary Front " +
+          //   indexImaginaryFrontLeft +
+          //   " &#x2192 Red R" +
+          //   (j + 1);
           cellThree.textContent = "Stride Width Front(L)";
           if (i < pointsRedLeft.length - 1) {
             distance = Math.hypot(
@@ -4964,11 +3118,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryFrontLeft += 1;
           cellOne.textContent = indexRow - 1;
-          cellTwo.textContent =
-            "Imaginary Front " +
-            indexImaginaryFrontLeft +
-            " &#x2192 Red L" +
-            (i + 1);
+          appendSafeHTML(cellTwo, [
+          `Imaginary Front ${indexImaginaryFrontLeft} `,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Red L${i + 1}`
+          ]);
+          // cellTwo.textContent =
+          //   "Imaginary Front " +
+          //   indexImaginaryFrontLeft +
+          //   " &#x2192 Red L" +
+          //   (i + 1);
           cellThree.textContent = "Stride Width Front(L)";
           if (j < pointsRedRight.length - 1) {
             distance = Math.hypot(
@@ -5003,11 +3165,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryHindLeft += 1;
           cellOne.textContent = indexRow - 1;
-          cellTwo.textContent =
-            "Imaginary Hind " +
-            indexImaginaryHindLeft +
-            " &#x2192 Blue R" +
-            (j + 1);
+          appendSafeHTML(cellTwo, [
+          `Imaginary Hind ${indexImaginaryHindLeft} `,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Blue R${j + 1}`
+          ]);
+          // cellTwo.textContent =
+          //   "Imaginary Hind " +
+          //   indexImaginaryHindLeft +
+          //   " &#x2192 Blue R" +
+          //   (j + 1);
           cellThree.textContent = "Stride Width Hind(L)";
           if (i < pointsBlueLeft.length - 1) {
             distance = Math.hypot(
@@ -5038,11 +3208,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryHindLeft += 1;
           cellOne.textContent = indexRow - 1;
-          cellTwo.textContent =
-            "Imaginary Hind " +
-            indexImaginaryHindLeft +
-            " &#x2192 Blue L" +
-            (i + 1);
+          appendSafeHTML(cellTwo, [
+          `Imaginary Hind ${indexImaginaryHindLeft} `,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Blue L${i + 1}`
+          ]);
+          // cellTwo.textContent =
+          //   "Imaginary Hind " +
+          //   indexImaginaryHindLeft +
+          //   " &#x2192 Blue L" +
+          //   (i + 1);
           cellThree.textContent = "Stride Width Hind(L)";
           if (j < pointsBlueRight.length - 1) {
             distance = Math.hypot(
@@ -5081,11 +3259,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryFrontRight += 1;
           cellOne.textContent = indexRow - 1;
-          cellTwo.textContent =
-            "Imaginary Front " +
-            indexImaginaryFrontRight +
-            " &#x2192 Red L" +
-            (i + 1);
+          appendSafeHTML(cellTwo, [
+          `Imaginary Front ${indexImaginaryFrontRight} `,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Red L${i + 1}`
+          ]);
+          // cellTwo.textContent =
+          //   "Imaginary Front " +
+          //   indexImaginaryFrontRight +
+          //   " &#x2192 Red L" +
+          //   (i + 1);
           cellThree.textContent = "Stride Width Front(R)";
           if (j < pointsRedRight.length - 1) {
             distance = Math.hypot(
@@ -5116,11 +3302,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryFrontRight += 1;
           cellOne.textContent = indexRow - 1;
-          cellTwo.textContent =
-            "Imaginary Front " +
-            indexImaginaryFrontRight +
-            " &#x2192 Red R" +
-            (j + 1);
+          appendSafeHTML(cellTwo, [
+          `Imaginary Front ${indexImaginaryFrontRight} `,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Red R${j + 1}`
+          ]);
+          // cellTwo.textContent =
+          //   "Imaginary Front " +
+          //   indexImaginaryFrontRight +
+          //   " &#x2192 Red R" +
+          //   (j + 1);
           cellThree.textContent = "Stride Width Front(R)";
           if (i < pointsRedLeft.length - 1) {
             distance = Math.hypot(
@@ -5155,11 +3349,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryHindRight += 1;
           cellOne.textContent = indexRow - 1;
-          cellTwo.textContent =
-            "Imaginary Hind " +
-            indexImaginaryHindRight +
-            " &#x2192 Blue L" +
-            (i + 1);
+          appendSafeHTML(cellTwo, [
+          `Imaginary Hind ${indexImaginaryHindRight} `,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Blue L${i + 1}`
+          ]);
+          // cellTwo.textContent =
+          //   "Imaginary Hind " +
+          //   indexImaginaryHindRight +
+          //   " &#x2192 Blue L" +
+          //   (i + 1);
           cellThree.textContent = "Stride Width Hind(R)";
           if (j < pointsBlueRight.length - 1) {
             distance = Math.hypot(
@@ -5190,11 +3392,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryHindRight += 1;
           cellOne.textContent = indexRow - 1;
-          cellTwo.textContent =
-            "Imaginary Hind " +
-            indexImaginaryHindRight +
-            " &#x2192 Blue R" +
-            (j + 1);
+          appendSafeHTML(cellTwo, [
+          `Imaginary Hind ${indexImaginaryHindRight} `,
+            (() => {
+              const arrow = document.createTextNode(' → ');
+              return arrow;
+            })(),
+            `Blue R${j + 1}`
+          ]);
+          // cellTwo.textContent =
+          //   "Imaginary Hind " +
+          //   indexImaginaryHindRight +
+          //   " &#x2192 Blue R" +
+          //   (j + 1);
           cellThree.textContent = "Stride Width Hind(R)";
           if (i < pointsBlueLeft.length - 1) {
             distance = Math.hypot(
@@ -5232,4 +3442,8 @@ function addEntriesAll() {
     "------------------------------BREAK------------------------------";
   lastCell.colSpan = "5";
   lastCell.style.textAlign = "center";
+  if (tbody.rows.length >= 1){
+    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
+  } else{
+  }
 }
