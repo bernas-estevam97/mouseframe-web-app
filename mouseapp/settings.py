@@ -23,16 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-load_dotenv()
+# load_dotenv()
 # key = os.environ.get('S_KEY')
 #For ubuntu provide full path
-#load_dotenv('var/www/mouseframe/django_image_analysis/mouseapp/.env')
+load_dotenv('var/www/mouseframe/django_image_analysis/mouseapp/.env')
 key = os.environ.get('S_KEY')
 
 
 SECRET_KEY=key
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 ALLOWED_HOSTS = ['127.0.0.1','mouseframe.pt', 'www.mouseframe.pt']
@@ -281,16 +281,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ------------------------- SECURITY CHECKS FOR PROD WITH SSL CERTIFICATE FOR PRODUCTION ONLY ---------------------------#
 
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# SECURE_BROWSER_XSS_FILTER = True
-# X_FRAME_OPTIONS = 'DENY'
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-# SECURE_SSL_REDIRECT = True
-# USE_X_FORWARDED_HOST = True
-# SECURE_HSTS_SECONDS = 31536000
-# SECURE_HSTS_PRELOAD = True
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+USE_X_FORWARDED_HOST = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # ------------------------------------------------------------- #
 
