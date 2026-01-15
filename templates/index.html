@@ -292,7 +292,7 @@
                       #sizeInput{width:100px;}
                    </style>  
                     <h2 class="change-dim-h2">Change dimensions of your marking points:</h2>
-                    <input id="sizeInput" type="number" placeholder="Point size in px...">
+                    <input id="sizeInput" type="number" min="1" step="1" placeholder="Point size in px...">
                     <button id="changeS">Change</button>
                     <button id="resetS"><i class="fa-solid fa-rotate-left"></i></button>
                     <p> Default point radius size is set to 4px</p>
@@ -464,8 +464,8 @@
                   <h5>Removal section:</h5>
                   <p>Remove by entry number or remove all &#8628;</p>
                   <input id="entryNumber" placeholder="Entry nº" size="3" maxlength="3">
-                  <button id="removeEntry"><i class="fa-solid fa-xmark"></i></button>
-                  <button id="removeAllEntries">Delete all &nbsp<i class="fa-solid fa-trash"></i></button>
+                  <button id="removeEntry"><i class="fa-solid fa-trash"></i></button>
+                  <button id="removeAllEntries">Remove all &nbsp<i class="fa-solid fa-trash-can"></i></button>
                   </div>
                   <div class="remove-by-measurement" id="removeByMeasurement">
                   <p>Remove by measurement type &#8628;</p>

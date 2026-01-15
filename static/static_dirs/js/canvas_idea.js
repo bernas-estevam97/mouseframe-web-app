@@ -17,6 +17,24 @@ function appendSafeHTML(container, fragments) {
 }
 
 
+// Doesnt allow the user to type invalid values manually
+
+const sizeInput = document.getElementById('sizeInput');
+
+sizeInput.addEventListener('keydown', (e) => {
+  // Prevent the minus sign (-), the decimal point (.), and 'e' (exponent)
+  if (['-', '.', 'e', 'E'].includes(e.key)) {
+    e.preventDefault();
+  }
+});
+
+sizeInput.addEventListener('input', () => {
+  // Final check: if the user pastes a value or manages to bypass keydown
+  if (sizeInput.value !== "" && sizeInput.value < 1) {
+    sizeInput.value = 1;
+  }
+});
+
 
 let pointSize;
 let showSize = document.getElementById("dynamicSize");
@@ -88,9 +106,9 @@ function drawRedLeft(e) {
   var m = getPosition(e);
   drawCoordinatesRed(m, pointSize);
   pointsRedLeft.push(m);
-  console.log(pointsRedLeft);
+  //console.log(pointsRedLeft);
   let index = pointsRedLeft.indexOf(m);
-  console.log(index);
+  //console.log(index);
   ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
   ctx.fillText(
     "L" + (index + 1),
@@ -105,9 +123,9 @@ function drawRedRight(e) {
   var m = getPosition(e);
   drawCoordinatesRed(m, pointSize);
   pointsRedRight.push(m);
-  console.log(pointsRedRight);
+  //console.log(pointsRedRight);
   let index = pointsRedRight.indexOf(m);
-  console.log(index);
+  //console.log(index);
   ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
   ctx.fillText(
     "R" + (index + 1),
@@ -155,12 +173,12 @@ function drawRedCircleRight() {
 
 function removeRedCircleLeft() {
   let lastElementRedLeft = pointsRedLeft[pointsRedLeft.length - 1];
-  console.log(
-    "Removed left red point on the coordinates: X " +
-      lastElementRedLeft.x +
-      " Y: " +
-      lastElementRedLeft.y
-  );
+  // console.log(
+  //   "Removed left red point on the coordinates: X " +
+  //     lastElementRedLeft.x +
+  //     " Y: " +
+  //     lastElementRedLeft.y
+  // );
   if (pointsRedLeft.indexOf(lastElementRedLeft) >= 9) {
     ctx.clearRect(
       lastElementRedLeft.x - pointSize,
@@ -192,12 +210,12 @@ function removeRedCircleLeft() {
 
 function removeRedCircleRight() {
   let lastElementRedRight = pointsRedRight[pointsRedRight.length - 1];
-  console.log(
-    "Removed left red point on the coordinates: X " +
-      lastElementRedRight.x +
-      " Y: " +
-      lastElementRedRight.y
-  );
+  // console.log(
+  //   "Removed left red point on the coordinates: X " +
+  //     lastElementRedRight.x +
+  //     " Y: " +
+  //     lastElementRedRight.y
+  // );
   if (pointsRedRight.indexOf(lastElementRedRight) >= 9) {
     ctx.clearRect(
       lastElementRedRight.x - pointSize,
@@ -279,12 +297,12 @@ function removeAllRedCircleRight() {
         pointSize * 4 + 10
       );
     }
-    console.log(
-      "Removed point on the coordinates: X " +
-        pointsRedRight[i].x +
-        " Y: " +
-        pointsRedRight[i].y
-    );
+    // console.log(
+    //   "Removed point on the coordinates: X " +
+    //     pointsRedRight[i].x +
+    //     " Y: " +
+    //     pointsRedRight[i].y
+    // );
   }
   pointsRedRight.length = 0;
   canvas.removeEventListener("click", drawRedLeft, false);
@@ -316,9 +334,9 @@ function drawBlueLeft(e) {
   var n = getPosition(e);
   drawCoordinatesBlue(n, pointSize);
   pointsBlueLeft.push(n);
-  console.log(pointsBlueLeft);
+  // console.log(pointsBlueLeft);
   let index = pointsBlueLeft.indexOf(n);
-  console.log(index);
+  // console.log(index);
   ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
   ctx.fillText(
     "L" + (index + 1),
@@ -333,9 +351,9 @@ function drawBlueRight(e) {
   var n = getPosition(e);
   drawCoordinatesBlue(n, pointSize);
   pointsBlueRight.push(n);
-  console.log(pointsBlueRight);
+  // console.log(pointsBlueRight);
   let index = pointsBlueRight.indexOf(n);
-  console.log(index);
+  // console.log(index);
   ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
   ctx.fillText(
     "R" + (index + 1),
@@ -381,12 +399,12 @@ function drawBlueCircleRight() {
 
 function removeBlueCircleLeft() {
   let lastElementBlueLeft = pointsBlueLeft[pointsBlueLeft.length - 1];
-  console.log(
-    "Removed left Blue point on the coordinates: X " +
-      lastElementBlueLeft.x +
-      " Y: " +
-      lastElementBlueLeft.y
-  );
+  // console.log(
+  //   "Removed left Blue point on the coordinates: X " +
+  //     lastElementBlueLeft.x +
+  //     " Y: " +
+  //     lastElementBlueLeft.y
+  // );
   if (pointsBlueLeft.indexOf(lastElementBlueLeft) >= 9) {
     ctx.clearRect(
       lastElementBlueLeft.x - pointSize,
@@ -413,12 +431,12 @@ function removeBlueCircleLeft() {
 
 function removeBlueCircleRight() {
   let lastElementBlueRight = pointsBlueRight[pointsBlueRight.length - 1];
-  console.log(
-    "Removed Right Blue point on the coordinates: X " +
-      lastElementBlueRight.x +
-      " Y: " +
-      lastElementBlueRight.y
-  );
+  // console.log(
+  //   "Removed Right Blue point on the coordinates: X " +
+  //     lastElementBlueRight.x +
+  //     " Y: " +
+  //     lastElementBlueRight.y
+  // );
   if (pointsBlueRight.indexOf(lastElementBlueRight) >= 9) {
     ctx.clearRect(
       lastElementBlueRight.x - pointSize,
@@ -460,12 +478,12 @@ function removeAllBlueCircleLeft() {
         pointSize * 4 + 10
       );
     }
-    console.log(
-      "Removed point on the coordinates: X " +
-        pointsBlueLeft[i].x +
-        " Y: " +
-        pointsBlueLeft[i].y
-    );
+    // console.log(
+    //   "Removed point on the coordinates: X " +
+    //     pointsBlueLeft[i].x +
+    //     " Y: " +
+    //     pointsBlueLeft[i].y
+    // );
   }
   pointsBlueLeft.length = 0;
   canvas.removeEventListener("click", drawBlueLeft);
@@ -500,12 +518,12 @@ function removeAllBlueCircleRight() {
         pointSize * 4 + 10
       );
     }
-    console.log(
-      "Removed point on the coordinates: X " +
-        pointsBlueRight[i].x +
-        " Y: " +
-        pointsBlueRight[i].y
-    );
+    // console.log(
+    //   "Removed point on the coordinates: X " +
+    //     pointsBlueRight[i].x +
+    //     " Y: " +
+    //     pointsBlueRight[i].y
+    // );
   }
   pointsBlueRight.length = 0;
   canvas.removeEventListener("click", drawBlueLeft);
@@ -611,12 +629,12 @@ function removeAllMeasurePoints() {
       pointSize * 4,
       pointSize * 4
     );
-    console.log(
-      "Removed measure point on the coordinates: X " +
-        pointsMeasure[i].x +
-        " Y: " +
-        pointsMeasure[i].y
-    );
+    // console.log(
+    //   "Removed measure point on the coordinates: X " +
+    //     pointsMeasure[i].x +
+    //     " Y: " +
+    //     pointsMeasure[i].y
+    // );
   }
   pointsMeasure.length = 0;
   canvas.removeEventListener("click", drawMeasurePoint);
@@ -683,7 +701,7 @@ function distanceMeasurePoint() {
       pointsMeasure[1].x - pointsMeasure[0].x,
       pointsMeasure[1].y - pointsMeasure[0].y
     ).toFixed(3);
-    console.log(dist);
+    // console.log(dist);
     document.getElementById("measureToCm").value =
       parseFloat(dist);
     // if (imgSizeStatus == 1){
@@ -847,8 +865,24 @@ canvas.style.display = "none";
 let imgContainer = document.getElementById("imgContainer");
 let img = new Image();
 let loadFile = function (event) {
+  // CORRECTED CHECK:
+  // We strictly check if the source starts with 'blob:', which implies 
+  // a user has previously uploaded a file in this session.
+  if (img.src && img.src.startsWith("blob:")) {
+    const confirmOverwrite = confirm("An image is already loaded. This will clear all current data and measurements. Are you sure you are done with the previous image?");
+    
+    if (!confirmOverwrite) {
+      // User clicked Cancel: Clear the input so they can re-select the same file later if they want
+      event.target.value = null; 
+      return; 
+    }
+  }
+
+  // 2. PROCEED WITH IMAGE VALIDATION
   if (event.target.files[0]["type"].split("/")[0] === "image") {
     img.src = URL.createObjectURL(event.target.files[0]);
+    
+    
     let blob = img.src;
     imgContainer.style.backgroundImage = "url(" + blob + ")";
     buttons.style.display = "block";
@@ -889,6 +923,8 @@ let loadFile = function (event) {
   pointsBlueRight.length = 0;
   pointsMeasure.length = 0;
   canvas.style.cursor = "auto";
+  removeAllEntries();
+  removeTableID();
   var elems = document.querySelectorAll(".active");
   [].forEach.call(elems, function (el) {
     el.classList.remove("active");
@@ -1354,17 +1390,17 @@ function handleChange(event) {
   // UI updates
   const scalePercent = Math.round(scaleFactor * 100);
   
-  document.getElementById("currentImgSize").textContent = 
-    `<b>Current image size is:</b> ${resizedWidth}x${resizedHeight}` + 
-    (scalePercent !== 100 ? ` (${scalePercent}% of size!)` : "");
+  // document.getElementById("currentImgSize").textContent = 
+  //   `<b>Current image size is:</b> ${resizedWidth}x${resizedHeight}` + 
+  //   (scalePercent !== 100 ? ` (${scalePercent}% of size!)` : "");
 
-  if (scalePercent === 100) {
-    tableWarning.style.display = 'none';
-  } else {
-    tableWarning.style.display = '';
-    tableWarning.textContent = 
-      `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to ${scalePercent}% of its original size!`;
-  }
+  // if (scalePercent === 100) {
+  //   tableWarning.style.display = 'none';
+  // } else {
+  //   tableWarning.style.display = '';
+  //   tableWarning.textContent = 
+  //     `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to ${scalePercent}% of its original size!`;
+  // }
 
 
   // --- Build "Current image size" text ---
@@ -1474,7 +1510,7 @@ document.addEventListener('keydown', function (e) {
     zoomNotice.style.display = zoomMode ? 'block' : 'none'; // We show/hide the zoom notice depending on the mode.
 
     if (zoomMode && !slider.dataset.warned) {
-      console.log("Zoom mode active — use + / - / 0 keys to resize image by 1%");
+      // console.log("Zoom mode active — use + / - / 0 keys to resize image by 1%");
       slider.dataset.warned = "true";
     }
 
@@ -2152,7 +2188,14 @@ function removeAllEntries() {
 // }
 
 function removeTableID() {
-  tableTitle.textContent = "<b>Table ID: <b>";
+  // Create the bold element manually
+  const b = document.createElement('b');
+  b.textContent = "Table ID: ";
+
+  // Use the helper to clear the container and append the new fragment
+  appendSafeHTML(tableTitle, [b]);
+
+  // Reset the input value
   manualID.value = "";
 }
 
@@ -2448,9 +2491,9 @@ function replaceChosenPoint(){
       pointSize * 4 + 10
     );
   }
-    console.log(indexNumber-1);
+    // console.log(indexNumber-1);
     
-    console.log(pointsRedLeft);
+    // console.log(pointsRedLeft);
     canvas.removeEventListener("click", drawRedLeft, false);
     canvas.removeEventListener("click", drawRedRight, false);
     canvas.removeEventListener("click", drawBlueLeft, false);
@@ -2458,12 +2501,12 @@ function replaceChosenPoint(){
     canvas.addEventListener("click", function replacePoint(e){
       
       var newPoint = getPosition(e);
-      console.log(newPoint);
+      // console.log(newPoint);
       
       drawCoordinatesRed(newPoint, pointSize);
       pointsRedLeft.splice(parseInt(indexNumber-1),1, newPoint);
       // pointsRedLeft.push(newPoint);
-      console.log(pointsRedLeft);
+      // console.log(pointsRedLeft);
       // let index = pointsRedLeft.indexOf(newPoint);
       ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
       ctx.fillText(
@@ -2515,9 +2558,9 @@ function replaceChosenPoint(){
       pointSize * 4 + 10
     );
   }
-    console.log(indexNumber-1);
+    // console.log(indexNumber-1);
     
-    console.log(pointsRedRight);
+    // console.log(pointsRedRight);
     canvas.removeEventListener("click", drawRedLeft, false);
     canvas.removeEventListener("click", drawRedRight, false);
     canvas.removeEventListener("click", drawBlueLeft, false);
@@ -2525,12 +2568,12 @@ function replaceChosenPoint(){
     canvas.addEventListener("click", function replacePoint(e){
       canvas.style.cursor = "crosshair";
       var newPoint = getPosition(e);
-      console.log(newPoint);
+      // console.log(newPoint);
       
       drawCoordinatesRed(newPoint, pointSize);
       pointsRedRight.splice(parseInt(indexNumber-1),1, newPoint);
       
-      console.log(pointsRedRight);
+      // console.log(pointsRedRight);
       // let index = pointsRedLeft.indexOf(newPoint);
       ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
       ctx.fillText(
@@ -2581,21 +2624,21 @@ function replaceChosenPoint(){
       pointSize * 4 + 10
     );
   }
-    console.log(indexNumber-1);
+    // console.log(indexNumber-1);
     
-    console.log(pointsBlueLeft);
+    // console.log(pointsBlueLeft);
     canvas.removeEventListener("click", drawRedLeft, false);
     canvas.removeEventListener("click", drawRedRight, false);
     canvas.removeEventListener("click", drawBlueLeft, false);
     canvas.removeEventListener("click", drawBlueRight, false);
     canvas.addEventListener("click", function replacePoint(e){
       var newPoint = getPosition(e);
-      console.log(newPoint);
+      // console.log(newPoint);
       
       drawCoordinatesBlue(newPoint, pointSize);
       pointsBlueLeft.splice(parseInt(indexNumber-1),1, newPoint);
       
-      console.log(pointsBlueLeft);
+      // console.log(pointsBlueLeft);
       // let index = pointsRedLeft.indexOf(newPoint);
       ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
       ctx.fillText(
@@ -2646,21 +2689,21 @@ function replaceChosenPoint(){
       pointSize * 4 + 10
     );
   }
-    console.log(indexNumber-1);
+    // console.log(indexNumber-1);
     
-    console.log(pointsBlueRight);
+    // console.log(pointsBlueRight);
     canvas.removeEventListener("click", drawRedLeft, false);
     canvas.removeEventListener("click", drawRedRight, false);
     canvas.removeEventListener("click", drawBlueLeft, false);
     canvas.removeEventListener("click", drawBlueRight, false);
     canvas.addEventListener("click", function replacePoint(e){
       var newPoint = getPosition(e);
-      console.log(newPoint);
+      // console.log(newPoint);
       
       drawCoordinatesBlue(newPoint, pointSize);
       pointsBlueRight.splice(parseInt(indexNumber-1),1, newPoint);
       
-      console.log(pointsBlueRight);
+      // console.log(pointsBlueRight);
       // let index = pointsRedLeft.indexOf(newPoint);
       ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
       ctx.fillText(
@@ -2978,7 +3021,7 @@ function addEntriesAllAverage() {
       cellFive.textContent = (distance / dist).toFixed(3);
       distValuesSLLF.push(distance / dist);
     }
-    console.log(distValuesSLLF);
+    // console.log(distValuesSLLF);
     var strideLeftFrontMeanRow = tbody.insertRow(-1);
     var strideLeftFrontRowCellOne = strideLeftFrontMeanRow.insertCell();
     var strideLeftFrontRowCellTwo = strideLeftFrontMeanRow.insertCell();
@@ -3023,7 +3066,7 @@ function addEntriesAllAverage() {
       cellFive.textContent = (distance / dist).toFixed(3);
       distValuesSLRF.push(distance / dist);
     }
-    console.log(distValuesSLRF);
+    // console.log(distValuesSLRF);
     var strideRightFrontMeanRow = tbody.insertRow(-1);
     var strideRightFrontRowCellOne = strideRightFrontMeanRow.insertCell();
     var strideRightFrontRowCellTwo = strideRightFrontMeanRow.insertCell();
@@ -3067,7 +3110,7 @@ function addEntriesAllAverage() {
       cellFive.textContent = (distance / dist).toFixed(3);
       distValuesSLLH.push(distance / dist);
     }
-    console.log(distValuesSLLH);
+    // console.log(distValuesSLLH);
     var strideLeftHindMeanRow = tbody.insertRow(-1);
     var strideLeftHindRowCellOne = strideLeftHindMeanRow.insertCell();
     var strideLeftHindRowCellTwo = strideLeftHindMeanRow.insertCell();
@@ -3112,7 +3155,7 @@ function addEntriesAllAverage() {
       cellFive.textContent = (distance / dist).toFixed(3);
       distValuesSLRH.push(distance / dist);
     }
-    console.log(distValuesSLRH);
+    // console.log(distValuesSLRH);
     var strideRightHindMeanRow = tbody.insertRow(-1);
     var strideRightHindRowCellOne = strideRightHindMeanRow.insertCell();
     var strideRightHindRowCellTwo = strideRightHindMeanRow.insertCell();
@@ -3161,7 +3204,7 @@ function addEntriesAllAverage() {
         }
       }
     }
-    console.log(distValuesOL);
+    // console.log(distValuesOL);
     var overlapLeftMeanRow = tbody.insertRow(-1);
     var overlapLeftRowCellOne = overlapLeftMeanRow.insertCell();
     var overlapLeftRowCellTwo = overlapLeftMeanRow.insertCell();
@@ -3208,7 +3251,7 @@ function addEntriesAllAverage() {
         }
       }
     }
-    console.log(distValuesOR);
+    // console.log(distValuesOR);
     var overlapRightMeanRow = tbody.insertRow(-1);
     var overlapRightRowCellOne = overlapRightMeanRow.insertCell();
     var overlapRightRowCellTwo = overlapRightMeanRow.insertCell();
@@ -3311,7 +3354,7 @@ function addEntriesAllAverage() {
           }
         }
       }
-      console.log(distValuesSWFL);
+      // console.log(distValuesSWFL);
       var strideWidthFrontLeftMeanRow = tbody.insertRow(-1);
       var strideWidthFrontLeftRowCellOne =
         strideWidthFrontLeftMeanRow.insertCell();
@@ -3414,7 +3457,7 @@ function addEntriesAllAverage() {
           }
         }
       }
-      console.log(distValuesSWHL);
+      // console.log(distValuesSWHL);
       var strideWidthHindLeftMeanRow = tbody.insertRow(-1);
       var strideWidthHindLeftRowCellOne =
         strideWidthHindLeftMeanRow.insertCell();
@@ -3521,7 +3564,7 @@ function addEntriesAllAverage() {
           }
         }
       }
-      console.log(distValuesSWFR);
+      // console.log(distValuesSWFR);
       var strideWidthFrontRightMeanRow = tbody.insertRow(-1);
       var strideWidthFrontRightRowCellOne =
         strideWidthFrontRightMeanRow.insertCell();
@@ -3624,7 +3667,7 @@ function addEntriesAllAverage() {
           }
         }
       }
-      console.log(distValuesSWHR);
+      // console.log(distValuesSWHR);
       var strideWidthHindRightMeanRow = tbody.insertRow(-1);
       var strideWidthHindRightRowCellOne =
         strideWidthHindRightMeanRow.insertCell();

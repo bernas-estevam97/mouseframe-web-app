@@ -1190,6 +1190,9 @@ input::placeholder{
 }
 
 
+#removeAllEntries{
+  margin-left: 50px;
+}
 
 .select-options #footstepsBeginning,
 .select-options .remove-by-entries,
