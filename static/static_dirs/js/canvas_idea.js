@@ -869,14 +869,17 @@ let loadFile = function (event) {
   // We strictly check if the source starts with 'blob:', which implies 
   // a user has previously uploaded a file in this session.
   if (img.src && img.src.startsWith("blob:")) {
-    const confirmOverwrite = confirm("An image is already loaded. This will clear all current data and measurements. Are you sure you are done with the previous image?");
-    
-    if (!confirmOverwrite) {
-      // User clicked Cancel: Clear the input so they can re-select the same file later if they want
-      event.target.value = null; 
-      return; 
-    }
+  const confirmOverwrite = confirm("An image is already loaded. This will clear all current data and measurements. Are you sure you are done with the previous image?");
+
+  if (!confirmOverwrite) {
+    // User clicked Cancel: Clear the input so they can re-select the same file later if they want
+    event.target.value = null;
+    return; // Stop the rest of the function running
+  } else {
+    // User clicked OK: Run the reset function defined above
+    resetFile();
   }
+}
 
   // 2. PROCEED WITH IMAGE VALIDATION
   if (event.target.files[0]["type"].split("/")[0] === "image") {
@@ -1556,7 +1559,17 @@ document.addEventListener('keydown', function (e) {
 
 
 
-let resetFile = function (event) {
+let resetFile = function () {
+  // --- MEMORY FIX: Revoke the old blob URL before clearing variables ---
+  // This frees the memory allocated to the previous image
+  if (img.src && img.src.startsWith("blob:")) {
+    URL.revokeObjectURL(img.src);
+  }
+
+  // 2. CRITICAL FIX: Clear the source string so the check fails next time
+  img.src = "";
+
+  // --- Existing Reset Logic ---
   imgContainer.style.backgroundImage = "";
   buttons.style.display = "none";
   // results.style.display = "none";
@@ -1564,24 +1577,29 @@ let resetFile = function (event) {
   // imgInfo.style.display = "none";
   imgEdit.style.display = "none";
   canvas.style.cursor = "auto";
+  
   canvas.removeEventListener("click", drawBlueLeft);
   canvas.removeEventListener("click", drawBlueRight);
   canvas.removeEventListener("click", drawRedLeft);
   canvas.removeEventListener("click", drawRedRight);
   canvas.removeEventListener("click", printMousePos);
   canvas.removeEventListener("click", drawMeasurePoint);
+  
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   // canvasInfo.textContent = "<strong>Canvas size is:</strong> ";
   canvasUpload.style.display = "none";
   canvas.width = 0;
   canvas.height = 0;
+  
   pointsRedLeft.length = 0;
   pointsRedRight.length = 0;
   pointsBlueLeft.length = 0;
   pointsBlueRight.length = 0;
   pointsMeasure.length = 0;
+  
   imgContainer.style.width = "0";
   imgContainer.style.height = "0";
+  
   // document.getElementById("inputScreenInches").value = "";
   // document.getElementById("inputScreenInches").style.display = "none";
   // document.getElementById("screenPPI").textContent = "";
@@ -1589,17 +1607,18 @@ let resetFile = function (event) {
   // document.getElementById("imageDimCm").textContent = "";
   // document.getElementById("labelInput").style.display = "none";
   // document.getElementById("ppiCalculus").style.display = "none";
+  
   document.getElementById("savedDistance").style.display = "none";
   document.getElementById("showData").style.display = "none";
   imgContainer.style.border = "none";
   canvas.style.display = "none";
+  
   // document.getElementById("canvasWidth").value = '';
   // document.getElementById("canvasHeight").value = '';
   // let imgWidthInput = document.getElementById("containerWidth");
   // let imgHeightInput = document.getElementById("containerHeight");
   // imgWidthInput.value = '';
   // imgHeightInput.value = '';
-  
 
   appendSafeHTML(tableTitle, [
   (() => {

@@ -7,7 +7,7 @@ window.addEventListener('load', function () {
 
 
 
-const CURRENT_VERSION = "1.1.3";
+const CURRENT_VERSION = "1.1.5";
 
 document.querySelectorAll('[data-version]').forEach(el => {
   el.textContent = CURRENT_VERSION;
