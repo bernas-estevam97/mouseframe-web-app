@@ -3025,10 +3025,7 @@ function addEntriesAllAverage() {
       cellOne.textContent = indexRow - 1;
       appendSafeHTML(cellTwo, [
         `Red L${i + 1} `,
-        (() => {
-          const arrow = document.createTextNode(' → ');
-          return arrow;
-        })(),
+        ' → ', // Just pass it as a string
         `Red L${i + 2}`
       ]);
       cellThree.textContent = "Stride length left front";
@@ -3070,10 +3067,7 @@ function addEntriesAllAverage() {
       cellOne.textContent = indexRow - 1;
       appendSafeHTML(cellTwo, [
         `Red R${i + 1} `,
-        (() => {
-          const arrow = document.createTextNode(' → ');
-          return arrow;
-        })(),
+        ' → ', // Just pass it as a string
         `Red R${i + 2}`
       ]);
       cellThree.textContent = "Stride length right front";
@@ -3114,10 +3108,7 @@ function addEntriesAllAverage() {
       cellOne.textContent = indexRow - 1;
       appendSafeHTML(cellTwo, [
         `Blue L${i + 1} `,
-        (() => {
-          const arrow = document.createTextNode(' → ');
-          return arrow;
-        })(),
+        ' → ', // Just pass it as a string
         `Blue L${i + 2}`
       ]);
       cellThree.textContent = "Stride length left hind";
@@ -3158,10 +3149,7 @@ function addEntriesAllAverage() {
       cellOne.textContent = indexRow - 1;
       appendSafeHTML(cellTwo, [
         `Blue R${i + 1} `,
-        (() => {
-          const arrow = document.createTextNode(' → ');
-          return arrow;
-        })(),
+        ' → ', // Just pass it as a string
         `Blue R${i + 2}`
       ]);
       
@@ -3205,10 +3193,7 @@ function addEntriesAllAverage() {
           cellOne.textContent = indexRow - 1;
           appendSafeHTML(cellTwo, [
             `Red L${i + 1} `,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
+            ' → ', // Just pass it as a string
             `Blue L${j + 1}`
           ]);
           //cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
@@ -3252,10 +3237,7 @@ function addEntriesAllAverage() {
           cellOne.textContent = indexRow - 1;
           appendSafeHTML(cellTwo, [
             `Red R${i + 1} `,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
+            ' → ', // Just pass it as a string
             `Blue R${j + 1}`
           ]);
           //cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
@@ -3301,19 +3283,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryFrontLeft += 1;
             cellOne.textContent = indexRow - 1;
+            // appendSafeHTML(cellTwo, [
+            // "Imaginary Front " + indexImaginaryFrontLeft,
+            // (() => {
+            //   const arrow = document.createTextNode(' → ');
+            //   return arrow;
+            // })(),
+            // `Red R${j + 1}`
+            // ]);
             appendSafeHTML(cellTwo, [
-            "Imaginary Front " + indexImaginaryFrontLeft,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
-            `Red R${j + 1}`
+              `Imaginary Front ${indexImaginaryFrontLeft} `,
+              ' → ', // Just pass it as a string
+              `Red R${j + 1}`
             ]);
-            // cellTwo.textContent =
-            //   "Imaginary Front " +
-            //   indexImaginaryFrontLeft +
-            //   " &#x2192 Red R" +
-            //   (j + 1);
             cellThree.textContent = "Stride Width Front(L)";
             if (i < pointsRedLeft.length - 1) {
               distance = Math.hypot(
@@ -3341,19 +3323,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryFrontLeft += 1;
             cellOne.textContent = indexRow - 1;
+            // appendSafeHTML(cellTwo, [
+            // "Imaginary Front " + indexImaginaryFrontLeft,
+            // (() => {
+            //   const arrow = document.createTextNode(' → ');
+            //   return arrow;
+            // })(),
+            // `Red L${i + 1}`
+            // ]);
             appendSafeHTML(cellTwo, [
-            "Imaginary Front " + indexImaginaryFrontLeft,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
-            `Red L${i + 1}`
+              `Imaginary Front ${indexImaginaryFrontLeft} `,
+              ' → ', // Just pass it as a string
+              `Red L${i + 1}`
             ]);
-            // cellTwo.textContent =
-            //   "Imaginary Front " +
-            //   indexImaginaryFrontLeft +
-            //   " &#x2192 Red L" +
-            //   (i + 1);
             cellThree.textContent = "Stride Width Front(L)";
             if (j < pointsRedRight.length - 1) {
               distance = Math.hypot(
@@ -3404,14 +3386,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryHindLeft += 1;
             cellOne.textContent = indexRow - 1;
+            // appendSafeHTML(cellTwo, [
+            //   "Imaginary Hind " + indexImaginaryHindLeft,
+            //   (() => {
+            //     const arrow = document.createTextNode(' → ');
+            //     return arrow;
+            //   })(),
+            //   `Blue R${j + 1}`
+            //   ]);
             appendSafeHTML(cellTwo, [
-              "Imaginary Hind " + indexImaginaryHindLeft,
-              (() => {
-                const arrow = document.createTextNode(' → ');
-                return arrow;
-              })(),
+              `Imaginary Hind ${indexImaginaryHindLeft} `,
+              ' → ', // Just pass it as a string
               `Blue R${j + 1}`
-              ]);
+            ]);
             // cellTwo.textContent =
             //   "Imaginary Hind " +
             //   indexImaginaryHindLeft +
@@ -3444,14 +3431,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryHindLeft += 1;
             cellOne.textContent = indexRow - 1;
+            // appendSafeHTML(cellTwo, [
+            //   "Imaginary Hind " + indexImaginaryHindLeft,
+            //   (() => {
+            //     const arrow = document.createTextNode(' → ');
+            //     return arrow;
+            //   })(),
+            //   `Blue L${i + 1}`
+            //   ]);
             appendSafeHTML(cellTwo, [
-              "Imaginary Hind " + indexImaginaryHindLeft,
-              (() => {
-                const arrow = document.createTextNode(' → ');
-                return arrow;
-              })(),
+              `Imaginary Hind ${indexImaginaryHindLeft} `,
+              ' → ', // Just pass it as a string
               `Blue L${i + 1}`
-              ]);
+            ]);
             // cellTwo.textContent =
             //   "Imaginary Hind " +
             //   indexImaginaryHindLeft +
@@ -3511,19 +3503,20 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryFrontRight += 1;
             cellOne.textContent = indexRow - 1;
+            // appendSafeHTML(cellTwo, [
+            //   "Imaginary Front " + indexImaginaryFrontRight,
+            //   (() => {
+            //     const arrow = document.createTextNode(' → ');
+            //     return arrow;
+            //   })(),
+            //   `Red L${i + 1}`
+            //   ]);
             appendSafeHTML(cellTwo, [
-              "Imaginary Front " + indexImaginaryFrontRight,
-              (() => {
-                const arrow = document.createTextNode(' → ');
-                return arrow;
-              })(),
+              `Imaginary Front ${indexImaginaryFrontRight} `,
+              ' → ', // Just pass it as a string
               `Red L${i + 1}`
-              ]);
-            // cellTwo.textContent =
-            //   "Imaginary Front " +
-            //   indexImaginaryFrontRight +
-            //   " &#x2192 Red L" +
-            //   (i + 1);
+            ]);
+            
             cellThree.textContent = "Stride Width Front(R)";
             if (j < pointsRedRight.length - 1) {
               distance = Math.hypot(
@@ -3551,14 +3544,19 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryFrontRight += 1;
             cellOne.textContent = indexRow - 1;
+            // appendSafeHTML(cellTwo, [
+            //   "Imaginary Front " + indexImaginaryFrontRight,
+            //   (() => {
+            //     const arrow = document.createTextNode(' → ');
+            //     return arrow;
+            //   })(),
+            //   `Red R${j + 1}`
+            //   ]);
             appendSafeHTML(cellTwo, [
-              "Imaginary Front " + indexImaginaryFrontRight,
-              (() => {
-                const arrow = document.createTextNode(' → ');
-                return arrow;
-              })(),
+              `Imaginary Front ${indexImaginaryFrontRight} `,
+              ' → ', // Just pass it as a string
               `Red R${j + 1}`
-              ]);
+            ]);
             // cellTwo.textContent =
             //   "Imaginary Front " +
             //   indexImaginaryFrontRight +
@@ -3614,19 +3612,20 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryHindRight += 1;
             cellOne.textContent = indexRow - 1;
+            // appendSafeHTML(cellTwo, [
+            //   "Imaginary Hind " + indexImaginaryHindRight,
+            //   (() => {
+            //     const arrow = document.createTextNode(' → ');
+            //     return arrow;
+            //   })(),
+            //   `Blue L${i + 1}`
+            //   ]);
+
             appendSafeHTML(cellTwo, [
-              "Imaginary Hind " + indexImaginaryHindRight,
-              (() => {
-                const arrow = document.createTextNode(' → ');
-                return arrow;
-              })(),
+              `Imaginary Hind ${indexImaginaryHindRight} `,
+              ' → ', // Just pass it as a string
               `Blue L${i + 1}`
-              ]);
-            // cellTwo.textContent =
-            //   "Imaginary Hind " +
-            //   indexImaginaryHindRight +
-            //   " &#x2192 Blue L" +
-            //   (i + 1);
+            ]);
             cellThree.textContent = "Stride Width Hind(R)";
             if (j < pointsBlueRight.length - 1) {
               distance = Math.hypot(
@@ -3654,14 +3653,20 @@ function addEntriesAllAverage() {
             var cellFive = newRow.insertCell();
             indexImaginaryHindRight += 1;
             cellOne.textContent = indexRow - 1;
+            // appendSafeHTML(cellTwo, [
+            //   "Imaginary Hind " + indexImaginaryHindRight,
+            //   (() => {
+            //     const arrow = document.createTextNode(' → ');
+            //     return arrow;
+            //   })(),
+            //   `Blue R${j + 1}`
+            //   ]);
+            
             appendSafeHTML(cellTwo, [
-              "Imaginary Hind " + indexImaginaryHindRight,
-              (() => {
-                const arrow = document.createTextNode(' → ');
-                return arrow;
-              })(),
+              `Imaginary Hind ${indexImaginaryHindRight} `,
+              ' → ', // Just pass it as a string
               `Blue R${j + 1}`
-              ]);
+            ]);
             // cellTwo.textContent =
             //   "Imaginary Hind " +
             //   indexImaginaryHindRight +
@@ -3733,10 +3738,7 @@ function addEntriesAll() {
     cellOne.textContent = indexRow - 1;
     appendSafeHTML(cellTwo, [
         `Red L${i + 1} `,
-        (() => {
-          const arrow = document.createTextNode(' → ');
-          return arrow;
-        })(),
+        ' → ', // Just pass it as a string
         `Red L${i + 2}`
       ]);
     // cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
@@ -3763,10 +3765,7 @@ function addEntriesAll() {
     cellOne.textContent = indexRow - 1;
     appendSafeHTML(cellTwo, [
         `Red R${i + 1} `,
-        (() => {
-          const arrow = document.createTextNode(' → ');
-          return arrow;
-        })(),
+        ' → ', // Just pass it as a string
         `Red R${i + 2}`
       ]);
     // cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
@@ -3793,10 +3792,7 @@ function addEntriesAll() {
     cellOne.textContent = indexRow - 1;
     appendSafeHTML(cellTwo, [
         `Blue L${i + 1} `,
-        (() => {
-          const arrow = document.createTextNode(' → ');
-          return arrow;
-        })(),
+        ' → ', // Just pass it as a string
         `Blue L${i + 2}`
       ]);
     // cellTwo.textContent = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
@@ -3823,10 +3819,7 @@ function addEntriesAll() {
     cellOne.textContent = indexRow - 1;
     appendSafeHTML(cellTwo, [
         `Blue R${i + 1} `,
-        (() => {
-          const arrow = document.createTextNode(' → ');
-          return arrow;
-        })(),
+        ' → ', // Just pass it as a string
         `Blue R${i + 2}`
       ]);
     // cellTwo.textContent = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
@@ -3853,14 +3846,19 @@ function addEntriesAll() {
         var cellFour = newRow.insertCell();
         var cellFive = newRow.insertCell();
         cellOne.textContent = indexRow - 1;
+        // appendSafeHTML(cellTwo, [
+        // `Red L${i + 1} `,
+        //   (() => {
+        //     const arrow = document.createTextNode(' → ');
+        //     return arrow;
+        //   })(),
+        //   `Blue L${j + 1}`
+        // ]);
         appendSafeHTML(cellTwo, [
         `Red L${i + 1} `,
-          (() => {
-            const arrow = document.createTextNode(' → ');
-            return arrow;
-          })(),
-          `Blue L${j + 1}`
-        ]);
+        ' → ', // Just pass it as a string
+        `Blue L${j + 1}`
+      ]);
         // cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
         cellThree.textContent = "Overlap Left";
         distance = Math.hypot(
@@ -3888,14 +3886,11 @@ function addEntriesAll() {
         var cellFive = newRow.insertCell();
         cellOne.textContent = indexRow - 1;
         appendSafeHTML(cellTwo, [
-        `Red R${i + 1} `,
-          (() => {
-            const arrow = document.createTextNode(' → ');
-            return arrow;
-          })(),
+          `Red R${i + 1} `,
+          ' → ', // Just pass it as a string
           `Blue R${j + 1}`
         ]);
-        // cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
+        
         cellThree.textContent = "Overlap Right";
         distance = Math.hypot(
           pointsRedRight[i].x - pointsBlueRight[j].x,
@@ -3925,14 +3920,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryFrontLeft += 1;
           cellOne.textContent = indexRow - 1;
+          // appendSafeHTML(cellTwo, [
+          // `Imaginary Front ${indexImaginaryFrontLeft} `,
+          //   (() => {
+          //     const arrow = document.createTextNode(' → ');
+          //     return arrow;
+          //   })(),
+          //   `Red R${j + 1}`
+          // ]);
           appendSafeHTML(cellTwo, [
-          `Imaginary Front ${indexImaginaryFrontLeft} `,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
-            `Red R${j + 1}`
-          ]);
+              `Imaginary Front ${indexImaginaryFrontLeft} `,
+              ' → ', // Just pass it as a string
+              `Red R${j + 1}`
+            ]);
           // cellTwo.textContent =
           //   "Imaginary Front " +
           //   indexImaginaryFrontLeft +
@@ -3968,19 +3968,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryFrontLeft += 1;
           cellOne.textContent = indexRow - 1;
+          // appendSafeHTML(cellTwo, [
+          // `Imaginary Front ${indexImaginaryFrontLeft} `,
+          //   (() => {
+          //     const arrow = document.createTextNode(' → ');
+          //     return arrow;
+          //   })(),
+          //   `Red L${i + 1}`
+          // ]);
           appendSafeHTML(cellTwo, [
-          `Imaginary Front ${indexImaginaryFrontLeft} `,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
-            `Red L${i + 1}`
-          ]);
-          // cellTwo.textContent =
-          //   "Imaginary Front " +
-          //   indexImaginaryFrontLeft +
-          //   " &#x2192 Red L" +
-          //   (i + 1);
+              `Imaginary Front ${indexImaginaryFrontLeft} `,
+              ' → ', // Just pass it as a string
+              `Red L${i + 1}`
+            ]);
           cellThree.textContent = "Stride Width Front(L)";
           if (j < pointsRedRight.length - 1) {
             distance = Math.hypot(
@@ -4015,14 +4015,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryHindLeft += 1;
           cellOne.textContent = indexRow - 1;
+          // appendSafeHTML(cellTwo, [
+          // `Imaginary Hind ${indexImaginaryHindLeft} `,
+          //   (() => {
+          //     const arrow = document.createTextNode(' → ');
+          //     return arrow;
+          //   })(),
+          //   `Blue R${j + 1}`
+          // ]);
           appendSafeHTML(cellTwo, [
-          `Imaginary Hind ${indexImaginaryHindLeft} `,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
-            `Blue R${j + 1}`
-          ]);
+              `Imaginary Hind ${indexImaginaryHindLeft} `,
+              ' → ', // Just pass it as a string
+              `Blue R${j + 1}`
+            ]);
           // cellTwo.textContent =
           //   "Imaginary Hind " +
           //   indexImaginaryHindLeft +
@@ -4058,14 +4063,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryHindLeft += 1;
           cellOne.textContent = indexRow - 1;
+          // appendSafeHTML(cellTwo, [
+          // `Imaginary Hind ${indexImaginaryHindLeft} `,
+          //   (() => {
+          //     const arrow = document.createTextNode(' → ');
+          //     return arrow;
+          //   })(),
+          //   `Blue L${i + 1}`
+          // ]);
           appendSafeHTML(cellTwo, [
-          `Imaginary Hind ${indexImaginaryHindLeft} `,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
-            `Blue L${i + 1}`
-          ]);
+              `Imaginary Hind ${indexImaginaryHindLeft} `,
+              ' → ', // Just pass it as a string
+              `Blue L${i + 1}`
+            ]);
           // cellTwo.textContent =
           //   "Imaginary Hind " +
           //   indexImaginaryHindLeft +
@@ -4109,19 +4119,20 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryFrontRight += 1;
           cellOne.textContent = indexRow - 1;
+          // appendSafeHTML(cellTwo, [
+          // `Imaginary Front ${indexImaginaryFrontRight} `,
+          //   (() => {
+          //     const arrow = document.createTextNode(' → ');
+          //     return arrow;
+          //   })(),
+          //   `Red L${i + 1}`
+          // ]);
           appendSafeHTML(cellTwo, [
-          `Imaginary Front ${indexImaginaryFrontRight} `,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
-            `Red L${i + 1}`
-          ]);
-          // cellTwo.textContent =
-          //   "Imaginary Front " +
-          //   indexImaginaryFrontRight +
-          //   " &#x2192 Red L" +
-          //   (i + 1);
+              `Imaginary Front ${indexImaginaryFrontRight} `,
+              ' → ', // Just pass it as a string
+              `Red L${i + 1}`
+            ]);
+          
           cellThree.textContent = "Stride Width Front(R)";
           if (j < pointsRedRight.length - 1) {
             distance = Math.hypot(
@@ -4152,14 +4163,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryFrontRight += 1;
           cellOne.textContent = indexRow - 1;
+          // appendSafeHTML(cellTwo, [
+          // `Imaginary Front ${indexImaginaryFrontRight} `,
+          //   (() => {
+          //     const arrow = document.createTextNode(' → ');
+          //     return arrow;
+          //   })(),
+          //   `Red R${j + 1}`
+          // ]);
           appendSafeHTML(cellTwo, [
-          `Imaginary Front ${indexImaginaryFrontRight} `,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
-            `Red R${j + 1}`
-          ]);
+              `Imaginary Front ${indexImaginaryFrontRight} `,
+              ' → ', // Just pass it as a string
+              `Red R${j + 1}`
+            ]);
           // cellTwo.textContent =
           //   "Imaginary Front " +
           //   indexImaginaryFrontRight +
@@ -4199,14 +4215,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryHindRight += 1;
           cellOne.textContent = indexRow - 1;
+          // appendSafeHTML(cellTwo, [
+          // `Imaginary Hind ${indexImaginaryHindRight} `,
+          //   (() => {
+          //     const arrow = document.createTextNode(' → ');
+          //     return arrow;
+          //   })(),
+          //   `Blue L${i + 1}`
+          // ]);
           appendSafeHTML(cellTwo, [
-          `Imaginary Hind ${indexImaginaryHindRight} `,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
-            `Blue L${i + 1}`
-          ]);
+              `Imaginary Hind ${indexImaginaryHindRight} `,
+              ' → ', // Just pass it as a string
+              `Blue L${i + 1}`
+            ]);
           // cellTwo.textContent =
           //   "Imaginary Hind " +
           //   indexImaginaryHindRight +
@@ -4242,19 +4263,19 @@ function addEntriesAll() {
           var cellFive = newRow.insertCell();
           indexImaginaryHindRight += 1;
           cellOne.textContent = indexRow - 1;
+          // appendSafeHTML(cellTwo, [
+          // `Imaginary Hind ${indexImaginaryHindRight} `,
+          //   (() => {
+          //     const arrow = document.createTextNode(' → ');
+          //     return arrow;
+          //   })(),
+          //   `Blue R${j + 1}`
+          // ]);
           appendSafeHTML(cellTwo, [
-          `Imaginary Hind ${indexImaginaryHindRight} `,
-            (() => {
-              const arrow = document.createTextNode(' → ');
-              return arrow;
-            })(),
-            `Blue R${j + 1}`
-          ]);
-          // cellTwo.textContent =
-          //   "Imaginary Hind " +
-          //   indexImaginaryHindRight +
-          //   " &#x2192 Blue R" +
-          //   (j + 1);
+              `Imaginary Hind ${indexImaginaryHindRight} `,
+              ' → ', // Just pass it as a string
+              `Blue R${j + 1}`
+            ]);
           cellThree.textContent = "Stride Width Hind(R)";
           if (i < pointsBlueLeft.length - 1) {
             distance = Math.hypot(
