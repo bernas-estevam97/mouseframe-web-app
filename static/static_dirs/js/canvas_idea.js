@@ -1032,10 +1032,12 @@ function resizeImageToFitViewport(img) {
 
 
 window.addEventListener("beforeunload", (event) => {
-  if(img.src !== ''){
-    event.returnValue = true;
+  // STRICT CHECK: Only warn if the image is a Blob (user file).
+  // This ignores empty strings ("") or default browser src values.
+  if(img.src && img.src.startsWith("blob:")){
+    event.preventDefault(); // Standard for modern browsers
+    event.returnValue = true; // Required for Chrome/legacy
   }
-  return;
 });
 
 
