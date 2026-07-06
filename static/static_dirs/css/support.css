@@ -208,19 +208,6 @@ footer{
     margin: 0 20px;
     font-size: 1.5em;
   }
-
-  /* Styles for the custom Ko-fi footer icon */
-.footer-support-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px; /* Adds clean spacing between the image and the word "Support" */
-}
-
-.footer-kofi-png {
-    height: 1.5rem; /* Forces the PNG to perfectly scale with your 1.5em font size */
-    width: auto;    /* Keeps the image aspect ratio perfectly intact */
-    object-fit: contain;
-}
   
   footer .footer-links a:hover{
     text-decoration: underline;
@@ -355,3 +342,109 @@ footer{
     }
 }
 
+
+
+
+/* =========================================
+   SUPPORT PAGE SPECIFICS
+========================================= */
+
+
+.p1-left, .div-left{
+    text-align: justify;
+    margin: 0 10px 0 10px;
+}
+
+.p1-left{
+    font-size: 1.3em !important;
+}
+
+.header-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-logo h3{
+    font-size: 2.2em;
+    margin-right: 20px;
+    text-align: center;
+}
+
+.header-logo img{
+    width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.support-left {
+    max-width: 500px;
+}
+
+/* The Interactive Ko-fi Button */
+.kofi-button {
+    display: inline-flex;
+    align-items: center;
+    background-color: #29abe0; /* Official Ko-fi blue */
+    color: white !important;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1.5em;
+    font-weight: 500;
+    margin-top: 40px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 2px solid #29abe0;
+}
+
+.kofi-button:hover, .kofi-button:focus {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0px 10px 20px rgba(41, 171, 224, 0.4);
+    background-color: white;
+    color: #29abe0 !important;
+}
+
+/* Animated Coffee Cup */
+.kofi-cup-icon {
+    height: 35px;
+    width: 35px;
+    margin-right: 15px;
+    animation: tilt-shaking 2.5s infinite;
+}
+
+/* Replaces the inline styles blocked by CSP */
+#kofiframe {
+    border: none;
+    width: 100%;
+    padding: 10px;
+    background: var(--new-body-color);
+}
+
+@keyframes tilt-shaking {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(10deg); }
+  20% { transform: rotate(0eg); }
+  30% { transform: rotate(-10deg); }
+  40% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* The Interactive Ko-fi iFrame Container */
+.kofi-embed-side {
+    width: 450px !important; 
+    height: auto !important;
+    background-color: var(--new-body-color);
+    border-radius: 12px;
+    box-shadow: 10px 10px var(--new-color-border);
+    overflow: hidden;
+    border: 1px solid var(--new-color-border);
+}
+
+/* Responsive adjustments for the Support Page */
+@media (max-width: 1000px) {
+    .kofi-embed-side {
+        width: 100% !important;
+        max-width: 400px;
+        margin-top: 30px;
+    }
+}

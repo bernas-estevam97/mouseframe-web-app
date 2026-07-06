@@ -950,115 +950,7 @@ input[type='range']::-moz-range-thumb:hover{
   height: 20px;
 }
 
-/* .ppi-calc {
-  padding: 5px;
-  position: relative;
-  border-radius: 1px;
-  border: 1px solid #c1c1c1;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 10px;
-}
 
-.ppi-calc:hover {
-  background: rgb(202, 202, 202);
-} */
-
-/* ----------- */
-
-/* .buttons-change {
-  position: relative; */
-/* display: flex;
-    justify-content: space-evenly; */
-/* display: block;
-  margin: 10px auto;
-  max-width: 60vw;
-  background-color: #fff;
-  border: 3px double #c1c1c1;
-  padding: 10px;
-} */
-
-/* #canvasWidth, #canvasHeight{
-    padding: 5px;
-}
-
-#canvasHeight{
-    margin-left: 40px;
-}
-
-
-#changeW, #changeH{
-    padding: 5px 20px;
-    position: relative;
-    border-radius: 2px;
-    border: 1px solid #c1c1c1;
-    cursor: pointer;
-    transition: all 0.2s;
-} */
-
-/* #changeW:hover, #changeH:hover{
-    background: rgb(155, 155, 155);
-}
-
-#resetW, #resetH{
-    padding: 5px 20px;
-    position: relative;
-    border-radius: 2px;
-    border: 1px solid #c1c1c1;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-#resetW{
-    margin-right: 40px;
-}
-
-#resetW:hover, #resetH:hover{
-    background: rgb(155, 155, 155);
-} */
-
-/* #containerWidth, #containerHeight{
-    padding: 5px;
-}
-
-#containerHeight{
-    margin-left: 0;
-}
-
-
-#changeImgW, #changeImgH{
-    padding: 5px 20px;
-    position: relative;
-    border-radius: 2px;
-    border: 1px solid #c1c1c1;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-
-
-#changeImgW:hover, #changeImgH:hover{
-    background: rgb(155, 155, 155);
-}
-
-#resetImgW, #resetImgH{
-    padding: 5px 20px;
-    position: relative;
-    border-radius: 2px;
-    border: 1px solid #c1c1c1;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-#resetImgW{
-    margin-right: 40px;
-}
-
-#resetImgW:hover, #resetImgH:hover{
-    background: rgb(155, 155, 155);
-} */
-
-/* Change point dimensions section */
 
 input{
   margin-top: 10px;
@@ -1343,6 +1235,12 @@ footer .footer-links a{
   font-size: 1.5em;
 }
 
+.footer-kofi-png {
+    height: 1.5rem; /* Forces the PNG to perfectly scale with your 1.5em font size */
+    width: auto;    /* Keeps the image aspect ratio perfectly intact */
+    object-fit: contain;
+}
+
 footer .footer-links a:hover{
   text-decoration: underline;
 }
@@ -1350,6 +1248,15 @@ footer .footer-links a:hover{
 #zoomNotice {
   transition: opacity 0.3s ease;
 }
+
+/* Styles for the custom Ko-fi footer icon */
+.footer-support-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Adds clean spacing between the image and the word "Support" */
+}
+
+
 
 
 

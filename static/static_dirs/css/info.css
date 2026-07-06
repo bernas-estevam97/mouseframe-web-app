@@ -333,6 +333,19 @@ footer{
     margin: 0 20px;
     font-size: 1.5em;
   }
+
+  /* Styles for the custom Ko-fi footer icon */
+.footer-support-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Adds clean spacing between the image and the word "Support" */
+}
+
+.footer-kofi-png {
+    height: 1.5rem; /* Forces the PNG to perfectly scale with your 1.5em font size */
+    width: auto;    /* Keeps the image aspect ratio perfectly intact */
+    object-fit: contain;
+}
   
   footer .footer-links a:hover{
     text-decoration: underline;

@@ -38,6 +38,7 @@
                   <ul class="links-menu">
                     <li class="unsp-link"><a href="{% url 'info' %}">Tool Information</a></li>
                     <li class="unsp-link"><a href="{% url 'contact' %}">Contact</a></li>
+                    <li class="unsp-link"><a href="{% url 'support' %}">Support the App</a></li>
                   </ul>
                   <img src="{% static 'img/cartoon-mouse.png' %}">
                 </div>
@@ -64,6 +65,7 @@
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{% url 'info' %}">Information</a></li>
             <li><a class="dropdown-item" href="{% url 'contact' %}">Contact</a></li>
+            <li><a class="dropdown-item" href="{% url 'support' %}">Support</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank">ABC-RI</a></li>
           </ul>
@@ -493,10 +495,13 @@
 <footer>
   
   <div class="footer-links">
-    <a href="" target="_blank">Contact</a>
-    <a href="{% url 'info' %}" target="_blank">Information page</a>
+    <a href="{% url 'info' %}" target="_blank">Information</a>
+    <a href="{% url 'contact' %}" target="_blank">Contact</a>
     <a href="https://abcri.pt/" target="_blank">ABC-RI</a>
     <a href="https://abcri.pt/mngt/" target="_blank">MNGT</a>
+    <a href="{% url 'support' %}" class="footer-support-link">
+        <img src="{% static 'img/cup-border.png' %}" alt="Ko-fi" class="footer-kofi-png"> Support
+    </a>
   </div>
   <p>© MOUSEFRAME. All rights reserved 2022<span id="year"></span><br></p>
   <div class="footer-logos">

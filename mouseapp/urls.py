@@ -26,6 +26,7 @@ urlpatterns = [
     path('', welcome, name="welcome"),
     path('analysis', home, name="home"),
     path('info', info, name="info"),
+    path('support', support, name="support"),
     path('saved', saved_distance),
     # path('deleted', delete_distance, name="delete_entry"),
     path('authenticate/', include('django.contrib.auth.urls')),
