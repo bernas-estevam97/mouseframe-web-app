@@ -89,6 +89,7 @@ header h1 {
   margin-top: 30px;
   width: 160px;
   text-align: center;
+  border-radius: 5px;
 }
 
 .dropdown-menu{
@@ -115,7 +116,8 @@ background-color: var(--new-color-border) !important;
 .container-elems{
     background: white;
     border: 3px solid var(--new-color-border);
-    margin-bottom: 10px;
+    margin-bottom: 30px;
+    border-radius: 15px;
 }
 
 .container-elems h3{
@@ -212,12 +214,13 @@ background-color: var(--new-color-border) !important;
 .info-container{
     width: 90%;
     position: relative;
-    margin: 50px 0 20px 0;
+    margin: 10px 0 20px 0;
     border: 3px double var(--new-color-border);
     border-radius: 2px;
     background: #fff;
     left: 50%;
-    transform: translateX(-50%); 
+    transform: translateX(-50%);
+    border-radius: 15px;
 }
 
 .info-container h3{

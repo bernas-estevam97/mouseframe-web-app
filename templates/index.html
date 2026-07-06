@@ -77,8 +77,8 @@
         <li>This app is not a mobile app. If the resolution of your device is below a certain level, the analysis page (home page) of the application won't show its details since it is not compatible.</li>
         <li>Added function to save values and use them without app refresh, in this way not restarting your image progress.</li>
         <li>The saved values require an image size of which the measurement was saved in order to keep track of right
-          cm to pixel conversions and avoid measurement usage in wrong resolutions.</li>
-        <li>All saved measurements are filtered by user, so you won't see values saved from other users.</li>
+          <i>cm</i> to <i>pixel</i> conversions and avoid measurement usage in wrong resolutions (save function not available for guest users)</li>
+        <li>Saved measurements are exclusive to each user.</li>
         <li>Added zoom toggle function, see information below.</li>
       </ul>
       <button class="new-btn-close-modal" id="closeModal">Close</button>
@@ -350,7 +350,7 @@
                           .save-values-h4 {font-size: 1.5em; border-top: 2px solid rgba(0,0,0,.125) !important; padding-top: 20px;}
                           .save-info{font-size: 1em}
                   </style> 
-                <h4 class="save-values-h4">Save section</h4>
+                <h4 class="save-values-h4">Save section (not available for guest users)</h4>
                 <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from (both fields are required to save).</p>
                 <p class="save-info"><b><i class="fa-solid fa-triangle-exclamation"></i>&nbspImportant:</b> Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
                 <form action="saved" method="POST" id="savedDistancesForm">{% csrf_token %}

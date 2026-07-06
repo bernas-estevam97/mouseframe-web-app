@@ -36,8 +36,9 @@
                     <img class="image-one" src="{% static 'img/logo.png' %}">
                    <br><br><h2 class="fw-bold mb-2 text-uppercase">APP Login</h2>
                     <p class="text-white-50 mb-5">Please enter your given login credentials<br>(Private version)</p>
+                    
                     <div class="form-outline form-white mb-4">
-                      <input type="user" id="username" class="form-control form-control-lg" name="username" required/>
+                      <input type="text" id="username" class="form-control form-control-lg" name="username" required/>
                       <label class="form-label" for="username">User</label>
                     </div>
       
@@ -46,7 +47,16 @@
                       <label class="form-label" for="password">Password</label>
                     </div>
       
-                    <button class="btn btn-outline-info px-5" data-mdb-ripple-color="dark" type="submit">Login</button><br><br>
+                    <button class="btn btn-outline-info px-5" data-mdb-ripple-color="dark" type="submit">Login</button>
+                    
+                    <div class="mt-4">
+                      <p class="text-white-50 mb-2">OR</p>
+                      <button class="btn btn-outline-light px-5" type="submit" name="guest_login" value="true" formnovalidate>
+                        Continue as Guest
+                      </button>
+                    </div>
+                    <br><br>
+
                     {% if messages %}
                       {% for message in messages %}
                       <div class="alert alert-warning alert-dismissible fade show" role="alert">

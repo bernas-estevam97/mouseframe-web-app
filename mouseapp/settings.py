@@ -23,8 +23,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#load_dotenv()
-#key = os.environ.get('S_KEY')
+# load_dotenv()
+# key = os.environ.get('S_KEY')
 #For ubuntu provide full path
 load_dotenv('var/www/mouseframe/django_image_analysis/mouseapp/.env')
 key = os.environ.get('S_KEY')
@@ -32,7 +32,7 @@ key = os.environ.get('S_KEY')
 
 SECRET_KEY=key
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['127.0.0.1','mouseframe.pt', 'www.mouseframe.pt']

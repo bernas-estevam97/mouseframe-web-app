@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from .models import SavedDistances
 # from django.contrib import messages
@@ -58,6 +58,8 @@ def saved_distance(request):
      #  if not request.user.is_authenticated:
      #    return redirect('/authenticate/login')
      if request.method == 'POST':
+          if request.user.username == 'guest':
+             return HttpResponseForbidden("Guest users are not permitted to save data.")
           conversion = request.POST.get('saved_distance_value')
           if (request.POST.get('image_size').count(("X").lower())) == 1:
                image_size = request.POST.get('image_size')

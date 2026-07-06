@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User  # Added to fetch the guest user
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
@@ -10,12 +11,31 @@ from django.core.exceptions import PermissionDenied
 
 #LOGIN VIEW FOR IPLOCKOUTMIDDLEWARE
 
-
 def login_user(request: HttpRequest):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        # 1. Check if the user clicked "Continue as Guest"
+        if request.POST.get('guest_login') == 'true':
+            try:
+                # Fetch the dedicated guest user from the database
+                guest_user = User.objects.get(username='guest')
+                login(request, guest_user)
+                return redirect('/')
+            except User.DoesNotExist:
+                # Failsafe just in case the guest user hasn't been created yet
+                messages.error(request, "Guest account is not configured. Please contact the administrator.")
+                return render(request, 'authenticate/login.html', {})
+
+        # 2. Standard Login Flow
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        # Ensure credentials were provided before attempting to authenticate
+        if not username or not password:
+            messages.error(request, "Please provide a username and password.")
+            return render(request, 'authenticate/login.html', {})
+
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
             ip = get_client_ip(request)
@@ -30,18 +50,18 @@ def login_user(request: HttpRequest):
                 attempts = cache.get(key, 0)
                 attempts += 1
                 cache.set(key, attempts, timeout=settings.FAILED_LOGIN_LOCK_DURATION) #IPLockOutMiddleWare         
+                
                 if attempts >= settings.MAX_FAILED_LOGIN_ATTEMPTS: #IpLockOutMiddleware
                     # return render(request, 'authenticate/blocked.html', {})
-                    messages.error(request, (f"You have been blocked for several failed login attempts."))
+                    messages.error(request, "You have been blocked for several failed login attempts.")
                     raise PermissionDenied()
                 else:
-                    messages.error(request, (f"Invalid login. {attempts} of {settings.MAX_FAILED_LOGIN_ATTEMPTS} attempts left"))
-                    #cache._cache.keys() cache._cache.values()
-                    # print(cache._cache.keys())
+                    # Minor tweak: dynamically calculate how many attempts are actually left
+                    attempts_left = settings.MAX_FAILED_LOGIN_ATTEMPTS - attempts
+                    messages.error(request, f"Invalid login. {attempts_left} attempts left.")
                     return render(request, 'authenticate/login.html', {})
     else:
         return render(request, 'authenticate/login.html', {})
-
 
 
 def get_client_ip(request):
@@ -54,7 +74,5 @@ def get_client_ip(request):
 
 def logout_user(request):
     logout(request)
-    messages.success(request, ('You have logged out. Log in again to access the app.'))
+    messages.success(request, 'You have logged out. Log in again to access the app.')
     return redirect('/')
-
-
