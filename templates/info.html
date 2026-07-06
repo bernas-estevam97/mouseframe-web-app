@@ -45,7 +45,7 @@
                   .nav-link:hover{color:#000 !important;}
                   .nav-link:focus{color:#000 !important;}
                 </style>
-        <h1><div class="header-images"><img class="image-one" src="{% static 'img/mouse.png' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}"></div><div class="text-title">&nbsp&nbsp&nbspMouseFrame - Info and details</div> </h1>
+        <h1><a href="{% url 'welcome' %}"><img class="image-one" src="{% static 'img/mouse.png' %}"></a><a href="{% url 'welcome' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}"></a></div><div class="text-title">&nbsp&nbsp&nbspMouseFrame - Info and details</div> </h1>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             More

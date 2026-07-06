@@ -23,11 +23,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     # path('access-adm-obliviouz/defender/', include('defender.urls')),
     path('access-adm-obliviouz/', admin.site.urls),
-    path('', version, name="version"),
-    path('new-mouseframe', home, name="home"),
-    path('old-mouseframe', old_home, name="old_home"),
+    path('', welcome, name="welcome"),
+    path('analysis', home, name="home"),
     path('info', info, name="info"),
-    path('older-version-info', old_info, name="old_info"),
     path('saved', saved_distance),
     # path('deleted', delete_distance, name="delete_entry"),
     path('authenticate/', include('django.contrib.auth.urls')),

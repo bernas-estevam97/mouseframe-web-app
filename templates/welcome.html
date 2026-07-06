@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="{% static 'css/choose_version.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
+    <title>Welcome to MouseFrame</title>
+</head>
+<body>
+    <header class="text-center mt-5">
+        <h1 class="mb-4">Welcome to MouseFrame</h1>
+        <style nonce="{{ request.csp_nonce }}">.image-one {width: 250px; height: 250px; object-fit: contain;}</style>
+        <img class="image-one" src="{% static 'img/logo.png' %}" alt="MouseFrame Logo">
+    </header>
+    
+    <main class="info text-center mt-4">
+        <div class="container">
+            <!-- Hero Statement -->
+            <h2 class="mb-3">The Digital Upgrade for the Inked Paw Test</h2>
+            
+            <!-- Removed 'text-muted' and added 'fw-semibold' for darker, bolder text -->
+            <p class="lead mb-5 fw-semibold text-dark">
+                Say goodbye to rulers and manual calculations. MouseFrame streamlines your behavioral research by automating footprint measurements from digitized sheets.
+            </p>
+            
+            <!-- Features Grid -->
+            <div class="row text-start mb-5">
+                <div class="col-md-4 mb-4 px-3">
+                    <h4 class="text-success">📄 1. Digitize</h4>
+                    <p>Upload your scanned footprint sheets directly into the application. Keep your records digital and easily accessible.</p>
+                </div>
+                <div class="col-md-4 mb-4 px-3">
+                    <h4 class="text-success">🎯 2. Mark Paws</h4>
+                    <p>Use our streamlined interface to correctly identify and mark paw placements on your uploaded sheets to ensure accurate data tracking.</p>
+                </div>
+                <div class="col-md-4 mb-4 px-3">
+                    <h4 class="text-success">📏 3. Automate</h4>
+                    <p>Once marked, MouseFrame automatically calculates all spatial metrics and distances between paws instantly, saving you hours of tedious lab work.</p>
+                </div>
+            </div>
+
+            <!-- Call to Action -->
+            <div class="mt-4 mb-5">
+                <a href="{% url 'home' %}" class="text-decoration-none">
+                    <button type="button" class="btn btn-success btn-lg px-5 py-3 shadow-sm fw-bold">Enter Application</button>
+                </a>
+            </div>
+
+            <!-- Footer / Support -->
+            <hr class="w-50 mx-auto mb-4">
+            <p class="text-muted small">
+                For more information, feature requests, or support, do not hesitate to contact me at:<br>
+                <a href="mailto:mouseframe.app@gmail.com" class="text-success">mouseframe.app@gmail.com</a>
+            </p>
+        </div>
+    </main>
+</body>
+</html>

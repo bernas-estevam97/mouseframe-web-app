@@ -15,8 +15,8 @@ from django.conf import settings
 
 
 @login_required(login_url=settings.LOGIN_URL)
-def version(request):
-     return render(request, 'choose_version.html')
+def welcome(request):
+     return render(request, 'welcome.html')
 
 @login_required(login_url=settings.LOGIN_URL)
 def home(request):
@@ -26,14 +26,6 @@ def home(request):
      saved_distances = SavedDistances.objects.filter(user=request.user)
      return render(request, 'index.html', {'saved_distances': saved_distances})
 
-@login_required(login_url=settings.LOGIN_URL)
-def old_home(request):
-#    if not request.user.is_authenticated:
-#         return redirect('/authenticate/login')
-#    else:
-     saved_distances = SavedDistances.objects.filter(user=request.user)
-     return render(request, 'index_old.html', {'saved_distances': saved_distances})
-
 
 @login_required(login_url=settings.LOGIN_URL)
 def info(request):
@@ -42,9 +34,6 @@ def info(request):
 #    else:
      return render(request, 'info.html')
 
-@login_required(login_url=settings.LOGIN_URL)
-def old_info(request):
-     return render(request, 'info_old.html')
 
 @login_required(login_url=settings.LOGIN_URL)
 def contact(request):
