@@ -10,7 +10,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
-    <title>Mouse Frame - Auth</title>
+    <title>MouseFrame - Auth</title>
 </head>
 <body>
   {% block content %}
@@ -26,7 +26,7 @@
                   <div class="mb-md-5 mt-md-4">
                     <form action="" method="POST">
                     {% csrf_token %}
-                    <h3>Welcome to the Mouseframe Application!</h3>
+                    <h3>Welcome to the MouseFrame Application!</h3>
 
                     <style nonce="{{ request.csp_nonce }}">
                     .image-one {width: 100px; height: 100px;}
