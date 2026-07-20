@@ -352,19 +352,29 @@
                           .save-values-h4 {font-size: 1.5em; border-top: 2px solid rgba(0,0,0,.125) !important; padding-top: 20px;}
                           .save-info{font-size: 1em}
                   </style> 
-                <h4 class="save-values-h4">Save section (not available for guest users)</h4>
-                <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from (both fields are required to save).</p>
-                <p class="save-info"><b><i class="fa-solid fa-triangle-exclamation"></i>&nbspImportant:</b> Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
-                <form action="saved" method="POST" id="savedDistancesForm">{% csrf_token %}
-                  <ol>
-                    <li>Value(px):
-                      <input type="text" name="saved_distance_value" id="saveDistance" maxlength="8" placeholder="Save value..." required></li>
+                  {% if user.username != 'guest' %}
+                      <h4 class="save-values-h4">Save section</h4>
+                      <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from (both fields are required to save).</p>
+                      <p class="save-info"><b><i class="fa-solid fa-triangle-exclamation"></i>&nbsp;Important:</b> Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
                       
-                    <li>Image size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" placeholder="E.g. 1920x1080" required></li>
-                  </ol>
-                  <button class="save-button" id="saveDistanceButton" type="submit"><i class="fa-solid fa-floppy-disk"></i></button> 
-                </form>
-                <div id="messageSave"></div>
+                      <form action="saved" method="POST" id="savedDistancesForm">
+                          {% csrf_token %}
+                          <ol>
+                            <li>Value(px):
+                            <input type="text" name="saved_distance_value" id="saveDistance" maxlength="8" placeholder="Save value..." required></li>
+                            
+                            <li>Image size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" placeholder="E.g. 1920x1080" required></li>
+                          </ol>
+                          <button class="save-button" id="saveDistanceButton" type="submit"><i class="fa-solid fa-floppy-disk"></i></button> 
+                        <div id="messageSave"></div>
+                      </form>
+                  {% else %}
+                      <!-- Optional: What the guest user sees instead -->
+                      <h4 class="save-values-h4">Save section (not available for guest users)</h4>
+                      <div class="guest-only">
+                      <p>Please log in with a normal account to save values.</p><a class="logout-button-alternate" href="{% url 'logout' %}">Logout and use a normal account</a>
+                      </div>
+                  {% endif %}
                </div>
             </div>
           </div>
@@ -402,11 +412,9 @@
                 </table>
                 <div id="imageResizeTableWarning"></div>
               </div><br>
-              <label for="excel-file"><i class="fa-solid fa-circle-info"></i> Add an excel file to add your table to one of your own excel files (the table is added in a new sheet) and then click the export button below.</label>
-              <input class="input-excel" name="excel-file" type="file" id="upload-excel" accept=".xlsx, .xls" /><button id="resetUpload">Remove</button><br><br>
-              <label for="button-export"><i class="fa-solid fa-circle-info"></i> Simply click the below button, without any provided, excel to export your table to a new excel file with the table name provided on the right.</label><br>
+              <label for="button-export"><i class="fa-solid fa-circle-info"></i> Export your table to a new excel file with the table name provided on the right.</label><br>
               <button name="button-export" id="exportEx"> Export to excel file </button><br><br>
-              <label for="copy-table"><i class="fa-solid fa-circle-info"></i> Copy the table and add it to a file of your preference.</label><br>
+              <label for="copy-table"><i class="fa-solid fa-circle-info"></i> Copy the table to your clipboard and paste it into a file of your preference.</label><br>
               <button name="copy-table" id="copyTable">Copy Table to Clipboard</button>
             </div>
               <div class="select-options">

@@ -933,6 +933,36 @@ input[type='range']::-moz-range-thumb:hover{
   background: rgb(184, 184, 184);
 }
 
+
+/* GUEST SECTION */
+
+.guest-only{
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.guest-only p{
+  margin: 0 10px;
+  font-size: 1.2em;
+}
+
+.logout-button-alternate{
+    position: relative;
+  text-decoration: none;
+  padding: 10px 15px;
+  background: #cb2b3d;
+  left: 4em;
+  color: white;
+  border-radius: 5px;
+  border: 2px solid rgb(168, 30, 30);
+}
+
+.logout-button-alternate:hover {
+  background: rgb(168, 30, 30);
+  color: white !important;
+}
+
 /* Unused ppi section for now */
 
 .resolution-info {
