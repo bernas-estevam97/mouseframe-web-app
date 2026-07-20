@@ -14,7 +14,7 @@ MouseFrame is optimized exclusively for desktop and laptop displays. Mobile devi
 
 | Account Type | Capabilities | Limitations |
 | :--- | :--- | :--- |
-| **Registered User** | Save calibration data for longitudinal studies. Saved values populate automatically in dropdown menus for future sessions. | Requires account creation. |
+| **Registered User** | Save calibration data for longitudinal studies. Saved values populate automatically in dropdown menus for future sessions. | Requires a private user account (enter in contact with me for more information). |
 | **Guest User** | Trial all core application features. | Cannot save calibration values to the database. Must calibrate manually during every session. |
 
 ---
