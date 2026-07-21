@@ -194,8 +194,6 @@ header h1 {
 }
 
 .modal-help-ae ul, .modal-help-aea ul {
-  /* list-style-image: url('../img/'); */
-  list-style-type: none;
   margin: 0;
   padding: 0;
 }

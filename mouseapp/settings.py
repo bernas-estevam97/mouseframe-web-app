@@ -295,3 +295,5 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 180 * 60  #3 hours
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

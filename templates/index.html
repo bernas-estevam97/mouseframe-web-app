@@ -310,14 +310,14 @@
           <h2 class="accordion-header" id="headingTwo">
             <!-- <h5 class="mb-0"> -->
               <button id="btnLinkTwo" class="accordion-button collapsed" type=button data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Measure how many pixels in a centimeter
+                Measure how many pixels in a centimetre
               </button>
             <!-- </h5> -->
             </h2>   
           <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordion">
             <div class="accordion-body">
               <div class="saved-distances" id="savedDistance">
-                <h4>Define how many pixels are in a centimeter:</h4>
+                <h4>Define how many pixels are in a centimetre:</h4>
                   <style nonce="{{ request.csp_nonce }}">
                         .saved-distances h5{padding-top: 10px;}
                         .saved-distances .last-li{margin-bottom: 10px;}
@@ -370,9 +370,9 @@
                       </form>
                   {% else %}
                       <!-- Optional: What the guest user sees instead -->
-                      <h4 class="save-values-h4">Save section (not available for guest users)</h4>
+                      <h4 class="save-values-h4">Save section - &#128683 Not available for guest users</h4>
                       <div class="guest-only">
-                      <p>Please log in with a normal account to save values.</p><a class="logout-button-alternate" href="{% url 'logout' %}">Logout and use a normal account</a>
+                      <p>Please log in with a private user account to save values.</p><a class="logout-button-alternate" href="{% url 'logout' %}">Logout and use a private account</a>
                       </div>
                   {% endif %}
                </div>
@@ -440,20 +440,20 @@
                   <section class="modal-help-ae" id="modalHelpAddEntries">
                     <h2><b><u>Help</u></b> - What does Add Entries option do?</h2>
                     <ul>
-                      <li>&#x27A3; &nbsp This function allows users to calculate distances between the points marked above.</li>
-                      <li>&#x27A3; &nbsp In contrast with the "Add entries with average" function, this option does not require the pixels in 1 cm measurement (if the value is available it will still convert px to cm). If the user only wants to know the distance in pixels this option may suffice.</li>
-                      <li>&#x27A3; &nbsp This function does not require a full set of marked dots to perform all available measurements, but it will throw an alert that some measurements could not be measured for the lack of certain dots.</li>
-                      <li>&#x27A3; &nbsp Overall, this measurement type is less sensitive and great for when the user only wants a few set of measurements and not all.</li>
+                      <li>This function allows users to calculate distances between the points marked above.</li>
+                      <li>In contrast with the "Add entries with average" function, this option does not require the pixels in 1 cm measurement (if the value is available it will still convert px to cm). If the user only wants to know the distance in pixels this option may suffice.</li>
+                      <li>This function does not require a full set of marked dots to perform all available measurements, but it will throw an alert that some measurements could not be measured for the lack of certain dots.</li>
+                      <li>Overall, this measurement type is less sensitive and great for when the user only wants a few set of measurements and not all.</li>
                     </ul>
                     <btn class="new-btn-close-modal" id="closeModalHelpAddEntries">Close</btn>
                   </section>
                   <section class="modal-help-aea" id="modalHelpAddEntriesAverage">
                     <h2><b><u>Help</u></b> - What does Add Entries with Average do?</h2>
                     <ul>
-                      <li>&#x27A2; &nbsp This function calculates a complete set of measurements, converts the values to cm and displays mean values for each measurement in cm.</li>
-                      <li>&#x27A2; &nbsp "Add entries with average" requires the px in 1 cm measurement beforehand.</li>
-                      <li>&#x27A2; &nbsp It also needs all marked dots in the correct spots to perform all the available calculations.</li>
-                      <li>&#x27A2; &nbsp This method/function is the most complete and sensitive when it comes to data retrieval.</li>
+                      <li>This function calculates a complete set of measurements, converts the values to cm and displays mean values for each measurement in cm.</li>
+                      <li>"Add entries with average" requires the px in 1 cm measurement beforehand.</li>
+                      <li>It also needs all marked dots in the correct spots to perform all the available calculations.</li>
+                      <li>This method/function is the most complete and sensitive when it comes to data retrieval.</li>
                     </ul>
                     <btn class="new-btn-close-modal" id="closeModalHelpAddEntriesAverage">Close</btn>
                   </section>
@@ -511,7 +511,7 @@
         <img src="{% static 'img/cup-border.png' %}" alt="Ko-fi" class="footer-kofi-png"> Support
     </a>
   </div>
-  <p>© MOUSEFRAME. All rights reserved 2022<span id="year"></span><br></p>
+  <p>© <span id="year"></span> MouseFrame. All rights reserved <br></p>
   <div class="footer-logos">
     <div class="img-one"><img src="{% static 'img/Logo_ABCRI.png' %}" alt=""></div>
     <div class="img-two"><img src="{% static 'img/Logo_MNGT.png' %}" alt=""></div>
@@ -568,13 +568,13 @@
       document.getElementById('removeByMeasurementButton').addEventListener('click', removeByMeasurement);
 
   
-      document.getElementById('saveDistance').addEventListener('keypress', event => {
-          if (!/[0-9.]/.test(event.key)) {
-            event.preventDefault();
-          }
-        });
+      document.getElementById('saveDistance')?.addEventListener('keypress', event => {
+        if (!/[0-9.]/.test(event.key)) {
+          event.preventDefault();
+        }
+      });
       
-      document.getElementById('imgSizeInfo').addEventListener('keypress', event => {
+      document.getElementById('imgSizeInfo')?.addEventListener('keypress', event => {
           if (!/[0-9.x]/i.test(event.key)) {
           event.preventDefault();
           }
