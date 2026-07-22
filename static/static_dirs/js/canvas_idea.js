@@ -140,6 +140,7 @@ function drawRedCircleLeft() {
   canvas.addEventListener("click", printMousePos, false);
   activeFunctionInfo.style.color = 'red';
   activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
     (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-play'; return i; })(),
     '\u00A0', // &nbsp;
@@ -160,6 +161,7 @@ function drawRedCircleRight() {
   canvas.addEventListener("click", printMousePos, false);
   activeFunctionInfo.style.color = 'red';
   activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
     (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-play'; return i; })(),
     '\u00A0', // &nbsp;
@@ -273,6 +275,7 @@ function removeAllRedCircleLeft() {
   canvas.style.cursor = "default";
   activeFunctionInfo.style.color = 'red';
   activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
     (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-xmark'; return i; })(),
     '\u00A0', // &nbsp;
@@ -313,6 +316,7 @@ function removeAllRedCircleRight() {
   canvas.style.cursor = "default";
   activeFunctionInfo.style.color = 'red';
   activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
     (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-xmark'; return i; })(),
     '\u00A0', // &nbsp;
@@ -368,6 +372,7 @@ function drawBlueCircleLeft() {
   canvas.addEventListener("click", printMousePos, false);
   activeFunctionInfo.style.color = 'blue';
   activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
     (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-play'; return i; })(),
     '\u00A0', // &nbsp;
@@ -385,6 +390,7 @@ function drawBlueCircleRight() {
   canvas.addEventListener("click", printMousePos, false);
   activeFunctionInfo.style.color = 'blue';
   activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
     (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-play'; return i; })(),
     '\u00A0', // &nbsp;
@@ -494,6 +500,7 @@ function removeAllBlueCircleLeft() {
   canvas.style.cursor = "default";
   activeFunctionInfo.style.color = 'blue';
   activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
     (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-xmark'; return i; })(),
     '\u00A0', // &nbsp;
@@ -534,6 +541,7 @@ function removeAllBlueCircleRight() {
   canvas.style.cursor = "default";
   activeFunctionInfo.style.color = 'blue';
   activeFunctionInfo.style.fontWeight = 'bold';
+  activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
     (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-xmark'; return i; })(),
     '\u00A0', // &nbsp;
@@ -606,7 +614,7 @@ function drawMeasureCircle() {
   canvas.removeEventListener("click", drawBlueRight);
   canvas.removeEventListener("click", drawRedLeft);
   canvas.removeEventListener("click", drawRedRight);
-  canvas.style.cursor = "pointer";
+  canvas.style.cursor = "crosshair";
   appendSafeHTML(document.getElementById('addMeasureInfo'), [
   (() => {
     const b = document.createElement('b');
@@ -619,7 +627,25 @@ function drawMeasureCircle() {
   document.createElement('br'),
   '(*) You can stop this function by clicking the eraser button below or clicking the reset or pause buttons from the above section (shortcut keys work as well).'
 ]);
+  alert("Measure 1cm function is active. Click on the canvas to add 2 points and measure the distance (shortcut key - M key) in pixels.");
 }
+
+function removeAllMeasurePointsOnly() {
+  for (let i = 0; i < pointsMeasure.length; i++) {
+    ctx.clearRect(
+      pointsMeasure[i].x - pointSize,
+      pointsMeasure[i].y - pointSize,
+      pointSize * 4,
+      pointSize * 4
+    );
+  }
+  pointsMeasure.length = 0;
+  canvas.removeEventListener("click", drawMeasurePoint);
+  canvas.removeEventListener("click", printMousePos);
+  canvas.style.cursor = "default";
+}
+
+
 
 function removeAllMeasurePoints() {
   for (let i = 0; i < pointsMeasure.length; i++) {
@@ -721,6 +747,8 @@ function distanceMeasurePoint() {
   }
   activeFunctionInfo.textContent = '';
   document.getElementById('addMeasureInfo').textContent = "";
+  alert("Distance measured in pixels: " + dist + "px. Removing points");
+  removeAllMeasurePointsOnly();
 }
 
 let inputPixelsManually = document.getElementById("pixelsInCmMan");
@@ -760,49 +788,49 @@ function resetInput() {
 
 
 document.addEventListener('keydown', function(event) {
-  // Don't use shortcut buttons if in textarea or input fields
   const activeElement = document.activeElement;
   if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') {
-    // Don't execute global keydown events if an input or textarea is focused
     return;
-  } else{
-    switch (event.key) {
-      case 'q':
-        // Trigger the button click
-        document.getElementById('redCircleLeft').click();
-        break;
-      case 'w': 
-      // Trigger the button click
-        document.getElementById('redCircleRight').click();
-        break;
-      case 'a':
-      // Trigger the button click
-        document.getElementById('blueCircleLeft').click();
-        break;
-      case 's':
-      // Trigger the button click
-        document.getElementById('blueCircleRight').click();
-        break;
-      case 'p':
-      // Trigger the button click
-        document.getElementById('toggleInactive').click();
-        break;
-      case 'r':
-      // Trigger the button click
-      // Ask for user confirmation
-        if (confirm("Are you sure you want to delete all points?")== true){
-          document.getElementById('resetCanvas').click();
-        } else{
-          return;
-        }
-        break; 
-      default:
-        // console.log("Key not mapped to any button");
-    }
-  } 
-  // Check if the key pressed is "Enter" (key code 13)
-  
-});   
+  }
+
+  // Handle Shift+M separately
+  if (event.shiftKey && event.key.toLowerCase() === 'm') {
+    document.getElementById('measureButton').click();
+    return;
+  }
+
+  switch (event.key) {
+    case 'q':
+      document.getElementById('redCircleLeft').click();
+      break;
+    case 'w':
+      document.getElementById('redCircleRight').click();
+      break;
+    case 'a':
+      document.getElementById('blueCircleLeft').click();
+      break;
+    case 's':
+      document.getElementById('blueCircleRight').click();
+      break;
+    case 'p':
+      document.getElementById('toggleInactive').click();
+      break;
+    case 'm':
+      document.getElementById('measureDistance').click();
+      break;
+    case 'd':
+      if (confirm("Are you sure you want to reset your conversion value? This will also remove any black measure points.")) {
+        document.getElementById('resetMeasure').click();
+      }
+      break;
+    case 'r':
+      if (confirm("Are you sure you want to delete all points?")) {
+        document.getElementById('resetCanvas').click();
+      }
+      break;
+  }
+});
+
 
 // Resolution section //
 
@@ -2487,6 +2515,7 @@ function replaceChosenPoint(){
     let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(5);
     activeFunctionInfo.style.color = 'red';
     activeFunctionInfo.style.fontWeight = 'bold';
+    activeFunctionInfo.style.fontSize = '1.4em';
     appendSafeHTML(activeFunctionInfo, [
       (() => {
         const i = document.createElement('i');
@@ -2554,6 +2583,7 @@ function replaceChosenPoint(){
     let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(5);
     activeFunctionInfo.style.color = 'red';
     activeFunctionInfo.style.fontWeight = 'bold';
+    activeFunctionInfo.style.fontSize = '1.4em';
     appendSafeHTML(activeFunctionInfo, [
       (() => {
         const i = document.createElement('i');
@@ -2619,8 +2649,9 @@ function replaceChosenPoint(){
   }
   if (selectPoint.value.includes('Blue L')){
     let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(6);
-    activeFunctionInfo.style.color = 'red';
+    activeFunctionInfo.style.color = 'blue';
     activeFunctionInfo.style.fontWeight = 'bold';
+    activeFunctionInfo.style.fontSize = '1.4em';
     appendSafeHTML(activeFunctionInfo, [
       (() => {
         const i = document.createElement('i');
@@ -2684,8 +2715,9 @@ function replaceChosenPoint(){
   }
   if (selectPoint.value.includes('Blue R')){
     let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(6);
-    activeFunctionInfo.style.color = 'red';
+    activeFunctionInfo.style.color = 'blue';
     activeFunctionInfo.style.fontWeight = 'bold';
+    activeFunctionInfo.style.fontSize = '1.4em';
     appendSafeHTML(activeFunctionInfo, [
       (() => {
         const i = document.createElement('i');

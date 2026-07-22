@@ -62,14 +62,11 @@
     <div class="container-full-2">
       <div class="container-elems">
         <h3>Purpose of MouseFrame</h3>
-        <ul>
-        <li>
-          This application aims to minimize exhaustive calculations performed in a laboratiry setting, automating them to a certain extent. Researchers usually obtain these measurements by manually measuring them with a ruler. The paper tracks (where the mice are walking) are digitized and then used here.</li>
-        <li>Although scanning these sheets can be also exhaustive, this application offers an intuitive layout and returns results almost instantly which can later be exported to excel datasheets.</li>
-      <li>
-          MouseFrame's main task is to transform the scanned sheets (in image format) into a canvas and therefore making it possible to add elements to the image and perform calculations with these same elements.
-      </li>
-    </ul>
+        <ul> 
+          <li> This application automates the measurement and calculation process traditionally performed manually in laboratory settings, reducing time and minimizing human error. It uses digitized images of mouse track sheets as the basis for analysis. </li> 
+          <li> The application provides an intuitive interface that processes scanned sheets quickly, allowing results to be exported to Excel spreadsheets or copied directly to the clipboard for further analysis. </li> 
+          <li> MouseFrame converts scanned images into an interactive canvas, enabling users to annotate the images, perform automated measurements, and generate accurate calculations efficiently. </li> 
+        </ul>
       </div>
       <div class="container-elems">
         <h3>Information on mice walking behaviour analysis</h3>
@@ -104,27 +101,24 @@
       <div class="info-container">
         
         <h3>How are the values obtained?</h3>
-        <p>All calculations are performed using simple algorithms for calculating the 
-            distance between points using javascript. The fact that the user 
-            previously marked each paw with its respective location (front/red or rear/blue, left or right), 
-            enables these calculations. 
-            Through the order of the footprints, the program will run a loop for each set 
-            of footprints and perform all the calculations programmed (it is important to 
-            emphasize that if the order is somehow changed, the program may not calculate 
-            the right measurements). Knowing the way this all works helps avoid wrong measurements.</p>
+        <p> All measurements are calculated using the Euclidean distance formula between points in a two-dimensional plane. 
+          These calculations rely on the user accurately identifying and labeling each paw print according to its position (front or rear, left or right). 
+          The application processes the footprints sequentially, performing the required calculations for each set based on their recorded order. 
+          Maintaining the correct footprint sequence is essential, as altering the order may produce inaccurate measurements. Understanding this workflow helps ensure reliable and consistent results. 
+        </p>
             <style nonce="{{ request.csp_nonce }}">
                   .measure-ref{text-decoration: underline;color:black;}
                   .measure-ref:hover{color:black;}
             </style>
             <ul>
-                <li><a class="measure-ref" id="sllf">Stride length left front</a>: Uses only the red dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
-                <li><a class="measure-ref" id="sllh">Stride length left hind</a>: Uses only the blue dots on the left measuring the distance from L(x) to L(x+1), x never being the last footprint of this set.</li>
-                <li><a class="measure-ref" id="slrf">Stride length right front</a>: Uses only the red dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
-                <li><a class="measure-ref" id="slrh">Stride length right hind</a>: Uses only the blue dots on the right measuring the distance from R(x) to R(x+1), x never being the last footprint of this set.</li>
-                <li><a class="measure-ref" id="ol">Overlap Left</a>: It uses both the red and blue dots on the left side with equal index and calculates the distance between them.</li>
-                <li><a class="measure-ref" id="or">Overlap Right</a>: It uses both the red and blue dots on the right side with equal index and calculates the distance between them.</li>
-                <li><a class="measure-ref" id="swf">Stride Width Front</a>: It uses the red dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both red dots in where the measurement is being made. There is an example in figure 2. This method will be improved with time.</li>
-                <li><a class="measure-ref" id="swh">Stride Width Hind</a>: It uses the blue dots and requires the user to identify whether the first set of footprints is on the left or right. Depending on the location of the first set of footprints, the distance will be between a point and another created imaginary point, which will use the same value of the x coordinate of the first one and the average of the y coordinate between the both blue dots in where the measurement is being made. There is an example in figure 3. This method will be improved with time.</li>
+                <li><a class="measure-ref" id="sllf">Stride Length – Left Front</a>: Calculates the Euclidean distance between consecutive left front (red) footprints, measuring the distance from L(x) to L(x+1). The final footprint in each sequence is excluded from the calculation.</li>
+                <li><a class="measure-ref" id="sllh">Stride Length – Left Hind</a>: Calculates the Euclidean distance between consecutive left hind (blue) footprints, measuring the distance from L(x) to L(x+1). The final footprint in each sequence is excluded from the calculation.</li>
+                <li><a class="measure-ref" id="slrf">Stride Length – Right Front</a>: Calculates the Euclidean distance between consecutive right front (red) footprints, measuring the distance from R(x) to R(x+1). The final footprint in each sequence is excluded from the calculation.</li>
+                <li><a class="measure-ref" id="slrh">Stride Length – Right Hind</a>: Calculates the Euclidean distance between consecutive right hind (blue) footprints, measuring the distance from R(x) to R(x+1). The final footprint in each sequence is excluded from the calculation.</li>
+                <li><a class="measure-ref" id="ol">Overlap – Left</a>: Measures the Euclidean distance between the corresponding left front (red) and left hind (blue) footprints that share the same index.</li>
+                <li><a class="measure-ref" id="or">Overlap – Right</a>: Measures the Euclidean distance between the corresponding right front (red) and right hind (blue) footprints that share the same index.</li>
+                <li><a class="measure-ref" id="swf">Stride Width – Front</a>: Calculates the front stride width using the front (red) footprints. The user must specify whether the first footprint in the sequence is on the left or right. The measurement is obtained by calculating the distance between the selected footprint and an intermediate reference point, which shares the same x-coordinate as the selected footprint and the average y-coordinate of the corresponding left and right front footprints. An example is provided in Figure 2.</li>
+                <li><a class="measure-ref" id="swh">Stride Width – Hind</a>: Calculates the hind stride width using the hind (blue) footprints. As with the front stride width, the user must specify whether the first footprint in the sequence is on the left or right. The measurement is obtained by calculating the distance between the selected footprint and an intermediate reference point, which shares the same x-coordinate as the selected footprint and the average y-coordinate of the corresponding left and right hind footprints. An example is provided in Figure 3.</li>
             </ul>
             
             <figure><a class="download-image" href="{% static 'img/swfrstart.jpg' %}" target="_blank"><img src="{% static 'img/swfrstart.jpg' %}"></a>

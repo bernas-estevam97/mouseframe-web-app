@@ -42,13 +42,19 @@
               <style nonce="{{ request.csp_nonce }}">
                   .p1-left{font-size:1.5em;}
                   .div-left{font-size:2em;}
+                  .div-left-profile{font-size:2em; display:flex; align-items:center; gap:10px;}
+                  .div-left-profile img{width:40px; height:40px;}
+                  .ul-no-style{list-style-type:none;}
               </style>
                 <h3>Contact details</h3>
                 <p class="p1-left">For more information or any questions <br>that may arise don't hesitate to contact.</p>
-                <div class="div-left">Contact directly via email <i class="fas fa-envelope"></i>:</div>
-                <ul>
-                    <li><a href="mailto:polyqdatabase@mail.com">polyqdatabase@gmail.com</a></li>
+                <div class="div-left"><i class="fas fa-envelope"></i> Contact via email:</div>
+                <ul class="ul-no-style">
                     <li><a href="mailto:mouseframe.app@gmail.com">mouseframe.app@gmail.com</a></li>
+                </ul>
+                <div class="div-left-profile"><div><img src="{% static 'img/icon.png' %}" alt="Profile Icon"></div> <div>Check my work and contact me:</div></div>
+                <ul class="ul-no-style">
+                    <li><a href="https://bernas-estevam97.github.io/" target="_blank">Bernardo Estevam - Web portfolio</a></li>
                 </ul>
                 <div class="div-left">Check these available social links:</div>
                 <div class="logos">

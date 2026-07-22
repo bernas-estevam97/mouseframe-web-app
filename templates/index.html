@@ -148,12 +148,10 @@
             .image-help li{font-size: 1.2rem; text-align: left;}
           </style>
           <ul class="image-help">
-            <li>Be sure to resize to your ideal size before working on any measurements.</li>
-            <li>By resizing you delete any progress done on the current image size.</li>
-            <li>If the image has a 1 cm scale to be converted to pixels it can be safely resized since you can measure the resized 1cm line and use it.</li>
-            <li>If the image does not have a 1cm line and you do not have a saved value for the new resized image resolution, it is recommended not to resize as you will not be able to get a cm to px correct conversion value.</li>
-            <li>You can use the resize function by dragging the scroll or by clicking a scrollbar position or even use your arrow keys after clicking the scrollbar pointer.</li>
-            <li>You can also use the zoom mode if you prefer to do so.</li>
+            <li>Resize the image to your desired size before taking measurements, as resizing resets measurement progress.</li>
+            <li>It's safe to resize if the image includes a 1 cm reference scale, since you can recalculate the pixel-to-centimeter ratio afterward.</li>
+            <li>If there's no saved resolution for the resized image and no 1 cm reference, avoid resizing to preserve measurement accuracy.</li>
+            <li>Resize using the slider, by clicking on the scrollbar, or with the arrow keys, or use zoom instead if preferred.</li>
           </ul>
           <style nonce="{{ request.csp_nonce }}">
             .span-caution{color:red;}
@@ -204,7 +202,7 @@
                    <!-- <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
                    <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br> -->
                    <!-- <button class="button" type="button" id="resetCanvasNotIdx" onclick="clearCanvas()">Clear Canvas</button> -->
-                   <div class="btn-toggle">Pause all:&nbsp<button class="btn-tg" type="button" id="toggleInactive"><i class="fa-solid fa-circle-stop"></i></button></div>
+                   <div class="btn-toggle">Stop all:&nbsp<button class="btn-tg" type="button" id="toggleInactive"><i class="fa-solid fa-circle-stop"></i></button></div>
                    <div class="btn-reset">Reset all:&nbsp<button class="btn-rs" type="button" id="resetCanvas"><i class="fa-solid fa-eraser"></i></button></div>
                    <div class="hotkeys-legend">
                     <style nonce="{{ request.csp_nonce }}">
@@ -216,27 +214,9 @@
                     <div><img src="{% static 'img/letter-a.png' %}">: Blue L</div>
                     <div><img src="{% static 'img/letter-s.png' %}">: Blue R</div>
                     <div><img src="{% static 'img/letter-r.png' %}">: Reset all</div>
-                    <div><img src="{% static 'img/letter-p.png' %}">: Pause all</div>
+                    <div><img src="{% static 'img/letter-p.png' %}">: Stop all</div>
                    </div>
-                   <div class="under-image">Mouse scheme information <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#otherInfo"><i class="fa-solid fa-circle-info"></i></button>: </div>
-                   <style nonce="{{ request.csp_nonce }}">
-                      .collpase{width:366px;}
-                      #otherInfo li{margin-top: 10px;}
-                   </style>
-                   <div class="collapse" id="otherInfo">
-                    <ul>
-                      <li>You can activate button function by either clicking the respective button in each of the mouse's paws or by using a keyboard shortcut referenced above</li>
-                      <li>The "Pause all" button/function will stop any ongoing function to add points</li>
-                      <li>The "Reset all" button/function will clear all your points in your selected image above, in simple terms it will reset all your work done above</li>
-                    </ul>
-                    <style nonce="{{ request.csp_nonce }}">
-                      .p-tag-label-biorender{font-size: 1em;}
-                      .biorender-ref-image img{width:254px; height: 251px;}
-                   </style>
-                    <p class="p-tag-label-biorender">Mouse image adapted from:</p>
-                    <a class="biorender-ref-image" href="https://www.biorender.com/" target="_blank"><img src="{% static 'img/bio-render.png' %}"></a><br>
-                    
-                    </div>
+      
                    </div>
                    <div class="right-side-options">
                     <div class="info-active-function" id="activeFunction"></div>
@@ -249,7 +229,7 @@
                   <p>Instructions for manual removal:</p>
                    <ul>
                     <li>Your points appear below as you add them.</li>
-                    <li>Select your desired point and two options for removal will appear:<ul><li><u>Remove:</u> Delete the point and update the count without the removed point.</li>
+                    <li>Select your desired point and two options for removal will appear:<ul><li><u>Remove:</u> Deletes the point and updates the list of remaining points as if the point removed was never added.</li>
                     <li><u>Replace:</u> Remove the point, but it requires a single new point input by the user to use as replacement (many buttons will be disabled when the replacing function is active). </li></ul></li>
                    </ul>
                   </div>
@@ -303,6 +283,27 @@
                     </div>
                   </div>
                  </div>
+                 <div class="under-image">Button information & more <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#otherInfo"><i class="fa-solid fa-circle-info"></i></button>: </div>
+                   <style nonce="{{ request.csp_nonce }}">
+                      .collpase{width:366px;}
+                      #otherInfo li{margin-top: 10px;}
+                   </style>
+                   <div class="collapse" id="otherInfo">
+                    <ul>
+                      <li>You can activate button function by either clicking the respective button in each of the mouse's paws or by using a keyboard shortcut referenced above.</li>
+                      <li>The "Stop all" button/function will stop any ongoing function that adds points.</li>
+                      <li>The "Reset all" button/function will clear all your points in your selected image above, in simple terms it will reset all your work done above.</li>
+                    </ul>
+                    <style nonce="{{ request.csp_nonce }}">
+                      .biorender-ref{display: flex; align-items: center; justify-content: center;}
+                      .p-tag-label-biorender{font-size: 1.2em;margin-right: 30px;}
+                      .biorender-ref-image img{width:104px; height: 101px;}
+                   </style>
+                   <div class="biorender-ref">
+                    <p class="p-tag-label-biorender">Mouse image adapted from:</p>
+                    <a class="biorender-ref-image" href="https://www.biorender.com/" target="_blank"><img src="{% static 'img/bio-render.png' %}"></a><br>
+                    </div>
+                    </div>
               </div>
             </div>
         </div>
@@ -319,15 +320,18 @@
               <div class="saved-distances" id="savedDistance">
                 <h4>Define how many pixels are in a centimetre:</h4>
                   <style nonce="{{ request.csp_nonce }}">
+                        .info-manual-input{font-size: 1em; border: 1px solid rgba(0,0,0,.25); padding: 5px; margin-bottom: 10px; width: fit-content;}
                         .saved-distances h5{padding-top: 10px;}
                         .saved-distances .last-li{margin-bottom: 10px;}
+                        .ex-mark {color:red; font-size:1.4em; padding: 5px;}
                   </style> 
-                <h5>1. Measuring the 1cm (optional according to availability)</h5>
+                <h5>1. Measuring the 1cm (recommended for first time usage)</h5>
                 <ul>
-                <li>If there is a drawn line with the length of 1cm, measure it in pixels here by clicking "+" below.</li>
-                <li>The "+" button activates the function to add two new points to the image above, delimiting the 1cm line in it.</li>
-                <li>After adding to points delimiting the 1cm line, click the ruler icon to measure that distance in pixels.</li>
-                <li class="last-li">The result will appear below.</li>
+                <li>If the image includes a 1cm line, measure it in pixels using <i class="fa-solid fa-plus"></i> below or <i>Shift + M</i>.</li>
+                <li>Click <i class="fa-solid fa-plus"></i> to place two points marking the ends of the 1cm line.</li>
+                <li>Use the eraser (<i class="fa-solid fa-eraser"></i>, <i>D</i>) or reset (<i>R</i>) to remove points or measurements.</li>
+                <li>Once the two points are placed, click the ruler or press <i>M</i> to measure the distance in pixels.</li>
+                <li class="last-li">The measured value will appear below.</li>
                 </ul>
                 <p id="addMeasureInfo"></p>
                 <!-- <p id="scaleDistance"></p> -->
@@ -335,7 +339,8 @@
                 <button id="resetMeasure"><i class="fa-solid fa-eraser"></i></button>
                 <button id="measureDistance"><i class="fa-solid fa-ruler"></i></button>
                 <h5>2. Manually input a value or use previous saved values</h5>
-                <p>Manually input known value of pixels in 1 cm or use saved values (choose only one of the options and click use):</p>
+                <div class="info-manual-input"><b><span class="ex-mark"><i class="fa-solid fa-exclamation"></i></span>&nbsp;</b>Always make sure the conversion value you obtained previously was from an image with the same dimensions of the one you are currently working on.</div>
+                <p>Input known conversion value of pixels in 1 cm from previous image analysis or use saved values (choose only one of the options and click use):</p>
                 <input id="pixelsInCmMan" type="number" pattern="^\d+(\.\d+)*$" placeholder="Px in cm...">&nbspOR&nbsp
                 <select id="savedChoices" form="savedDistancesForm" class="custom-select">
                     <option value="None" disabled selected>Select a value</option>
@@ -350,12 +355,13 @@
                 <div class="measure-info"><div id="measureIntro">Value:</div>&nbsp&nbsp<input id="measureToCm" value="" size="5" readonly>px equals 1 cm.</div>
                   <style nonce="{{ request.csp_nonce }}">
                           .save-values-h4 {font-size: 1.5em; border-top: 2px solid rgba(0,0,0,.125) !important; padding-top: 20px;}
-                          .save-info{font-size: 1em}
+                          .save-info{font-size: 1em; border: 1px solid rgba(0,0,0,.25); padding: 5px; margin-bottom: 10px; width: fit-content;}
+                          .danger-sign{color:red; font-size:1.4em;}
                   </style> 
                   {% if user.username != 'guest' %}
                       <h4 class="save-values-h4">Save section</h4>
                       <p>If you have a value you want to save, use the fields below to add the value in pixels and the size of the image you took the value from (both fields are required to save).</p>
-                      <p class="save-info"><b><i class="fa-solid fa-triangle-exclamation"></i>&nbsp;Important:</b> Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
+                      <p class="save-info"><b><span class="danger-sign"><i class="fa-solid fa-triangle-exclamation"></i></span>&nbsp;Important:</b> Saving both these values allows for better practice and prevents the usage of such values in different sized images which is not correct.</p>
                       
                       <form action="saved" method="POST" id="savedDistancesForm">
                           {% csrf_token %}
@@ -393,7 +399,7 @@
                   <style nonce="{{ request.csp_nonce }}">
                           .table-results h3 {text-decoration: underline;}
                   </style>
-                <h3>Data results Table</h3>
+                <h3>Results table</h3>
                 <table id="table">
                   <thead id="tableH">
                   <tr>
