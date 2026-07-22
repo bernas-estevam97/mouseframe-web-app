@@ -13,30 +13,6 @@
     <title>MouseFrame - Info</title>
 </head>
 <body>
-    <div class="resolution-unsupported">
-        <section class="vh-100 gradient-custom">
-            
-          <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-              <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <style nonce="{{ request.csp_nonce }}">
-                  .card bg-dark text-white{border-radius: 1rem;}
-                </style>
-                <div class="card bg-dark text-white">
-                  <div class="card-body p-5 text-center">
-        
-                    <div class="mb-md-5 mt-md-4">
-                      <h2 class="fw-bold mb-2 text-uppercase">Unsupported resolution</h2>
-                      <p>This resolution and lower ones are not supported by this application.</p>
-                      <img src="{% static 'img/cartoon-mouse.png' %}"
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> 
-        </section>
-      </div>
     <p id="version">v<span data-version></span></p>
     <header>
                 <style nonce="{{ request.csp_nonce }}">
@@ -45,17 +21,17 @@
                   .nav-link:hover{color:#000 !important;}
                   .nav-link:focus{color:#000 !important;}
                 </style>
-        <h1><a href="{% url 'welcome' %}"><img class="image-one" src="{% static 'img/mouse.png' %}"></a><a href="{% url 'welcome' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}"></a></div><div class="text-title">&nbsp&nbsp&nbspMouseFrame - Info and details</div> </h1>
+        <h1><a href="{% url 'welcome' %}"><img class="image-one" src="{% static 'img/mouse.png' %}" alt="Mouse image"></a><a href="{% url 'welcome' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}" alt="Mouse paws image" alt="Mouse paws image"></a></div><div class="text-title">&nbsp&nbsp&nbspMouseFrame - Info and details</div> </h1>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             More
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'home' %}">Analysis</a></li>
-            <li><a class="dropdown-item" href="{% url 'contact' %}">Contact</a></li>
-            <li><a class="dropdown-item" href="{% url 'support' %}">Support</a></li>
+            <li><a class="dropdown-item" href="{% url 'home' %}" aria-label="Analysis Page">Analysis</a></li>
+            <li><a class="dropdown-item" href="{% url 'contact' %}" aria-label="Contact Page">Contact</a></li>
+            <li><a class="dropdown-item" href="{% url 'support' %}" aria-label="Support Page">Support</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank">ABC-RI</a></li>
+            <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank" aria-label="ABC-RI Website Hyperlink">ABC-RI</a></li>
           </ul>
         </li>
     </header>
@@ -89,8 +65,8 @@
         </ul>
         <p>The following image shows every measurement type and how it is calculated in simple terms:</p>
         <div class="img-container">
-        <figure><a class="download-image" href="{% static 'img/image-vector.png' %}" target="_blank">
-        <img src="{% static 'img/image-vector.png' %}"></a>
+        <figure><a class="download-image" href="{% static 'img/image-vector.png' %}" target="_blank" aria-label="Download full size image">
+        <img src="{% static 'img/image-vector.png' %}" alt="Diagram showing all measurements calculated by the online tool. Left (L) and right (R) sides are labeled, with x and y vectors indicating their respective directions. The coordinate system uses x and y values with the origin located at the top-left corner of the image."></a>
                 <style nonce="{{ request.csp_nonce }}">
                   figcaption{font-size: 1.1em;}
                 </style>
@@ -121,13 +97,13 @@
                 <li><a class="measure-ref" id="swh">Stride Width – Hind</a>: Calculates the hind stride width using the hind (blue) footprints. As with the front stride width, the user must specify whether the first footprint in the sequence is on the left or right. The measurement is obtained by calculating the distance between the selected footprint and an intermediate reference point, which shares the same x-coordinate as the selected footprint and the average y-coordinate of the corresponding left and right hind footprints. An example is provided in Figure 3.</li>
             </ul>
             
-            <figure><a class="download-image" href="{% static 'img/swfrstart.jpg' %}" target="_blank"><img src="{% static 'img/swfrstart.jpg' %}"></a>
-                <figcaption><b>Figure 2:</b> Stride width front with the first set of footsteps on the right. The measurement is done between L1 and I1 where this has the same value of X of L1 but the average of R1y and R2y (in this example).</figcaption>
+            <figure><a class="download-image" href="{% static 'img/swfrstart.jpg' %}" target="_blank" aria-label="Download full size image"><img src="{% static 'img/swfrstart.jpg' %}" alt="Example illustrating the front stride width measurement with the first set of footsteps on the right. Only the red landmarks are used as reference points. The stride width is measured between L1 and I1, where I1 shares the same x-coordinate as L1 and the average y-coordinate of R1 and R2 in this example, defining the perpendicular distance used for the front stride width measurement."></a>
+                <figcaption><b>Figure 2:</b> Front stride width measurement with the first set of footsteps on the right. Only the red landmarks are used as reference points. The measurement is calculated between L1 and I1, where I1 has the same x-coordinate as L1 and the average y-coordinate of R1 and R2 (shown in this example).</figcaption>
             </figure>
             
            
-            <figure><a class="download-image" href="{% static 'img/swhlstart.jpg' %}" target="_blank"><img src="{% static 'img/swhlstart.jpg' %}"></a>
-                <figcaption><b>Figure 3:</b> Stride width hind with the first set of footsteps on the left. The measurement is done between R1 and I1 where this has the same value of X of L1 but the average of L1y and L2y (in this example).</figcaption>
+            <figure><a class="download-image" href="{% static 'img/swhlstart.jpg' %}" target="_blank" aria-label="Download full size image"><img src="{% static 'img/swhlstart.jpg' %}" alt="Example illustrating the hind stride width measurement with the first set of footsteps on the left. Only the blue landmarks are used as reference points. The stride width is measured between R1 and I1, where I1 shares the same x-coordinate as R1 and the average y-coordinate of L1 and L2 in this example, defining the perpendicular distance used for the hind stride width measurement."></a>
+                <figcaption><b>Figure 3:</b> Hind stride width measurement with the first set of footsteps on the left. Only the blue landmarks are used as reference points. The measurement is calculated between R1 and I1, where I1 has the same x-coordinate as R1 and the average y-coordinate of L1 and L2 (shown in this example).</figcaption>
             </figure>
             
     </div>
@@ -138,19 +114,19 @@
     </div> -->
     <footer>
       <div class="footer-links">
-        <a href="{% url 'home' %}">Analysis</a>
-        <a href="{% url 'contact' %}">Contact</a>
-        <a href="https://abcri.pt/" target="_blank">ABC-RI</a>
-        <a href="https://abcri.pt/mngt/" target="_blank">MNGT</a>
-        <a href="{% url 'support' %}" class="footer-support-link">
-          <img src="{% static 'img/cup-border.png' %}" alt="Ko-fi" class="footer-kofi-png"> Support
+        <a href="{% url 'home' %}" aria-label="Analysis page">Analysis</a>
+        <a href="{% url 'contact' %}" aria-label="Contact page">Contact</a>
+        <a href="https://abcri.pt/" target="_blank" aria-label="ABC-RI Website Hyperlink">ABC-RI</a>
+        <a href="https://abcri.pt/mngt/" target="_blank" aria-label="MNGT Website Hyperlink">MNGT</a>
+        <a href="{% url 'support' %}" class="footer-support-link" aria-label="Support page">
+          <img src="{% static 'img/cup-border.png' %}" alt="Ko-fi logo" class="footer-kofi-png"> Support
         </a>
         
       </div>
       <p>© <span id="year"></span> MouseFrame. All rights reserved <br></p>
       <div class="footer-logos">
-        <div class="img-one"><img src="{% static 'img/Logo_ABCRI.png' %}" alt=""></div>
-        <div class="img-two"><img src="{% static 'img/Logo_MNGT.png' %}" alt=""></div>
+        <div class="img-one"><img src="{% static 'img/Logo_ABCRI.png' %}" alt="ABC-RI Logo"></div>
+        <div class="img-two"><img src="{% static 'img/Logo_MNGT.png' %}" alt="MNGT Logo"></div>
       </div>
     </footer>
     <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>

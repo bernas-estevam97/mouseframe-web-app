@@ -34,9 +34,9 @@
                     <p class="text-white-50 mb-5">This page does not exist</p>
                     
                     <div class="form-outline form-white mb-4">
-                    <img src="{% static 'img/notfound.png' %}">
+                    <img src="{% static 'img/notfound.png' %}" alt="Page Not Found Image">
                     </div>
-                    <p class="text-white-50 mb-5">Follow this <a href="{% url 'home' %}">link</a> to go to the home page</p>
+                    <p class="text-white-50 mb-5">Follow this <a href="{% url 'home' %}" aria-label="Home Page">link</a> to go to the home page</p>
                   </div>
                 </div>
               </div>

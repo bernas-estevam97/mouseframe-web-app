@@ -639,15 +639,19 @@ function removeAllMeasurePointsOnly() {
       pointSize * 4
     );
   }
+
   pointsMeasure.length = 0;
+
   canvas.removeEventListener("click", drawMeasurePoint);
   canvas.removeEventListener("click", printMousePos);
+
   canvas.style.cursor = "default";
 }
 
 
 
 function removeAllMeasurePoints() {
+
   for (let i = 0; i < pointsMeasure.length; i++) {
     ctx.clearRect(
       pointsMeasure[i].x - pointSize,
@@ -655,49 +659,60 @@ function removeAllMeasurePoints() {
       pointSize * 4,
       pointSize * 4
     );
-    // console.log(
-    //   "Removed measure point on the coordinates: X " +
-    //     pointsMeasure[i].x +
-    //     " Y: " +
-    //     pointsMeasure[i].y
-    // );
   }
+
   pointsMeasure.length = 0;
+
   canvas.removeEventListener("click", drawMeasurePoint);
   canvas.removeEventListener("click", printMousePos);
+
   canvas.style.cursor = "default";
+
   document.getElementById("measureToCm").value = "";
+
   dist = 0;
+
   document.getElementById('addMeasureInfo').textContent = "";
 }
+
 
 ///////////////////////////////////////////////
 
 function resetCanvas() {
   activeFunctionInfo.textContent = '';
+
   canvas.removeEventListener("click", drawBlueLeft);
   canvas.removeEventListener("click", drawBlueRight);
   canvas.removeEventListener("click", drawRedLeft);
   canvas.removeEventListener("click", drawRedRight);
   canvas.removeEventListener("click", printMousePos);
   canvas.removeEventListener("click", drawMeasurePoint);
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   pointsRedLeft.length = 0;
   pointsRedRight.length = 0;
   pointsBlueLeft.length = 0;
   pointsBlueRight.length = 0;
   pointsMeasure.length = 0;
+
   canvas.style.cursor = "auto";
-  pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-  showSize.textContent = "Current point radius size is: " + pointSize +"px";
+
+  pointSize = 4; // reset point size to default
+  showSize.textContent = "Current point radius size is: " + pointSize + "px";
+
   var elems = document.querySelectorAll(".active");
   [].forEach.call(elems, function (el) {
     el.classList.remove("active");
   });
+
   document.getElementById('addMeasureInfo').textContent = '';
+
   document.activeElement.blur();
+
   refreshRemoveList();
 }
+
 
 
 // TOGGLE INACTIVE FUNCTION
@@ -813,22 +828,22 @@ document.addEventListener('keydown', function(event) {
       document.getElementById('blueCircleRight').click();
       break;
     case 'p':
+      alert("Stopped all marking/drawing functions.")
       document.getElementById('toggleInactive').click();
       break;
     case 'm':
       document.getElementById('measureDistance').click();
       break;
     case 'd':
-      if (confirm("Are you sure you want to reset your conversion value? This will also remove any black measure points.")) {
-        document.getElementById('resetMeasure').click();
-      }
+      document.getElementById('resetMeasure').click();
       break;
     case 'r':
-      if (confirm("Are you sure you want to delete all points?")) {
+      if (confirm('Are you sure you want to reset the canvas? This will delete all points and measurements.')) {
         document.getElementById('resetCanvas').click();
       }
       break;
-  }
+
+      }
 });
 
 
@@ -1590,6 +1605,7 @@ document.addEventListener('keydown', function (e) {
 
 
 let resetFile = function () {
+
   // --- MEMORY FIX: Revoke the old blob URL before clearing variables ---
   // This frees the memory allocated to the previous image
   if (img.src && img.src.startsWith("blob:")) {
@@ -1602,71 +1618,57 @@ let resetFile = function () {
   // --- Existing Reset Logic ---
   imgContainer.style.backgroundImage = "";
   buttons.style.display = "none";
-  // results.style.display = "none";
-  // chButtons.style.display = "none";
-  // imgInfo.style.display = "none";
   imgEdit.style.display = "none";
   canvas.style.cursor = "auto";
-  
+
   canvas.removeEventListener("click", drawBlueLeft);
   canvas.removeEventListener("click", drawBlueRight);
   canvas.removeEventListener("click", drawRedLeft);
   canvas.removeEventListener("click", drawRedRight);
   canvas.removeEventListener("click", printMousePos);
   canvas.removeEventListener("click", drawMeasurePoint);
-  
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // canvasInfo.textContent = "<strong>Canvas size is:</strong> ";
+
   canvasUpload.style.display = "none";
   canvas.width = 0;
   canvas.height = 0;
-  
+
   pointsRedLeft.length = 0;
   pointsRedRight.length = 0;
   pointsBlueLeft.length = 0;
   pointsBlueRight.length = 0;
   pointsMeasure.length = 0;
-  
+
   imgContainer.style.width = "0";
   imgContainer.style.height = "0";
-  
-  // document.getElementById("inputScreenInches").value = "";
-  // document.getElementById("inputScreenInches").style.display = "none";
-  // document.getElementById("screenPPI").textContent = "";
-  // document.getElementById("imageDimInches").textContent = "";
-  // document.getElementById("imageDimCm").textContent = "";
-  // document.getElementById("labelInput").style.display = "none";
-  // document.getElementById("ppiCalculus").style.display = "none";
-  
+
   document.getElementById("savedDistance").style.display = "none";
   document.getElementById("showData").style.display = "none";
   imgContainer.style.border = "none";
   canvas.style.display = "none";
-  
-  // document.getElementById("canvasWidth").value = '';
-  // document.getElementById("canvasHeight").value = '';
-  // let imgWidthInput = document.getElementById("containerWidth");
-  // let imgHeightInput = document.getElementById("containerHeight");
-  // imgWidthInput.value = '';
-  // imgHeightInput.value = '';
 
   appendSafeHTML(tableTitle, [
-  (() => {
-    const b = document.createElement('b');
-    b.textContent = 'Table ID:';
-    return b;
-  })()
+    (() => {
+      const b = document.createElement('b');
+      b.textContent = 'Table ID:';
+      return b;
+    })()
   ]);
+
   document.getElementById("measureToCm").value = "";
   dist = 0;
-  // imgSizeStatus = 0;
+
   document.getElementById('removeImage').style.display = "none";
+
   var elems = document.querySelectorAll(".active");
   [].forEach.call(elems, function (el) {
     el.classList.remove("active");
   });
+
   document.getElementById('accordion').style.display = 'none';
 };
+
 
 //---------------------------------------------------------//
 

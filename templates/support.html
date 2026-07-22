@@ -21,17 +21,17 @@
             .nav-link:hover{color:#000 !important;}
             .nav-link:focus{color:#000 !important;}
         </style>
-        <h1><a href="{% url 'welcome' %}"><img class="image-one" src="{% static 'img/mouse.png' %}"></a><a href="{% url 'welcome' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}"></a></div><div class="text-title">&nbsp&nbsp&nbspMouseFrame - Support</div> </h1>
+        <h1><a href="{% url 'welcome' %}"><img class="image-one" src="{% static 'img/mouse.png' %}" alt="Mouse image"></a><a href="{% url 'welcome' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}" alt="Mouse paws image"></a></div><div class="text-title">&nbsp&nbsp&nbspMouseFrame - Support</div> </h1>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             More
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'home' %}">Analysis</a></li>
-            <li><a class="dropdown-item" href="{% url 'info' %}">Information</a></li>
-            <li><a class="dropdown-item" href="{% url 'contact' %}">Contact</a></li>
+            <li><a class="dropdown-item" href="{% url 'home' %}" aria-label="Analysis page">Analysis</a></li>
+            <li><a class="dropdown-item" href="{% url 'info' %}" aria-label="Information page">Information</a></li>
+            <li><a class="dropdown-item" href="{% url 'contact' %}" aria-label="Contact page">Contact</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank">ABC-RI</a></li>
+            <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank" aria-label="ABC-RI Website Hyperlink">ABC-RI</a></li>
           </ul>
         </li>
     </header>
@@ -45,7 +45,7 @@
               </style>
                 <div class="header-logo">
                 <h3>Support MouseFrame</h3>
-                    <img src="{% static 'img/logo.png' %}">
+                    <img src="{% static 'img/logo.png' %}" alt="MouseFrame Logo">
                 </div>
                 <p class="p1-left">MouseFrame is free to use. However, keeping the servers running, fixing bugs, and developing new features takes time and resources.</p>
                 <div class="div-left">Did this tool save you time today? <br>Consider buying me a coffee! <i class="fas fa-mug-hot"></i></div>
@@ -64,16 +64,16 @@
     </main>
     <footer>
         <div class="footer-links">
-          <a href="{% url 'home' %}">Analysis</a>
-          <a href="{% url 'info' %}">Information</a>
-          <a href="{% url 'contact' %}">Contact</a>
-          <a href="https://abcri.pt/" target="_blank">ABC-RI</a>
-          <a href="https://abcri.pt/mngt/" target="_blank">MNGT</a>
+          <a href="{% url 'home' %}" aria-label="Analysis page">Analysis</a>
+          <a href="{% url 'info' %}" aria-label="Information page">Information</a>
+          <a href="{% url 'contact' %}" aria-label="Contact page">Contact</a>
+          <a href="https://abcri.pt/" target="_blank" aria-label="ABC-RI Website Hyperlink">ABC-RI</a>
+          <a href="https://abcri.pt/mngt/" target="_blank" aria-label="MNGT Website Hyperlink">MNGT</a>
         </div>
         <p>© <span id="year"></span> MouseFrame. All rights reserved <br></p>
         <div class="footer-logos">
-          <div class="img-one"><img src="{% static 'img/Logo_ABCRI.png' %}" alt=""></div>
-          <div class="img-two"><img src="{% static 'img/Logo_MNGT.png' %}" alt=""></div>
+          <div class="img-one"><img src="{% static 'img/Logo_ABCRI.png' %}" alt="ABC-RI Logo"></div>
+          <div class="img-two"><img src="{% static 'img/Logo_MNGT.png' %}" alt="MNGT Logo"></div>
         </div>
       </footer>
       <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>

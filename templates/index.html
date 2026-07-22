@@ -36,9 +36,9 @@
                   .links-menu{list-style-type: none; padding-left: 0;}
                   </style>
                   <ul class="links-menu">
-                    <li class="unsp-link"><a href="{% url 'info' %}">Tool Information</a></li>
-                    <li class="unsp-link"><a href="{% url 'contact' %}">Contact</a></li>
-                    <li class="unsp-link"><a href="{% url 'support' %}">Support the App</a></li>
+                    <li class="unsp-link"><a href="{% url 'info' %}" aria-label="Information Page">Tool Information</a></li>
+                    <li class="unsp-link"><a href="{% url 'contact' %}" aria-label="Contact Page">Contact</a></li>
+                    <li class="unsp-link"><a href="{% url 'support' %}" aria-label="Support Page">Support the App</a></li>
                   </ul>
                   <img src="{% static 'img/cartoon-mouse.png' %}">
                 </div>
@@ -51,7 +51,7 @@
   </div>
   <p id="version">v<span data-version></span></p>
     <header>
-        <h1><a href="{% url 'welcome' %}"><img class="image-one" src="{% static 'img/mouse.png' %}"></a><a href="{% url 'welcome' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}"></a>&nbsp&nbsp&nbspMouseFrame - Gait/footprint analysis</h1>
+        <h1><a href="{% url 'welcome' %}"><img class="image-one" src="{% static 'img/mouse.png' %}" alt="Mouse image"></a><a href="{% url 'welcome' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}" alt="Mouse paws image"></a>&nbsp&nbsp&nbspMouseFrame - Gait/footprint analysis</h1>
         <style nonce="{{ request.csp_nonce }}">
                   .nav-item{list-style-type: none;}
                   .nav-link{color: #000;}
@@ -63,11 +63,11 @@
             More
           </a>
           <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'info' %}">Information</a></li>
-            <li><a class="dropdown-item" href="{% url 'contact' %}">Contact</a></li>
-            <li><a class="dropdown-item" href="{% url 'support' %}">Support</a></li>
+            <li><a class="dropdown-item" href="{% url 'info' %}" aria-label="Information Page">Information</a></li>
+            <li><a class="dropdown-item" href="{% url 'contact' %}" aria-label="Contact Page">Contact</a></li>
+            <li><a class="dropdown-item" href="{% url 'support' %}" aria-label="Support Page">Support</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank">ABC-RI</a></li>
+            <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank" aria-label="ABC-RI Website Hyperlink">ABC-RI</a></li>
           </ul>
         </li>
         
@@ -83,7 +83,7 @@
         <li>Saved measurements are exclusive to each user.</li>
         <li>Added zoom toggle function, see information below.</li>
       </ul>
-      <button class="new-btn-close-modal" id="closeModal">Close</button>
+      <button class="new-btn-close-modal" id="closeModal" aria-label="Close">Close</button>
     </section>
     
     <!-- <div class="overlay hidden"></div> -->
@@ -97,10 +97,10 @@
                 <li>In order to draw dots to perform the calculations, this is done in canvas. The canvas as the name implies is a surface where the user can draw. In this case, only dots of different sizes and colors can be added.</li>
                 <li>All the functionalities are shown after successful image upload.</li>
                 <li>For more information on this application and to see how the calculations are made for each measurement, check the<a class="info-page" href="{% url 'info' %}">info</a>page.</li>
-                <li>Check <button class="show-updates" id="showNews">News and updates</button> for this version.</li>
+                <li>Check <button class="show-updates" id="showNews" aria-label="Show news and updates">News and updates</button> for this version.</li>
             </ul>
             <p id="loginName">Welcome! You are logged in as <b><u>{{ user.get_username }}</u></b></p>
-            <p id="userResolution"><strong>Your resolution is:</strong> </p><a class="logout-button" href="{% url 'logout' %}">Logout</a><br>
+            <p id="userResolution"><strong>Your resolution is:</strong> </p><a class="logout-button" href="{% url 'logout' %}" aria-label="Logout">Logout</a><br>
         </div>
     <!-- </div> -->
     <!-- <div class="right-part"> -->
@@ -118,7 +118,7 @@
             
             <!-- <input type="file" onchange="previewFile();"> -->
             <input class="upload-btn" type="button" value="Select Image"/>
-            <button class="reset-button" type="button" id="removeImage"><i class="fa-solid fa-trash-can"></i></button>
+            <button class="reset-button" type="button" id="removeImage" aria-label="Remove Image"><i class="fa-solid fa-trash-can"></i></button>
             
             
             <!-- <span id="imageUploadedSize"></span> -->
@@ -162,15 +162,7 @@
         <div class="slider-container">
         <input type="range" min="1" max="100" value="100" id="mySlider" class="slider">
         </div>
-        <!-- <button id="seventyFiveP" onclick="resizeSF();">75% Size</button>
-        <button id="fiftyP" onclick="resizeFifty();">50% Size</button>
-        <button id="fortyP" onclick="resizeForty();">40% Size</button>
-        <button id="twentyFiveP" onclick="resizeTwentyF();">25% Size</button>
-        <button id="resetImgDim" onclick="resetImgDim();">&#x21ba;</button><br><br> -->
         <p id="currentImgSize" name="image_size"></p>
-        <!-- <br><br><h3>Image resizing slider:</h3>
-        <input type="range" min="1" max="20" value="1" class="slider" id="Slider">
-        <p><output id="value"></output></p> -->
        </div>  
       
        <!--- BREAK-->
@@ -188,22 +180,22 @@
               <div class="accordion-body">
                 <div class="buttons-plus-options">
                   <div class="mouse-scheme">
-                   <img class="mouse-image" src="{% static 'img/mouse-scheme-new.png' %}" title="Mouse (dorsal, anatomical position) from biorender.com">
-                   <button class="marker" type="button" id="redCircleLeft">L</button>
+                   <img class="mouse-image" src="{% static 'img/mouse-scheme-new.png' %}" title="Mouse (dorsal, anatomical position) from biorender.com" alt="Mouse (dorsal, anatomical position) adapted from biorender.com">
+                   <button class="marker" type="button" id="redCircleLeft" aria-label="Mark Left Red Point">L</button>
                    <!-- <button class="button" type="button" id="deleteCircleRedLeft" onclick="removeRedCircleLeft();">Delete last added left red dot</button>
                    <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllRedCircleLeft();">Delete all left red dots</button><br> -->
-                   <button class="marker" type="button" id="redCircleRight">R</button>
+                   <button class="marker" type="button" id="redCircleRight" aria-label="Mark Right Red Point">R</button>
                    <!-- <button class="button" type="button" id="deleteCircleRedRight" onclick="removeRedCircleRight();">Delete last added right red dot</button>
                    <button class="button" type="button" id="deleteAllCircleRedRight" onclick="removeAllRedCircleRight();">Delete all right red dots</button><br> -->
-                   <button class="marker" type="button" id="blueCircleLeft">L</button>
+                   <button class="marker" type="button" id="blueCircleLeft" aria-label="Mark Left Blue Point">L</button>
                    <!-- <button class="button" type="button" id="deleteCircleBlueLeft" onclick="removeBlueCircleLeft();">Delete last added left blue dot</button>
                    <button class="button" type="button" id="deleteAllCircleRedLeft" onclick="removeAllBlueCircleLeft();">Delete all left blue dots</button><br> -->
-                   <button class="marker" type="button" id="blueCircleRight">R</button>
+                   <button class="marker" type="button" id="blueCircleRight" aria-label="Mark Right Blue Point">R</button>
                    <!-- <button class="button" type="button" id="deleteCircleBlueRight" onclick="removeBlueCircleRight();">Delete last added right blue dot</button>
                    <button class="button" type="button" id="deleteAllCircleBlueRight" onclick="removeAllBlueCircleRight();">Delete all right blue dots</button><br> -->
                    <!-- <button class="button" type="button" id="resetCanvasNotIdx" onclick="clearCanvas()">Clear Canvas</button> -->
-                   <div class="btn-toggle">Stop all:&nbsp<button class="btn-tg" type="button" id="toggleInactive"><i class="fa-solid fa-circle-stop"></i></button></div>
-                   <div class="btn-reset">Reset all:&nbsp<button class="btn-rs" type="button" id="resetCanvas"><i class="fa-solid fa-eraser"></i></button></div>
+                   <div class="btn-toggle">Stop all:&nbsp<button class="btn-tg" type="button" id="toggleInactive" aria-label="Stop All"><i class="fa-solid fa-circle-stop"></i></button></div>
+                   <div class="btn-reset">Reset all:&nbsp<button class="btn-rs" type="button" id="resetCanvas" aria-label="Reset Canvas"><i class="fa-solid fa-eraser"></i></button></div>
                    <div class="hotkeys-legend">
                     <style nonce="{{ request.csp_nonce }}">
                       .shortcut-info{margin-bottom:5px; font-weight: bold;}
@@ -237,8 +229,8 @@
                    <button id="emptyListRemoval" onclick="emptyRemoveList();"><i class="fa-solid fa-trash"></i></button> -->
                    <label for="selectPoint">Add points, see them here <i class="fa-solid fa-right-long"></i>&nbsp</label><select id="selectPoint" class="custom-select">
                    </select>
-                   &nbsp<button id="removePoint">Remove</button>
-                   <button id="replacePoint">Replace</button>
+                   &nbsp<button id="removePoint" aria-label="Remove Selected Point">Remove</button>
+                   <button id="replacePoint" aria-label="Replace Selected Point">Replace</button>
                   </div>
                   <div class="group-removal">
                    <style nonce="{{ request.csp_nonce }}">
@@ -259,12 +251,12 @@
                     </div>
                     <div class="remove-groups">
                     <div class="red-remove-points">
-                    <button class="button" type="button" id="deleteAllCircleRedLeft">Delete Red L group</button>
-                    <button class="button" type="button" id="deleteAllCircleRedRight">Delete Red R group</button>
+                    <button class="button" type="button" id="deleteAllCircleRedLeft" aria-label="Delete All Red Left circles">Delete Red L group</button>
+                    <button class="button" type="button" id="deleteAllCircleRedRight" aria-label="Delete All Red Right circles">Delete Red R group</button>
                     </div>
                     <div class="blue-remove-points">
-                    <button class="button" type="button" id="deleteAllCircleBlueLeft">Delete Blue L group</button>
-                    <button class="button" type="button" id="deleteAllCircleBlueRight">Delete Blue R group</button>
+                    <button class="button" type="button" id="deleteAllCircleBlueLeft" aria-label="Delete All Blue Left circles">Delete Blue L group</button>
+                    <button class="button" type="button" id="deleteAllCircleBlueRight" aria-label="Delete All Blue Right circles">Delete Blue R group</button>
                     </div>
                     </div>
                     </div>
@@ -275,8 +267,8 @@
                    </style>  
                     <h2 class="change-dim-h2">Change dimensions of your marking points:</h2>
                     <input id="sizeInput" type="number" min="1" step="1" placeholder="Point size in px...">
-                    <button id="changeS">Change</button>
-                    <button id="resetS"><i class="fa-solid fa-rotate-left"></i></button>
+                    <button id="changeS" aria-label="Change Point Size">Change</button>
+                    <button id="resetS" aria-label="Reset Point Size"><i class="fa-solid fa-rotate-left"></i></button>
                     <p> Default point radius size is set to 4px</p>
                     <p id="dynamicSize"></p>
                     <p><strong>Note:</strong>&nbspWhen deleting buttons make sure you don't change radius size. Only delete points when working with a fixed size</p>
@@ -301,7 +293,7 @@
                    </style>
                    <div class="biorender-ref">
                     <p class="p-tag-label-biorender">Mouse image adapted from:</p>
-                    <a class="biorender-ref-image" href="https://www.biorender.com/" target="_blank"><img src="{% static 'img/bio-render.png' %}"></a><br>
+                    <a class="biorender-ref-image" href="https://www.biorender.com/" target="_blank" aria-label="BioRender Website Hyperlink"><img src="{% static 'img/bio-render.png' %}" alt="BioRender logo"></a><br>
                     </div>
                     </div>
               </div>
@@ -329,15 +321,15 @@
                 <ul>
                 <li>If the image includes a 1cm line, measure it in pixels using <i class="fa-solid fa-plus"></i> below or <i>Shift + M</i>.</li>
                 <li>Click <i class="fa-solid fa-plus"></i> to place two points marking the ends of the 1cm line.</li>
-                <li>Use the eraser (<i class="fa-solid fa-eraser"></i>, <i>D</i>) or reset (<i>R</i>) to remove points or measurements.</li>
+                <li>Use the eraser (<i class="fa-solid fa-eraser"></i>, <i>D</i>) or reset (<i>R</i>) to remove measurement points and conversion values previously obtained.</li>
                 <li>Once the two points are placed, click the ruler or press <i>M</i> to measure the distance in pixels.</li>
                 <li class="last-li">The measured value will appear below.</li>
                 </ul>
                 <p id="addMeasureInfo"></p>
                 <!-- <p id="scaleDistance"></p> -->
-                <button id="measureButton" class="measure"><i class="fa-solid fa-plus"></i></button>
-                <button id="resetMeasure"><i class="fa-solid fa-eraser"></i></button>
-                <button id="measureDistance"><i class="fa-solid fa-ruler"></i></button>
+                <button id="measureButton" class="measure" aria-label="Activate measure buttons"><i class="fa-solid fa-plus" ></i></button>
+                <button id="resetMeasure" aria-label="Reset Measurement"><i class="fa-solid fa-eraser"></i></button>
+                <button id="measureDistance" aria-label="Measure Distance"><i class="fa-solid fa-ruler"></i></button>
                 <h5>2. Manually input a value or use previous saved values</h5>
                 <div class="info-manual-input"><b><span class="ex-mark"><i class="fa-solid fa-exclamation"></i></span>&nbsp;</b>Always make sure the conversion value you obtained previously was from an image with the same dimensions of the one you are currently working on.</div>
                 <p>Input known conversion value of pixels in 1 cm from previous image analysis or use saved values (choose only one of the options and click use):</p>
@@ -348,8 +340,8 @@
                     <option id="{{forloop.counter}}" value="{{distance.conversion_value}}">{{distance.conversion_value}} - {{distance.image_size}}</option>
                   {% endfor %}
                 </select>
-                <button id="manualUse">Use</button>
-                <button id="resetManual"><i class="fa-solid fa-rotate-left"></i></button>
+                <button id="manualUse" aria-label="Use Manual Input">Use</button>
+                <button id="resetManual" aria-label="Reset Manual Input"><i class="fa-solid fa-rotate-left"></i></button>
                 <!-- <button id="removeOption" type="submit">Delete</button> -->
                 <h5>Measurement result</h5>
                 <div class="measure-info"><div id="measureIntro">Value:</div>&nbsp&nbsp<input id="measureToCm" value="" size="5" readonly>px equals 1 cm.</div>
@@ -371,14 +363,14 @@
                             
                             <li>Image size in which the value is being saved: <input type="text" name="image_size" id="imgSizeInfo" maxlength="10" placeholder="E.g. 1920x1080" required></li>
                           </ol>
-                          <button class="save-button" id="saveDistanceButton" type="submit"><i class="fa-solid fa-floppy-disk"></i></button> 
+                          <button class="save-button" id="saveDistanceButton" type="submit" aria-label="Save Distance"><i class="fa-solid fa-floppy-disk"></i></button> 
                         <div id="messageSave"></div>
                       </form>
                   {% else %}
                       <!-- Optional: What the guest user sees instead -->
                       <h4 class="save-values-h4">Save section - &#128683 Not available for guest users</h4>
                       <div class="guest-only">
-                      <p>Please log in with a private user account to save values.</p><a class="logout-button-alternate" href="{% url 'logout' %}">Logout and use a private account</a>
+                      <p>Please log in with a private user account to save values.</p><a class="logout-button-alternate" href="{% url 'logout' %}" aria-label="Logout and use a private account">Logout and use a private account</a>
                       </div>
                   {% endif %}
                </div>
@@ -419,9 +411,9 @@
                 <div id="imageResizeTableWarning"></div>
               </div><br>
               <label for="button-export"><i class="fa-solid fa-circle-info"></i> Export your table to a new excel file with the table name provided on the right.</label><br>
-              <button name="button-export" id="exportEx"> Export to excel file </button><br><br>
+              <button name="button-export" id="exportEx" aria-label="Export to Excel file"> Export to excel file </button><br><br>
               <label for="copy-table"><i class="fa-solid fa-circle-info"></i> Copy the table to your clipboard and paste it into a file of your preference.</label><br>
-              <button name="copy-table" id="copyTable">Copy Table to Clipboard</button>
+              <button name="copy-table" id="copyTable" aria-label="Copy Table to Clipboard">Copy Table to Clipboard</button>
             </div>
               <div class="select-options">
                   <style nonce="{{ request.csp_nonce }}">
@@ -433,7 +425,7 @@
                     <!-- <button onclick="updateTableID()"><i class="fa-solid fa-check"></i></button> -->
                     <p>1. Insert table ID:</p>
                     <div class="entry-table-id">
-                      <input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button id="removeTableIdButton"><i class="fa-solid fa-rotate-left"></i></button>
+                      <input id="entryTableID" placeholder="Enter an ID for table">&nbsp<button id="removeTableIdButton" aria-label="Remove Table ID"><i class="fa-solid fa-rotate-left"></i></button>
                     </div>
                   </div>
                   <div id="footstepsBeginning">
@@ -465,10 +457,10 @@
                   </section>
                   <div class="add-buttons">
                   <div class="add-all-block">
-                    <button id="addAll" type="submit">Add Entries</button><button id="openAe" type="button"><i class="fa-solid fa-circle-question"></i></button>
+                    <button id="addAll" type="submit" aria-label="Add Entries">Add Entries</button><button id="openAe" type="button" aria-label="Open Help for Add Entries"><i class="fa-solid fa-circle-question"></i></button>
                   </div>
                   <div class="add-all-average-block">
-                    <button id="addAllAverage" type="submit">Add Entries with average</button><button id="openAea" type="button"><i class="fa-solid fa-circle-question"></i></button>
+                    <button id="addAllAverage" type="submit" aria-label="Add Entries with Average">Add Entries with average</button><button id="openAea" type="button" aria-label="Open Help for Add Entries with Average"><i class="fa-solid fa-circle-question"></i></button>
                   </div><br>
                   </div>
                   </div>
@@ -480,8 +472,8 @@
                   <h5>Removal section:</h5>
                   <p>Remove by entry number or remove all &#8628;</p>
                   <input id="entryNumber" placeholder="Entry nº" size="3" maxlength="3">
-                  <button id="removeEntry"><i class="fa-solid fa-trash"></i></button>
-                  <button id="removeAllEntries">Remove all &nbsp<i class="fa-solid fa-trash-can"></i></button>
+                  <button id="removeEntry" aria-label="Remove Entry"><i class="fa-solid fa-trash"></i></button>
+                  <button id="removeAllEntries" aria-label="Remove All Entries">Remove all &nbsp<i class="fa-solid fa-trash-can"></i></button>
                   </div>
                   <div class="remove-by-measurement" id="removeByMeasurement">
                   <p>Remove by measurement type &#8628;</p>
@@ -495,7 +487,7 @@
                     <option value="Stride Width Front">Stride Width Front</option>
                     <option value="Stride Width Hind">Stride Width Hind</option>
                   </select>
-                  <button id="removeByMeasurementButton">Remove</button>
+                  <button id="removeByMeasurementButton" aria-label="Remove by Measurement">Remove</button>
                   </div>
               </div>
           </div>
@@ -509,18 +501,18 @@
 <footer>
   
   <div class="footer-links">
-    <a href="{% url 'info' %}" target="_blank">Information</a>
-    <a href="{% url 'contact' %}" target="_blank">Contact</a>
-    <a href="https://abcri.pt/" target="_blank">ABC-RI</a>
-    <a href="https://abcri.pt/mngt/" target="_blank">MNGT</a>
-    <a href="{% url 'support' %}" class="footer-support-link">
-        <img src="{% static 'img/cup-border.png' %}" alt="Ko-fi" class="footer-kofi-png"> Support
+    <a href="{% url 'info' %}" target="_blank" aria-label="Information page">Information</a>
+    <a href="{% url 'contact' %}" target="_blank" aria-label="Contact page">Contact</a>
+    <a href="https://abcri.pt/" target="_blank" aria-label="ABC-RI Website Hyperlink">ABC-RI</a>
+    <a href="https://abcri.pt/mngt/" target="_blank" aria-label="MNGT Website Hyperlink">MNGT</a>
+    <a href="{% url 'support' %}" class="footer-support-link" aria-label="Support page">
+        <img src="{% static 'img/cup-border.png' %}" alt="Ko-fi logo" class="footer-kofi-png"> Support
     </a>
   </div>
   <p>© <span id="year"></span> MouseFrame. All rights reserved <br></p>
   <div class="footer-logos">
-    <div class="img-one"><img src="{% static 'img/Logo_ABCRI.png' %}" alt=""></div>
-    <div class="img-two"><img src="{% static 'img/Logo_MNGT.png' %}" alt=""></div>
+    <div class="img-one"><img src="{% static 'img/Logo_ABCRI.png' %}" alt="ABC-RI Logo"></div>
+    <div class="img-two"><img src="{% static 'img/Logo_MNGT.png' %}" alt="MNGT Logo"></div>
   </div>
 </footer>
 </main>
@@ -545,7 +537,11 @@
 
       uploadInput.addEventListener('change', loadFile);
       uploadButton.addEventListener('click', () => uploadInput.click());
-      resetInputButton.addEventListener('click', resetFile);
+      resetInputButton.addEventListener('click', function () {
+        if (confirm('Are you sure you want to stop working on this image? This will reset everything and will ask for a new image upload.')) {
+          resetFile();
+        }
+      });
 
       document.getElementById('redCircleLeft').addEventListener('click', drawRedCircleLeft);
       document.getElementById('redCircleRight').addEventListener('click', drawRedCircleRight);
@@ -562,7 +558,18 @@
       document.getElementById('changeS').addEventListener('click', changeSize);
       document.getElementById('resetS').addEventListener('click', resetSize);
       document.getElementById('measureButton').addEventListener('click', drawMeasureCircle);
-      document.getElementById('resetMeasure').addEventListener('click', removeAllMeasurePoints);
+      document.getElementById('resetMeasure').addEventListener('click', function () {
+        if (pointsMeasure.length === 0) {
+          if (confirm('Are you sure you want to reset the measure? This will reset the conversion value.')) {
+          removeAllMeasurePoints();
+        }
+        }else{
+          if (confirm('Are you sure you want to reset the measure? This will delete measurement points.')) {
+          removeAllMeasurePoints();
+        }
+        }
+        
+      });
       document.getElementById('measureDistance').addEventListener('click', distanceMeasurePoint);
       document.getElementById('manualUse').addEventListener('click', manualInputMeasure);
       document.getElementById('resetManual').addEventListener('click', resetInput);
