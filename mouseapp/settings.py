@@ -23,16 +23,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-load_dotenv()
-key = os.environ.get('S_KEY')
-#For ubuntu provide full path
-# load_dotenv('var/www/mouseframe/django_image_analysis/mouseapp/.env')
+# load_dotenv()
 # key = os.environ.get('S_KEY')
+#For ubuntu provide full path
+load_dotenv('var/www/mouseframe/django_image_analysis/mouseapp/.env')
+key = os.environ.get('S_KEY')
 
 
 SECRET_KEY=key
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1','mouseframe.pt', 'www.mouseframe.pt']
 
@@ -280,16 +280,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ------------------------- SECURITY CHECKS FOR PROD WITH SSL CERTIFICATE FOR PRODUCTION ONLY ---------------------------#
 
-# SECURE_CONTENT_TYPE_NOSNIFF = True
-# SECURE_BROWSER_XSS_FILTER = True
-# X_FRAME_OPTIONS = 'DENY'
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
-# SECURE_SSL_REDIRECT = True
-# USE_X_FORWARDED_HOST = True
-# SECURE_HSTS_SECONDS = 31536000
-# SECURE_HSTS_PRELOAD = True
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
+USE_X_FORWARDED_HOST = True
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # ------------------------------------------------------------- #
 
@@ -302,14 +302,16 @@ SESSION_COOKIE_AGE = 180 * 60  #3 hours
 password = os.getenv('G_THIRD_P')
 usr = os.getenv('G_ACC')
 
-# import socket
-# EMAIL_HOST= 'smtp.gmail.com'
-# EMAIL_PORT = 587  # Gmail SMTP port for TLS
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = usr
-# EMAIL_HOST_PASSWORD = password
+EMAIL_HOST= 'smtp.gmail.com'
+EMAIL_PORT = 587  # Gmail SMTP port for TLS
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = usr
+EMAIL_HOST_PASSWORD = password
 
-
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # DEV environment email backend for testing purposes, will print the email to the console instead of sending it
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# PROD environment email backend for sending emails via SMTP (uncomment the following line in production)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

@@ -850,9 +850,9 @@ document.addEventListener('keydown', function(event) {
 // Resolution section //
 
 function getUserResolution() {
-  document.getElementById("userResolution").append(window.screen.width * window.devicePixelRatio +
+  document.getElementById("userResolution").append(Math.round(window.screen.width * window.devicePixelRatio) +
     "x" +
-    window.screen.height * window.devicePixelRatio)
+    Math.round(window.screen.height * window.devicePixelRatio))
 }
 
 getUserResolution();
