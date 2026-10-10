@@ -1,77 +1,77 @@
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User  # Added to fetch the guest user
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
-from django.core.cache import cache
 from django.conf import settings
-from django.core.exceptions import PermissionDenied
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.core.cache import cache
+from django.shortcuts import redirect, render
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.http import require_POST
 
-# Create your views here.
-
-#LOGIN VIEW FOR IPLOCKOUTMIDDLEWARE
-
-def login_user(request: HttpRequest):
-    if request.method == 'POST':
-        # 1. Check if the user clicked "Continue as Guest"
-        if request.POST.get('guest_login') == 'true':
-            try:
-                # Fetch the dedicated guest user from the database
-                guest_user = User.objects.get(username='guest')
-                login(request, guest_user)
-                return redirect('/')
-            except User.DoesNotExist:
-                # Failsafe just in case the guest user hasn't been created yet
-                messages.error(request, "Guest account is not configured. Please contact the administrator.")
-                return render(request, 'authenticate/login.html', {})
-
-        # 2. Standard Login Flow
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        
-        # Ensure credentials were provided before attempting to authenticate
-        if not username or not password:
-            messages.error(request, "Please provide a username and password.")
-            return render(request, 'authenticate/login.html', {})
-
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            login(request, user)
-            ip = get_client_ip(request)
-            if ip:
-                key = f'failed_login_attempts_{ip}'
-                cache.delete(key)
-            return redirect('/')
-        else:
-            ip = get_client_ip(request)
-            if ip:
-                key = f'failed_login_attempts_{ip}'
-                attempts = cache.get(key, 0)
-                attempts += 1
-                cache.set(key, attempts, timeout=settings.FAILED_LOGIN_LOCK_DURATION) #IPLockOutMiddleWare         
-                
-                if attempts >= settings.MAX_FAILED_LOGIN_ATTEMPTS: #IpLockOutMiddleware
-                    # return render(request, 'authenticate/blocked.html', {})
-                    messages.error(request, "You have been blocked for several failed login attempts.")
-                    raise PermissionDenied()
-                else:
-                    # Minor tweak: dynamically calculate how many attempts are actually left
-                    attempts_left = settings.MAX_FAILED_LOGIN_ATTEMPTS - attempts
-                    messages.error(request, f"Invalid login. {attempts_left} attempts left.")
-                    return render(request, 'authenticate/login.html', {})
-    else:
-        return render(request, 'authenticate/login.html', {})
+from mouseapp.middleware import get_client_ip, ip_key, lock_seconds, lockout_response, user_key
 
 
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
+def _redirect_after_login(request):
+    # Send the user back to the page that asked for a login (?next=/info), but only within this site
+    next_url = request.POST.get('next') or request.GET.get('next')
+    if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()},
+                                                    require_https=request.is_secure()):
+        return redirect(next_url)
+    return redirect(settings.LOGIN_REDIRECT_URL)
 
+
+def _count_failure(key, timeout):
+    attempts = cache.get(key, 0) + 1
+    cache.set(key, attempts, timeout=timeout)
+    return attempts
+
+
+def login_user(request):
+    if request.method != 'POST':
+        return render(request, 'authenticate/login.html')
+
+    if request.POST.get('guest_login') == 'true':
+        try:
+            guest_user = User.objects.get(username='guest')
+        except User.DoesNotExist:
+            messages.error(request, "Guest account is not configured. Please contact the administrator.")
+            return render(request, 'authenticate/login.html')
+        login(request, guest_user)
+        return _redirect_after_login(request)
+
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    if not username or not password:
+        messages.error(request, "Please provide a username and password.")
+        return render(request, 'authenticate/login.html')
+
+    ip = get_client_ip(request)
+    user = authenticate(request, username=username, password=password)
+
+    if user is not None:
+        login(request, user)
+        # Clear only this account's counter. The IP counter just expires: clearing it here would let
+        # an attacker with any valid account reset the IP limit by logging in between guesses.
+        cache.delete(user_key(username))
+        return _redirect_after_login(request)
+
+    # Count the failure for the username and the IP, each with its own limit and lock time
+    # (see settings.py). Whichever limit is reached first blocks further attempts.
+    attempts_left = settings.MAX_FAILED_LOGINS_PER_USER - _count_failure(
+        user_key(username), settings.USER_LOCKOUT_SECONDS)
+    if ip:
+        attempts_left = min(attempts_left, settings.MAX_FAILED_LOGINS_PER_IP - _count_failure(
+            ip_key(ip), settings.IP_LOCKOUT_SECONDS))
+
+    seconds = lock_seconds(ip, username)
+    if seconds:
+        return lockout_response(request, seconds)
+
+    plural = '' if attempts_left == 1 else 's'
+    messages.error(request, f"Invalid username or password. {attempts_left} attempt{plural} left.")
+    return render(request, 'authenticate/login.html')
+
+
+@require_POST  # a plain link could be embedded by any other site to log people out
 def logout_user(request):
     logout(request)
     messages.success(request, 'You have logged out. Log in again to access the app.')

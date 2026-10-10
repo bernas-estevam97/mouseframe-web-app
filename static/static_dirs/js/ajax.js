@@ -1,37 +1,29 @@
 $("#savedDistancesForm").on("submit", function (e) {
   e.preventDefault();
-  let dataString = $(this).serializeArray();
+  const value = $("#saveDistance").val().trim();
+  const imageSize = $("#imgSizeInfo").val().trim().toLowerCase();
 
   $.ajax({
     type: "POST",
     url: "saved",
-    data: dataString,
-    success: function () {
-      let savedChoices = document.getElementById("savedChoices");
-      savedChoices.options[savedChoices.options.length] = new Option(
-        dataString[1].value + " - " + dataString[2].value,
-        dataString[1].value
-      );
-      console.log(dataString);
-      
-      // Note: Make sure 'saveDistance' is defined in your scope, 
-      // otherwise fallback to dataString[1].value
-      let savedVal = $("#saveDistance").val() || dataString[1].value;
-      alert(savedVal + " saved! If you want to use it you can select it on the option box above.");
-      
+    data: $(this).serialize(),
+    success: function (data, textStatus, jqXHR) {
+      // An expired session redirects to the login page, which also arrives as a "success"
+      if (jqXHR.status !== 201) {
+        alert("Your session has expired. Log in again to save values.");
+        return;
+      }
+      const savedChoices = document.getElementById("savedChoices");
+      savedChoices.add(new Option(value + " - " + imageSize, value));
+      alert(value + " saved! If you want to use it you can select it on the option box above.");
       $("#saveDistance").val("");
       $("#imgSizeInfo").val("");
     },
-    error: function (jqXHR, textStatus, errorThrown) {
-      // Check if the server returned a 403 Forbidden status
-      if (jqXHR.status === 403) {
-        // This alerts the exact string we passed into HttpResponseForbidden in Django
-        // e.g., "Guest users are not permitted to save data."
-        alert(jqXHR.responseText || "Guest users cannot save values to the database.");
-      } else {
-        // Fallback error for 400 Bad Request, 500 Server Error, etc.
-        alert("Value already in the database or of invalid input.");
-      }
+    error: function (jqXHR) {
+      // The server explains what went wrong in plain text: guest account (403), invalid input (400) or
+      // duplicate (409). HTML responses (session expired, CSRF failure, server error) get a generic message.
+      const text = (jqXHR.responseText || "").trim();
+      alert(text && !text.startsWith("<") ? text : "The value could not be saved. Reload the page and try again.");
     },
   });
 });

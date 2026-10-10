@@ -1,50 +1,11 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
-{% load csp %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
-    <title>MouseFrame - 404</title>
-</head>
-<body>
-    {% block content %}
-    <section class="vh-100 gradient-custom">
-        
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-              <style nonce="{{ request.csp_nonce }}">
-                  .card bg-dark text-white{border-radius: 1rem;}
-                  .form-outline img{height: 200px; width: 200px;}
-              </style>
-              <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                <div class="card-body p-5 text-center">
-      
-                  <div class="mb-md-5 mt-md-4">
-                   
 
-                    <h2 class="fw-bold mb-2 text-uppercase">404 Page not found</h2>
-                    
-                    <p class="text-white-50 mb-5">This page does not exist</p>
-                    
-                    <div class="form-outline form-white mb-4">
-                    <img src="{% static 'img/notfound.png' %}" alt="Page Not Found Image">
-                    </div>
-                    <p class="text-white-50 mb-5">Follow this <a href="{% url 'home' %}" aria-label="Home Page">link</a> to go to the home page</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-      </section>
-      {% endblock %}
+{% block title %}MouseFrame - Page not found{% endblock %}
 
-</body>
+{% block content %}
+<img class="status-art" src="{% static 'img/notfound.png' %}" alt="">
+<h1>Page not found</h1>
+<p class="auth-lead">This address does not match any page in MouseFrame.</p>
+<a href="{% url 'home' %}" class="btn-main btn-lg">Go to the analysis</a>
+{% endblock %}

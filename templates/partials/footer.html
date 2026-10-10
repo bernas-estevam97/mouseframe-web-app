@@ -1,0 +1,14 @@
+{% load static %}
+<footer class="site-footer">
+  <div class="footer-links">
+    <a href="https://abcri.pt/" target="_blank" rel="noopener">ABC-RI</a>
+    <a href="https://abcri.pt/mngt/" target="_blank" rel="noopener">MNGT</a>
+    <a href="https://ko-fi.com/bernardoestevam" target="_blank" rel="noopener">Ko-fi</a>
+  </div>
+  <p>© <span id="year"></span> MouseFrame. Version <span data-version></span>.</p>
+  <div class="footer-logos">
+    <img src="{% static 'img/Logo_ABCRI-sm.png' %}" alt="ABC-RI">
+    <img src="{% static 'img/Logo_MNGT-sm.png' %}" alt="MNGT">
+  </div>
+</footer>
+<script src="{% static 'js/get-data-year.js' %}"></script>

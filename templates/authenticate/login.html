@@ -1,79 +1,41 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}MouseFrame - Auth{% endblock %}
+{% block title %}MouseFrame - Log in{% endblock %}
 
 {% block content %}
-<section class="vh-100 gradient-custom">
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                <style nonce="{{ request.csp_nonce }}">.card{border-radius: 1rem;}</style>
-                <div class="card bg-dark text-white">
-                    <div class="card-body p-5 text-center">
+<img class="auth-art" src="{% static 'img/mice_paws-header.jpg' %}" alt="">
+<h1>Log in to MouseFrame</h1>
+<p class="auth-lead">Use the credentials you were given.</p>
 
-                        <div class="mb-md-5 mt-md-4">
-                            <form action="" method="POST">
-                                {% csrf_token %}
-                                <h3>Welcome to the MouseFrame Application!</h3>
-
-                                <style nonce="{{ request.csp_nonce }}">
-                                    .image-one {width: 100px; height: 100px;}
-                                    .p1-error {margin-top: 10px; color: red;}
-                                </style>
-
-                                <img class="image-one" src="{% static 'img/logo.png' %}" alt="MouseFrame Logo">
-                                <br><br>
-                                <h2 class="fw-bold mb-2 text-uppercase">APP Login</h2>
-                                <p class="text-white-50 mb-5">Please enter your given login credentials</p>
-
-                                <div class="form-outline form-white mb-4">
-                                  <input type="text" id="username" class="form-control form-control-lg" name="username" required/>
-                                  <label class="form-label" for="username">User</label>
-                                </div>
-                  
-                                <div class="form-outline form-white mb-4">
-                                  <input type="password" id="password" class="form-control form-control-lg" name="password" required/>
-                                  <label class="form-label" for="password">Password</label>
-                                </div>
-
-                                <button class="btn btn-outline-info px-5" data-mdb-ripple-color="dark" type="submit" aria-label="Login">Login</button>
-
-                                <div class="mt-4">
-                                    <p class="text-white-50 mb-2">OR</p>
-                                    <button class="btn btn-outline-light px-5" aria-label="Continue as Guest" type="submit" name="guest_login" value="true" formnovalidate>
-                                        Continue as Guest
-                                    </button>
-                                </div>
-                                <br><br>
-
-                                {% if messages %}
-                                    {% for message in messages %}
-                                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        {{message}}
-                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                    </div>
-                                    {% endfor %}
-                                {% endif %}
-                                {% if error %}
-                                    <p class="p1-error">{{error}}</p>
-                                {% endif %}
-
-                                <!-- CONTACT INFO -->
-                                <div class="mt-4 pt-3 border-top border-secondary">
-                                    <p class="small text-white-50 mb-1">
-                                        Forgot your password or need access?
-                                    </p>
-                                    <p class="small text-white-50 mb-0">
-                                        Click <a href="{% url 'password_reset' %}" class="text-info fw-bold" aria-label="Reset Password">Here</a> to reset it, or contact <a href="mailto:mouseframe.app@gmail.com" class="text-info fw-bold" aria-label="Contact Admin">Admin</a>.
-                                    </p>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" class="form-control form-control-lg" name="username" autocomplete="username" required>
     </div>
-</section>
+    <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="form-control form-control-lg" name="password" autocomplete="current-password" required>
+    </div>
+
+    <button class="btn-main btn-lg" type="submit">Log in</button>
+    <div class="auth-or">or</div>
+    <button class="btn-quiet btn-lg" type="submit" name="guest_login" value="true" formnovalidate>Continue as guest</button>
+
+    {% for message in messages %}
+    <div class="alert alert-warning alert-dismissible fade show mt-4 text-start" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% if error %}
+    <p class="auth-error">{{ error }}</p>
+    {% endif %}
+</form>
+
+<p class="auth-foot">
+    Forgot your password? <a href="{% url 'password_reset' %}">Reset it</a> or email the admin at
+    <a href="mailto:mouseframe.app@gmail.com">mouseframe.app@gmail.com</a>.
+</p>
 {% endblock %}

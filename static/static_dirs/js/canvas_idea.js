@@ -138,7 +138,7 @@ function drawRedRight(e) {
 function drawRedCircleLeft() {
   canvas.addEventListener("click", drawRedLeft, false);
   canvas.addEventListener("click", printMousePos, false);
-  activeFunctionInfo.style.color = 'red';
+  activeFunctionInfo.style.color = 'var(--front-dark)';
   activeFunctionInfo.style.fontWeight = 'bold';
   activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
@@ -159,7 +159,7 @@ function drawRedCircleLeft() {
 function drawRedCircleRight() {
   canvas.addEventListener("click", drawRedRight, false);
   canvas.addEventListener("click", printMousePos, false);
-  activeFunctionInfo.style.color = 'red';
+  activeFunctionInfo.style.color = 'var(--front-dark)';
   activeFunctionInfo.style.fontWeight = 'bold';
   activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
@@ -273,7 +273,7 @@ function removeAllRedCircleLeft() {
   canvas.removeEventListener("click", drawBlueRight, false);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
-  activeFunctionInfo.style.color = 'red';
+  activeFunctionInfo.style.color = 'var(--front-dark)';
   activeFunctionInfo.style.fontWeight = 'bold';
   activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
@@ -314,7 +314,7 @@ function removeAllRedCircleRight() {
   canvas.removeEventListener("click", drawBlueRight, false);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
-  activeFunctionInfo.style.color = 'red';
+  activeFunctionInfo.style.color = 'var(--front-dark)';
   activeFunctionInfo.style.fontWeight = 'bold';
   activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
@@ -370,7 +370,7 @@ function drawBlueRight(e) {
 function drawBlueCircleLeft() {
   canvas.addEventListener("click", drawBlueLeft, false);
   canvas.addEventListener("click", printMousePos, false);
-  activeFunctionInfo.style.color = 'blue';
+  activeFunctionInfo.style.color = 'var(--hind-dark)';
   activeFunctionInfo.style.fontWeight = 'bold';
   activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
@@ -388,7 +388,7 @@ function drawBlueCircleLeft() {
 function drawBlueCircleRight() {
   canvas.addEventListener("click", drawBlueRight, false);
   canvas.addEventListener("click", printMousePos, false);
-  activeFunctionInfo.style.color = 'blue';
+  activeFunctionInfo.style.color = 'var(--hind-dark)';
   activeFunctionInfo.style.fontWeight = 'bold';
   activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
@@ -498,7 +498,7 @@ function removeAllBlueCircleLeft() {
   canvas.removeEventListener("click", drawRedRight);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
-  activeFunctionInfo.style.color = 'blue';
+  activeFunctionInfo.style.color = 'var(--hind-dark)';
   activeFunctionInfo.style.fontWeight = 'bold';
   activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
@@ -539,7 +539,7 @@ function removeAllBlueCircleRight() {
   canvas.removeEventListener("click", drawRedRight);
   canvas.removeEventListener("click", printMousePos);
   canvas.style.cursor = "default";
-  activeFunctionInfo.style.color = 'blue';
+  activeFunctionInfo.style.color = 'var(--hind-dark)';
   activeFunctionInfo.style.fontWeight = 'bold';
   activeFunctionInfo.style.fontSize = '1.4em';
   appendSafeHTML(activeFunctionInfo, [
@@ -984,7 +984,7 @@ img.onload = () => {
 
   imgWidth.textContent = originalImageWidth;
   imgHeight.textContent = originalImageHeight;
-  imgContainer.style.border = "2px solid black";
+  imgContainer.style.border = "2px solid var(--ink)";
 
   resizeImageToFitViewport(img);
 
@@ -1524,6 +1524,7 @@ zoomNotice.style.cssText = `
   left: 50%;
   transform: translateX(-50%);
   background: #fffae6;
+  color: #1e2738;
   border: 1px solid #f0c36d;
   padding: 10px 15px;
   z-index: 1000;
@@ -2515,7 +2516,7 @@ function replaceChosenPoint(){
   });
   if (selectPoint.value.includes('Red L')){
     let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(5);
-    activeFunctionInfo.style.color = 'red';
+    activeFunctionInfo.style.color = 'var(--front-dark)';
     activeFunctionInfo.style.fontWeight = 'bold';
     activeFunctionInfo.style.fontSize = '1.4em';
     appendSafeHTML(activeFunctionInfo, [
@@ -2583,7 +2584,7 @@ function replaceChosenPoint(){
   }
   if (selectPoint.value.includes('Red R')){
     let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(5);
-    activeFunctionInfo.style.color = 'red';
+    activeFunctionInfo.style.color = 'var(--front-dark)';
     activeFunctionInfo.style.fontWeight = 'bold';
     activeFunctionInfo.style.fontSize = '1.4em';
     appendSafeHTML(activeFunctionInfo, [
@@ -2651,7 +2652,7 @@ function replaceChosenPoint(){
   }
   if (selectPoint.value.includes('Blue L')){
     let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(6);
-    activeFunctionInfo.style.color = 'blue';
+    activeFunctionInfo.style.color = 'var(--hind-dark)';
     activeFunctionInfo.style.fontWeight = 'bold';
     activeFunctionInfo.style.fontSize = '1.4em';
     appendSafeHTML(activeFunctionInfo, [
@@ -2717,7 +2718,7 @@ function replaceChosenPoint(){
   }
   if (selectPoint.value.includes('Blue R')){
     let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(6);
-    activeFunctionInfo.style.color = 'blue';
+    activeFunctionInfo.style.color = 'var(--hind-dark)';
     activeFunctionInfo.style.fontWeight = 'bold';
     activeFunctionInfo.style.fontSize = '1.4em';
     appendSafeHTML(activeFunctionInfo, [

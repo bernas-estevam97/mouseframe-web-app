@@ -1,88 +1,74 @@
-from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import render
-from .models import SavedDistances
-# from django.contrib import messages
-# from django.core.management import CommandError
-# from django.template import RequestContext
-# from django.http import JsonResponse
-# from django.views.generic import View
-# # from rest_framework import generics
-# # from rest_framework.response import Response
-# from django.views.decorators.csrf import csrf_exempt, csrf_protect
-# import sys
+import math
+import re
+
 from django.contrib.auth.decorators import login_required
-from django.conf import settings
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
+from django.shortcuts import render
+from django.views.decorators.http import require_POST
+
+from .models import SavedDistances
+
+IMAGE_SIZE_RE = re.compile(r'^\d{1,5}x\d{1,5}$')
 
 
-@login_required(login_url=settings.LOGIN_URL)
+@login_required
 def welcome(request):
-     return render(request, 'welcome.html')
+    return render(request, 'welcome.html')
 
-@login_required(login_url=settings.LOGIN_URL)
+
+@login_required
 def home(request):
-#    if not request.user.is_authenticated:
-#         return redirect('/authenticate/login')
-#    else:
-     saved_distances = SavedDistances.objects.filter(user=request.user)
-     return render(request, 'index.html', {'saved_distances': saved_distances})
+    saved_distances = SavedDistances.objects.filter(user=request.user)
+    return render(request, 'index.html', {'saved_distances': saved_distances})
 
 
-@login_required(login_url=settings.LOGIN_URL)
+@login_required
 def info(request):
-#    if not request.user.is_authenticated:
-#         return redirect('/authenticate/login')
-#    else:
-     return render(request, 'info.html')
+    return render(request, 'info.html')
 
 
-@login_required(login_url=settings.LOGIN_URL)
+@login_required
 def contact(request):
-#    if not request.user.is_authenticated:
-#         return redirect('/authenticate/login')
-#    else:
-     return render(request, 'contact.html')
+    return render(request, 'contact.html')
 
 
-@login_required(login_url=settings.LOGIN_URL)
+@login_required
 def support(request):
-#    if not request.user.is_authenticated:
-#         return redirect('/authenticate/login')
-#    else:
-     return render(request, 'support.html')
-   
-@login_required(login_url=settings.LOGIN_URL)
+    return render(request, 'support.html')
+
+
+@login_required
+@require_POST
 def saved_distance(request):
-     #  if not request.user.is_authenticated:
-     #    return redirect('/authenticate/login')
-     if request.method == 'POST':
-          if request.user.username == 'guest':
-             return HttpResponseForbidden("Guest users are not permitted to save data.")
-          conversion = request.POST.get('saved_distance_value')
-          if (request.POST.get('image_size').count(("X").lower())) == 1:
-               image_size = request.POST.get('image_size')
-          else:
-              return
-     #  print(conversion, image_size)
-          new = SavedDistances(user=request.user, conversion_value=conversion,image_size = image_size)
-          new.save()
-          saved_distances = SavedDistances.objects.filter(user=request.user)
-          # return render(request, 'index.html', {'saved_distances': saved_distances})
-          return HttpResponse(saved_distances)
+    """Saves a pixels-per-cm value for the image size it was measured on. Called by static/js/ajax.js,
+    which shows the response text to the user when the save fails."""
+    if request.user.username == 'guest':
+        return HttpResponseForbidden("Guest users are not permitted to save data.")
 
+    image_size = request.POST.get('image_size', '').strip().lower()
+    try:
+        conversion = float(request.POST.get('saved_distance_value', ''))
+    except ValueError:
+        conversion = math.nan
 
-# def delete_distance(request):
-#     deleted_entry=request.GET.get('removable_choices')
-#     remove_entry = SavedDistances.objects.filter(conversion_value=float(deleted_entry))
-#     remove_entry.delete()
-#     return HttpResponse(remove_entry)
+    if not (math.isfinite(conversion) and conversion > 0) or len(image_size) > 10 or not IMAGE_SIZE_RE.match(image_size):
+        return HttpResponseBadRequest("Enter a pixel value above 0 and an image size such as 1920x1080.")
+
+    _, created = SavedDistances.objects.get_or_create(
+        user=request.user, conversion_value=conversion, image_size=image_size)
+    if not created:
+        return HttpResponse("This value is already saved for that image size.", status=409)
+    return HttpResponse("Saved.", status=201)
 
 
 def error_403(request, exception):
-     return render(request, 'authenticate/blocked.html')
+    # PermissionDenied("...") carries the reason, e.g. the login lockout message
+    return render(request, 'authenticate/blocked.html', {'reason': str(exception or '')}, status=403)
 
 
 def error_404(request, exception):
-     return render(request, 'authenticate/not-found.html')
+    return render(request, 'authenticate/not-found.html', status=404)
+
 
 def error_500(request):
-     return render(request, '500.html', status=500)
+    return render(request, '500.html', status=500)

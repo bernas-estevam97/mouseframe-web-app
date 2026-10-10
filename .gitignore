@@ -1,19 +1,44 @@
-venv/
-mouseframe_venv/
-mouseframe_venv_310/
-venv312/
-venv_312/
-db.sqlite3
-staticfiles/
-.prettierignore
+# Virtual environments
+venv*/
+.venv/
+mouseframe_venv*/
+
+# Secrets (keep a template if you add one)
 .env
-dbbk.sqlite3
-__pycache__/
-__pycache__/
-**/migrations/__pycache__/
-**/migrations/*.pyc
-*.pyc
-tests/
-.pytest_cache/
-desktop.ini
+.env.*
+!.env.example
+
+# Databases and backups
+*.sqlite3
+*.sqlite3-journal
 backup/
+
+# Django
+staticfiles/
+media/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Tests and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Editors and OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+.prettierignore
+
+# Claude Code
+.claude/

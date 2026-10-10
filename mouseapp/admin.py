@@ -1,8 +1,10 @@
-from .models import *
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
-class ExcelAdmin(ImportExportModelAdmin):
-    pass
+from .models import SavedDistances
 
-admin.site.register(SavedDistances, ExcelAdmin)
+
+@admin.register(SavedDistances)
+class SavedDistancesAdmin(ImportExportModelAdmin):
+    list_display = ('user', 'conversion_value', 'image_size')
+    list_filter = ('user',)

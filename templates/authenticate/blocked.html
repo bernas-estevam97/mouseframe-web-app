@@ -1,58 +1,12 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
-    <title>MouseFrame - 403</title>
-</head>
-<body>
-    {% block content %}
-    <section class="vh-100 gradient-custom">
-        
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-              <style nonce="{{ request.csp_nonce }}">
-                  .card{border-radius: 1rem;}
-                  .card img{height: 300px; width: 300px; margin-top: 50px;}
-              </style>
-              <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                <div class="card-body p-5 text-center">
-      
-                  <div class="mb-md-5 mt-md-4">
-                   
 
-                    <h2 class="fw-bold mb-2 text-uppercase">MouseFrame has blocked you - 403</h2>
-                    {% if messages %}
-                    {% for message in messages %}
-                    <p class="text-white-50 mb-5"><u><b>Motive:</u></b> {{message}}</p>
-                    {% endfor %}
-                    {% endif %}
-                    <div class="form-outline form-white mb-4">
-                    <img src="{% static 'img/rat-trap.png' %}" alt="Rat Trap Image" style="height: 300px; width: 300px; margin-top: 50px;">
-                    </div>
-                    <!-- {% if messages %}
-                      {% for message in messages %}
-                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        {{message}}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
-                      {% endfor %}
-                    <p style="margin-top: 10px; color: red;">{{error}}</p>
-                    {% endif %} -->
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      {% endblock %}
+{% block title %}MouseFrame - Access blocked{% endblock %}
 
-</body>
+{% block content %}
+<img class="status-art" src="{% static 'img/rat-trap.png' %}" alt="">
+<h1>Access blocked</h1>
+<p class="auth-lead">{% if reason %}{{ reason }}{% else %}You do not have permission to view this page.{% endif %}</p>
+<a href="{% url 'login' %}" class="btn-quiet btn-lg">Back to log in</a>
+<p class="auth-foot">Think this is a mistake? Email <a href="mailto:mouseframe.app@gmail.com">mouseframe.app@gmail.com</a>.</p>
+{% endblock %}

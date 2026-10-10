@@ -1,85 +1,30 @@
 <!DOCTYPE html>
 {% load static %}
-{% load csp %}
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{% static 'css/support.css' %}">
-        <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
-        <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
-        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-        <title>MouseFrame - Support the App</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <title>MouseFrame - Support the app</title>
+</head>
 <body>
-    <p id="version">v<span data-version></span></p>
-    <header>
-        <style nonce="{{ request.csp_nonce }}">
-            .nav-item{list-style-type: none;}
-            .nav-link{color: #000;}
-            .nav-link:hover{color:#000 !important;}
-            .nav-link:focus{color:#000 !important;}
-        </style>
-        <h1><a href="{% url 'welcome' %}"><img class="image-one" src="{% static 'img/mouse.png' %}" alt="Mouse image"></a><a href="{% url 'welcome' %}"><img class="image-two" src="{% static 'img/mouse-paws.png' %}" alt="Mouse paws image"></a></div><div class="text-title">&nbsp&nbsp&nbspMouseFrame - Support</div> </h1>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            More
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'home' %}" aria-label="Analysis page">Analysis</a></li>
-            <li><a class="dropdown-item" href="{% url 'info' %}" aria-label="Information page">Information</a></li>
-            <li><a class="dropdown-item" href="{% url 'contact' %}" aria-label="Contact page">Contact</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="https://abcri.pt/" target="_blank" aria-label="ABC-RI Website Hyperlink">ABC-RI</a></li>
-          </ul>
-        </li>
-    </header>
-    <main>
-    <div class="container-full">
-        <div class="container-contact">
-            <div class="left-side-contact support-left">
-              <style nonce="{{ request.csp_nonce }}">
-                  .p1-left{font-size:1.5em; margin-bottom: 30px;}
-                  .div-left{font-size:1.8em; margin-top: 20px;}
-              </style>
-                <div class="header-logo">
-                <h3>Support MouseFrame</h3>
-                    <img src="{% static 'img/logo.png' %}" alt="MouseFrame Logo">
-                </div>
-                <p class="p1-left">MouseFrame is free to use. However, keeping the servers running, fixing bugs, and developing new features takes time and resources.</p>
-                <div class="div-left">Did this tool save you time today? <br>Consider buying me a coffee! <i class="fas fa-mug-hot"></i></div>
-                
-                <a href="https://ko-fi.com/bernardoestevam" target="_blank" class="kofi-button">
-                    <img src="{% static 'img/cup-border.png' %}" alt="Ko-fi Cup" class="kofi-cup-icon">
-                    Support me on Ko-fi
+    {% include 'partials/header.html' %}
+    <main class="page">
+        <div class="support-grid">
+            <div>
+                <h1 class="page-title">Support MouseFrame</h1>
+                <p class="page-lead">MouseFrame is free to use. Keeping the server running, fixing bugs and building new features takes time and resources.</p>
+                <p>If the tool saved you time, consider buying the developer a coffee.</p>
+                <a href="https://ko-fi.com/bernardoestevam" target="_blank" rel="noopener" class="btn-main btn-lg">
+                    <img src="{% static 'img/cup-border.png' %}" alt="" class="kofi-cup"> Support on Ko-fi
                 </a>
             </div>
-            
-            <div class="right-side-contact kofi-embed-side">
-                <iframe id='kofiframe' src='https://ko-fi.com/bernardoestevam/?hidefeed=true&widget=true&embed=true&preview=true' height='650' title='Bernardo Estevam'></iframe>
-            </div>
+            <iframe src="https://ko-fi.com/bernardoestevam/?hidefeed=true&widget=true&embed=true&preview=true" title="Ko-fi donation panel for Bernardo Estevam"></iframe>
         </div>
-    </div>
     </main>
-    <footer>
-        <div class="footer-links">
-          <a href="{% url 'home' %}" aria-label="Analysis page">Analysis</a>
-          <a href="{% url 'info' %}" aria-label="Information page">Information</a>
-          <a href="{% url 'contact' %}" aria-label="Contact page">Contact</a>
-          <a href="https://abcri.pt/" target="_blank" aria-label="ABC-RI Website Hyperlink">ABC-RI</a>
-          <a href="https://abcri.pt/mngt/" target="_blank" aria-label="MNGT Website Hyperlink">MNGT</a>
-        </div>
-        <p>© <span id="year"></span> MouseFrame. All rights reserved <br></p>
-        <div class="footer-logos">
-          <div class="img-one"><img src="{% static 'img/Logo_ABCRI.png' %}" alt="ABC-RI Logo"></div>
-          <div class="img-two"><img src="{% static 'img/Logo_MNGT.png' %}" alt="MNGT Logo"></div>
-        </div>
-      </footer>
-      <script type="text/javascript" src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
-      <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-      <script type="text/javascript" src="{% static 'js/simple-version-control.js' %}"></script>
-      <script type="text/javascript" src="{% static 'js/get-data-year.js' %}"></script>
-      <script type="text/javascript" src="{% static 'js/js-cookie.js' %}"></script>
+    {% include 'partials/footer.html' %}
+    <script src="{% static 'js/simple-version-control.js' %}"></script>
 </body>
 </html>
