@@ -38,7 +38,7 @@
         <li>Saved values can be reused without refreshing the app, so your progress on the current image is kept.</li>
         <li>Each saved value stores the image size it was measured on, so the <i>cm</i> to <i>pixel</i> conversion is never applied to an image with a different resolution. Saving is not available for guest users.</li>
         <li>Saved measurements are private to each user.</li>
-        <li>New zoom mode. See the image resizing section.</li>
+        <li>New image size toolbar above the image: type a size or use Fit, -, + and 100%. Picking a saved value measured on another size offers to resize the image to match.</li>
       </ul>
       <button class="btn-main new-btn-close-modal" id="closeModal" type="button">Close</button>
     </section>
@@ -75,6 +75,26 @@
           </div>
         </div>
       </section>
+
+      <section class="image-resize tool-panel" id="imageEdit" aria-label="Image size">
+        <div class="zoom-bar">
+          <button class="btn-quiet" id="zoomFit" type="button" title="Fit the image to the window">Fit</button>
+          <button class="btn-quiet" id="zoomOut" type="button" aria-label="Smaller by 5%" title="Smaller (-)"><i class="fa-solid fa-minus"></i></button>
+          <label class="zoom-percent"><input id="zoomPercent" type="number" min="1" max="100" step="1" value="100" aria-label="Image size in percent"> %</label>
+          <button class="btn-quiet" id="zoomIn" type="button" aria-label="Larger by 5%" title="Larger (+)"><i class="fa-solid fa-plus"></i></button>
+          <button class="btn-quiet" id="zoom100" type="button" title="Original size (0)">100%</button>
+          <p id="currentImgSize"></p>
+          <button class="help-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContent" aria-expanded="false" aria-controls="collapseContent" aria-label="Help for image size"><i class="fa-solid fa-circle-question"></i></button>
+        </div>
+        <div class="collapse" id="collapseContent"><div class="help-box">
+          <ul>
+            <li>Resize the image before taking measurements. Type a size and press <kbd>Enter</kbd>, or use the buttons. Shortcuts: <kbd>+</kbd> and <kbd>-</kbd> change the size by 5%, <kbd>0</kbd> goes back to 100%.</li>
+            <li>A saved pixels-per-centimetre value only applies to the image size it was measured on. When you pick a saved value for another size, a button offers to resize the image to match.</li>
+            <li>If the image includes a 1 cm reference scale, any size works because you can measure the pixel-to-centimetre ratio again afterwards.</li>
+          </ul>
+          <p class="warn"><i class="fa-solid fa-triangle-exclamation"></i> Resizing removes all points on the image, all data in the results table and the pixels-per-centimetre value. You are asked to confirm first.</p>
+        </div></div>
+      </section>
       </div>
 
       <!-- Full page width on purpose: large images use the whole screen and overflow to the right when bigger -->
@@ -84,27 +104,6 @@
 
       <div class="wrap">
       <div class="bottom-functions">
-        <section class="image-resize tool-panel" id="imageEdit">
-          <div class="tool-head">
-            <h2><i class="fa-solid fa-left-right"></i> Image resizing</h2>
-            <button class="help-toggle" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContent" aria-expanded="false" aria-controls="collapseContent" aria-label="Help for image resizing"><i class="fa-solid fa-circle-question"></i></button>
-          </div>
-          <p class="hint">Press <kbd>Z</kbd> to enter zoom mode, then use <kbd>+</kbd>, <kbd>-</kbd> or <kbd>0</kbd> to resize the image. You can also use the slider.</p>
-          <div class="collapse" id="collapseContent"><div class="help-box">
-            <ul>
-              <li>Resize the image before taking measurements. Resizing resets your measurement progress.</li>
-              <li>If the image includes a 1 cm reference scale, resizing is safe because you can measure the pixel-to-centimetre ratio again afterwards.</li>
-              <li>If there is no saved value for the new size and no 1 cm reference, do not resize, to keep the measurements accurate.</li>
-              <li>Resize with the slider, by clicking on its track, or with the arrow keys. Zoom mode works too.</li>
-            </ul>
-            <p class="warn"><i class="fa-solid fa-triangle-exclamation"></i> Resizing removes all points on the image and all data in the results table.</p>
-          </div></div>
-          <div class="slider-container">
-            <input type="range" min="1" max="100" value="100" id="mySlider" class="slider" aria-label="Image size">
-          </div>
-          <p id="currentImgSize"></p>
-        </section>
-
         <div id="accordion" class="accordion">
           <div class="accordion-item">
             <h2 class="accordion-header" id="headingOne">
@@ -205,7 +204,7 @@
                       </div>
                       <p class="hint">The default radius is 4px.</p>
                       <p id="dynamicSize"></p>
-                      <p class="hint"><b>Note:</b> Keep the same radius while you delete points. Change the size only when you are not removing points.</p>
+                      <p class="hint">A new size applies to the points you add next. Existing points keep their size.</p>
                     </div>
                   </div>
                 </div>
@@ -257,6 +256,7 @@
                         <button class="btn-main" id="manualUse" type="button">Use</button>
                         <button class="btn-quiet" id="resetManual" type="button" aria-label="Clear manual value"><i class="fa-solid fa-rotate-left"></i></button>
                       </div>
+                      <p class="notice saved-size-notice" id="savedSizeNotice" hidden></p>
                     </div>
                   </div>
 
@@ -418,7 +418,6 @@
 <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
 <script src="{% static 'js/canvas_idea.js' %}"></script>
 <script src="{% static 'js/xlsx-full.min.js' %}"></script>
-<script src="{% static 'js/effects.js' %}"></script>
 <script src="{% static 'js/notices_updates_modal.js' %}"></script>
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'js/excel-export.js' %}"></script>

@@ -1,11 +1,11 @@
 /* Analysis page. Loaded after main.css, which holds the tokens, header, footer and buttons. */
 
-/* Hidden until every script has run (effects.js reveals it on load) to avoid a flash of unready tools. */
+/* Hidden until every script has run (notices_updates_modal.js reveals it on load) to avoid a flash of unready tools. */
 html { visibility: hidden; }
 
 /* Minimum width for the analysis workspace. Below it, .resolution-unsupported is shown instead. */
 @media screen and (max-width: 1100px) {
-  .container-full, .modal-news, #zoomNotice { display: none !important; }
+  .container-full, .modal-news { display: none !important; }
   .resolution-unsupported { display: flex !important; }
 }
 
@@ -105,7 +105,8 @@ html { visibility: hidden; }
 
 .bottom-functions { display: flex; flex-direction: column; gap: 24px; }
 
-.image-resize { display: none; padding: 24px 28px; }
+/* Image size toolbar, right above the image */
+.image-resize { display: none; margin-top: 16px; padding: 12px 20px; }
 
 .tool-head { display: flex; align-items: center; gap: 8px; }
 .tool-head h2, .tool-head h3 { margin: 0; }
@@ -158,9 +159,13 @@ html { visibility: hidden; }
   font-size: .9375rem;
 }
 
-.slider-container { margin-top: 12px; }
-.slider { width: 100%; accent-color: var(--slate); cursor: pointer; }
-#currentImgSize { margin: 8px 0 0; color: var(--muted); font-size: .9375rem; font-variant-numeric: tabular-nums; }
+.zoom-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.zoom-percent { display: inline-flex; align-items: center; gap: 4px; margin: 0; color: var(--muted); }
+.container-full #zoomPercent { width: 76px; text-align: right; font-variant-numeric: tabular-nums; }
+#currentImgSize { margin: 0 0 0 12px; color: var(--muted); font-size: .9375rem; font-variant-numeric: tabular-nums; }
+.zoom-bar .help-toggle { margin-left: auto; }
+.saved-size-notice { margin: 12px 0 0; }
+.saved-size-notice .btn-quiet { margin-left: 8px; }
 
 .control-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
 .control-row label { font-size: .9375rem; }

@@ -1,4357 +1,845 @@
-// Upload image and have the canvas with same sizes --- Testing with 2 canvas on above the other
+// Analysis page: paw-print marking on a canvas over the uploaded image, pixel-to-cm calibration,
+// image resizing and the results table.
+//
+// The functions declared with `function name()` at the top level are called from the inline
+// script in templates/index.html, so keep their names.
+'use strict';
 
-// const canvasTwo = document.getElementById("canvasTwo");
-// const ctxTwo = canvasTwo.getContext("2d");
+const $id = id => document.getElementById(id);
 
-// Set point Size.  pointSize is the radius of the dots created and need to be dynamic and chosen by the user
+const canvas = $id('canvas');
+const ctx = canvas.getContext('2d');
 
-function appendSafeHTML(container, fragments) {
-  container.textContent = ''; // Clear
-  fragments.forEach(f => {
-    if (typeof f === 'string') {
-      container.append(f);
-    } else if (f instanceof HTMLElement) {
-      container.appendChild(f);
-    }
-  });
+const activeFunctionInfo = $id('activeFunction');
+const addMeasureInfo = $id('addMeasureInfo');
+const measureToCm = $id('measureToCm');
+const showSize = $id('dynamicSize');
+const sizeInput = $id('sizeInput');
+const selectPoint = $id('selectPoint');
+const removePointButton = $id('removePoint');
+const replacePointButton = $id('replacePoint');
+const inputPixelsManually = $id('pixelsInCmMan');
+const savedChoices = $id('savedChoices');
+const imgContainer = $id('imgContainer');
+const imgEdit = $id('imageEdit');
+const buttons = document.querySelector('.buttons-plus-options');
+const canvasUpload = $id('canvasUpload');
+const tableTitle = $id('titleImage');
+const manualID = $id('entryTableID');
+const tableWarning = $id('imageResizeTableWarning');
+const tableDynamicValuePx = $id('valuePx');
+const tableDynamicValueCm = $id('valueCm');
+const tbody = $id('tbody');
+const footstepStart = $id('footstepStart');
+const entryNumber = $id('entryNumber');
+const removeMeasurement = $id('removeMeasurement');
+const removeByEntriesOption = $id('removeByEntries');
+const removeByMeasurementsOption = $id('removeByMeasurement');
+
+function icon(className) {
+  const i = document.createElement('i');
+  i.className = className;
+  return i;
 }
 
-
-// Doesnt allow the user to type invalid values manually
-
-const sizeInput = document.getElementById('sizeInput');
-
-sizeInput.addEventListener('keydown', (e) => {
-  // Prevent the minus sign (-), the decimal point (.), and 'e' (exponent)
-  if (['-', '.', 'e', 'E'].includes(e.key)) {
-    e.preventDefault();
-  }
-});
-
-sizeInput.addEventListener('input', () => {
-  // Final check: if the user pastes a value or manages to bypass keydown
-  if (sizeInput.value !== "" && sizeInput.value < 1) {
-    sizeInput.value = 1;
-  }
-});
-
-
-let pointSize;
-let showSize = document.getElementById("dynamicSize");
-
-function changeSize() {
-  let inputSize = document.getElementById("sizeInput").value;
-  if (inputSize) {
-    pointSize = inputSize;
-  } else {
-    pointSize = 4; // if no input is given 4 is default value
-  }
-  showSize.textContent = "Current point radius size is: " + pointSize + "px";
+function bold(...children) {
+  const b = document.createElement('b');
+  b.append(...children);
+  return b;
 }
 
-changeSize(); // initiate function on page load/refresh ---- Still testing
+const show = (el, visible) => { el.style.display = visible ? '' : 'none'; };
 
-function resetSize() {
-  document.getElementById("sizeInput").value = "";
-  pointSize = 4;
-  showSize.textContent = "Current point radius size is: " + pointSize + "px";
-}
-// Canvas size changes
 
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+// ---------------------------------------------------------------- points state and drawing
 
-let pointsRedLeft = [];
-let pointsRedRight = [];
-let pointsBlueLeft = [];
-let pointsBlueRight = [];
-let pointsMeasure = [];
-var timeout = 300;
-var clicksRed = 0;
-var clicksBlue = 0;
+const DEFAULT_POINT_SIZE = 4;
+let pointSize = DEFAULT_POINT_SIZE; // radius in px of new points
 
-const resetButton = document.getElementById("reset");
-const deleteLastRed = document.getElementById("deleteCircleRed");
-const deleteLastBlue = document.getElementById("deleteCircleBlue");
+// Each point is {x, y, r}: r is the radius it was drawn with, so changing the point size never
+// breaks removing or replacing points that already exist.
+const pointsRedLeft = [];
+const pointsRedRight = [];
+const pointsBlueLeft = [];
+const pointsBlueRight = [];
+const pointsMeasure = [];
+
+const FRONT_COLOR = 'hsl(0, 100%, 30%)';
+const HIND_COLOR = 'hsl(245, 89%, 42%)';
+const MEASURE_COLOR = '#000000';
+
+const GROUPS = {
+  redLeft: { points: pointsRedLeft, color: FRONT_COLOR, css: 'var(--front-dark)', name: 'Red L', side: 'L',
+             status: 'Red (front) Left circle active.', removed: 'All red left points removed!', button: 'redCircleLeft' },
+  redRight: { points: pointsRedRight, color: FRONT_COLOR, css: 'var(--front-dark)', name: 'Red R', side: 'R',
+              status: 'Red (front) Right circle active.', removed: 'All red right points removed!', button: 'redCircleRight' },
+  blueLeft: { points: pointsBlueLeft, color: HIND_COLOR, css: 'var(--hind-dark)', name: 'Blue L', side: 'L',
+              status: 'Blue (hind) Left circle active.', removed: 'All blue left points removed!', button: 'blueCircleLeft' },
+  blueRight: { points: pointsBlueRight, color: HIND_COLOR, css: 'var(--hind-dark)', name: 'Blue R', side: 'R',
+               status: 'Blue (hind) Right circle active.', removed: 'All blue right points removed!', button: 'blueCircleRight' },
+};
+const GROUP_LIST = Object.values(GROUPS);
 
 function getPosition(event) {
-  var rect = canvas.getBoundingClientRect();
+  const rect = canvas.getBoundingClientRect();
   return {
     x: Math.round(event.clientX - rect.left),
     y: Math.round(event.clientY - rect.top),
+    r: pointSize,
   };
 }
 
-function printMousePos(event) {
-  var rect = event.target.getBoundingClientRect();
-  // console.log(
-  //   "x:" +
-  //     Math.round(event.clientX - rect.left) +
-  //     " y:" +
-  //     Math.round(event.clientY - rect.top)
-  // );
-}
-
-// DRAW RED - ALL EVENTS
-
-function drawCoordinatesRed(point, r) {
-  ctx.fillStyle = "hsl(0, 100%, 30%)"; // Dark Red color
+function drawPoint(point, color, label) {
+  ctx.fillStyle = color;
   ctx.beginPath();
-  ctx.arc(point.x, point.y, r, 0, Math.PI * 2, true);
+  ctx.arc(point.x, point.y, point.r, 0, Math.PI * 2, true);
   ctx.fill();
-}
-
-function drawRedLeft(e) {
-  clicksRed++;
-  var m = getPosition(e);
-  drawCoordinatesRed(m, pointSize);
-  pointsRedLeft.push(m);
-  //console.log(pointsRedLeft);
-  let index = pointsRedLeft.indexOf(m);
-  //console.log(index);
-  ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-  ctx.fillText(
-    "L" + (index + 1),
-    m.x + pointSize * 1.2,
-    m.y + pointSize * 1.2 + 10
-  );
-  refreshRemoveList();
-}
-
-function drawRedRight(e) {
-  clicksRed++;
-  var m = getPosition(e);
-  drawCoordinatesRed(m, pointSize);
-  pointsRedRight.push(m);
-  //console.log(pointsRedRight);
-  let index = pointsRedRight.indexOf(m);
-  //console.log(index);
-  ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-  ctx.fillText(
-    "R" + (index + 1),
-    m.x + pointSize * 1.2,
-    m.y + pointSize * 1.2 + 10
-  );
-  refreshRemoveList();
-}
-
-function drawRedCircleLeft() {
-  canvas.addEventListener("click", drawRedLeft, false);
-  canvas.addEventListener("click", printMousePos, false);
-  activeFunctionInfo.style.color = 'var(--front-dark)';
-  activeFunctionInfo.style.fontWeight = 'bold';
-  activeFunctionInfo.style.fontSize = '1.4em';
-  appendSafeHTML(activeFunctionInfo, [
-    (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-play'; return i; })(),
-    '\u00A0', // &nbsp;
-    'Red (front) Left circle active.'
-  ]);
-
-  canvas.removeEventListener("click", drawRedRight, false);
-  canvas.removeEventListener("click", drawBlueLeft, false);
-  canvas.removeEventListener("click", drawBlueRight, false);
-  canvas.style.cursor = "crosshair";
-  // clicks++;
-  // this point won't be added to the points array
-  // it's here only to mark the point on click since otherwise it will appear with a delay equal to the timeout
-}
-
-function drawRedCircleRight() {
-  canvas.addEventListener("click", drawRedRight, false);
-  canvas.addEventListener("click", printMousePos, false);
-  activeFunctionInfo.style.color = 'var(--front-dark)';
-  activeFunctionInfo.style.fontWeight = 'bold';
-  activeFunctionInfo.style.fontSize = '1.4em';
-  appendSafeHTML(activeFunctionInfo, [
-    (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-play'; return i; })(),
-    '\u00A0', // &nbsp;
-    'Red (front) Right circle active.'
-  ]);
-  canvas.removeEventListener("click", drawRedLeft, false);
-  canvas.removeEventListener("click", drawBlueLeft, false);
-  canvas.removeEventListener("click", drawBlueRight, false);
-  canvas.style.cursor = "crosshair";
-}
-
-function removeRedCircleLeft() {
-  let lastElementRedLeft = pointsRedLeft[pointsRedLeft.length - 1];
-  // console.log(
-  //   "Removed left red point on the coordinates: X " +
-  //     lastElementRedLeft.x +
-  //     " Y: " +
-  //     lastElementRedLeft.y
-  // );
-  if (pointsRedLeft.indexOf(lastElementRedLeft) >= 9) {
-    ctx.clearRect(
-      lastElementRedLeft.x - pointSize,
-      lastElementRedLeft.y - pointSize,
-      pointSize * 4 + 18,
-      pointSize * 4 + 10
-    );
-  } else {
-    ctx.clearRect(
-      lastElementRedLeft.x - pointSize,
-      lastElementRedLeft.y - pointSize,
-      pointSize * 4 + 10,
-      pointSize * 4 + 10
-    );
+  if (label) {
+    ctx.font = `${parseInt(point.r) + 8}px Arial`;
+    ctx.fillText(label, point.x + point.r * 1.2, point.y + point.r * 1.2 + 10);
   }
-  pointsRedLeft.pop();
-  canvas.removeEventListener("click", drawRedLeft, false);
-  canvas.removeEventListener("click", drawRedRight, false);
-  canvas.removeEventListener("click", drawBlueLeft, false);
-  canvas.removeEventListener("click", drawBlueRight, false);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.style.cursor = "default";
-  // coordinates minus the radius
-  //since the rect starts at the top left corner and the circle coords focus on the middle point
-  // 8 is the diameter of any point, so create a square with an edge of 8
-  // to also delete the number we add another square with same size for deletion hence the times 4, also de plus 10 offset
-  // in the y axis and x axis like we did to draw the index numbers above
 }
 
-function removeRedCircleRight() {
-  let lastElementRedRight = pointsRedRight[pointsRedRight.length - 1];
-  // console.log(
-  //   "Removed left red point on the coordinates: X " +
-  //     lastElementRedRight.x +
-  //     " Y: " +
-  //     lastElementRedRight.y
-  // );
-  if (pointsRedRight.indexOf(lastElementRedRight) >= 9) {
-    ctx.clearRect(
-      lastElementRedRight.x - pointSize,
-      lastElementRedRight.y - pointSize,
-      pointSize * 4 + 20,
-      pointSize * 4 + 10
-    );
-  } else {
-    ctx.clearRect(
-      lastElementRedRight.x - pointSize,
-      lastElementRedRight.y - pointSize,
-      pointSize * 4 + 12,
-      pointSize * 4 + 10
-    );
+// Clearing small rectangles around a removed point also erased parts of neighbouring points, so
+// every removal redraws the whole canvas from the point arrays instead.
+function redraw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  pointsMeasure.forEach(p => drawPoint(p, MEASURE_COLOR));
+  for (const group of GROUP_LIST) {
+    group.points.forEach((p, i) => {
+      if (!(replacing && replacing.group === group && replacing.index === i)) {
+        drawPoint(p, group.color, group.side + (i + 1));
+      }
+    });
   }
-  pointsRedRight.pop();
-  canvas.removeEventListener("click", drawRedLeft, false);
-  canvas.removeEventListener("click", drawRedRight, false);
-  canvas.removeEventListener("click", drawBlueLeft, false);
-  canvas.removeEventListener("click", drawBlueRight, false);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.style.cursor = "default";
 }
 
-function removeAllRedCircleLeft() {
-  for (let i = 0; i < pointsRedLeft.length; i++) {
-    if (i >= 9) {
-      ctx.clearRect(
-        pointsRedLeft[i].x - pointSize,
-        pointsRedLeft[i].y - pointSize,
-        pointSize * 4 + 18,
-        pointSize * 4 + 10
-      );
-    } else {
-      ctx.clearRect(
-        pointsRedLeft[i].x - pointSize,
-        pointsRedLeft[i].y - pointSize,
-        pointSize * 4 + 10,
-        pointSize * 4 + 10
-      );
+
+// ---------------------------------------------------------------- tools (one active at a time)
+
+// null, 'measure' or a GROUPS key. Replacing a point is tracked separately in `replacing`.
+let mode = null;
+let replacing = null; // {group, index} while waiting for the replacement point
+
+const TOOL_BUTTONS = { measure: 'measureButton' };
+for (const [key, group] of Object.entries(GROUPS)) TOOL_BUTTONS[key] = group.button;
+
+function setMode(next) {
+  mode = next;
+  canvas.style.cursor = next ? 'crosshair' : 'auto';
+  for (const [key, id] of Object.entries(TOOL_BUTTONS)) $id(id).classList.toggle('active', key === next);
+  if (next !== 'measure') addMeasureInfo.textContent = '';
+}
+
+function showStatus(color, iconClass, text) {
+  Object.assign(activeFunctionInfo.style, { color, fontWeight: 'bold', fontSize: '1.4em' });
+  activeFunctionInfo.replaceChildren(icon(iconClass), ' ', text);
+}
+
+// Ends every tool, including a pending point replacement.
+function stopTools() {
+  cancelReplace();
+  setMode(null);
+  activeFunctionInfo.textContent = '';
+}
+
+canvas.addEventListener('click', event => {
+  const point = getPosition(event);
+  if (replacing) {
+    finishReplace(point);
+  } else if (mode === 'measure') {
+    if (pointsMeasure.length < 2) {
+      pointsMeasure.push(point);
+      drawPoint(point, MEASURE_COLOR);
     }
-    // console.log(
-    //   "Removed point on the coordinates: X " +
-    //     pointsRedLeft[i].x +
-    //     " Y: " +
-    //     pointsRedLeft[i].y
-    // );
+  } else if (mode) {
+    const group = GROUPS[mode];
+    group.points.push(point);
+    drawPoint(point, group.color, group.side + group.points.length);
+    refreshRemoveList();
   }
-  pointsRedLeft.length = 0;
-  canvas.removeEventListener("click", drawRedLeft, false);
-  canvas.removeEventListener("click", drawRedRight, false);
-  canvas.removeEventListener("click", drawBlueLeft, false);
-  canvas.removeEventListener("click", drawBlueRight, false);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.style.cursor = "default";
-  activeFunctionInfo.style.color = 'var(--front-dark)';
-  activeFunctionInfo.style.fontWeight = 'bold';
-  activeFunctionInfo.style.fontSize = '1.4em';
-  appendSafeHTML(activeFunctionInfo, [
-    (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-xmark'; return i; })(),
-    '\u00A0', // &nbsp;
-    'All red left points removed!'
-  ]);
+});
+
+function startMarking(key) {
+  setMode(key);
+  showStatus(GROUPS[key].css, 'fa-solid fa-play', GROUPS[key].status);
 }
 
-function removeAllRedCircleRight() {
-  for (let i = 0; i < pointsRedRight.length; i++) {
-    if (i >= 9) {
-      ctx.clearRect(
-        pointsRedRight[i].x - pointSize,
-        pointsRedRight[i].y - pointSize,
-        pointSize * 4 + 20,
-        pointSize * 4 + 10
-      );
-    } else {
-      ctx.clearRect(
-        pointsRedRight[i].x - pointSize,
-        pointsRedRight[i].y - pointSize,
-        pointSize * 4 + 12,
-        pointSize * 4 + 10
-      );
-    }
-    // console.log(
-    //   "Removed point on the coordinates: X " +
-    //     pointsRedRight[i].x +
-    //     " Y: " +
-    //     pointsRedRight[i].y
-    // );
-  }
-  pointsRedRight.length = 0;
-  canvas.removeEventListener("click", drawRedLeft, false);
-  canvas.removeEventListener("click", drawRedRight, false);
-  canvas.removeEventListener("click", drawBlueLeft, false);
-  canvas.removeEventListener("click", drawBlueRight, false);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.style.cursor = "default";
-  activeFunctionInfo.style.color = 'var(--front-dark)';
-  activeFunctionInfo.style.fontWeight = 'bold';
-  activeFunctionInfo.style.fontSize = '1.4em';
-  appendSafeHTML(activeFunctionInfo, [
-    (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-xmark'; return i; })(),
-    '\u00A0', // &nbsp;
-    'All red right points removed!'
-  ]);
-}
+function drawRedCircleLeft() { startMarking('redLeft'); }
+function drawRedCircleRight() { startMarking('redRight'); }
+function drawBlueCircleLeft() { startMarking('blueLeft'); }
+function drawBlueCircleRight() { startMarking('blueRight'); }
 
-// DRAW BLUE - ALL EVENTS
-
-function drawCoordinatesBlue(point, r) {
-  ctx.fillStyle = "hsl(245, 89%, 42%)"; // Dark Blue color
-  ctx.beginPath();
-  ctx.arc(point.x, point.y, r, 0, Math.PI * 2, true);
-  ctx.fill();
-}
-
-function drawBlueLeft(e) {
-  clicksBlue++;
-  var n = getPosition(e);
-  drawCoordinatesBlue(n, pointSize);
-  pointsBlueLeft.push(n);
-  // console.log(pointsBlueLeft);
-  let index = pointsBlueLeft.indexOf(n);
-  // console.log(index);
-  ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-  ctx.fillText(
-    "L" + (index + 1),
-    n.x + pointSize * 1.2,
-    n.y + pointSize * 1.2 + 10
-  );
+function removeGroup(key) {
+  cancelReplace();
+  if (mode !== 'measure') setMode(null);
+  GROUPS[key].points.length = 0;
+  redraw();
   refreshRemoveList();
+  showStatus(GROUPS[key].css, 'fa-solid fa-xmark', GROUPS[key].removed);
 }
 
-function drawBlueRight(e) {
-  clicksBlue++;
-  var n = getPosition(e);
-  drawCoordinatesBlue(n, pointSize);
-  pointsBlueRight.push(n);
-  // console.log(pointsBlueRight);
-  let index = pointsBlueRight.indexOf(n);
-  // console.log(index);
-  ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-  ctx.fillText(
-    "R" + (index + 1),
-    n.x + pointSize * 1.2,
-    n.y + pointSize * 1.2 + 10
-  );
-  refreshRemoveList();
+function removeAllRedCircleLeft() { removeGroup('redLeft'); }
+function removeAllRedCircleRight() { removeGroup('redRight'); }
+function removeAllBlueCircleLeft() { removeGroup('blueLeft'); }
+function removeAllBlueCircleRight() { removeGroup('blueRight'); }
+
+function toggleInactive() {
+  stopTools();
+  document.activeElement.blur();
 }
-
-function drawBlueCircleLeft() {
-  canvas.addEventListener("click", drawBlueLeft, false);
-  canvas.addEventListener("click", printMousePos, false);
-  activeFunctionInfo.style.color = 'var(--hind-dark)';
-  activeFunctionInfo.style.fontWeight = 'bold';
-  activeFunctionInfo.style.fontSize = '1.4em';
-  appendSafeHTML(activeFunctionInfo, [
-    (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-play'; return i; })(),
-    '\u00A0', // &nbsp;
-    'Blue (hind) Left circle active.'
-  ]);
-  canvas.removeEventListener("click", drawBlueRight, false);
-  canvas.removeEventListener("click", drawRedRight, false);
-  canvas.removeEventListener("click", drawRedLeft, false);
-  canvas.style.cursor = "crosshair";
-  
-}
-
-function drawBlueCircleRight() {
-  canvas.addEventListener("click", drawBlueRight, false);
-  canvas.addEventListener("click", printMousePos, false);
-  activeFunctionInfo.style.color = 'var(--hind-dark)';
-  activeFunctionInfo.style.fontWeight = 'bold';
-  activeFunctionInfo.style.fontSize = '1.4em';
-  appendSafeHTML(activeFunctionInfo, [
-    (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-play'; return i; })(),
-    '\u00A0', // &nbsp;
-    'Blue (hind) Right circle active.'
-  ]);
-  canvas.removeEventListener("click", drawBlueLeft, false);
-  canvas.removeEventListener("click", drawRedRight, false);
-  canvas.removeEventListener("click", drawRedLeft, false);
-  canvas.style.cursor = "crosshair";
-  
-}
-
-function removeBlueCircleLeft() {
-  let lastElementBlueLeft = pointsBlueLeft[pointsBlueLeft.length - 1];
-  // console.log(
-  //   "Removed left Blue point on the coordinates: X " +
-  //     lastElementBlueLeft.x +
-  //     " Y: " +
-  //     lastElementBlueLeft.y
-  // );
-  if (pointsBlueLeft.indexOf(lastElementBlueLeft) >= 9) {
-    ctx.clearRect(
-      lastElementBlueLeft.x - pointSize,
-      lastElementBlueLeft.y - pointSize,
-      pointSize * 4 + 18,
-      pointSize * 4 + 10
-    );
-  } else {
-    ctx.clearRect(
-      lastElementBlueLeft.x - pointSize,
-      lastElementBlueLeft.y - pointSize,
-      pointSize * 4 + 10,
-      pointSize * 4 + 10
-    );
-  }
-  pointsBlueLeft.pop();
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.style.cursor = "default";
-}
-
-function removeBlueCircleRight() {
-  let lastElementBlueRight = pointsBlueRight[pointsBlueRight.length - 1];
-  // console.log(
-  //   "Removed Right Blue point on the coordinates: X " +
-  //     lastElementBlueRight.x +
-  //     " Y: " +
-  //     lastElementBlueRight.y
-  // );
-  if (pointsBlueRight.indexOf(lastElementBlueRight) >= 9) {
-    ctx.clearRect(
-      lastElementBlueRight.x - pointSize,
-      lastElementBlueRight.y - pointSize,
-      pointSize * 4 + 20,
-      pointSize * 4 + 10
-    );
-  } else {
-    ctx.clearRect(
-      lastElementBlueRight.x - pointSize,
-      lastElementBlueRight.y - pointSize,
-      pointSize * 4 + 12,
-      pointSize * 4 + 10
-    );
-  }
-  pointsBlueRight.pop();
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.style.cursor = "default";
-}
-
-function removeAllBlueCircleLeft() {
-  for (let i = 0; i < pointsBlueLeft.length; i++) {
-    if (i >= 9) {
-      ctx.clearRect(
-        pointsBlueLeft[i].x - pointSize,
-        pointsBlueLeft[i].y - pointSize,
-        pointSize * 4 + 18,
-        pointSize * 4 + 10
-      );
-    } else {
-      ctx.clearRect(
-        pointsBlueLeft[i].x - pointSize,
-        pointsBlueLeft[i].y - pointSize,
-        pointSize * 4 + 10,
-        pointSize * 4 + 10
-      );
-    }
-    // console.log(
-    //   "Removed point on the coordinates: X " +
-    //     pointsBlueLeft[i].x +
-    //     " Y: " +
-    //     pointsBlueLeft[i].y
-    // );
-  }
-  pointsBlueLeft.length = 0;
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.style.cursor = "default";
-  activeFunctionInfo.style.color = 'var(--hind-dark)';
-  activeFunctionInfo.style.fontWeight = 'bold';
-  activeFunctionInfo.style.fontSize = '1.4em';
-  appendSafeHTML(activeFunctionInfo, [
-    (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-xmark'; return i; })(),
-    '\u00A0', // &nbsp;
-    'All blue left points removed!'
-  ]);
-}
-
-function removeAllBlueCircleRight() {
-  for (let i = 0; i < pointsBlueRight.length; i++) {
-    if (i >= 9) {
-      ctx.clearRect(
-        pointsBlueRight[i].x - pointSize,
-        pointsBlueRight[i].y - pointSize,
-        pointSize * 4 + 18,
-        pointSize * 4 + 10
-      );
-    } else {
-      ctx.clearRect(
-        pointsBlueRight[i].x - pointSize,
-        pointsBlueRight[i].y - pointSize,
-        pointSize * 4 + 10,
-        pointSize * 4 + 10
-      );
-    }
-    // console.log(
-    //   "Removed point on the coordinates: X " +
-    //     pointsBlueRight[i].x +
-    //     " Y: " +
-    //     pointsBlueRight[i].y
-    // );
-  }
-  pointsBlueRight.length = 0;
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.style.cursor = "default";
-  activeFunctionInfo.style.color = 'var(--hind-dark)';
-  activeFunctionInfo.style.fontWeight = 'bold';
-  activeFunctionInfo.style.fontSize = '1.4em';
-  appendSafeHTML(activeFunctionInfo, [
-    (() => { const i = document.createElement('i'); i.className = 'fa-solid fa-xmark'; return i; })(),
-    '\u00A0', // &nbsp;
-    'All blue right points removed!'
-  ]);
-}
-
-// MEASURE POINTS - ALL EVENTS
-
-let dist = 0;
-
-function drawMeasureCoordinates(point, r) {
-  ctx.fillStyle = "#000000"; // Black | New color grey: #525151
-  ctx.beginPath();
-  ctx.arc(point.x, point.y, r, 0, Math.PI * 2, true);
-  ctx.fill();
-}
-
-// Function to draw line //
-
-// var coords = [];
-// function drawMeasureCoordinatesLine(event, r) {
-//   var coord = { x: event.x, y: event.y };
-//   coords.push(coord);
-//   var max = coords.length - 1;
-//   ctx.lineWidth = 3;
-//   if (typeof coords[max - 1] !== "undefined") {
-//     var curr = coords[max],
-//       prev = coords[max - 1];
-//     ctx.beginPath();
-//     ctx.moveTo(prev.x, prev.y);
-//     ctx.lineTo(curr.x, curr.y);
-//     ctx.stroke();
-//   }
-// }
-
-// function drawMeasurePoint(e) {
-//   if (coords.length <= 1 && pointsMeasure.length <= 1) {
-//     var o = getPosition(e);
-//     drawMeasureCoordinates(o, pointSize);
-//     drawMeasureCoordinatesLine(o, pointSize);
-//     pointsMeasure.push(o);
-//     console.log(pointsMeasure);
-//     console.log(coords.length);
-//     let index = pointsMeasure.indexOf(o);
-//     console.log("Measure Point:" + (index + 1));
-//   } else {
-//     return;
-//   }
-// }
-
-// ------------------------------------------------------------------------- //
-function drawMeasurePoint(e) {
-  if (pointsMeasure.length <= 1) {
-    var o = getPosition(e);
-    drawMeasureCoordinates(o, pointSize);
-    pointsMeasure.push(o);
-    // console.log(pointsMeasure);
-    let index = pointsMeasure.indexOf(o);
-    // console.log("Measure Point:" + (index + 1));
-  } else {
-    return;
-  }
-}
-
-function drawMeasureCircle() {
-  canvas.addEventListener("click", drawMeasurePoint, false);
-  canvas.addEventListener("click", printMousePos, false);
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.style.cursor = "crosshair";
-  appendSafeHTML(document.getElementById('addMeasureInfo'), [
-  (() => {
-    const b = document.createElement('b');
-    const i = document.createElement('i');
-    i.className = 'fa-solid fa-play';
-    b.appendChild(i);
-    b.append('\u00A0Add measure points active');
-    return b;
-  })(),
-  document.createElement('br'),
-  '(*) You can stop this function by clicking the eraser button below or clicking the reset or pause buttons from the above section (shortcut keys work as well).'
-]);
-  alert("Measure 1cm function is active. Click on the canvas to add 2 points and measure the distance (shortcut key - M key) in pixels.");
-}
-
-function removeAllMeasurePointsOnly() {
-  for (let i = 0; i < pointsMeasure.length; i++) {
-    ctx.clearRect(
-      pointsMeasure[i].x - pointSize,
-      pointsMeasure[i].y - pointSize,
-      pointSize * 4,
-      pointSize * 4
-    );
-  }
-
-  pointsMeasure.length = 0;
-
-  canvas.removeEventListener("click", drawMeasurePoint);
-  canvas.removeEventListener("click", printMousePos);
-
-  canvas.style.cursor = "default";
-}
-
-
-
-function removeAllMeasurePoints() {
-
-  for (let i = 0; i < pointsMeasure.length; i++) {
-    ctx.clearRect(
-      pointsMeasure[i].x - pointSize,
-      pointsMeasure[i].y - pointSize,
-      pointSize * 4,
-      pointSize * 4
-    );
-  }
-
-  pointsMeasure.length = 0;
-
-  canvas.removeEventListener("click", drawMeasurePoint);
-  canvas.removeEventListener("click", printMousePos);
-
-  canvas.style.cursor = "default";
-
-  document.getElementById("measureToCm").value = "";
-
-  dist = 0;
-
-  document.getElementById('addMeasureInfo').textContent = "";
-}
-
-
-///////////////////////////////////////////////
 
 function resetCanvas() {
-  activeFunctionInfo.textContent = '';
-
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener("click", drawMeasurePoint);
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  pointsRedLeft.length = 0;
-  pointsRedRight.length = 0;
-  pointsBlueLeft.length = 0;
-  pointsBlueRight.length = 0;
+  stopTools();
+  for (const group of GROUP_LIST) group.points.length = 0;
   pointsMeasure.length = 0;
-
-  canvas.style.cursor = "auto";
-
-  pointSize = 4; // reset point size to default
-  showSize.textContent = "Current point radius size is: " + pointSize + "px";
-
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
-  });
-
-  document.getElementById('addMeasureInfo').textContent = '';
-
+  redraw();
+  resetSizeValue();
   document.activeElement.blur();
-
   refreshRemoveList();
 }
 
 
+// ---------------------------------------------------------------- point size
 
-// TOGGLE INACTIVE FUNCTION
+sizeInput.addEventListener('keydown', e => {
+  // Block the minus sign, the decimal point and the exponent
+  if (['-', '.', 'e', 'E'].includes(e.key)) e.preventDefault();
+});
 
-function toggleInactive(){
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener("click", drawMeasurePoint);
-  activeFunctionInfo.textContent = '';
-  canvas.style.cursor = "auto";
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
-  });
-  document.activeElement.blur();
-  document.getElementById('addMeasureInfo').textContent = '';
+sizeInput.addEventListener('input', () => {
+  // Pasted values get past keydown
+  if (sizeInput.value !== '' && sizeInput.value < 1) sizeInput.value = 1;
+});
+
+function showPointSize() {
+  showSize.textContent = `Current point radius size is: ${pointSize}px`;
 }
 
+function changeSize() {
+  pointSize = Number(sizeInput.value) || DEFAULT_POINT_SIZE;
+  showPointSize();
+}
 
+// The size input keeps its text: only the size used for new points goes back to the default
+function resetSizeValue() {
+  pointSize = DEFAULT_POINT_SIZE;
+  showPointSize();
+}
+
+function resetSize() {
+  sizeInput.value = '';
+  resetSizeValue();
+}
+
+showPointSize();
+
+
+// ---------------------------------------------------------------- remove or replace one point
+
+function refreshRemoveList() {
+  const options = [new Option('Select Point')];
+  for (const group of GROUP_LIST) {
+    group.points.forEach((_, i) => options.push(new Option(group.name + (i + 1), group.name + (i + 1))));
+  }
+  selectPoint.replaceChildren(...options);
+  updatePointButtons();
+}
+
+// The chosen option as {group, index}, or null when no existing point is selected
+function selectedPoint() {
+  const match = /^(Red|Blue) ([LR])(\d+)$/.exec(selectPoint.value);
+  if (!match) return null;
+  const group = GROUP_LIST.find(g => g.name === `${match[1]} ${match[2]}`);
+  const index = Number(match[3]) - 1;
+  return index < group.points.length ? { group, index } : null;
+}
+
+function updatePointButtons() {
+  const visible = selectedPoint() !== null;
+  show(removePointButton, visible);
+  show(replacePointButton, visible);
+}
+
+selectPoint.addEventListener('change', updatePointButtons);
+
+function removeChosenPoint() {
+  const selected = selectedPoint();
+  if (!selected) return;
+  selected.group.points.splice(selected.index, 1);
+  redraw();
+  refreshRemoveList();
+}
+
+// Controls that would change the points while one is being replaced
+const REPLACE_LOCKED = ['removePoint', 'replacePoint', 'selectPoint', 'removeImage',
+  'redCircleLeft', 'redCircleRight', 'blueCircleLeft', 'blueCircleRight'];
+
+function lockForReplace(locked) {
+  REPLACE_LOCKED.forEach(id => { $id(id).disabled = locked; });
+  document.querySelector('.upload-btn').disabled = locked;
+}
+
+function replaceChosenPoint() {
+  const selected = selectedPoint();
+  if (!selected) return;
+  setMode(null);
+  replacing = selected;
+  lockForReplace(true);
+  canvas.style.cursor = 'crosshair';
+  const { group, index } = selected;
+  const label = `${group.color === FRONT_COLOR ? 'Red (front)' : 'Blue (hind)'} ${group.side}${index + 1}`;
+  showStatus(group.css, 'fa-solid fa-repeat', `Replacing ${label}`);
+  redraw(); // hides the point being replaced
+}
+
+function finishReplace(point) {
+  replacing.group.points[replacing.index] = point;
+  cancelReplace();
+}
+
+function cancelReplace() {
+  if (!replacing) return;
+  replacing = null;
+  lockForReplace(false);
+  canvas.style.cursor = mode ? 'crosshair' : 'auto';
+  activeFunctionInfo.textContent = '';
+  redraw();
+}
+
+refreshRemoveList();
+
+
+// ---------------------------------------------------------------- pixels per centimetre
+
+let dist = 0; // pixels in 1 cm; 0 = not set
+
+function drawMeasureCircle() {
+  setMode('measure');
+  activeFunctionInfo.textContent = '';
+  addMeasureInfo.replaceChildren(
+    bold(icon('fa-solid fa-play'), ' Add measure points active'),
+    document.createElement('br'),
+    '(*) You can stop this function by clicking the eraser button below or clicking the reset or pause buttons from the above section (shortcut keys work as well).'
+  );
+  alert('Measure 1cm function is active. Click on the canvas to add 2 points and measure the distance (shortcut key - M key) in pixels.');
+}
+
+// Removes the measurement points but keeps the measured value
+function removeAllMeasurePointsOnly() {
+  pointsMeasure.length = 0;
+  if (mode === 'measure') setMode(null);
+  redraw();
+}
+
+// Eraser (D): removes the measurement points and the conversion value, wherever it came from
+function removeAllMeasurePoints() {
+  pointsMeasure.length = 0;
+  stopTools();
+  redraw();
+  resetInput();
+}
 
 function distanceMeasurePoint() {
-  if (pointsMeasure.length != 0) {
-    dist = Math.hypot(
-      pointsMeasure[1].x - pointsMeasure[0].x,
-      pointsMeasure[1].y - pointsMeasure[0].y
-    ).toFixed(3);
-    // console.log(dist);
-    document.getElementById("measureToCm").value =
-      parseFloat(dist);
-    // if (imgSizeStatus == 1){
-    //   document.getElementById("measureToCm").textContent = dist + "px equals 1 centimeter";
-    // }
-    // if (imgSizeStatus == 0.75){
-    //   document.getElementById("measureToCm").textContent = dist + "px equals 0.75 centimeter";
-    // }
-    // if (imgSizeStatus == 0.5){
-    //   document.getElementById("measureToCm").textContent = dist + "px equals 0.5 centimeter";
-    // }
-    // if (imgSizeStatus == 0.25){
-    //   document.getElementById("measureToCm").textContent = dist + "px equals 0.25 centimeter";
-    // }
-  } else {
-    alert("Add 2 points and measure or manually input known values under.");
+  if (pointsMeasure.length < 2) {
+    stopTools();
+    alert('Add 2 points and measure or manually input known values under.');
+    return;
   }
-  activeFunctionInfo.textContent = '';
-  document.getElementById('addMeasureInfo').textContent = "";
-  alert("Distance measured in pixels: " + dist + "px. Removing points");
+  const [a, b] = pointsMeasure;
+  const measured = Math.hypot(b.x - a.x, b.y - a.y).toFixed(3);
+  dist = Number(measured);
+  measureToCm.value = dist;
+  stopTools();
+  alert(`Distance measured in pixels: ${measured}px. Removing points`);
   removeAllMeasurePointsOnly();
 }
 
-let inputPixelsManually = document.getElementById("pixelsInCmMan");
-let savedChoices = document.getElementById("savedChoices");
-
 function manualInputMeasure() {
-  if (
-    inputPixelsManually.value != "" &&
-    savedChoices.options[savedChoices.selectedIndex].value == "None"
-  ) {
-    dist = inputPixelsManually.value;
-    savedChoices.value = "None";
-    document.getElementById("measureToCm").value =
-      parseFloat(dist);
+  const typed = inputPixelsManually.value;
+  const saved = savedChoices.value;
+  if ((typed === '') === (saved === 'None')) {
+    alert('Type a value or pick a saved one (only one of the two), then click Use.');
+    return;
   }
-  if (
-    savedChoices.options[savedChoices.selectedIndex].value != "None" &&
-    inputPixelsManually.value == ""
-  ) {
-    dist = savedChoices[savedChoices.selectedIndex].value;
-    document.getElementById("measureToCm").value =
-      parseFloat(dist);
+  const value = Number(typed !== '' ? typed : saved);
+  if (!(value > 0)) {
+    alert('The number of pixels in 1 cm must be greater than 0.');
+    return;
   }
+  dist = value;
+  measureToCm.value = value;
 }
 
 function resetInput() {
-  inputPixelsManually.value = "";
-  savedChoices.value = "None";
+  inputPixelsManually.value = '';
+  savedChoices.value = 'None'; // set from code, so no "change" event: update the notice here
   dist = 0;
-  document.getElementById("measureToCm").value = "";
+  measureToCm.value = '';
+  updateSavedSizeNotice();
 }
 
-// ------------------------------------------------------------------------------------- -------------------------------------------------------------//
 
-// HOTKEYS SECTION FOR BUTTONS 
+// ---------------------------------------------------------------- results table
 
+// Row text below is copied into Excel exports, so keep it stable for users' spreadsheets.
+const BREAK_TEXT = '------------------------------BREAK------------------------------';
 
+const averageLabel = type => (type === 'Overlap Left' ? 'Overlap left' : type) + ' average in cm:';
 
-document.addEventListener('keydown', function(event) {
-  const activeElement = document.activeElement;
-  if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') {
-    return;
+const pxDistance = (a, b) => Math.hypot(a.x - b.x, a.y - b.y).toFixed(3);
+
+// Consecutive steps of one paw: 1 -> 2, 2 -> 3, ...
+function strideRows(points, name) {
+  const rows = [];
+  for (let i = 0; i < points.length - 1; i++) {
+    rows.push({ from: name + (i + 1), to: name + (i + 2), px: pxDistance(points[i], points[i + 1]) });
   }
+  return rows;
+}
 
-  // Handle Shift+M separately
-  if (event.shiftKey && event.key.toLowerCase() === 'm') {
-    document.getElementById('measureButton').click();
-    return;
+// Same-numbered front and hind prints of one side
+function overlapRows(front, hind, frontName, hindName) {
+  const rows = [];
+  for (let i = 0; i < Math.min(front.length, hind.length); i++) {
+    rows.push({ from: frontName + (i + 1), to: hindName + (i + 1), px: pxDistance(front[i], hind[i]) });
   }
-
-  switch (event.key) {
-    case 'q':
-      document.getElementById('redCircleLeft').click();
-      break;
-    case 'w':
-      document.getElementById('redCircleRight').click();
-      break;
-    case 'a':
-      document.getElementById('blueCircleLeft').click();
-      break;
-    case 's':
-      document.getElementById('blueCircleRight').click();
-      break;
-    case 'p':
-      alert("Stopped all marking/drawing functions.")
-      document.getElementById('toggleInactive').click();
-      break;
-    case 'm':
-      document.getElementById('measureDistance').click();
-      break;
-    case 'd':
-      document.getElementById('resetMeasure').click();
-      break;
-    case 'r':
-      if (confirm('Are you sure you want to reset the canvas? This will delete all points and measurements.')) {
-        document.getElementById('resetCanvas').click();
-      }
-      break;
-
-      }
-});
-
-
-// Resolution section //
-
-function getUserResolution() {
-  document.getElementById("userResolution").append(Math.round(window.screen.width * window.devicePixelRatio) +
-    "x" +
-    Math.round(window.screen.height * window.devicePixelRatio))
+  return rows;
 }
 
-getUserResolution();
-
-
-// ----------------------- MOST VARIABLES ASSIGNED --------------------------- //
-
-function getShortenedFilename(filename, maxLength = 50) {
-  if (filename.length <= maxLength) return filename;
-
-  const extIndex = filename.lastIndexOf('.');
-  const extension = extIndex !== -1 ? filename.slice(extIndex) : '';
-  const nameOnly = extIndex !== -1 ? filename.slice(0, extIndex) : filename;
-
-  const visibleChars = maxLength - extension.length - 3; // 3 for "..."
-  const startChars = Math.ceil(visibleChars / 2);
-  const endChars = Math.floor(visibleChars / 2);
-
-  return `${nameOnly.slice(0, startChars)}...${nameOnly.slice(-endChars)}${extension}`;
-}
-
-
-// let imgSizeStatus = 0;
-let imgWidth = document.getElementById("imageUploadedWidth");
-let imgHeight = document.getElementById("imageUploadedHeight");
-// let imgSize = document.getElementById("imageUploadedSize");
-let imgInfo = document.getElementById("imageInfo");
-let imgEdit = document.getElementById("imageEdit");
-let results = document.querySelector(".data-results");
-let buttons = document.querySelector(".buttons-plus-options");
-// let chButtons = document.querySelector(".buttons-change");
-// let canvasInfo = document.getElementById("canvasInfo");
-let canvasUpload = document.getElementById("canvasUpload");
-let imgName = document.getElementById("imageName");
-let tableTitle = document.getElementById("titleImage");
-let manualID = document.getElementById("entryTableID");
-let tableWarning = document.getElementById("imageResizeTableWarning");
-// document.getElementById("inputScreenInches").style.display = "none";
-// document.getElementById("screenPPI").style.display = "none";
-// document.getElementById("imageDimInches").style.display = "none";
-// document.getElementById("imageDimCm").style.display = "none";
-// document.getElementById("labelInput").style.display = "none";
-// document.getElementById("ppiCalculus").style.display = "none";
-document.getElementById("savedDistance").style.display = "none";
-document.getElementById("showData").style.display = "none";
-document.getElementById('removeImage').style.display = "none";
-document.getElementById('accordion').style.display = 'none';
-canvasUpload.style.display = "none";
-buttons.style.display = "none";
-canvas.style.display = "none";
-//  results.style.display = "none";
-// chButtons.style.display = "none";
-let imgContainer = document.getElementById("imgContainer");
-let img = new Image();
-let loadFile = function (event) {
-  // CORRECTED CHECK:
-  // We strictly check if the source starts with 'blob:', which implies 
-  // a user has previously uploaded a file in this session.
-  if (img.src && img.src.startsWith("blob:")) {
-  const confirmOverwrite = confirm("An image is already loaded. This will clear all current data and measurements. Are you sure you are done with the previous image?");
-
-  if (!confirmOverwrite) {
-    // User clicked Cancel: Clear the input so they can re-select the same file later if they want
-    event.target.value = null;
-    return; // Stop the rest of the function running
-  } else {
-    // User clicked OK: Run the reset function defined above
-    resetFile();
-  }
-}
-
-  // 2. PROCEED WITH IMAGE VALIDATION
-  if (event.target.files[0]["type"].split("/")[0] === "image") {
-    img.src = URL.createObjectURL(event.target.files[0]);
-    
-    
-    let blob = img.src;
-    imgContainer.style.backgroundImage = "url(" + blob + ")";
-    buttons.style.display = "block";
-    // results.style.display = "inline-block";
-    // chButtons.style.display = "block";
-    // imgInfo.style.display = "block";
-    imgEdit.style.display = "block";
-    savedDistance.style.display = "";
-    showData.style.display = "";
-    // canvasInfo.style.display = "none";
-    canvasUpload.style.display = "";
-    // imgSize.textContent =
-    //   "<strong>Uploaded image size:</strong> " +
-    //   (event.target.files[0].size / 1024).toFixed(2) +
-    //   " kb";
-    const fileInput = event.target.files[0];
-    const shortened = getShortenedFilename(fileInput.name);
-    imgName.textContent = shortened;
-
-    canvas.style.display = "";
-    // document.getElementById("canvasWidth").value = '';
-    // document.getElementById("canvasHeight").value = '';
-  } else {
-    alert("Please enter a valid image format!");
-    event.target.value = null;
-  }
-  // ON LOAD OF NEW IMAGE RESET ALL
-  activeFunctionInfo.textContent = '';
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener("click", drawMeasurePoint);
-  pointsRedLeft.length = 0;
-  pointsRedRight.length = 0;
-  pointsBlueLeft.length = 0;
-  pointsBlueRight.length = 0;
-  pointsMeasure.length = 0;
-  canvas.style.cursor = "auto";
-  removeAllEntries();
-  removeTableID();
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
-  });
-  refreshRemoveList();
-  // IMAGE ONLOAD SECTION - //
-img.onload = () => {
-  event.target.value = null;
-  originalImageWidth = img.naturalWidth;
-  originalImageHeight = img.naturalHeight;
-
-  imgWidth.textContent = originalImageWidth;
-  imgHeight.textContent = originalImageHeight;
-  imgContainer.style.border = "2px solid var(--ink)";
-
-  resizeImageToFitViewport(img);
-
-  document.getElementById('removeImage').style.display = "";
-  document.getElementById('accordion').style.display = '';
-};
-
-function resizeImageToFitViewport(img) {
-  const maxViewportWidth = window.innerWidth * 0.9;
-  const maxViewportHeight = window.innerHeight * 0.9;
-
-  const widthScale = maxViewportWidth / img.width;
-  const heightScale = maxViewportHeight / img.height;
-  const scale = Math.min(widthScale, heightScale, 1); // Don't upscale, only downscale
-
-  const resizedWidth = Math.round(img.width * scale);
-  const resizedHeight = Math.round(img.height * scale);
-
-  // Apply resized dimensions
-  imgContainer.style.width = `${resizedWidth}px`;
-  imgContainer.style.height = `${resizedHeight}px`;
-  imgContainer.style.backgroundSize = `${resizedWidth}px ${resizedHeight}px`;
-
-  canvas.width = resizedWidth;
-  canvas.height = resizedHeight;
-
-  // Update UI
-  const scalePercent = Math.round(scale * 100);
-  
-  appendSafeHTML(document.getElementById("currentImgSize"), [
-  (() => {
-    const b = document.createElement('b');
-    b.textContent = 'Current image size is:';
-    return b;
-  })(),
-  ` ${resizedWidth}x${resizedHeight}`,
-  ...(scale < 1
-    ? [
-        document.createElement('br'),
-        (() => {
-          const warnIcon = document.createElement('span');
-          warnIcon.textContent = '\u26A0'; // ⚠
-          return warnIcon;
-        })(),
-        '\u00A0',
-        (() => {
-          const i = document.createElement('i');
-          i.textContent = `Image scaled down to ${scalePercent}% to fit your screen`;
-          return i;
-        })(),
-      ]
-    : [])
-]);
-
-  appendSafeHTML(tableWarning, 
-  scale < 1
-    ? [
-        (() => {
-          const span = document.createElement('span');
-          span.style.color = 'red';
-
-          const b = document.createElement('b');
-          b.textContent = '\u26A0'; // ⚠
-          span.appendChild(b);
-
-          return span;
-        })(),
-        ` Image was resized to ${scalePercent}% of its original size!`
-      ]
-    : []
-);
-
-   // Slider default logic: set slider.value to the actual percent scale (1-100)
-  slider.value = scalePercent;
-
-  // Example table update
-  if (scale < 1) {
-    tableDynamicValuePx.textContent = `Value(px) at ${scalePercent}%`;
-    tableDynamicValueCm.textContent = `Value(cm) at ${scalePercent}%`;
-  }
-  // Also trigger the slider input event so all related resizing happens consistently
-  slider.dispatchEvent(new Event('input'));
-}
-}
-
-
-// ALERT USER BEFORE LEAVING ANALYSIS PAGE //
-
-
-window.addEventListener("beforeunload", (event) => {
-  // STRICT CHECK: Only warn if the image is a Blob (user file).
-  // This ignores empty strings ("") or default browser src values.
-  if(img.src && img.src.startsWith("blob:")){
-    event.preventDefault(); // Standard for modern browsers
-    event.returnValue = true; // Required for Chrome/legacy
-  }
-});
-
-
-// BUTTONS FUCNTIONALITY FOR CSP
-
-
-// FUNCTIONS TO CHANGE CANVAS DIMENSIONS // --------------------------------------------------------------------------------------
-
-//     let canvasWidth = document.getElementById("canvasWidth");
-//     let canvasHeight = document.getElementById("canvasHeight");
-
-//     function changeWidth(){
-//     let canvasInputWidth = document.getElementById("canvasWidth").value;
-//     if (canvasInputWidth){
-//         canvas.width = canvasInputWidth;
-//         imgContainer.style.width = canvasInputWidth + "px";
-//         canvasInfo.textContent = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
-//     } else{
-//         return;
-//     }
-// }
-
-// changeWidth();
-
-// function changeHeight(){
-//   let canvasInputHeight = document.getElementById("canvasHeight").value;
-//   if (canvasInputHeight){
-//     canvas.height = canvasInputHeight;
-//     imgContainer.style.height = canvasInputHeight + "px";
-//     canvasInfo.textContent = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
-//   } else{
-//     return;
-//   }
-// }
-
-// changeHeight();
-
-//     function resetWidth(){
-//       canvas.width = img.width;
-//       imgContainer.style.width = canvas.width + "px";
-//       canvasInfo.textContent = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
-//       document.getElementById("canvasWidth").value = '';
-//     }
-
-//     function resetHeight(){
-//       canvas.height = img.height;
-//       imgContainer.style.height = canvas.height + "px";
-//       canvasInfo.textContent = "<strong>Canvas size is:</strong> " + canvas.width + "x" + canvas.height;
-//       document.getElementById("canvasHeight").value = '';
-//     }
-
-// FUNCTIONS TO CHANGE IMAGE DIMENSIONS AND KEEPING CANVAS SIZE (some functions probably unnecessary) //
-
-// function changeImgDim(){
-//   let imgWidthInput = document.getElementById("containerWidth").value;
-//   let imgHeightInput = document.getElementById("containerHeight").value;
-//   if ((imgWidthInput) && (imgHeightInput)){
-//     imgContainer.style.backgroundSize = imgWidthInput + "px " + imgHeightInput + "px";
-//     imgContainer.style.width = imgWidthInput + "px";
-//     imgContainer.style.height = imgHeightInput + "px";
-//     document.getElementById("currentImgSize").textContent = "<b>Current image size is:</b> " + imgWidthInput + "x" + imgHeightInput;
-//   } else{
-//     alert("Give both dimensions to change!");
-//   }
-// } ---------------------------------------------------------------------------------------------------------------------------
-
-
-
-// Image resizing section
-
-// *If new resizing options are added be sure to define new image status,
-// *new warning messages, new cell descriptions and add as an option to the
-// *calculations for loop to create values relative to original images sizes
-// *according to the resize.
-
-let table = document.getElementById("table");
-let tableDynamicValuePx = document.getElementById("valuePx");
-let tableDynamicValueCm = document.getElementById("valueCm");
-// let tableOrignalValueCm = document.getElementById("valueCmOri");
-let originalValueCell = document.getElementById("originalValueCell");
-
-// function resetImgDim() {
-//   var elems = document.querySelectorAll(".active");
-//   [].forEach.call(elems, function (el) {
-//     el.classList.remove("active");
-//   });
-//   canvas.removeEventListener("click", drawBlueLeft);
-//   canvas.removeEventListener("click", drawBlueRight);
-//   canvas.removeEventListener("click", drawRedLeft);
-//   canvas.removeEventListener("click", drawRedRight);
-//   canvas.removeEventListener("click", printMousePos);
-//   canvas.removeEventListener("click", drawMeasurePoint);
-//   pointsRedLeft.length = 0;
-//   pointsRedRight.length = 0;
-//   pointsBlueLeft.length = 0;
-//   pointsBlueRight.length = 0;
-//   pointsMeasure.length = 0;
-//   canvas.style.cursor = "auto";
-//   imgContainer.style.backgroundSize = img.width + "px " + img.height + "px";
-//   canvas.width = img.width;
-//   canvas.height = img.height;
-//   imgContainer.style.width = img.width + "px";
-//   imgContainer.style.height = img.height + "px";
-//   // imgWidthInput.value = '';
-//   // imgHeightInput.value = '';
-//   document.getElementById("currentImgSize").textContent =
-//     "<b>Current image size is:</b> " + img.width + "x" + img.height;
-//   document.getElementById("titleImage").colSpan = "5";
-//   tableWarning.textContent = "";
-//   tableDynamicValuePx.textContent = "Value(px)";
-//   tableDynamicValueCm.textContent = "Value(cm)";
-//   // if (table.rows[1].cells.length == 6) {
-//   //   table.rows[1].deleteCell(-1);
-//   // } else {
-//   //   return;
-//   // }
-//   imgSizeStatus = 100;
-//   $("#tbody").empty();
-// }
-
-// function resizeFifty() {
-//   var elems = document.querySelectorAll(".active");
-//   [].forEach.call(elems, function (el) {
-//     el.classList.remove("active");
-//   });
-//   canvas.removeEventListener("click", drawBlueLeft);
-//   canvas.removeEventListener("click", drawBlueRight);
-//   canvas.removeEventListener("click", drawRedLeft);
-//   canvas.removeEventListener("click", drawRedRight);
-//   canvas.removeEventListener("click", printMousePos);
-//   canvas.removeEventListener("click", drawMeasurePoint);
-//   pointsRedLeft.length = 0;
-//   pointsRedRight.length = 0;
-//   pointsBlueLeft.length = 0;
-//   pointsBlueRight.length = 0;
-//   pointsMeasure.length = 0;
-//   canvas.style.cursor = "auto";
-//   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-//   showSize.textContent = "Current point size is: " + pointSize;
-//   imgContainer.style.backgroundSize =
-//     img.width * 0.5 + "px " + img.height * 0.5 + "px";
-//   imgContainer.style.width = img.width * 0.5 + "px";
-//   imgContainer.style.height = img.height * 0.5 + "px";
-//   canvas.width = img.width * 0.5;
-//   canvas.height = img.height * 0.5;
-//   document.getElementById("currentImgSize").textContent =
-//     "<b>Current image size is:</b> " +
-//     img.width * 0.5 +
-//     "x" +
-//     img.height * 0.5 +
-//     " (50% of size!)";
-//   // tableDynamicValuePx.textContent = "Value(px) at 50%";
-//   // tableDynamicValueCm.textContent = "Value(cm) at 50%";
-//   // document.getElementById("titleImage").colSpan = "6";
-//   tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 50% of its original size!`; //\n
-//   //A new column with original image size values in cm added.`;
-//   imgSizeStatus = 50;
-//   // if (table.rows[1].cells.length < 6) {
-//   //   let originalValueCm = table.rows[1].insertCell();
-//   //   originalValueCm.outerHTML =
-//   //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-//   // } else {
-//   //   return;
-//   // }
-//   $("#tbody").empty();
-// }
-
-// function resizeSF() {
-//   var elems = document.querySelectorAll(".active");
-//   [].forEach.call(elems, function (el) {
-//     el.classList.remove("active");
-//   });
-//   canvas.removeEventListener("click", drawBlueLeft);
-//   canvas.removeEventListener("click", drawBlueRight);
-//   canvas.removeEventListener("click", drawRedLeft);
-//   canvas.removeEventListener("click", drawRedRight);
-//   canvas.removeEventListener("click", printMousePos);
-//   canvas.removeEventListener("click", drawMeasurePoint);
-//   pointsRedLeft.length = 0;
-//   pointsRedRight.length = 0;
-//   pointsBlueLeft.length = 0;
-//   pointsBlueRight.length = 0;
-//   pointsMeasure.length = 0;
-//   canvas.style.cursor = "auto";
-//   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-//   showSize.textContent = "Current point size is: " + pointSize;
-//   imgContainer.style.backgroundSize =
-//     img.width * 0.75 + "px " + img.height * 0.75 + "px";
-//   imgContainer.style.width = img.width * 0.75 + "px";
-//   imgContainer.style.height = img.height * 0.75 + "px";
-//   canvas.width = img.width * 0.75;
-//   canvas.height = img.height * 0.75;
-//   document.getElementById("currentImgSize").textContent =
-//     "<b>Current image size is:</b> " +
-//     img.width * 0.75 +
-//     "x" +
-//     img.height * 0.75 +
-//     " (75% of size!)";
-//   // tableDynamicValuePx.textContent = "Value(px) at 75%";
-//   // tableDynamicValueCm.textContent = "Value(cm) at 75%";
-//   // document.getElementById("titleImage").colSpan = "6";
-//   tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 75% of its original size!`; //\n
-//   //A new column with original image size values in cm added.`;
-//   imgSizeStatus = 75;
-//   // if (table.rows[1].cells.length < 6) {
-//   //   let originalValueCm = table.rows[1].insertCell();
-//   //   originalValueCm.outerHTML =
-//   //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-//   // } else {
-//   //   return;
-//   // }
-//   $("#tbody").empty();
-// }
-
-// function resizeForty() {
-//   var elems = document.querySelectorAll(".active");
-//   [].forEach.call(elems, function (el) {
-//     el.classList.remove("active");
-//   });
-//   canvas.removeEventListener("click", drawBlueLeft);
-//   canvas.removeEventListener("click", drawBlueRight);
-//   canvas.removeEventListener("click", drawRedLeft);
-//   canvas.removeEventListener("click", drawRedRight);
-//   canvas.removeEventListener("click", printMousePos);
-//   canvas.removeEventListener("click", drawMeasurePoint);
-//   pointsRedLeft.length = 0;
-//   pointsRedRight.length = 0;
-//   pointsBlueLeft.length = 0;
-//   pointsBlueRight.length = 0;
-//   pointsMeasure.length = 0;
-//   canvas.style.cursor = "auto";
-//   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-//   showSize.textContent = "Current point size is: " + pointSize;
-//   imgContainer.style.backgroundSize =
-//     img.width * 0.4 + "px " + img.height * 0.4 + "px";
-//   imgContainer.style.width = img.width * 0.4 + "px";
-//   imgContainer.style.height = img.height * 0.4 + "px";
-//   canvas.width = img.width * 0.4;
-//   canvas.height = img.height * 0.4;
-//   document.getElementById("currentImgSize").textContent =
-//     "<b>Current image size is:</b> " +
-//     (img.width * 0.4).toFixed(0) +
-//     "x" +
-//     (img.height * 0.4).toFixed(0) +
-//     " (40% of size! Values are rounded)";
-//   // tableDynamicValuePx.textContent = "Value(px) at 40%";
-//   // tableDynamicValueCm.textContent = "Value(cm) at 40%";
-//   // document.getElementById("titleImage").colSpan = "6";
-//   tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 40% of its original size!`; //\n
-//   //A new column with original image size values in cm added.`;
-//   imgSizeStatus = 40;
-//   // if (table.rows[1].cells.length < 6) {
-//   //   let originalValueCm = table.rows[1].insertCell();
-//   //   originalValueCm.outerHTML =
-//   //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-//   // } else {
-//   //   return;
-//   // }
-//   $("#tbody").empty();
-// }
-
-// function resizeTwentyF() {
-//   var elems = document.querySelectorAll(".active");
-//   [].forEach.call(elems, function (el) {
-//     el.classList.remove("active");
-//   });
-//   canvas.removeEventListener("click", drawBlueLeft);
-//   canvas.removeEventListener("click", drawBlueRight);
-//   canvas.removeEventListener("click", drawRedLeft);
-//   canvas.removeEventListener("click", drawRedRight);
-//   canvas.removeEventListener("click", printMousePos);
-//   canvas.removeEventListener("click", drawMeasurePoint);
-//   pointsRedLeft.length = 0;
-//   pointsRedRight.length = 0;
-//   pointsBlueLeft.length = 0;
-//   pointsBlueRight.length = 0;
-//   pointsMeasure.length = 0;
-//   canvas.style.cursor = "auto";
-//   pointSize = 4; // when clicking reset canvas point size also goes to default --- can be changed
-//   showSize.textContent = "Current point size is: " + pointSize;
-//   imgContainer.style.backgroundSize =
-//     img.width * 0.25 + "px " + img.height * 0.25 + "px";
-//   imgContainer.style.width = img.width * 0.25 + "px";
-//   imgContainer.style.height = img.height * 0.25 + "px";
-//   canvas.width = img.width * 0.25;
-//   canvas.height = img.height * 0.25;
-//   document.getElementById("currentImgSize").textContent =
-//     "<b>Current image size is:</b> " +
-//     img.width * 0.25 +
-//     "x" +
-//     img.height * 0.25 +
-//     " (25% of size!)";
-//   // tableDynamicValuePx.textContent = "Value(px) at 25%";
-//   // tableDynamicValueCm.textContent = "Value(cm) at 25%";
-//   // document.getElementById("titleImage").colSpan = "6";
-//   tableWarning.textContent = `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to 25% of its original size!`; //\n
-//   //A new column with original image size values in cm added.`;
-//   imgSizeStatus = 25;
-//   // if (table.rows[1].cells.length < 6) {
-//   //   let originalValueCm = table.rows[1].insertCell();
-//   //   originalValueCm.outerHTML =
-//   //     '<th id="originalValueCell">Value(cm) at 100% image size</th>';
-//   // } else {
-//   //   return;
-//   // }
-//   $("#tbody").empty();
-// }
-
-// Warning message about resized images
-
-// function warningResize() {
-//   imgSizeStatus;
-//   if (imgSizeStatus == 0.5) {
-//     tableWarning.textContent = `&#x26A0; Image was redimensioned to 50% of its original size!\n
-//       A new column with original image size values in cm added.`;
-//   }
-//   if (imgSizeStatus == 0.25) {
-//     tableWarning.textContent = `&#x26A0; Image was redimensioned to 25% of its original size!\n
-//       A new column with original image size values in cm added.`;
-//   }
-//   if (imgSizeStatus == 0.4) {
-//     tableWarning.textContent = `&#x26A0; Image was redimensioned to 40% of its original size!\n
-//       A new column with original image size values in cm added.`;
-//   }
-//   if (imgSizeStatus == 0.75) {
-//     tableWarning.textContent = `&#x26A0; Image was redimensioned to 75% of its original size!\n
-//     A new column with original image size values in cm added.`;
-//   } else {
-//     tableWarning.remove();
-//   }
-// }
-
-// IMAGE RESIZE SECTION
-// SLIDER IMAGE RESIZING IS STOPPING BUTTON EVENT LISTENERS --- WORK ON FIX 
-
-let originalImageWidth, originalImageHeight; // Track these after loading
-
-const slider = document.getElementById('mySlider');
-slider.addEventListener('input', handleChange);
-
-function handleChange(event) {
-  resetCanvas();
-
-  const scaleFactor = event.target.value / 100;
-  const resizedWidth = Math.round(originalImageWidth * scaleFactor);
-  const resizedHeight = Math.round(originalImageHeight * scaleFactor);
-
-  imgContainer.style.backgroundSize = `${resizedWidth}px ${resizedHeight}px`;
-  imgContainer.style.width = `${resizedWidth}px`;
-  imgContainer.style.height = `${resizedHeight}px`;
-
-  canvas.width = resizedWidth;
-  canvas.height = resizedHeight;
-
-  // UI updates
-  const scalePercent = Math.round(scaleFactor * 100);
-  
-  // document.getElementById("currentImgSize").textContent = 
-  //   `<b>Current image size is:</b> ${resizedWidth}x${resizedHeight}` + 
-  //   (scalePercent !== 100 ? ` (${scalePercent}% of size!)` : "");
-
-  // if (scalePercent === 100) {
-  //   tableWarning.style.display = 'none';
-  // } else {
-  //   tableWarning.style.display = '';
-  //   tableWarning.textContent = 
-  //     `<span style="color: red;"><b>&#x26A0;</b></span> Image was redimensioned to ${scalePercent}% of its original size!`;
-  // }
-
-
-  // --- Build "Current image size" text ---
-appendSafeHTML(document.getElementById("currentImgSize"), [
-  (() => {
-    const b = document.createElement('b');
-    b.textContent = 'Current image size is:';
-    return b;
-  })(),
-  ` ${resizedWidth}x${resizedHeight}`,
-  ...(scalePercent !== 100 ? [` (${scalePercent}% of size!)`] : [])
-]);
-
-// --- Build warning text if needed ---
-if (scalePercent === 100) {
-  tableWarning.style.display = 'none';
-} else {
-  tableWarning.style.display = '';
-
-  appendSafeHTML(tableWarning, [
-    (() => {
-      const span = document.createElement('span');
-      span.style.color = 'red';
-
-      const b = document.createElement('b');
-      b.textContent = '\u26A0'; // ⚠ Warning symbol
-      span.appendChild(b);
-
-      return span;
-    })(),
-    ` Image was redimensioned to ${scalePercent}% of its original size!`
-  ]);
-}
-
-  tableDynamicValuePx.textContent = `Value(px) at ${scalePercent}%`;
-  tableDynamicValueCm.textContent = `Value(cm) at ${scalePercent}%`;
-}
-
-// function resetCanvasOnDrag() {
-//   canvas.removeEventListener("click", drawBlueLeft);
-//   canvas.removeEventListener("click", drawBlueRight);
-//   canvas.removeEventListener("click", drawRedLeft);
-//   canvas.removeEventListener("click", drawRedRight);
-//   canvas.removeEventListener("click", printMousePos);
-//   canvas.removeEventListener("click", drawMeasurePoint);
-
-//   const elems = document.querySelectorAll(".active");
-//   elems.forEach(el => el.classList.remove("active"));
-
-//   pointsRedLeft.length = 0;
-//   pointsRedRight.length = 0;
-//   pointsBlueLeft.length = 0;
-//   pointsBlueRight.length = 0;
-//   pointsMeasure.length = 0;
-
-//   canvas.style.cursor = "auto";
-//   pointSize = 4;
-//   showSize.textContent = "Current point size is: " + pointSize + "px";
-// }
-
-
-// -------------- ZOOM MODE --------------------- //
-
-let zoomMode = false;
-const zoomNotice = document.createElement('div');
-
-// ZOOM NOTICE
-zoomNotice.id = 'zoomNotice';
-zoomNotice.innerText = '🔍 Zoom Mode is ON — use + / - / 0 to resize image by 1%. Press Z to toggle zoom mode.';
-zoomNotice.style.cssText = `
-  position: fixed;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fffae6;
-  color: #1e2738;
-  border: 1px solid #f0c36d;
-  padding: 10px 15px;
-  z-index: 1000;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  font-family: sans-serif;
-  font-size: 14px;
-  display: none;
-`;
-document.body.appendChild(zoomNotice);
-
-document.addEventListener('keydown', function (e) {
-  // 🚫 Prevent zoom mode activation inside input/textarea/editable content
-  const active = document.activeElement;
-  const isEditable = (
-    active.tagName === 'INPUT' ||
-    active.tagName === 'TEXTAREA' ||
-    active.isContentEditable
-  );
-
-  if (isEditable) {
-    return; // Do nothing if focus is in an editable field
-  }
-
-  const key = e.key;
-  let current = parseInt(slider.value, 10);
-  let newValue = current;
-
-  // 🔁 Toggle Zoom Mode
-  if (key.toLowerCase() === 'z') {
-    zoomMode = !zoomMode; // If it was off (false), it turns on (true) and vice versa.
-    zoomNotice.style.display = zoomMode ? 'block' : 'none'; // We show/hide the zoom notice depending on the mode.
-
-    if (zoomMode && !slider.dataset.warned) {
-      // console.log("Zoom mode active — use + / - / 0 keys to resize image by 1%");
-      slider.dataset.warned = "true";
+// Vertical distance between each print and the "imaginary" point halfway between the two
+// surrounding prints of the other side (or that side's print itself when it is the last one).
+// `start` is the side of the first set of footsteps and decides which prints pair up.
+function strideWidthRows(left, right, color, kind, start) {
+  const rows = [];
+  const mid = (points, k) => (k < points.length - 1 ? (points[k].y + points[k + 1].y) / 2 : points[k].y);
+  const add = (to, dy) => rows.push({ from: `Imaginary ${kind} ${rows.length + 1}`, to, px: Math.hypot(0, dy).toFixed(3) });
+  for (let i = 0; i < left.length; i++) {
+    if (start === 'Left') {
+      if (i >= 1 && i - 1 < right.length) add(`${color} L${i + 1}`, left[i].y - mid(right, i - 1));
+      if (i < right.length) add(`${color} R${i + 1}`, mid(left, i) - right[i].y);
+    } else {
+      if (i < right.length) add(`${color} L${i + 1}`, mid(right, i) - left[i].y);
+      if (i + 1 < right.length) add(`${color} R${i + 2}`, mid(left, i) - right[i + 1].y);
     }
+  }
+  return rows;
+}
 
+// Every measurement type in table order, with its rows
+function measurementSections() {
+  const sections = [
+    { type: 'Stride length left front', rows: strideRows(pointsRedLeft, 'Red L') },
+    { type: 'Stride length right front', rows: strideRows(pointsRedRight, 'Red R') },
+    { type: 'Stride length left hind', rows: strideRows(pointsBlueLeft, 'Blue L') },
+    { type: 'Stride length right hind', rows: strideRows(pointsBlueRight, 'Blue R') },
+    { type: 'Overlap Left', rows: overlapRows(pointsRedLeft, pointsBlueLeft, 'Red L', 'Blue L') },
+    { type: 'Overlap Right', rows: overlapRows(pointsRedRight, pointsBlueRight, 'Red R', 'Blue R') },
+  ];
+  const start = footstepStart.value;
+  if (start === 'Left' || start === 'Right') {
+    const side = start[0];
+    sections.push(
+      { type: `Stride Width Front(${side})`, rows: strideWidthRows(pointsRedLeft, pointsRedRight, 'Red', 'Front', start) },
+      { type: `Stride Width Hind(${side})`, rows: strideWidthRows(pointsBlueLeft, pointsBlueRight, 'Blue', 'Hind', start) },
+    );
+  }
+  return sections;
+}
+
+function addEntryRow(row, type, cm) {
+  const tr = tbody.insertRow(-1);
+  // Entry numbers are the row position, so "Remove by entry number" can find them
+  for (const text of [tr.rowIndex - 1, `${row.from} ` + ' → ' + row.to, type, row.px, cm]) {
+    tr.insertCell().textContent = text;
+  }
+}
+
+function addAverageRow(type, values) {
+  const tr = tbody.insertRow(-1);
+  const label = tr.insertCell();
+  label.colSpan = 4;
+  label.append(bold(averageLabel(type)));
+  tr.insertCell().textContent = (values.reduce((a, b) => a + b) / values.length).toFixed(3);
+}
+
+function addBreakRow() {
+  const cell = tbody.insertRow(-1).insertCell();
+  cell.textContent = BREAK_TEXT;
+  cell.colSpan = 5;
+  cell.style.textAlign = 'center';
+}
+
+function updateRemoveOptions() {
+  const hasRows = tbody.rows.length >= 1;
+  show(removeByEntriesOption, hasRows);
+  show(removeByMeasurementsOption, hasRows);
+}
+
+function addEntriesAll() {
+  for (const { type, rows } of measurementSections()) {
+    rows.forEach(row => addEntryRow(row, type, dist !== 0 ? (row.px / dist).toFixed(3) : 'Undefined'));
+  }
+  if (GROUP_LIST.some(g => g.points.length < 1)) alert('Points missing in some measurements.');
+  addBreakRow();
+  updateRemoveOptions();
+}
+
+function addEntriesAllAverage() {
+  if (dist === 0) {
+    alert('Measure how many pixels are in a cm before using these option!');
     return;
   }
-
-  if (!zoomMode) return;
-
-  // 🔍 Zoom In / Out
-  if (key === '+' || key === '=') {
-    newValue = Math.min(current + 1, 100); // +1%
-  } else if (key === '-') {
-    newValue = Math.max(current - 1, 1); // -1%
-  } else if (key === '0') {
-    newValue = 100; // Reset to 100%
+  if (GROUP_LIST.some(g => g.points.length < 2)) {
+    alert('Have enough points to perform at least one of each measurement.');
+    return;
   }
-
-  if (newValue !== current) {
-    e.preventDefault();
-    slider.value = newValue;
-    slider.dispatchEvent(new Event('input'));
+  for (const { type, rows } of measurementSections()) {
+    const values = rows.map(row => row.px / dist);
+    rows.forEach((row, i) => addEntryRow(row, type, values[i].toFixed(3)));
+    if (values.length) addAverageRow(type, values);
   }
-});
+  addBreakRow();
+  updateRemoveOptions();
+}
 
-
-
-
-//-------------------------------------------------------------------------------------//
-
-// let img = document.createElement("img");
-// img.src = URL.createObjectURL(event.target.files[0]);
-// img.style.position = "absolute";
-// let widthI = img.width;
-// let heightI = img.height;
-// imgContainer.appendChild(img);
-// imgContainer.style.backgroundImage = "url(" +URL.createObjectURL(event.target.files[0])+ ")";
-// buttons.style.display = "inline-block";
-// results.style.display = "inline-block";
-// chButtons.style.display = "inline-block";
-
-// ------------------- RESET FILE SECTION ===> RESET IMAGE AND FUNCTIONS -------------- //
-
-
-
-
-let resetFile = function () {
-
-  // --- MEMORY FIX: Revoke the old blob URL before clearing variables ---
-  // This frees the memory allocated to the previous image
-  if (img.src && img.src.startsWith("blob:")) {
-    URL.revokeObjectURL(img.src);
-  }
-
-  // 2. CRITICAL FIX: Clear the source string so the check fails next time
-  img.src = "";
-
-  // --- Existing Reset Logic ---
-  imgContainer.style.backgroundImage = "";
-  buttons.style.display = "none";
-  imgEdit.style.display = "none";
-  canvas.style.cursor = "auto";
-
-  canvas.removeEventListener("click", drawBlueLeft);
-  canvas.removeEventListener("click", drawBlueRight);
-  canvas.removeEventListener("click", drawRedLeft);
-  canvas.removeEventListener("click", drawRedRight);
-  canvas.removeEventListener("click", printMousePos);
-  canvas.removeEventListener("click", drawMeasurePoint);
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  canvasUpload.style.display = "none";
-  canvas.width = 0;
-  canvas.height = 0;
-
-  pointsRedLeft.length = 0;
-  pointsRedRight.length = 0;
-  pointsBlueLeft.length = 0;
-  pointsBlueRight.length = 0;
-  pointsMeasure.length = 0;
-
-  imgContainer.style.width = "0";
-  imgContainer.style.height = "0";
-
-  document.getElementById("savedDistance").style.display = "none";
-  document.getElementById("showData").style.display = "none";
-  imgContainer.style.border = "none";
-  canvas.style.display = "none";
-
-  appendSafeHTML(tableTitle, [
-    (() => {
-      const b = document.createElement('b');
-      b.textContent = 'Table ID:';
-      return b;
-    })()
-  ]);
-
-  document.getElementById("measureToCm").value = "";
-  dist = 0;
-
-  document.getElementById('removeImage').style.display = "none";
-
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
+// Entry rows show their position; break rows and average rows ("...average in cm:") keep their text
+function renumberRows() {
+  [...tbody.rows].forEach((tr, i) => {
+    const cell = tr.cells[0];
+    if (cell.textContent !== BREAK_TEXT && !cell.textContent.includes(':')) cell.textContent = i + 1;
   });
-
-  document.getElementById('accordion').style.display = 'none';
-};
-
-
-//---------------------------------------------------------//
-
-//  function getScreenPPI(){
-//    let diagonal = Math.sqrt(Math.pow((window.screen.width * window.devicePixelRatio), 2)+Math.pow((window.screen.height * window.devicePixelRatio), 2));
-//    if (document.getElementById("inputScreenInches").value != ''){
-//      document.getElementById("screenPPI").textContent = "<b>Your screen PPI is:</b> " + (diagonal/document.getElementById("inputScreenInches").value).toFixed(2);
-//      document.getElementById("imageDimInches").textContent = "<b>Your image dimensions in inches are:</b> " + (img.width/(diagonal/document.getElementById("inputScreenInches").value)).toFixed(2)
-//      + "x" + (img.height/(diagonal/document.getElementById("inputScreenInches").value)).toFixed(2);
-//      document.getElementById("imageDimCm").textContent = "<b>Your image dimensions in cm are:</b> " + ((img.width/(diagonal/document.getElementById("inputScreenInches").value)) * 2.54).toFixed(2)
-//      + "x" + ((img.height/(diagonal/document.getElementById("inputScreenInches").value)) * 2.54).toFixed(2);
-//    } else
-//    alert("No screen size in inches was given");
-//  }
-
-// --------------------------------------- //
-
-// OPTIONS LIST DYNAMIC - SHOWING EVERY AVAILABLE OPTIONS OF POINTS TO CHOOSE //
-
-// let pointsChosen1 = document.getElementById("pointChosen1");
-// let pointsChosen2 = document.getElementById("pointChosen2");
-
-// function refreshList(){
-//   pointsChosen1.options.length = 0; // Every refresh click removes previous list to avoid duplicates
-//   pointsChosen2.options.length = 0;
-//   for(let i = 0; i < pointsRed.length; i++) {
-//     newIndexRed = i+1;
-//     pointsChosen1.options[pointsChosen1.options.length] = new Option("Red " + newIndexRed);
-//     pointsChosen2.options[pointsChosen2.options.length] = new Option("Red " + newIndexRed);
-//   }
-
-//   for(let g = 0; g < pointsBlue.length; g++) {
-//     newIndexBlue = g+1;
-//     pointsChosen1.options[pointsChosen1.options.length] = new Option("Blue " + newIndexBlue);
-//     pointsChosen2.options[pointsChosen2.options.length] = new Option("Blue " + newIndexBlue);
-//   }
-// }
-
-// function emptyList(){
-//   pointsChosen1.options.length = 0;
-//   pointsChosen2.options.length = 0;
-// }
-
-// function addEntry(){
-//   let value1 = pointsChosen1.value;
-//   let value2 = pointsChosen2.value;
-//   let rows = tbody.rows;
-//   let value3 = measurementType.options[measurementType.selectedIndex].value;
-//   let value4;
-//   let value5;
-//   if ((value1 != '') || (value2 != '')){
-//     var newRow = tbody.insertRow(-1);
-//     let indexRow = newRow.rowIndex;
-//     var cellOne = newRow.insertCell();
-//     var cellTwo = newRow.insertCell();
-//     var cellThree = newRow.insertCell();
-//     var cellFour = newRow.insertCell();
-//     var cellFive = newRow.insertCell();
-//     cellOne.textContent = indexRow-1;
-//     cellTwo.textContent = value1 + "|" + value2;
-//     cellThree.textContent = value3;
-//     var index1 = document.getElementById("pointChosen1").selectedIndex;
-//     var index2 = document.getElementById("pointChosen2").selectedIndex;
-//     let option1 = pointsChosen1.value;
-//     let option2 = pointsChosen2.value;
-//     let distance;
-//     if (option1){
-//       if (option1.includes("Red")){
-//         point1 = pointsRed[index1];
-//         // console.log(point1.x, point1.y);
-//       }
-//       if (option1.includes("Blue")){
-//         point1 = pointsBlue[index1 - pointsRed.length];
-//         // console.log(point1.x, point1.y);
-//       }
-//     }
-//     if (option2){
-//       if (option2.includes("Red")){
-//         point2 = pointsRed[index2];
-//         // console.log(point2.x, point2.y);
-//       }
-//       if (option2.includes("Blue")){
-//         point2 = pointsBlue[index2 - pointsRed.length];
-//         // console.log(point2.x, point2.y);
-//     }
-//     }
-//     distance = (Math.hypot(point1.x - point2.x, point1.y - point2.y)).toFixed(2);
-//     value4 = distance;
-//     cellFour.textContent = value4;
-//     if (dist != 0){
-//       cellFive.textContent = (value4/dist).toFixed(2);
-//     }
-//     if (dist == 0){
-//       cellFive.textContent = "-----";
-//     }
-
-//     // console.log(value1, value2, value3, value4, value5);
-//   } else{
-//     alert('Need points to be selected');
-//   }
-// }
-
-// Measuring all available distances for every chosen measurement type //
-
-tbody = document.getElementById("tbody");
-let pixelsManual = document.getElementById("pixelsInCmMan");
-
-let footstepsBeginning = document.getElementById("footstepsBeginning");
-let footstepStart = document.getElementById("footstepStart");
-let measurementType = document.getElementById("measurement");
-let addButton = document.getElementById('addAll'), addButtonAverage = document.getElementById('addAllAverage');
-let removeByEntriesOption = document.getElementById('removeByEntries');
-let removeByMeasurementsOption = document.getElementById('removeByMeasurement');
-let modalHelpAe = document.getElementById('modalHelpAddEntries');
-let closeModalHelpAe = document.getElementById('closeModalHelpAddEntries');
-let openAeModal = document.getElementById('openAe');
-let modalHelpAea = document.getElementById('modalHelpAddEntriesAverage');
-let closeModalHelpAea = document.getElementById('closeModalHelpAddEntriesAverage');
-let openAeaModal = document.getElementById('openAea');
-
-
-// SHOW ADD VALUES OPTIONS ONLY IF RIGHT OR LEFT ARE SELECTED IN THE SELECT TAG
-
-addButton.style.display = 'none', addButtonAverage.style.display = 'none';
-openAeModal.style.display = 'none', openAeaModal.style.display = 'none';
-
-footstepStart.addEventListener("change", function(){
-if (footstepStart.value == "Left" || footstepStart.value == "Right"){
- addButton.style.display = '', addButtonAverage.style.display = '';
- openAeModal.style.display = '', openAeaModal.style.display = '';
-} else{
- addButton.style.display = 'none', addButtonAverage.style.display = 'none';
- openAeModal.style.display = 'none', openAeaModal.style.display = 'none';
 }
-})
-
-
-// HELP MODALS
-
-modalHelpAe.classList.add('hidden'), modalHelpAea.classList.add('hidden');
-
-closeModalHelpAe.onclick = function displayNoneModalAe(){
-    modalHelpAe.classList.add("hidden");
-};
-
-openAeModal.onclick = function displayModalAe(){
-    modalHelpAe.classList.remove('hidden');
-}
-
-closeModalHelpAea.onclick = function displayNoneModalAea(){
-    modalHelpAea.classList.add("hidden");
-};
-
-openAeaModal.onclick = function displayModalAea(){
-    modalHelpAea.classList.remove('hidden');
-}
-
-
-// SHOW REMOVE OPTIONS ONLY IF THE TABLE IS POPULATED
-removeByEntriesOption.style.display = 'none', removeByMeasurementsOption.style.display = 'none'
-
-
-
-
-// function addEntry(){
-// if (measurementType.options[measurementType.selectedIndex].value == 'Stride length left front'){
-//  if (pointsRedLeft.length > 1){
-//    for (var i = 0; i < (pointsRedLeft.length-1); i++){
-//      var newRow = tbody.insertRow(-1);
-//      let indexRow = newRow.rowIndex;
-//      var cellOne = newRow.insertCell();
-//      var cellTwo = newRow.insertCell();
-//      var cellThree = newRow.insertCell();
-//      var cellFour = newRow.insertCell();
-//      var cellFive = newRow.insertCell();
-//      cellOne.textContent = indexRow-1;
-//      cellTwo.textContent = 'Red L' + (i+1) + ' &#x2192 Red L' + (i+2);
-//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//      distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i+1].x, pointsRedLeft[i].y - pointsRedLeft[i+1].y)).toFixed(2);
-//      cellFour.textContent = distance;
-//      if (dist != 0){
-//        cellFive.textContent = (distance/dist).toFixed(2);
-//      } else{
-//        cellFive.textContent = "Undefined";
-//      }
-//     //  cellRemove.textContent = '&#x2718;';
-//     //  cellRemove.style.cursor = 'pointer';
-//     //  cellRemove.style.fontSize = 'x-large';
-//     //  cellRemove.style.color = 'red';
-//     //  cellRemove.onclick = function removeOnClick(){
-//     //   tbody.deleteRow(indexRow-2);
-//     //   for (var i = 0; i < tbody.rows.length; i++){
-//     //     let updatedCell = tbody.rows[i].cells[0];
-//     //     updatedCell.textContent = i+1;
-//     //   }
-//     // };
-//    }
-//  } else{
-//    alert('Not enough points to perform this measurement');
-//  }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Stride length right front'){
-//  if (pointsRedRight.length > 1){
-//    for (var i = 0; i < (pointsRedRight.length-1); i++){
-//      var newRow = tbody.insertRow(-1);
-//      let indexRow = newRow.rowIndex;
-//      var cellOne = newRow.insertCell();
-//      var cellTwo = newRow.insertCell();
-//      var cellThree = newRow.insertCell();
-//      var cellFour = newRow.insertCell();
-//      var cellFive = newRow.insertCell();
-//      cellOne.textContent = indexRow-1;
-//      cellTwo.textContent = 'Red R' + (i+1) + ' &#x2192 Red R' + (i+2);
-//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//      distance = (Math.hypot(pointsRedRight[i].x - pointsRedRight[i+1].x, pointsRedRight[i].y - pointsRedRight[i+1].y)).toFixed(2);
-//      cellFour.textContent = distance;
-//      if (dist != 0){
-//        cellFive.textContent = (distance/dist).toFixed(2);
-//      } else{
-//        cellFive.textContent = 'Undefined';
-//      }
-//    }
-//  }  else{
-//    alert('Not enough points to perform this measurement');
-//  }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Stride length left hind'){
-//  if (pointsBlueLeft.length > 1){
-//    for (var i = 0; i < (pointsBlueLeft.length-1); i++){
-//      var newRow = tbody.insertRow(-1);
-//      let indexRow = newRow.rowIndex;
-//      var cellOne = newRow.insertCell();
-//      var cellTwo = newRow.insertCell();
-//      var cellThree = newRow.insertCell();
-//      var cellFour = newRow.insertCell();
-//      var cellFive = newRow.insertCell();
-//      cellOne.textContent = indexRow-1;
-//      cellTwo.textContent = 'Blue L' + (i+1) + ' &#x2192 Blue L' + (i+2);
-//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//      distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i+1].x, pointsBlueLeft[i].y - pointsBlueLeft[i+1].y)).toFixed(2);
-//      cellFour.textContent = distance;
-//      if (dist != 0){
-//        cellFive.textContent = (distance/dist).toFixed(2);
-//      } else{
-//        cellFive.textContent = 'Undefined';
-//      }
-//    }
-//  }  else{
-//    alert('Not enough points to perform this measurement');
-//  }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Stride length right hind'){
-//  if (pointsBlueRight.length > 1){
-//    for (var i = 0; i < (pointsBlueRight.length-1); i++){
-//      var newRow = tbody.insertRow(-1);
-//      let indexRow = newRow.rowIndex;
-//      var cellOne = newRow.insertCell();
-//      var cellTwo = newRow.insertCell();
-//      var cellThree = newRow.insertCell();
-//      var cellFour = newRow.insertCell();
-//      var cellFive = newRow.insertCell();
-//      cellOne.textContent = indexRow-1;
-//      cellTwo.textContent = 'Blue R' + (i+1) + ' &#x2192 Blue R' + (i+2);
-//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//      distance = (Math.hypot(pointsBlueRight[i].x - pointsBlueRight[i+1].x, pointsBlueRight[i].y - pointsBlueRight[i+1].y)).toFixed(2);
-//      cellFour.textContent = distance;
-//      if (dist != 0){
-//        cellFive.textContent = (distance/dist).toFixed(2);
-//      } else{
-//        cellFive.textContent = 'Undefined';
-//      }
-//    }
-//  }  else{
-//    alert('Not enough points to perform this measurement');
-//  }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Overlap Left'){
-//   if ((pointsRedLeft.length >= 1) && (pointsBlueLeft.length >= 1)){
-//   for (var i= 0; i < pointsRedLeft.length; i++){
-//     for (var j = 0; j < pointsBlueLeft.length; j++){
-//       if (i == j){
-//       var newRow = tbody.insertRow(-1);
-//       let indexRow = newRow.rowIndex;
-//       var cellOne = newRow.insertCell();
-//       var cellTwo = newRow.insertCell();
-//       var cellThree = newRow.insertCell();
-//       var cellFour = newRow.insertCell();
-//       var cellFive = newRow.insertCell();
-//       cellOne.textContent = indexRow-1;
-//       cellTwo.textContent = 'Red L' + (i+1) + ' &#x2192 Blue L' + (j+1);
-//       cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//       distance = (Math.hypot(pointsRedLeft[i].x - pointsBlueLeft[j].x, pointsRedLeft[i].y - pointsBlueLeft[j].y)).toFixed(2);
-//       cellFour.textContent = distance;
-//       if (dist != 0){
-//         cellFive.textContent = (distance/dist).toFixed(2);
-//       } else{
-//         cellFive.textContent = 'Undefined';
-//       }
-//    }
-//  }
-//  }
-// } else{
-//   alert('Not enough points to perform this measurement');
-// }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Overlap Right'){
-//   if ((pointsRedRight.length >= 1) && (pointsBlueRight.length >= 1)){
-//   for (var i= 0; i < pointsRedRight.length; i++){
-//    for (var j = 0; j < pointsBlueRight.length; j++){
-//      if (i == j){
-//      var newRow = tbody.insertRow(-1);
-//      let indexRow = newRow.rowIndex;
-//      var cellOne = newRow.insertCell();
-//      var cellTwo = newRow.insertCell();
-//      var cellThree = newRow.insertCell();
-//      var cellFour = newRow.insertCell();
-//      var cellFive = newRow.insertCell();
-//      cellOne.textContent = indexRow-1;
-//      cellTwo.textContent = 'Red R' + (i+1) + ' &#x2192 Blue R' + (j+1);
-//      cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//      distance = (Math.hypot(pointsRedRight[i].x - pointsBlueRight[j].x, pointsRedRight[i].y - pointsBlueRight[j].y)).toFixed(2);
-//      cellFour.textContent = distance;
-//      if (dist != 0){
-//        cellFive.textContent = (distance/dist).toFixed(2);
-//      } else{
-//        cellFive.textContent = 'Undefined';
-//      }
-//    }
-//  }
-//  }
-// } else{
-//   alert('Not enough points to perform this measurement');
-// }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Front'){
-//  if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
-//   if((pointsRedLeft.length >= 1) && (pointsRedRight.length >= 1)){
-//    for (var i = 0; i < pointsRedLeft.length; i++){
-//      for (var j = 0; j < pointsRedRight.length; j++){
-//        if (i == j){
-//          var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red R' + (j+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          } else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      } if (i == j+1){
-//        var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red L' + (i+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          }else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      }
-//      }
-//    }
-//   } else{
-//   alert('Not enough points to perform this measurement');
-//  }
-// }
-//  if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
-//   if((pointsRedLeft.length >= 1) && (pointsRedRight.length >= 1)){
-//   for (var i = 0; i < pointsRedLeft.length; i++){
-//      for (var j = 0; j < pointsRedRight.length; j++){
-//        if (i == j){
-//          var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red L' + (i+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsRedLeft[i].x - pointsRedLeft[i].x, pointsRedRight[j].y - pointsRedLeft[i].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          } else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      } if (j == i+1){
-//        var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Red R' + (j+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsRedRight[j].x - pointsRedRight[j].x, pointsRedLeft[i].y - pointsRedRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          }else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      }
-//      }
-//    }
-//  } else{
-//   alert('Not enough points to perform this measurement');
-//  }
-// }
-// } if (measurementType.options[measurementType.selectedIndex].value == 'Stride Width Hind'){
-//  if (footstepStart.options[footstepStart.selectedIndex].value == 'Left'){
-//   if((pointsBlueLeft.length >= 1) &&(pointsBlueRight.length >= 1)){
-//    for (var i = 0; i < pointsBlueLeft.length; i++){
-//      for (var j = 0; j < pointsBlueRight.length; j++){
-//        if (i == j){
-//          var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue R' + (j+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          } else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      } if (i == j+1){
-//        var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue L' + (i+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          }else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      }
-//      }
-//    }
-//  } else{
-//   alert('Not enough points to perform this measurement');
-//  }
-// }
-//  if (footstepStart.options[footstepStart.selectedIndex].value == 'Right'){
-//   if((pointsBlueLeft.length >= 1) &&(pointsBlueRight.length >= 1)){
-//    for (var i = 0; i < pointsBlueLeft.length; i++){
-//      for (var j = 0; j < pointsBlueRight.length; j++){
-//        if (i == j){
-//          var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue L' + (i+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsBlueLeft[i].x - pointsBlueLeft[i].x, pointsBlueRight[j].y - pointsBlueLeft[i].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          } else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//      } if (j == i+1){
-//        var newRow = tbody.insertRow(-1);
-//          let indexRow = newRow.rowIndex;
-//          var cellOne = newRow.insertCell();
-//          var cellTwo = newRow.insertCell();
-//          var cellThree = newRow.insertCell();
-//          var cellFour = newRow.insertCell();
-//          var cellFive = newRow.insertCell();
-//          cellOne.textContent = indexRow-1;
-//          cellTwo.textContent = 'Imaginary ' + (indexRow-1) + ' &#x2192 Blue R' + (j+1);
-//          cellThree.textContent = measurementType.options[measurementType.selectedIndex].value;
-//          distance = (Math.hypot(pointsBlueRight[j].x - pointsBlueRight[j].x, pointsBlueLeft[i].y - pointsBlueRight[j].y)).toFixed(2);
-//          cellFour.textContent = distance;
-//          if (dist != 0){
-//            cellFive.textContent = (distance/dist).toFixed(2);
-//          }else{
-//            cellFive.textContent = 'Undefined';
-//          }
-//        }
-//      }
-//    }
-//  }else{
-//   alert('Not enough points to perform this measurement');
-//  }
-// }
-// }
-// }
-
-let entryNumber = document.getElementById("entryNumber");
 
 function removeEntry() {
-  let lastRow = tbody.rows[tbody.rows.length - 1];
-  if (entryNumber.value != "") {
-    // console.log(entryNumber.value);
-    tbody.deleteRow(entryNumber.value - 1);
-    for (var i = 0; i < tbody.rows.length; i++) {
-      let updatedCell = tbody.rows[i].cells[0];
-      if (
-        updatedCell.textContent ===
-        "------------------------------BREAK------------------------------"
-      ) {
-        updatedCell.textContent =
-          "------------------------------BREAK------------------------------";
-      } else {
-        updatedCell.textContent = i + 1;
-      }
+  const rows = tbody.rows;
+  if (entryNumber.value.trim() !== '') {
+    const number = String(Number(entryNumber.value));
+    const row = [...rows].find(tr => tr.cells.length === 5 && tr.cells[0].textContent === number);
+    if (!row) {
+      alert(`There is no entry number ${entryNumber.value.trim()} in the table.`);
+      return;
     }
-  } else if (tbody.rows.length == 1) {
+    row.remove();
+    renumberRows();
+  } else if (rows.length === 1) {
     tbody.deleteRow(-1);
-  } else {
-    if (
-      lastRow.cells[0].textContent ===
-      "------------------------------BREAK------------------------------"
-    ) {
-      $("#tbody tr:nth-last-child(2)").remove();
-    } else {
-      tbody.deleteRow(-1);
-    }
+  } else if (rows.length > 1) {
+    // Without a number, remove the last entry (the row above a trailing break)
+    tbody.deleteRow(rows[rows.length - 1].cells[0].textContent === BREAK_TEXT ? rows.length - 2 : -1);
   }
-  if (tbody.rows.length >= 1){
-    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
-  } else{
-    removeByEntriesOption.style.display = 'none', removeByMeasurementsOption.style.display = 'none'
-  }
+  updateRemoveOptions();
 }
 
 function removeAllEntries() {
-  $("#tbody").empty();
-  removeByEntriesOption.style.display = 'none', removeByMeasurementsOption.style.display = 'none';
+  tbody.replaceChildren();
+  updateRemoveOptions();
 }
 
-// function updateTableID() {
-//   tableTitle.textContent = "<b>Table ID: <b>";
-//   tableTitle.textContent += " " + manualID.value;
-// }
-
-function removeTableID() {
-  // Create the bold element manually
-  const b = document.createElement('b');
-  b.textContent = "Table ID: ";
-
-  // Use the helper to clear the container and append the new fragment
-  appendSafeHTML(tableTitle, [b]);
-
-  // Reset the input value
-  manualID.value = "";
-}
-
-// RIGHT-SIDE OPTIONS 
-
-let activeFunctionInfo = document.getElementById('activeFunction');
-
-let selectPoint = document.getElementById("selectPoint");
-
-// FUNCTIONALITY TO REMOVE OR REPLACE POINTS 
-
-let removePointButton = document.getElementById('removePoint');
-let replacePointButton = document.getElementById('replacePoint');
-
-
-function refreshRemoveList() {
-  selectPoint.options.length = 0;
-  selectPoint.options[0] = new Option('Select Point');
-  for (var i = 0; i < pointsRedLeft.length; i++) {
-    newIndexRedL = i + 1;
-    selectPoint.options[selectPoint.options.length] = new Option(
-      "Red L" + newIndexRedL, "Red L" + newIndexRedL 
-    );
-  }
-  for (var j = 0; j < pointsRedRight.length; j++) {
-    newIndexRedR = j + 1;
-    selectPoint.options[selectPoint.options.length] = new Option(
-      "Red R" + newIndexRedR, "Red R" + newIndexRedR
-    );
-  }
-  for (var k = 0; k < pointsBlueLeft.length; k++) {
-    newIndexBlueL = k + 1;
-    selectPoint.options[selectPoint.options.length] = new Option(
-      "Blue L" + newIndexBlueL, "Blue L" + newIndexBlueL
-    );
-  }
-  for (var l = 0; l < pointsBlueRight.length; l++) {
-    newIndexBlueR = l + 1;
-    selectPoint.options[selectPoint.options.length] = new Option(
-      "Blue R" + newIndexBlueR, "Blue R" + newIndexBlueR
-    );
-  }
-}
-
-function emptyRemoveList() {
-  selectPoint.options.length = 0;
-}
-
-removePointButton.style.display = 'none', replacePointButton.style.display = 'none';
-
-selectPoint.addEventListener('change', function(){
-  if ((selectPoint.value.includes('Red')) || (selectPoint.value.includes('Blue'))){
-    removePointButton.style.display = '', replacePointButton.style.display = '';
-  } else{
-    removePointButton.style.display = 'none', replacePointButton.style.display = 'none';
-  }
-})
-
-function removeChosenPoint() {  // THIS FUNCTION IS FIXED AND OPTIMIZED --PREVIOUS VERSION WAS REDUNDANT AND WASNT PROPERLY WORKING
-  let value = selectPoint.value;
-  if (value.includes("Red L")) {
-    let redLindex = value.substr(5);
-    
-    ctx.clearRect(
-      pointsRedLeft[redLindex-1].x - pointSize,
-      pointsRedLeft[redLindex-1].y - pointSize,
-      pointSize * 4 + 18,
-      pointSize * 4 + 10
-    );
-    pointsRedLeft.splice(redLindex-1, 1);
-    for (var i = 0; i < pointsRedLeft.length; i++) {
-        if (i >= 9) {
-          ctx.clearRect(
-            pointsRedLeft[i].x - pointSize,
-            pointsRedLeft[i].y - pointSize,
-            pointSize * 4 + 18,
-            pointSize * 4 + 10
-          );
-          
-        } else {
-          ctx.clearRect(
-            pointsRedLeft[i].x - pointSize,
-            pointsRedLeft[i].y - pointSize,
-            pointSize * 4 + 10,
-            pointSize * 4 + 10
-          );
-          
-        }
-      // ------------------------------------------------------------------------- //
-      ctx.beginPath();
-      ctx.fillStyle = "hsl(0, 100%, 30%)"; // dark red
-      ctx.arc(
-        pointsRedLeft[i].x,
-        pointsRedLeft[i].y,
-        pointSize,
-        0,
-        Math.PI * 2,
-        true
-      );
-      ctx.fill();
-      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-      ctx.fillText(
-        "L" + (i + 1),
-        pointsRedLeft[i].x + pointSize * 1.2,
-        pointsRedLeft[i].y + pointSize * 1.2 + 10
-      );
-    }
-  }
-  if (value.includes("Red R")) {
-    let redRindex = value.substr(5);
-    
-    ctx.clearRect(
-      pointsRedRight[redRindex-1].x - pointSize,
-      pointsRedRight[redRindex-1].y - pointSize,
-      pointSize * 4 + 18,
-      pointSize * 4 + 10
-    );
-    pointsRedRight.splice(redRindex-1, 1);
-    for (var j = 0; j < pointsRedRight.length; j++) {
-        if (j >= 9) {
-          ctx.clearRect(
-            pointsRedRight[j].x - pointSize,
-            pointsRedRight[j].y - pointSize,
-            pointSize * 4 + 20,
-            pointSize * 4 + 10
-          );
-        } else {
-          ctx.clearRect(
-            pointsRedRight[j].x - pointSize,
-            pointsRedRight[j].y - pointSize,
-            pointSize * 4 + 12,
-            pointSize * 4 + 10
-          );
-        } 
-      ctx.beginPath();
-      ctx.fillStyle = "hsl(0, 100%, 30%)"; // dark red
-      ctx.arc(
-        pointsRedRight[j].x,
-        pointsRedRight[j].y,
-        pointSize,
-        0,
-        Math.PI * 2,
-        true
-      );
-      ctx.fill();
-      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-      ctx.fillText(
-        "R" + (j + 1),
-        pointsRedRight[j].x + pointSize * 1.2,
-        pointsRedRight[j].y + pointSize * 1.2 + 10
-      );
-    }
-  }
-  if (value.includes("Blue L")) {
-    let blueLindex = value.substr(6);
-    
-    ctx.clearRect(
-      pointsBlueLeft[blueLindex-1].x - pointSize,
-      pointsBlueLeft[blueLindex-1].y - pointSize,
-      pointSize * 4 + 18,
-      pointSize * 4 + 10
-    );
-    pointsBlueLeft.splice(blueLindex-1, 1);
-    for (var k = 0; k < pointsBlueLeft.length; k++) {
-      
-      if (k >= 9) {
-        ctx.clearRect(
-          pointsBlueLeft[k].x - pointSize,
-          pointsBlueLeft[k].y - pointSize,
-          pointSize * 4 + 18,
-          pointSize * 4 + 10
-        );
-      } else {
-        ctx.clearRect(
-          pointsBlueLeft[k].x - pointSize,
-          pointsBlueLeft[k].y - pointSize,
-          pointSize * 4 + 10,
-          pointSize * 4 + 10
-        );
-      }
-      
-      ctx.beginPath();
-      ctx.fillStyle = "hsl(245, 89%, 42%)"; // Dark Blue color
-      ctx.arc(
-        pointsBlueLeft[k].x,
-        pointsBlueLeft[k].y,
-        pointSize,
-        0,
-        Math.PI * 2,
-        true
-      );
-      ctx.fill();
-      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-      ctx.fillText(
-        "L" + (k + 1),
-        pointsBlueLeft[k].x + pointSize * 1.2,
-        pointsBlueLeft[k].y + pointSize * 1.2 + 10
-      );
-    }
-  }
-  if (value.includes("Blue R")) {
-    let blueRindex = value.substr(6);
-    
-    ctx.clearRect(
-      pointsBlueRight[blueRindex-1].x - pointSize,
-      pointsBlueRight[blueRindex-1].y - pointSize,
-      pointSize * 4 + 18,
-      pointSize * 4 + 10
-    );
-    pointsBlueRight.splice(blueRindex-1, 1);
-    for (var l = 0; l < pointsBlueRight.length; l++) {
-        if (l >= 9) {
-          ctx.clearRect(
-            pointsBlueRight[l].x - pointSize,
-            pointsBlueRight[l].y - pointSize,
-            pointSize * 4 + 20,
-            pointSize * 4 + 10
-          );
-        } else {
-          ctx.clearRect(
-            pointsBlueRight[l].x - pointSize,
-            pointsBlueRight[l].y - pointSize,
-            pointSize * 4 + 12,
-            pointSize * 4 + 10
-          );
-        }
-        ctx.beginPath();
-      ctx.fillStyle = "hsl(245, 89%, 42%)"; // Dark Blue color
-      ctx.arc(
-        pointsBlueRight[l].x,
-        pointsBlueRight[l].y,
-        pointSize,
-        0,
-        Math.PI * 2,
-        true
-      );
-      ctx.fill();
-      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-      ctx.fillText(
-        "R" + (l + 1),
-        pointsBlueRight[l].x + pointSize * 1.2,
-        pointsBlueRight[l].y + pointSize * 1.2 + 10
-      );
-      }
-    }
-    refreshRemoveList();
-  }
-
-
-// REPLACE CHOSEN POINT FUNCTION WORKING 
-
-function replaceChosenPoint(){
-  removePointButton.disabled = true;
-  replacePointButton.disabled = true;
-  selectPoint.disabled = true;
-  document.getElementById('removeImage').disabled = true;
-  document.querySelector('.upload-btn').disabled = true;
-  document.getElementById('redCircleLeft').disabled = true;
-  document.getElementById('redCircleRight').disabled = true;
-  document.getElementById('blueCircleLeft').disabled = true;
-  document.getElementById('blueCircleRight').disabled = true;
-  canvas.style.cursor = "crosshair";
-  var elems = document.querySelectorAll(".active");
-  [].forEach.call(elems, function (el) {
-    el.classList.remove("active");
-  });
-  if (selectPoint.value.includes('Red L')){
-    let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(5);
-    activeFunctionInfo.style.color = 'var(--front-dark)';
-    activeFunctionInfo.style.fontWeight = 'bold';
-    activeFunctionInfo.style.fontSize = '1.4em';
-    appendSafeHTML(activeFunctionInfo, [
-      (() => {
-        const i = document.createElement('i');
-        i.className = 'fa-solid fa-repeat';
-        return i;
-      })(),
-      '\u00A0', // non-breaking space (&nbsp;)
-      `Replacing Red (front) L${indexNumber}`
-    ]);
-
-    if (indexNumber >= 9) {
-      ctx.clearRect(
-        pointsRedLeft[indexNumber-1].x - pointSize,
-        pointsRedLeft[indexNumber-1].y - pointSize,
-        pointSize * 4 + 20,
-        pointSize * 4 + 10
-      );
-    } else{
-    ctx.clearRect(
-      pointsRedLeft[indexNumber-1].x - pointSize,
-      pointsRedLeft[indexNumber-1].y - pointSize,
-      pointSize * 4 + 12,
-      pointSize * 4 + 10
-    );
-  }
-    // console.log(indexNumber-1);
-    
-    // console.log(pointsRedLeft);
-    canvas.removeEventListener("click", drawRedLeft, false);
-    canvas.removeEventListener("click", drawRedRight, false);
-    canvas.removeEventListener("click", drawBlueLeft, false);
-    canvas.removeEventListener("click", drawBlueRight, false);
-    canvas.addEventListener("click", function replacePoint(e){
-      
-      var newPoint = getPosition(e);
-      // console.log(newPoint);
-      
-      drawCoordinatesRed(newPoint, pointSize);
-      pointsRedLeft.splice(parseInt(indexNumber-1),1, newPoint);
-      // pointsRedLeft.push(newPoint);
-      // console.log(pointsRedLeft);
-      // let index = pointsRedLeft.indexOf(newPoint);
-      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-      ctx.fillText(
-        "L" + (indexNumber),
-        newPoint.x + pointSize * 1.2,
-        newPoint.y + pointSize * 1.2 + 10
-      );
-      canvas.removeEventListener("click", replacePoint);
-      canvas.style.cursor = "auto";
-      removePointButton.disabled = false;
-      replacePointButton.disabled = false;
-      selectPoint.disabled = false;
-      document.getElementById('removeImage').disabled = false;
-      document.querySelector('.upload-btn').disabled = false;
-      document.getElementById('redCircleLeft').disabled = false;
-      document.getElementById('redCircleRight').disabled = false;
-      document.getElementById('blueCircleLeft').disabled = false;
-      document.getElementById('blueCircleRight').disabled = false;
-      activeFunctionInfo.textContent = '';
-          }, false);
-    
-  }
-  if (selectPoint.value.includes('Red R')){
-    let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(5);
-    activeFunctionInfo.style.color = 'var(--front-dark)';
-    activeFunctionInfo.style.fontWeight = 'bold';
-    activeFunctionInfo.style.fontSize = '1.4em';
-    appendSafeHTML(activeFunctionInfo, [
-      (() => {
-        const i = document.createElement('i');
-        i.className = 'fa-solid fa-repeat';
-        return i;
-      })(),
-      '\u00A0', // non-breaking space (&nbsp;)
-      `Replacing Red (front) R${indexNumber}`
-    ]);
-
-    if (indexNumber >= 9) {
-      ctx.clearRect(
-        pointsRedRight[indexNumber-1].x - pointSize,
-        pointsRedRight[indexNumber-1].y - pointSize,
-        pointSize * 4 + 20,
-        pointSize * 4 + 10
-      );
-    } else{
-    ctx.clearRect(
-      pointsRedRight[indexNumber-1].x - pointSize,
-      pointsRedRight[indexNumber-1].y - pointSize,
-      pointSize * 4 + 12,
-      pointSize * 4 + 10
-    );
-  }
-    // console.log(indexNumber-1);
-    
-    // console.log(pointsRedRight);
-    canvas.removeEventListener("click", drawRedLeft, false);
-    canvas.removeEventListener("click", drawRedRight, false);
-    canvas.removeEventListener("click", drawBlueLeft, false);
-    canvas.removeEventListener("click", drawBlueRight, false);
-    canvas.addEventListener("click", function replacePoint(e){
-      canvas.style.cursor = "crosshair";
-      var newPoint = getPosition(e);
-      // console.log(newPoint);
-      
-      drawCoordinatesRed(newPoint, pointSize);
-      pointsRedRight.splice(parseInt(indexNumber-1),1, newPoint);
-      
-      // console.log(pointsRedRight);
-      // let index = pointsRedLeft.indexOf(newPoint);
-      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-      ctx.fillText(
-        "R" + (indexNumber),
-        newPoint.x + pointSize * 1.2,
-        newPoint.y + pointSize * 1.2 + 10
-      );
-      canvas.removeEventListener("click", replacePoint);
-      canvas.style.cursor = "auto";
-      removePointButton.disabled = false;
-      replacePointButton.disabled = false;
-      selectPoint.disabled = false;
-      document.getElementById('removeImage').disabled = false;
-      document.querySelector('.upload-btn').disabled = false;
-      document.getElementById('redCircleLeft').disabled = false;
-      document.getElementById('redCircleRight').disabled = false;
-      document.getElementById('blueCircleLeft').disabled = false;
-      document.getElementById('blueCircleRight').disabled = false;
-      activeFunctionInfo.textContent = '';
-          }, false);
-      
-  }
-  if (selectPoint.value.includes('Blue L')){
-    let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(6);
-    activeFunctionInfo.style.color = 'var(--hind-dark)';
-    activeFunctionInfo.style.fontWeight = 'bold';
-    activeFunctionInfo.style.fontSize = '1.4em';
-    appendSafeHTML(activeFunctionInfo, [
-      (() => {
-        const i = document.createElement('i');
-        i.className = 'fa-solid fa-repeat';
-        return i;
-      })(),
-      '\u00A0', // non-breaking space (&nbsp;)
-      `Replacing Blue (hind) L${indexNumber}`
-    ]);
-    if (indexNumber >= 9) {
-      ctx.clearRect(
-        pointsBlueLeft[indexNumber-1].x - pointSize,
-        pointsBlueLeft[indexNumber-1].y - pointSize,
-        pointSize * 4 + 20,
-        pointSize * 4 + 10
-      );
-    } else{
-    ctx.clearRect(
-      pointsBlueLeft[indexNumber-1].x - pointSize,
-      pointsBlueLeft[indexNumber-1].y - pointSize,
-      pointSize * 4 + 12,
-      pointSize * 4 + 10
-    );
-  }
-    // console.log(indexNumber-1);
-    
-    // console.log(pointsBlueLeft);
-    canvas.removeEventListener("click", drawRedLeft, false);
-    canvas.removeEventListener("click", drawRedRight, false);
-    canvas.removeEventListener("click", drawBlueLeft, false);
-    canvas.removeEventListener("click", drawBlueRight, false);
-    canvas.addEventListener("click", function replacePoint(e){
-      var newPoint = getPosition(e);
-      // console.log(newPoint);
-      
-      drawCoordinatesBlue(newPoint, pointSize);
-      pointsBlueLeft.splice(parseInt(indexNumber-1),1, newPoint);
-      
-      // console.log(pointsBlueLeft);
-      // let index = pointsRedLeft.indexOf(newPoint);
-      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-      ctx.fillText(
-        "L" + (indexNumber),
-        newPoint.x + pointSize * 1.2,
-        newPoint.y + pointSize * 1.2 + 10
-      );
-      canvas.removeEventListener("click", replacePoint);
-      canvas.style.cursor = "auto";
-      removePointButton.disabled = false;
-      replacePointButton.disabled = false;
-      selectPoint.disabled = false;
-      document.getElementById('removeImage').disabled = false;
-      document.querySelector('.upload-btn').disabled = false;
-      document.getElementById('redCircleLeft').disabled = false;
-      document.getElementById('redCircleRight').disabled = false;
-      document.getElementById('blueCircleLeft').disabled = false;
-      document.getElementById('blueCircleRight').disabled = false;
-      activeFunctionInfo.textContent = '';
-          }, false);
-      
-  }
-  if (selectPoint.value.includes('Blue R')){
-    let indexNumber = selectPoint.options[selectPoint.selectedIndex].value.substr(6);
-    activeFunctionInfo.style.color = 'var(--hind-dark)';
-    activeFunctionInfo.style.fontWeight = 'bold';
-    activeFunctionInfo.style.fontSize = '1.4em';
-    appendSafeHTML(activeFunctionInfo, [
-      (() => {
-        const i = document.createElement('i');
-        i.className = 'fa-solid fa-repeat';
-        return i;
-      })(),
-      '\u00A0', // non-breaking space (&nbsp;)
-      `Replacing Blue (hind) R${indexNumber}`
-    ]);
-    if (indexNumber >= 9) {
-      ctx.clearRect(
-        pointsBlueRight[indexNumber-1].x - pointSize,
-        pointsBlueRight[indexNumber-1].y - pointSize,
-        pointSize * 4 + 20,
-        pointSize * 4 + 10
-      );
-    } else{
-    ctx.clearRect(
-      pointsBlueRight[indexNumber-1].x - pointSize,
-      pointsBlueRight[indexNumber-1].y - pointSize,
-      pointSize * 4 + 12,
-      pointSize * 4 + 10
-    );
-  }
-    // console.log(indexNumber-1);
-    
-    // console.log(pointsBlueRight);
-    canvas.removeEventListener("click", drawRedLeft, false);
-    canvas.removeEventListener("click", drawRedRight, false);
-    canvas.removeEventListener("click", drawBlueLeft, false);
-    canvas.removeEventListener("click", drawBlueRight, false);
-    canvas.addEventListener("click", function replacePoint(e){
-      var newPoint = getPosition(e);
-      // console.log(newPoint);
-      
-      drawCoordinatesBlue(newPoint, pointSize);
-      pointsBlueRight.splice(parseInt(indexNumber-1),1, newPoint);
-      
-      // console.log(pointsBlueRight);
-      // let index = pointsRedLeft.indexOf(newPoint);
-      ctx.font = " " + (parseInt(pointSize) + 8) + "px Arial";
-      ctx.fillText(
-        "R" + (indexNumber),
-        newPoint.x + pointSize * 1.2,
-        newPoint.y + pointSize * 1.2 + 10
-      );
-      canvas.removeEventListener("click", replacePoint);
-      canvas.style.cursor = "auto";
-      removePointButton.disabled = false;
-      replacePointButton.disabled = false;
-      selectPoint.disabled = false;
-      document.getElementById('removeImage').disabled = false;
-      document.querySelector('.upload-btn').disabled = false;
-      document.getElementById('redCircleLeft').disabled = false;
-      document.getElementById('redCircleRight').disabled = false;
-      document.getElementById('blueCircleLeft').disabled = false;
-      document.getElementById('blueCircleRight').disabled = false;
-      activeFunctionInfo.textContent = '';
-          }, false);  
-  } 
-}
-
-
-let removeMeasurement = document.getElementById("removeMeasurement");
-
-let removableRows = [];
+// Options of the "Remove by measurement type" list that cover more than one type
+const REMOVE_TYPES = {
+  'Stride Width Front': ['Stride Width Front(L)', 'Stride Width Front(R)'],
+  'Stride Width Hind': ['Stride Width Hind(L)', 'Stride Width Hind(R)'],
+};
 
 function removeByMeasurement() {
-  if (
-    removeMeasurement.options[removeMeasurement.selectedIndex].value ==
-    "Overlap Left"
-  ) {
-    $("#tbody").find("td:contains('Overlap Left')").closest("tr").remove();
-    $("#tbody")
-      .find("td:contains('Overlap left average in cm:')")
-      .closest("tr")
-      .remove();
-    for (var i = 0; i < tbody.rows.length; i++) {
-      let updatedCell = tbody.rows[i].cells[0];
-      if (
-        updatedCell.textContent ===
-        "------------------------------BREAK------------------------------"
-      ) {
-        updatedCell.textContent =
-          "------------------------------BREAK------------------------------";
-      } else if (updatedCell.textContent.indexOf(":") != -1) {
-        // pass
-      } else {
-        updatedCell.textContent = i + 1;
-      }
-    }
+  const types = REMOVE_TYPES[removeMeasurement.value] || [removeMeasurement.value];
+  const labels = types.map(averageLabel);
+  for (const tr of [...tbody.rows]) {
+    if (types.includes(tr.cells[2]?.textContent) || labels.includes(tr.cells[0].textContent)) tr.remove();
   }
-  if (
-    removeMeasurement.options[removeMeasurement.selectedIndex].value ==
-    "Overlap Right"
-  ) {
-    $("#tbody").find("td:contains('Overlap Right')").closest("tr").remove();
-    $("#tbody")
-      .find("td:contains('Overlap Right average in cm:')")
-      .closest("tr")
-      .remove();
-    for (var i = 0; i < tbody.rows.length; i++) {
-      let updatedCell = tbody.rows[i].cells[0];
-      if (
-        updatedCell.textContent ===
-        "------------------------------BREAK------------------------------"
-      ) {
-        updatedCell.textContent =
-          "------------------------------BREAK------------------------------";
-      } else if (updatedCell.textContent.indexOf(":") != -1) {
-        // pass
-      } else {
-        updatedCell.textContent = i + 1;
-      }
-    }
-  }
-  if (
-    removeMeasurement.options[removeMeasurement.selectedIndex].value ==
-    "Stride length left front"
-  ) {
-    $("#tbody")
-      .find("td:contains('Stride length left front')")
-      .closest("tr")
-      .remove();
-    $("#tbody")
-      .find("td:contains('Stride length left front average in cm:')")
-      .closest("tr")
-      .remove();
-    for (var i = 0; i < tbody.rows.length; i++) {
-      let updatedCell = tbody.rows[i].cells[0];
-      if (
-        updatedCell.textContent ===
-        "------------------------------BREAK------------------------------"
-      ) {
-        updatedCell.textContent =
-          "------------------------------BREAK------------------------------";
-      } else if (updatedCell.textContent.indexOf(":") != -1) {
-        // pass
-      } else {
-        updatedCell.textContent = i + 1;
-      }
-    }
-  }
-  if (
-    removeMeasurement.options[removeMeasurement.selectedIndex].value ==
-    "Stride length left hind"
-  ) {
-    $("#tbody")
-      .find("td:contains('Stride length left hind')")
-      .closest("tr")
-      .remove();
-    $("#tbody")
-      .find("td:contains('Stride length left hind average in cm:')")
-      .closest("tr")
-      .remove();
-    for (var i = 0; i < tbody.rows.length; i++) {
-      let updatedCell = tbody.rows[i].cells[0];
-      if (
-        updatedCell.textContent ===
-        "------------------------------BREAK------------------------------"
-      ) {
-        updatedCell.textContent =
-          "------------------------------BREAK------------------------------";
-      } else if (updatedCell.textContent.indexOf(":") != -1) {
-        // pass
-      } else {
-        updatedCell.textContent = i + 1;
-      }
-    }
-  }
-  if (
-    removeMeasurement.options[removeMeasurement.selectedIndex].value ==
-    "Stride length right front"
-  ) {
-    $("#tbody")
-      .find("td:contains('Stride length right front')")
-      .closest("tr")
-      .remove();
-    $("#tbody")
-      .find("td:contains('Stride length right front average in cm:')")
-      .closest("tr")
-      .remove();
-    for (var i = 0; i < tbody.rows.length; i++) {
-      let updatedCell = tbody.rows[i].cells[0];
-      if (
-        updatedCell.textContent ===
-        "------------------------------BREAK------------------------------"
-      ) {
-        updatedCell.textContent =
-          "------------------------------BREAK------------------------------";
-      } else if (updatedCell.textContent.indexOf(":") != -1) {
-        // pass
-      } else {
-        updatedCell.textContent = i + 1;
-      }
-    }
-  }
-  if (
-    removeMeasurement.options[removeMeasurement.selectedIndex].value ==
-    "Stride length right hind"
-  ) {
-    $("#tbody")
-      .find("td:contains('Stride length right hind')")
-      .closest("tr")
-      .remove();
-    $("#tbody")
-      .find("td:contains('Stride length right hind average in cm:')")
-      .closest("tr")
-      .remove();
-    for (var i = 0; i < tbody.rows.length; i++) {
-      let updatedCell = tbody.rows[i].cells[0];
-      if (
-        updatedCell.textContent ===
-        "------------------------------BREAK------------------------------"
-      ) {
-        updatedCell.textContent =
-          "------------------------------BREAK------------------------------";
-      } else if (updatedCell.textContent.indexOf(":") != -1) {
-        // pass
-      } else {
-        updatedCell.textContent = i + 1;
-      }
-    }
-  }
-  if (
-    removeMeasurement.options[removeMeasurement.selectedIndex].value ==
-    "Stride Width Front"
-  ) {
-    $("#tbody")
-      .find("td:contains('Stride Width Front(L)')")
-      .closest("tr")
-      .remove();
-    $("#tbody")
-      .find("td:contains('Stride Width Front(R)')")
-      .closest("tr")
-      .remove();
-    $("#tbody")
-      .find("td:contains('Stride Width Front(L) average in cm:')")
-      .closest("tr")
-      .remove();
-    $("#tbody")
-      .find("td:contains('Stride Width Front(R) average in cm:')")
-      .closest("tr")
-      .remove();
-    for (var i = 0; i < tbody.rows.length; i++) {
-      let updatedCell = tbody.rows[i].cells[0];
-      if (
-        updatedCell.textContent ===
-        "------------------------------BREAK------------------------------"
-      ) {
-        updatedCell.textContent =
-          "------------------------------BREAK------------------------------";
-      } else if (updatedCell.textContent.indexOf(":") != -1) {
-        // pass
-      } else {
-        updatedCell.textContent = i + 1;
-      }
-    }
-  }
-  if (
-    removeMeasurement.options[removeMeasurement.selectedIndex].value ==
-    "Stride Width Hind"
-  ) {
-    $("#tbody")
-      .find("td:contains('Stride Width Hind(L)')")
-      .closest("tr")
-      .remove();
-    $("#tbody")
-      .find("td:contains('Stride Width Hind(R)')")
-      .closest("tr")
-      .remove();
-    $("#tbody")
-      .find("td:contains('Stride Width Hind(L) average in cm:')")
-      .closest("tr")
-      .remove();
-    $("#tbody")
-      .find("td:contains('Stride Width Hind(R) average in cm:')")
-      .closest("tr")
-      .remove();
-    for (var i = 0; i < tbody.rows.length; i++) {
-      let updatedCell = tbody.rows[i].cells[0];
-      if (
-        updatedCell.textContent ===
-        "------------------------------BREAK------------------------------"
-      ) {
-        updatedCell.textContent =
-          "------------------------------BREAK------------------------------";
-      } else if (updatedCell.textContent.indexOf(":") != -1) {
-        // pass
-      } else {
-        updatedCell.textContent = i + 1;
-      }
-    }
-  }
-  if (tbody.rows.length >= 1){
-    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
-  } else{
-    removeByEntriesOption.style.display = 'none', removeByMeasurementsOption.style.display = 'none'
-  }
+  renumberRows();
+  updateRemoveOptions();
 }
 
-// ADD ALL ENTRIES WITH ONE CLICK WITH AVERAGE FOR EACH MEASUREMENT
+function removeTableID() {
+  tableTitle.replaceChildren(bold('Table ID: '));
+  manualID.value = '';
+}
 
-function addEntriesAllAverage() {
-  var distValuesSLLF = [];
-  var distValuesSLRF = [];
-  var distValuesSLLH = [];
-  var distValuesSLRH = [];
-  var distValuesOL = [];
-  var distValuesOR = [];
-  var distValuesSWFL = [];
-  var distValuesSWHL = [];
-  var distValuesSWFR = [];
-  var distValuesSWHR = [];
-  if (dist == 0) {
-    alert("Measure how many pixels are in a cm before using these option!");
+updateRemoveOptions();
+
+
+// ---------------------------------------------------------------- add entries options and help
+
+const addButton = $id('addAll');
+const addButtonAverage = $id('addAllAverage');
+const openAeModal = $id('openAe');
+const openAeaModal = $id('openAea');
+const modalHelpAe = $id('modalHelpAddEntries');
+const modalHelpAea = $id('modalHelpAddEntriesAverage');
+
+// The add buttons need to know which side the footsteps start on
+function updateAddButtons() {
+  const chosen = footstepStart.value === 'Left' || footstepStart.value === 'Right';
+  [addButton, addButtonAverage, openAeModal, openAeaModal].forEach(el => show(el, chosen));
+}
+footstepStart.addEventListener('change', updateAddButtons);
+updateAddButtons();
+
+modalHelpAe.classList.add('hidden');
+modalHelpAea.classList.add('hidden');
+openAeModal.addEventListener('click', () => modalHelpAe.classList.remove('hidden'));
+openAeaModal.addEventListener('click', () => modalHelpAea.classList.remove('hidden'));
+$id('closeModalHelpAddEntries').addEventListener('click', () => modalHelpAe.classList.add('hidden'));
+$id('closeModalHelpAddEntriesAverage').addEventListener('click', () => modalHelpAea.classList.add('hidden'));
+
+
+// ---------------------------------------------------------------- image upload and reset
+
+const img = new Image();
+let originalImageWidth = 0;
+let originalImageHeight = 0;
+
+const hasImage = () => img.src.startsWith('blob:');
+
+function getShortenedFilename(filename, maxLength = 50) {
+  if (filename.length <= maxLength) return filename;
+  const extIndex = filename.lastIndexOf('.');
+  const extension = extIndex !== -1 ? filename.slice(extIndex) : '';
+  const nameOnly = extIndex !== -1 ? filename.slice(0, extIndex) : filename;
+  const visibleChars = maxLength - extension.length - 3; // 3 for "..."
+  return `${nameOnly.slice(0, Math.ceil(visibleChars / 2))}...${nameOnly.slice(-Math.floor(visibleChars / 2))}${extension}`;
+}
+
+function setWorkspaceVisible(visible) {
+  show($id('savedDistance'), visible);
+  show($id('showData'), visible);
+  show(canvasUpload, visible);
+  show(canvas, visible);
+  buttons.style.display = visible ? 'block' : 'none';
+  imgEdit.style.display = visible ? 'block' : 'none';
+}
+
+function loadFile(event) {
+  const file = event.target.files[0];
+  event.target.value = null; // lets the same file be selected again later
+  if (!file) return;
+
+  if (hasImage()) {
+    if (!confirm('An image is already loaded. This will clear all current data and measurements. Are you sure you are done with the previous image?')) return;
+    resetFile();
+  }
+  if (!file.type.startsWith('image/')) {
+    alert('Please enter a valid image format!');
     return;
-  } else if (
-    pointsRedLeft.length < 2 ||
-    pointsRedRight.length < 2 ||
-    pointsBlueLeft.length < 2 ||
-    pointsBlueRight.length < 2
-  ) {
-    alert("Have enough points to perform at least one of each measurement.");
-    return;
-  
-  // Stride Length left front  
-    
+  }
+
+  img.src = URL.createObjectURL(file);
+  imgContainer.style.backgroundImage = `url(${img.src})`;
+  $id('imageName').textContent = getShortenedFilename(file.name);
+  setWorkspaceVisible(true);
+
+  stopTools();
+  for (const group of GROUP_LIST) group.points.length = 0;
+  pointsMeasure.length = 0;
+  removeAllEntries();
+  removeTableID();
+  refreshRemoveList();
+}
+
+img.addEventListener('load', () => {
+  originalImageWidth = img.naturalWidth;
+  originalImageHeight = img.naturalHeight;
+  $id('imageUploadedWidth').textContent = originalImageWidth;
+  $id('imageUploadedHeight').textContent = originalImageHeight;
+  imgContainer.style.border = '2px solid var(--ink)';
+  resizeImageToFitViewport();
+  show($id('removeImage'), true);
+  show($id('accordion'), true);
+});
+
+img.addEventListener('error', () => {
+  if (!hasImage()) return;
+  alert('This image could not be opened. Use a common format such as .png or .jpg (.tiff is not supported).');
+  resetFile();
+});
+
+function resetFile() {
+  if (hasImage()) URL.revokeObjectURL(img.src);
+  img.removeAttribute('src');
+
+  stopTools();
+  for (const group of GROUP_LIST) group.points.length = 0;
+  pointsMeasure.length = 0;
+  refreshRemoveList();
+
+  imgContainer.style.backgroundImage = '';
+  imgContainer.style.width = '0';
+  imgContainer.style.height = '0';
+  imgContainer.style.border = 'none';
+  canvas.width = 0;
+  canvas.height = 0;
+  setWorkspaceVisible(false);
+
+  tableTitle.replaceChildren(bold('Table ID:'));
+  measureToCm.value = '';
+  dist = 0;
+
+  show($id('removeImage'), false);
+  show($id('accordion'), false);
+}
+
+window.addEventListener('beforeunload', event => {
+  if (hasImage()) {
+    event.preventDefault();
+    event.returnValue = true; // Chrome and older browsers
+  }
+});
+
+// Hidden until an image is uploaded
+setWorkspaceVisible(false);
+show($id('removeImage'), false);
+show($id('accordion'), false);
+
+
+// ---------------------------------------------------------------- image size toolbar
+
+const zoomPercent = $id('zoomPercent');
+const savedSizeNotice = $id('savedSizeNotice');
+const ZOOM_STEP = 5;
+let currentPercent = 100;
+
+// Points are stored in canvas pixels of the current size, so resizing invalidates the points, the
+// table values and the pixels-per-cm value. Ask before throwing work away.
+function hasWork() {
+  return pointsMeasure.length > 0 || GROUP_LIST.some(g => g.points.length > 0)
+    || tbody.rows.length > 0 || dist !== 0;
+}
+
+const scaledSize = percent => [Math.round(originalImageWidth * percent / 100), Math.round(originalImageHeight * percent / 100)];
+
+// Largest size up to 100% that fits 90% of the window
+function fitPercent() {
+  const scale = Math.min(window.innerWidth * 0.9 / originalImageWidth, window.innerHeight * 0.9 / originalImageHeight, 1);
+  return Math.max(Math.round(scale * 100), 1);
+}
+
+// Every resize goes through here. Returns true when the image was resized.
+function requestScale(percent) {
+  zoomPercent.value = currentPercent; // updated by applyScale if the resize goes ahead
+  if (!hasImage() || !Number.isFinite(percent)) return false;
+  percent = Math.min(Math.max(Math.round(percent), 1), 100);
+  if (percent === currentPercent) return false;
+  if (hasWork() && !confirm('Resizing removes all points, the results table and the pixels-per-centimetre value. Resize anyway?')) return false;
+  applyScale(percent);
+  return true;
+}
+
+function applyScale(percent) {
+  currentPercent = percent;
+  zoomPercent.value = percent;
+  resetCanvas();
+  removeAllEntries();
+  resetInput();
+
+  const [width, height] = scaledSize(percent);
+  imgContainer.style.backgroundSize = `${width}px ${height}px`;
+  imgContainer.style.width = `${width}px`;
+  imgContainer.style.height = `${height}px`;
+  canvas.width = width;
+  canvas.height = height;
+
+  $id('currentImgSize').textContent = `${width} × ${height} px`;
+  const warnIcon = document.createElement('span');
+  warnIcon.style.color = 'red';
+  warnIcon.append(bold('⚠'));
+  tableWarning.replaceChildren(warnIcon, ` Image was redimensioned to ${percent}% of its original size!`);
+  show(tableWarning, percent !== 100);
+  tableDynamicValuePx.textContent = `Value(px) at ${percent}%`;
+  tableDynamicValueCm.textContent = `Value(cm) at ${percent}%`;
+  updateSavedSizeNotice();
+}
+
+// Large images start scaled down to fit the window (never scaled up)
+function resizeImageToFitViewport() {
+  applyScale(fitPercent());
+}
+
+// Next multiple of 5 in that direction: 87 -> 90 or 85
+const stepPercent = direction => (direction > 0
+  ? Math.floor(currentPercent / ZOOM_STEP) * ZOOM_STEP + ZOOM_STEP
+  : Math.ceil(currentPercent / ZOOM_STEP) * ZOOM_STEP - ZOOM_STEP);
+
+$id('zoomFit').addEventListener('click', () => requestScale(fitPercent()));
+$id('zoomOut').addEventListener('click', () => requestScale(stepPercent(-1)));
+$id('zoomIn').addEventListener('click', () => requestScale(stepPercent(1)));
+$id('zoom100').addEventListener('click', () => requestScale(100));
+// "change" fires on Enter or when the field loses focus, not on every typed digit
+zoomPercent.addEventListener('change', () => requestScale(zoomPercent.valueAsNumber));
+
+// A saved pixels-per-cm value only fits the image size it was measured on (stored as "WxH" at
+// the end of the option text). Warn when it differs and offer to resize to that size.
+function updateSavedSizeNotice() {
+  savedSizeNotice.hidden = true;
+  const match = /(\d+)\s*x\s*(\d+)\s*$/i.exec(savedChoices.selectedOptions[0]?.textContent || '');
+  if (!match || !hasImage()) return;
+  const [width, height] = [Number(match[1]), Number(match[2])];
+  if (width === canvas.width && height === canvas.height) return;
+
+  savedSizeNotice.replaceChildren(`This value was saved for a ${width} × ${height} image, but this image is shown at ${canvas.width} × ${canvas.height}.`);
+  const percent = Math.round(width / originalImageWidth * 100);
+  const [w, h] = scaledSize(percent);
+  if (percent >= 1 && percent <= 100 && w === width && h === height) {
+    const resize = Object.assign(document.createElement('button'), { type: 'button', className: 'btn-quiet', textContent: `Resize to ${width} × ${height}` });
+    resize.addEventListener('click', () => {
+      const chosen = savedChoices.selectedIndex;
+      if (requestScale(percent)) {
+        savedChoices.selectedIndex = chosen; // resizing clears the choice; keep it for "Use"
+        updateSavedSizeNotice();
+      }
+    });
+    savedSizeNotice.append(resize);
   } else {
-    for (var i = 0; i < pointsRedLeft.length - 1; i++) {
-      var newRow = tbody.insertRow(-1);
-      let indexRow = newRow.rowIndex;
-      var cellOne = newRow.insertCell();
-      var cellTwo = newRow.insertCell();
-      var cellThree = newRow.insertCell();
-      var cellFour = newRow.insertCell();
-      var cellFive = newRow.insertCell();
-      // let distance = 0;
-      cellOne.textContent = indexRow - 1;
-      appendSafeHTML(cellTwo, [
-        `Red L${i + 1} `,
-        ' → ', // Just pass it as a string
-        `Red L${i + 2}`
-      ]);
-      cellThree.textContent = "Stride length left front";
-      distance = Math.hypot(
-        pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
-        pointsRedLeft[i].y - pointsRedLeft[i + 1].y
-      ).toFixed(3);
-      cellFour.textContent = distance;
-      cellFive.textContent = (distance / dist).toFixed(3);
-      distValuesSLLF.push(distance / dist);
-    }
-    // console.log(distValuesSLLF);
-    var strideLeftFrontMeanRow = tbody.insertRow(-1);
-    var strideLeftFrontRowCellOne = strideLeftFrontMeanRow.insertCell();
-    var strideLeftFrontRowCellTwo = strideLeftFrontMeanRow.insertCell();
-    strideLeftFrontRowCellOne.colSpan = "4";
-    appendSafeHTML(strideLeftFrontRowCellOne, [
-    (() => {
-      const b = document.createElement('b');
-      b.textContent = 'Stride length left front average in cm:';
-      return b;
-    })()
-    ]);
-
-    strideLeftFrontRowCellTwo.textContent = (
-      distValuesSLLF.reduce((a, b) => a + b) / distValuesSLLF.length
-    ).toFixed(3);
-
-    // Stride Length Right front
-
-    for (var i = 0; i < pointsRedRight.length - 1; i++) {
-      var newRow = tbody.insertRow(-1);
-      let indexRow = newRow.rowIndex;
-      var cellOne = newRow.insertCell();
-      var cellTwo = newRow.insertCell();
-      var cellThree = newRow.insertCell();
-      var cellFour = newRow.insertCell();
-      var cellFive = newRow.insertCell();
-      cellOne.textContent = indexRow - 1;
-      appendSafeHTML(cellTwo, [
-        `Red R${i + 1} `,
-        ' → ', // Just pass it as a string
-        `Red R${i + 2}`
-      ]);
-      cellThree.textContent = "Stride length right front";
-      distance = Math.hypot(
-        pointsRedRight[i].x - pointsRedRight[i + 1].x,
-        pointsRedRight[i].y - pointsRedRight[i + 1].y
-      ).toFixed(3);
-      cellFour.textContent = distance;
-      cellFive.textContent = (distance / dist).toFixed(3);
-      distValuesSLRF.push(distance / dist);
-    }
-    // console.log(distValuesSLRF);
-    var strideRightFrontMeanRow = tbody.insertRow(-1);
-    var strideRightFrontRowCellOne = strideRightFrontMeanRow.insertCell();
-    var strideRightFrontRowCellTwo = strideRightFrontMeanRow.insertCell();
-    strideRightFrontRowCellOne.colSpan = "4";
-    appendSafeHTML(strideRightFrontRowCellOne, [
-    (() => {
-      const b = document.createElement('b');
-      b.textContent = 'Stride length right front average in cm:';
-      return b;
-    })()
-    ]);
-    strideRightFrontRowCellTwo.textContent = (
-      distValuesSLRF.reduce((a, b) => a + b) / distValuesSLRF.length
-    ).toFixed(3);
-
-    // Stride Length left hind
-
-    for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
-      var newRow = tbody.insertRow(-1);
-      let indexRow = newRow.rowIndex;
-      var cellOne = newRow.insertCell();
-      var cellTwo = newRow.insertCell();
-      var cellThree = newRow.insertCell();
-      var cellFour = newRow.insertCell();
-      var cellFive = newRow.insertCell();
-      cellOne.textContent = indexRow - 1;
-      appendSafeHTML(cellTwo, [
-        `Blue L${i + 1} `,
-        ' → ', // Just pass it as a string
-        `Blue L${i + 2}`
-      ]);
-      cellThree.textContent = "Stride length left hind";
-      distance = Math.hypot(
-        pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
-        pointsBlueLeft[i].y - pointsBlueLeft[i + 1].y
-      ).toFixed(3);
-      cellFour.textContent = distance;
-      cellFive.textContent = (distance / dist).toFixed(3);
-      distValuesSLLH.push(distance / dist);
-    }
-    // console.log(distValuesSLLH);
-    var strideLeftHindMeanRow = tbody.insertRow(-1);
-    var strideLeftHindRowCellOne = strideLeftHindMeanRow.insertCell();
-    var strideLeftHindRowCellTwo = strideLeftHindMeanRow.insertCell();
-    strideLeftHindRowCellOne.colSpan = "4";
-    appendSafeHTML(strideLeftHindRowCellOne, [
-    (() => {
-      const b = document.createElement('b');
-      b.textContent = 'Stride length left hind average in cm:';
-      return b;
-    })()
-    ]);
-    strideLeftHindRowCellTwo.textContent = (
-      distValuesSLLH.reduce((a, b) => a + b) / distValuesSLLH.length
-    ).toFixed(3);
-
-    // Stride length right hind
-
-    for (var i = 0; i < pointsBlueRight.length - 1; i++) {
-      var newRow = tbody.insertRow(-1);
-      let indexRow = newRow.rowIndex;
-      var cellOne = newRow.insertCell();
-      var cellTwo = newRow.insertCell();
-      var cellThree = newRow.insertCell();
-      var cellFour = newRow.insertCell();
-      var cellFive = newRow.insertCell();
-      cellOne.textContent = indexRow - 1;
-      appendSafeHTML(cellTwo, [
-        `Blue R${i + 1} `,
-        ' → ', // Just pass it as a string
-        `Blue R${i + 2}`
-      ]);
-      
-      cellThree.textContent = "Stride length right hind";
-      distance = Math.hypot(
-        pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
-        pointsBlueRight[i].y - pointsBlueRight[i + 1].y
-      ).toFixed(3);
-      cellFour.textContent = distance;
-      cellFive.textContent = (distance / dist).toFixed(3);
-      distValuesSLRH.push(distance / dist);
-    }
-    // console.log(distValuesSLRH);
-    var strideRightHindMeanRow = tbody.insertRow(-1);
-    var strideRightHindRowCellOne = strideRightHindMeanRow.insertCell();
-    var strideRightHindRowCellTwo = strideRightHindMeanRow.insertCell();
-    strideRightHindRowCellOne.colSpan = "4";
-    appendSafeHTML(strideRightHindRowCellOne, [
-    (() => {
-      const b = document.createElement('b');
-      b.textContent = 'Stride length right hind average in cm:';
-      return b;
-    })()
-    ]);
-    strideRightHindRowCellTwo.textContent = (
-      distValuesSLRH.reduce((a, b) => a + b) / distValuesSLRH.length
-    ).toFixed(3);
-
-    // Overlap Left
-
-    for (var i = 0; i < pointsRedLeft.length; i++) {
-      for (var j = 0; j < pointsBlueLeft.length; j++) {
-        if (i == j) {
-          var newRow = tbody.insertRow(-1);
-          let indexRow = newRow.rowIndex;
-          var cellOne = newRow.insertCell();
-          var cellTwo = newRow.insertCell();
-          var cellThree = newRow.insertCell();
-          var cellFour = newRow.insertCell();
-          var cellFive = newRow.insertCell();
-          cellOne.textContent = indexRow - 1;
-          appendSafeHTML(cellTwo, [
-            `Red L${i + 1} `,
-            ' → ', // Just pass it as a string
-            `Blue L${j + 1}`
-          ]);
-          //cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
-          cellThree.textContent = "Overlap Left";
-          distance = Math.hypot(
-            pointsRedLeft[i].x - pointsBlueLeft[j].x,
-            pointsRedLeft[i].y - pointsBlueLeft[j].y
-          ).toFixed(3);
-          cellFour.textContent = distance;
-          cellFive.textContent = (distance / dist).toFixed(3);
-          distValuesOL.push(distance / dist);
-        }
-      }
-    }
-    // console.log(distValuesOL);
-    var overlapLeftMeanRow = tbody.insertRow(-1);
-    var overlapLeftRowCellOne = overlapLeftMeanRow.insertCell();
-    var overlapLeftRowCellTwo = overlapLeftMeanRow.insertCell();
-    overlapLeftRowCellOne.colSpan = "4";
-    appendSafeHTML(overlapLeftRowCellOne, [
-    (() => {
-      const b = document.createElement('b');
-      b.textContent = 'Overlap left average in cm:';
-      return b;
-    })()
-    ]);
-    //overlapLeftRowCellOne.textContent = "<b>Overlap left average in cm:</b> ";
-    overlapLeftRowCellTwo.textContent = (
-      distValuesOL.reduce((a, b) => a + b) / distValuesOL.length
-    ).toFixed(3);
-    for (var i = 0; i < pointsRedRight.length; i++) {
-      for (var j = 0; j < pointsBlueRight.length; j++) {
-        if (i == j) {
-          var newRow = tbody.insertRow(-1);
-          let indexRow = newRow.rowIndex;
-          var cellOne = newRow.insertCell();
-          var cellTwo = newRow.insertCell();
-          var cellThree = newRow.insertCell();
-          var cellFour = newRow.insertCell();
-          var cellFive = newRow.insertCell();
-          cellOne.textContent = indexRow - 1;
-          appendSafeHTML(cellTwo, [
-            `Red R${i + 1} `,
-            ' → ', // Just pass it as a string
-            `Blue R${j + 1}`
-          ]);
-          //cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Blue R" + (j + 1);
-          cellThree.textContent = "Overlap Right";
-          distance = Math.hypot(
-            pointsRedRight[i].x - pointsBlueRight[j].x,
-            pointsRedRight[i].y - pointsBlueRight[j].y
-          ).toFixed(3);
-          cellFour.textContent = distance;
-          cellFive.textContent = (distance / dist).toFixed(3);
-          distValuesOR.push(distance / dist);
-        }
-      }
-    }
-    // console.log(distValuesOR);
-    var overlapRightMeanRow = tbody.insertRow(-1);
-    var overlapRightRowCellOne = overlapRightMeanRow.insertCell();
-    var overlapRightRowCellTwo = overlapRightMeanRow.insertCell();
-    overlapRightRowCellOne.colSpan = "4";
-    appendSafeHTML(overlapRightRowCellOne, [
-    (() => {
-      const b = document.createElement('b');
-      b.textContent = 'Overlap Right average in cm:';
-      return b;
-    })()
-    ]);
-    //overlapRightRowCellOne.textContent = "<b>Overlap Right average in cm:</b> ";
-    overlapRightRowCellTwo.textContent = (
-      distValuesOR.reduce((a, b) => a + b) / distValuesOR.length
-    ).toFixed(3);
-    if (footstepStart.options[footstepStart.selectedIndex].value == "Left") {
-      var indexImaginaryFrontLeft = 0;
-      var indexImaginaryHindLeft = 0;
-      for (var i = 0; i < pointsRedLeft.length; i++) {
-        for (var j = 0; j < pointsRedRight.length; j++) {
-          if (i == j) {
-            var newRow = tbody.insertRow(-1);
-            let indexRow = newRow.rowIndex;
-            var cellOne = newRow.insertCell();
-            var cellTwo = newRow.insertCell();
-            var cellThree = newRow.insertCell();
-            var cellFour = newRow.insertCell();
-            var cellFive = newRow.insertCell();
-            indexImaginaryFrontLeft += 1;
-            cellOne.textContent = indexRow - 1;
-            // appendSafeHTML(cellTwo, [
-            // "Imaginary Front " + indexImaginaryFrontLeft,
-            // (() => {
-            //   const arrow = document.createTextNode(' → ');
-            //   return arrow;
-            // })(),
-            // `Red R${j + 1}`
-            // ]);
-            appendSafeHTML(cellTwo, [
-              `Imaginary Front ${indexImaginaryFrontLeft} `,
-              ' → ', // Just pass it as a string
-              `Red R${j + 1}`
-            ]);
-            cellThree.textContent = "Stride Width Front(L)";
-            if (i < pointsRedLeft.length - 1) {
-              distance = Math.hypot(
-                pointsRedRight[j].x - pointsRedRight[j].x,
-                (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
-                  pointsRedRight[j].y
-              ).toFixed(3);
-            } else {
-              distance = Math.hypot(
-                pointsRedRight[j].x - pointsRedRight[j].x,
-                pointsRedLeft[i].y - pointsRedRight[j].y
-              ).toFixed(3);
-            }
-            cellFour.textContent = distance;
-            cellFive.textContent = (distance / dist).toFixed(3);
-            distValuesSWFL.push(distance / dist);
-          }
-          if (i == j + 1) {
-            var newRow = tbody.insertRow(-1);
-            let indexRow = newRow.rowIndex;
-            var cellOne = newRow.insertCell();
-            var cellTwo = newRow.insertCell();
-            var cellThree = newRow.insertCell();
-            var cellFour = newRow.insertCell();
-            var cellFive = newRow.insertCell();
-            indexImaginaryFrontLeft += 1;
-            cellOne.textContent = indexRow - 1;
-            // appendSafeHTML(cellTwo, [
-            // "Imaginary Front " + indexImaginaryFrontLeft,
-            // (() => {
-            //   const arrow = document.createTextNode(' → ');
-            //   return arrow;
-            // })(),
-            // `Red L${i + 1}`
-            // ]);
-            appendSafeHTML(cellTwo, [
-              `Imaginary Front ${indexImaginaryFrontLeft} `,
-              ' → ', // Just pass it as a string
-              `Red L${i + 1}`
-            ]);
-            cellThree.textContent = "Stride Width Front(L)";
-            if (j < pointsRedRight.length - 1) {
-              distance = Math.hypot(
-                pointsRedLeft[i].x - pointsRedLeft[i].x,
-                pointsRedLeft[i].y -
-                  (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2
-              ).toFixed(3);
-            } else {
-              distance = Math.hypot(
-                pointsRedLeft[i].x - pointsRedLeft[i].x,
-                pointsRedLeft[i].y - pointsRedRight[j].y
-              ).toFixed(3);
-            }
-            cellFour.textContent = distance;
-            cellFive.textContent = (distance / dist).toFixed(3);
-            distValuesSWFL.push(distance / dist);
-          }
-        }
-      }
-      // console.log(distValuesSWFL);
-      var strideWidthFrontLeftMeanRow = tbody.insertRow(-1);
-      var strideWidthFrontLeftRowCellOne =
-        strideWidthFrontLeftMeanRow.insertCell();
-      var strideWidthFrontLeftRowCellTwo =
-        strideWidthFrontLeftMeanRow.insertCell();
-      strideWidthFrontLeftRowCellOne.colSpan = "4";
-      appendSafeHTML(strideWidthFrontLeftRowCellOne, [
-      (() => {
-        const b = document.createElement('b');
-        b.textContent = 'Stride Width Front(L) average in cm:';
-        return b;
-      })()
-      ]);
-      // strideWidthFrontLeftRowCellOne.textContent =
-      //   "<b>Stride Width Front(L) average in cm:</b> ";
-      strideWidthFrontLeftRowCellTwo.textContent = (
-        distValuesSWFL.reduce((a, b) => a + b) / distValuesSWFL.length
-      ).toFixed(3);
-      for (var i = 0; i < pointsBlueLeft.length; i++) {
-        for (var j = 0; j < pointsBlueRight.length; j++) {
-          if (i == j) {
-            var newRow = tbody.insertRow(-1);
-            let indexRow = newRow.rowIndex;
-            var cellOne = newRow.insertCell();
-            var cellTwo = newRow.insertCell();
-            var cellThree = newRow.insertCell();
-            var cellFour = newRow.insertCell();
-            var cellFive = newRow.insertCell();
-            indexImaginaryHindLeft += 1;
-            cellOne.textContent = indexRow - 1;
-            // appendSafeHTML(cellTwo, [
-            //   "Imaginary Hind " + indexImaginaryHindLeft,
-            //   (() => {
-            //     const arrow = document.createTextNode(' → ');
-            //     return arrow;
-            //   })(),
-            //   `Blue R${j + 1}`
-            //   ]);
-            appendSafeHTML(cellTwo, [
-              `Imaginary Hind ${indexImaginaryHindLeft} `,
-              ' → ', // Just pass it as a string
-              `Blue R${j + 1}`
-            ]);
-            // cellTwo.textContent =
-            //   "Imaginary Hind " +
-            //   indexImaginaryHindLeft +
-            //   " &#x2192 Blue R" +
-            //   (j + 1);
-            cellThree.textContent = "Stride Width Hind(L)";
-            if (i < pointsBlueLeft.length - 1) {
-              distance = Math.hypot(
-                pointsBlueRight[j].x - pointsBlueRight[j].x,
-                (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
-                  pointsBlueRight[j].y
-              ).toFixed(3);
-            } else {
-              distance = Math.hypot(
-                pointsBlueRight[j].x - pointsBlueRight[j].x,
-                pointsBlueLeft[i].y - pointsBlueRight[j].y
-              ).toFixed(3);
-            }
-            cellFour.textContent = distance;
-            cellFive.textContent = (distance / dist).toFixed(3);
-            distValuesSWHL.push(distance / dist);
-          }
-          if (i == j + 1) {
-            var newRow = tbody.insertRow(-1);
-            let indexRow = newRow.rowIndex;
-            var cellOne = newRow.insertCell();
-            var cellTwo = newRow.insertCell();
-            var cellThree = newRow.insertCell();
-            var cellFour = newRow.insertCell();
-            var cellFive = newRow.insertCell();
-            indexImaginaryHindLeft += 1;
-            cellOne.textContent = indexRow - 1;
-            // appendSafeHTML(cellTwo, [
-            //   "Imaginary Hind " + indexImaginaryHindLeft,
-            //   (() => {
-            //     const arrow = document.createTextNode(' → ');
-            //     return arrow;
-            //   })(),
-            //   `Blue L${i + 1}`
-            //   ]);
-            appendSafeHTML(cellTwo, [
-              `Imaginary Hind ${indexImaginaryHindLeft} `,
-              ' → ', // Just pass it as a string
-              `Blue L${i + 1}`
-            ]);
-            // cellTwo.textContent =
-            //   "Imaginary Hind " +
-            //   indexImaginaryHindLeft +
-            //   " &#x2192 Blue L" +
-            //   (i + 1);
-            cellThree.textContent = "Stride Width Hind(L)";
-            if (j < pointsBlueRight.length - 1) {
-              distance = Math.hypot(
-                pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-                pointsBlueLeft[i].y -
-                  (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2
-              ).toFixed(3);
-            } else {
-              distance = Math.hypot(
-                pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-                pointsBlueLeft[i].y - pointsBlueRight[j].y
-              ).toFixed(3);
-            }
-            cellFour.textContent = distance;
-            cellFive.textContent = (distance / dist).toFixed(3);
-            distValuesSWHL.push(distance / dist);
-          }
-        }
-      }
-      // console.log(distValuesSWHL);
-      var strideWidthHindLeftMeanRow = tbody.insertRow(-1);
-      var strideWidthHindLeftRowCellOne =
-        strideWidthHindLeftMeanRow.insertCell();
-      var strideWidthHindLeftRowCellTwo =
-        strideWidthHindLeftMeanRow.insertCell();
-      strideWidthHindLeftRowCellOne.colSpan = "4";
-      appendSafeHTML(strideWidthHindLeftRowCellOne, [
-      (() => {
-        const b = document.createElement('b');
-        b.textContent = 'Stride Width Hind(L) average in cm:';
-        return b;
-      })()
-      ]);
-      // strideWidthHindLeftRowCellOne.textContent =
-      //   "<b>Stride Width Hind(L) average in cm:</b> ";
-      strideWidthHindLeftRowCellTwo.textContent = (
-        distValuesSWHL.reduce((a, b) => a + b) / distValuesSWHL.length
-      ).toFixed(3);
-    }
-    if (footstepStart.options[footstepStart.selectedIndex].value == "Right") {
-      var indexImaginaryFrontRight = 0;
-      var indexImaginaryHindRight = 0;
-      for (var i = 0; i < pointsRedLeft.length; i++) {
-        for (var j = 0; j < pointsRedRight.length; j++) {
-          if (i == j) {
-            var newRow = tbody.insertRow(-1);
-            let indexRow = newRow.rowIndex;
-            var cellOne = newRow.insertCell();
-            var cellTwo = newRow.insertCell();
-            var cellThree = newRow.insertCell();
-            var cellFour = newRow.insertCell();
-            var cellFive = newRow.insertCell();
-            indexImaginaryFrontRight += 1;
-            cellOne.textContent = indexRow - 1;
-            // appendSafeHTML(cellTwo, [
-            //   "Imaginary Front " + indexImaginaryFrontRight,
-            //   (() => {
-            //     const arrow = document.createTextNode(' → ');
-            //     return arrow;
-            //   })(),
-            //   `Red L${i + 1}`
-            //   ]);
-            appendSafeHTML(cellTwo, [
-              `Imaginary Front ${indexImaginaryFrontRight} `,
-              ' → ', // Just pass it as a string
-              `Red L${i + 1}`
-            ]);
-            
-            cellThree.textContent = "Stride Width Front(R)";
-            if (j < pointsRedRight.length - 1) {
-              distance = Math.hypot(
-                pointsRedLeft[i].x - pointsRedLeft[i].x,
-                (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2 -
-                  pointsRedLeft[i].y
-              ).toFixed(3);
-            } else {
-              distance = Math.hypot(
-                pointsRedLeft[i].x - pointsRedLeft[i].x,
-                pointsRedRight[j].y - pointsRedLeft[i].y
-              ).toFixed(3);
-            }
-            cellFour.textContent = distance;
-            cellFive.textContent = (distance / dist).toFixed(3);
-            distValuesSWFR.push(distance / dist);
-          }
-          if (j == i + 1) {
-            var newRow = tbody.insertRow(-1);
-            let indexRow = newRow.rowIndex;
-            var cellOne = newRow.insertCell();
-            var cellTwo = newRow.insertCell();
-            var cellThree = newRow.insertCell();
-            var cellFour = newRow.insertCell();
-            var cellFive = newRow.insertCell();
-            indexImaginaryFrontRight += 1;
-            cellOne.textContent = indexRow - 1;
-            // appendSafeHTML(cellTwo, [
-            //   "Imaginary Front " + indexImaginaryFrontRight,
-            //   (() => {
-            //     const arrow = document.createTextNode(' → ');
-            //     return arrow;
-            //   })(),
-            //   `Red R${j + 1}`
-            //   ]);
-            appendSafeHTML(cellTwo, [
-              `Imaginary Front ${indexImaginaryFrontRight} `,
-              ' → ', // Just pass it as a string
-              `Red R${j + 1}`
-            ]);
-            // cellTwo.textContent =
-            //   "Imaginary Front " +
-            //   indexImaginaryFrontRight +
-            //   " &#x2192 Red R" +
-            //   (j + 1);
-            cellThree.textContent = "Stride Width Front(R)";
-            if (i < pointsRedLeft.length - 1) {
-              distance = Math.hypot(
-                pointsRedRight[j].x - pointsRedRight[j].x,
-                (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
-                  pointsRedRight[j].y
-              ).toFixed(3);
-            } else {
-              distance = Math.hypot(
-                pointsRedRight[j].x - pointsRedRight[j].x,
-                pointsRedLeft[i].y - pointsRedRight[j].y
-              ).toFixed(3);
-            }
-            cellFour.textContent = distance;
-            cellFive.textContent = (distance / dist).toFixed(3);
-            distValuesSWFR.push(distance / dist);
-          }
-        }
-      }
-      // console.log(distValuesSWFR);
-      var strideWidthFrontRightMeanRow = tbody.insertRow(-1);
-      var strideWidthFrontRightRowCellOne =
-        strideWidthFrontRightMeanRow.insertCell();
-      var strideWidthFrontRightRowCellTwo =
-        strideWidthFrontRightMeanRow.insertCell();
-      strideWidthFrontRightRowCellOne.colSpan = "4";
-      appendSafeHTML(strideWidthFrontRightRowCellOne, [
-      (() => {
-        const b = document.createElement('b');
-        b.textContent = 'Stride Width Front(R) average in cm:';
-        return b;
-      })()
-      ]);
-      // strideWidthFrontRightRowCellOne.textContent =
-      //   "<b>Stride Width Front(R) average in cm:</b> ";
-      strideWidthFrontRightRowCellTwo.textContent = (
-        distValuesSWFR.reduce((a, b) => a + b) / distValuesSWFR.length
-      ).toFixed(3);
-      for (var i = 0; i < pointsBlueLeft.length; i++) {
-        for (var j = 0; j < pointsBlueRight.length; j++) {
-          if (i == j) {
-            var newRow = tbody.insertRow(-1);
-            let indexRow = newRow.rowIndex;
-            var cellOne = newRow.insertCell();
-            var cellTwo = newRow.insertCell();
-            var cellThree = newRow.insertCell();
-            var cellFour = newRow.insertCell();
-            var cellFive = newRow.insertCell();
-            indexImaginaryHindRight += 1;
-            cellOne.textContent = indexRow - 1;
-            // appendSafeHTML(cellTwo, [
-            //   "Imaginary Hind " + indexImaginaryHindRight,
-            //   (() => {
-            //     const arrow = document.createTextNode(' → ');
-            //     return arrow;
-            //   })(),
-            //   `Blue L${i + 1}`
-            //   ]);
-
-            appendSafeHTML(cellTwo, [
-              `Imaginary Hind ${indexImaginaryHindRight} `,
-              ' → ', // Just pass it as a string
-              `Blue L${i + 1}`
-            ]);
-            cellThree.textContent = "Stride Width Hind(R)";
-            if (j < pointsBlueRight.length - 1) {
-              distance = Math.hypot(
-                pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-                (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2 -
-                  pointsBlueLeft[i].y
-              ).toFixed(3);
-            } else {
-              distance = Math.hypot(
-                pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-                pointsBlueRight[j].y - pointsBlueLeft[i].y
-              ).toFixed(3);
-            }
-            cellFour.textContent = distance;
-            cellFive.textContent = (distance / dist).toFixed(3);
-            distValuesSWHR.push(distance / dist);
-          }
-          if (j == i + 1) {
-            var newRow = tbody.insertRow(-1);
-            let indexRow = newRow.rowIndex;
-            var cellOne = newRow.insertCell();
-            var cellTwo = newRow.insertCell();
-            var cellThree = newRow.insertCell();
-            var cellFour = newRow.insertCell();
-            var cellFive = newRow.insertCell();
-            indexImaginaryHindRight += 1;
-            cellOne.textContent = indexRow - 1;
-            // appendSafeHTML(cellTwo, [
-            //   "Imaginary Hind " + indexImaginaryHindRight,
-            //   (() => {
-            //     const arrow = document.createTextNode(' → ');
-            //     return arrow;
-            //   })(),
-            //   `Blue R${j + 1}`
-            //   ]);
-            
-            appendSafeHTML(cellTwo, [
-              `Imaginary Hind ${indexImaginaryHindRight} `,
-              ' → ', // Just pass it as a string
-              `Blue R${j + 1}`
-            ]);
-            // cellTwo.textContent =
-            //   "Imaginary Hind " +
-            //   indexImaginaryHindRight +
-            //   " &#x2192 Blue R" +
-            //   (j + 1);
-            cellThree.textContent = "Stride Width Hind(R)";
-            if (i < pointsBlueLeft.length - 1) {
-              distance = Math.hypot(
-                pointsBlueRight[j].x - pointsBlueRight[j].x,
-                (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
-                  pointsBlueRight[j].y
-              ).toFixed(3);
-            } else {
-              distance = Math.hypot(
-                pointsBlueRight[j].x - pointsBlueRight[j].x,
-                pointsBlueLeft[i].y - pointsBlueRight[j].y
-              ).toFixed(3);
-            }
-            cellFour.textContent = distance;
-            cellFive.textContent = (distance / dist).toFixed(3);
-            distValuesSWHR.push(distance / dist);
-          }
-        }
-      }
-      // console.log(distValuesSWHR);
-      var strideWidthHindRightMeanRow = tbody.insertRow(-1);
-      var strideWidthHindRightRowCellOne =
-        strideWidthHindRightMeanRow.insertCell();
-      var strideWidthHindRightRowCellTwo =
-        strideWidthHindRightMeanRow.insertCell();
-      strideWidthHindRightRowCellOne.colSpan = "4";
-      appendSafeHTML(strideWidthHindRightRowCellOne, [
-      (() => {
-        const b = document.createElement('b');
-        b.textContent = 'Stride Width Hind(R) average in cm:';
-        return b;
-      })()
-      ]);
-      // strideWidthHindRightRowCellOne.textContent =
-      //   "<b>Stride Width Hind(R) average in cm:</b> ";
-      strideWidthHindRightRowCellTwo.textContent = (
-        distValuesSWHR.reduce((a, b) => a + b) / distValuesSWHR.length
-      ).toFixed(3);
-    }
+    savedSizeNotice.append(' Measure the 1 cm line again on this image instead.');
   }
-  var lastRow = tbody.insertRow(-1);
-  var lastCell = lastRow.insertCell();
-  lastCell.textContent =
-    "------------------------------BREAK------------------------------";
-  lastCell.colSpan = "5";
-  lastCell.style.textAlign = "center";
-  if (tbody.rows.length >= 1){
-    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
-  } else{
-  }
+  savedSizeNotice.hidden = false;
 }
+savedChoices.addEventListener('change', updateSavedSizeNotice);
 
-// FUNCTION TO ADD ALL ENTRIES IN ONE CLICK WITHOUT AVERAGE
 
-function addEntriesAll() {
-  for (var i = 0; i < pointsRedLeft.length - 1; i++) {
-    var newRow = tbody.insertRow(-1);
-    let indexRow = newRow.rowIndex;
-    var cellOne = newRow.insertCell();
-    var cellTwo = newRow.insertCell();
-    var cellThree = newRow.insertCell();
-    var cellFour = newRow.insertCell();
-    var cellFive = newRow.insertCell();
-    cellOne.textContent = indexRow - 1;
-    appendSafeHTML(cellTwo, [
-        `Red L${i + 1} `,
-        ' → ', // Just pass it as a string
-        `Red L${i + 2}`
-      ]);
-    // cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Red L" + (i + 2);
-    cellThree.textContent = "Stride length left front";
-    distance = Math.hypot(
-      pointsRedLeft[i].x - pointsRedLeft[i + 1].x,
-      pointsRedLeft[i].y - pointsRedLeft[i + 1].y
-    ).toFixed(3);
-    cellFour.textContent = distance;
-    if (dist != 0) {
-      cellFive.textContent = (distance / dist).toFixed(3);
-    } else {
-      cellFive.textContent = "Undefined";
+// ---------------------------------------------------------------- keyboard shortcuts
+
+const SHORTCUTS = {
+  q: 'redCircleLeft',
+  w: 'redCircleRight',
+  a: 'blueCircleLeft',
+  s: 'blueCircleRight',
+  m: 'measureDistance',
+  d: 'resetMeasure',
+};
+
+document.addEventListener('keydown', event => {
+  // Leave browser shortcuts (Ctrl+R, Ctrl+P...) and typing in form fields alone
+  if (event.ctrlKey || event.metaKey || event.altKey) return;
+  const active = document.activeElement;
+  if (['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName) || active.isContentEditable) return;
+  if (!hasImage()) return;
+
+  const key = event.key.toLowerCase();
+
+  if (key === '+' || key === '=' || key === '-' || key === '0') {
+    event.preventDefault();
+    // Holding the key down repeats it: ask about losing work once, not on every repeat
+    if (event.repeat && hasWork()) return;
+    requestScale(key === '0' ? 100 : stepPercent(key === '-' ? -1 : 1));
+  } else if (event.shiftKey && key === 'm') {
+    $id('measureButton').click();
+  } else if (key in SHORTCUTS) {
+    $id(SHORTCUTS[key]).click();
+  } else if (key === 'p') {
+    alert('Stopped all marking/drawing functions.');
+    $id('toggleInactive').click();
+  } else if (key === 'r') {
+    if (confirm('Are you sure you want to reset the canvas? This will delete all points and measurements.')) {
+      $id('resetCanvas').click();
     }
   }
-  for (var i = 0; i < pointsRedRight.length - 1; i++) {
-    var newRow = tbody.insertRow(-1);
-    let indexRow = newRow.rowIndex;
-    var cellOne = newRow.insertCell();
-    var cellTwo = newRow.insertCell();
-    var cellThree = newRow.insertCell();
-    var cellFour = newRow.insertCell();
-    var cellFive = newRow.insertCell();
-    cellOne.textContent = indexRow - 1;
-    appendSafeHTML(cellTwo, [
-        `Red R${i + 1} `,
-        ' → ', // Just pass it as a string
-        `Red R${i + 2}`
-      ]);
-    // cellTwo.textContent = "Red R" + (i + 1) + " &#x2192 Red R" + (i + 2);
-    cellThree.textContent = "Stride length right front";
-    distance = Math.hypot(
-      pointsRedRight[i].x - pointsRedRight[i + 1].x,
-      pointsRedRight[i].y - pointsRedRight[i + 1].y
-    ).toFixed(3);
-    cellFour.textContent = distance;
-    if (dist != 0) {
-      cellFive.textContent = (distance / dist).toFixed(3);
-    } else {
-      cellFive.textContent = "Undefined";
-    }
-  }
-  for (var i = 0; i < pointsBlueLeft.length - 1; i++) {
-    var newRow = tbody.insertRow(-1);
-    let indexRow = newRow.rowIndex;
-    var cellOne = newRow.insertCell();
-    var cellTwo = newRow.insertCell();
-    var cellThree = newRow.insertCell();
-    var cellFour = newRow.insertCell();
-    var cellFive = newRow.insertCell();
-    cellOne.textContent = indexRow - 1;
-    appendSafeHTML(cellTwo, [
-        `Blue L${i + 1} `,
-        ' → ', // Just pass it as a string
-        `Blue L${i + 2}`
-      ]);
-    // cellTwo.textContent = "Blue L" + (i + 1) + " &#x2192 Blue L" + (i + 2);
-    cellThree.textContent = "Stride length left hind";
-    distance = Math.hypot(
-      pointsBlueLeft[i].x - pointsBlueLeft[i + 1].x,
-      pointsBlueLeft[i].y - pointsBlueLeft[i + 1].y
-    ).toFixed(3);
-    cellFour.textContent = distance;
-    if (dist != 0) {
-      cellFive.textContent = (distance / dist).toFixed(3);
-    } else {
-      cellFive.textContent = "Undefined";
-    }
-  }
-  for (var i = 0; i < pointsBlueRight.length - 1; i++) {
-    var newRow = tbody.insertRow(-1);
-    let indexRow = newRow.rowIndex;
-    var cellOne = newRow.insertCell();
-    var cellTwo = newRow.insertCell();
-    var cellThree = newRow.insertCell();
-    var cellFour = newRow.insertCell();
-    var cellFive = newRow.insertCell();
-    cellOne.textContent = indexRow - 1;
-    appendSafeHTML(cellTwo, [
-        `Blue R${i + 1} `,
-        ' → ', // Just pass it as a string
-        `Blue R${i + 2}`
-      ]);
-    // cellTwo.textContent = "Blue R" + (i + 1) + " &#x2192 Blue R" + (i + 2);
-    cellThree.textContent = "Stride length right hind";
-    distance = Math.hypot(
-      pointsBlueRight[i].x - pointsBlueRight[i + 1].x,
-      pointsBlueRight[i].y - pointsBlueRight[i + 1].y
-    ).toFixed(3);
-    cellFour.textContent = distance;
-    if (dist != 0) {
-      cellFive.textContent = (distance / dist).toFixed(3);
-    } else {
-      cellFive.textContent = "Undefined";
-    }
-  }
-  for (var i = 0; i < pointsRedLeft.length; i++) {
-    for (var j = 0; j < pointsBlueLeft.length; j++) {
-      if (i == j) {
-        var newRow = tbody.insertRow(-1);
-        let indexRow = newRow.rowIndex;
-        var cellOne = newRow.insertCell();
-        var cellTwo = newRow.insertCell();
-        var cellThree = newRow.insertCell();
-        var cellFour = newRow.insertCell();
-        var cellFive = newRow.insertCell();
-        cellOne.textContent = indexRow - 1;
-        // appendSafeHTML(cellTwo, [
-        // `Red L${i + 1} `,
-        //   (() => {
-        //     const arrow = document.createTextNode(' → ');
-        //     return arrow;
-        //   })(),
-        //   `Blue L${j + 1}`
-        // ]);
-        appendSafeHTML(cellTwo, [
-        `Red L${i + 1} `,
-        ' → ', // Just pass it as a string
-        `Blue L${j + 1}`
-      ]);
-        // cellTwo.textContent = "Red L" + (i + 1) + " &#x2192 Blue L" + (j + 1);
-        cellThree.textContent = "Overlap Left";
-        distance = Math.hypot(
-          pointsRedLeft[i].x - pointsBlueLeft[j].x,
-          pointsRedLeft[i].y - pointsBlueLeft[j].y
-        ).toFixed(3);
-        cellFour.textContent = distance;
-        if (dist != 0) {
-          cellFive.textContent = (distance / dist).toFixed(3);
-        } else {
-          cellFive.textContent = "Undefined";
-        }
-      }
-    }
-  }
-  for (var i = 0; i < pointsRedRight.length; i++) {
-    for (var j = 0; j < pointsBlueRight.length; j++) {
-      if (i == j) {
-        var newRow = tbody.insertRow(-1);
-        let indexRow = newRow.rowIndex;
-        var cellOne = newRow.insertCell();
-        var cellTwo = newRow.insertCell();
-        var cellThree = newRow.insertCell();
-        var cellFour = newRow.insertCell();
-        var cellFive = newRow.insertCell();
-        cellOne.textContent = indexRow - 1;
-        appendSafeHTML(cellTwo, [
-          `Red R${i + 1} `,
-          ' → ', // Just pass it as a string
-          `Blue R${j + 1}`
-        ]);
-        
-        cellThree.textContent = "Overlap Right";
-        distance = Math.hypot(
-          pointsRedRight[i].x - pointsBlueRight[j].x,
-          pointsRedRight[i].y - pointsBlueRight[j].y
-        ).toFixed(3);
-        cellFour.textContent = distance;
-        if (dist != 0) {
-          cellFive.textContent = (distance / dist).toFixed(3);
-        } else {
-          cellFive.textContent = "Undefined";
-        }
-      }
-    }
-  }
-  if (footstepStart.options[footstepStart.selectedIndex].value == "Left") {
-    var indexImaginaryFrontLeft = 0;
-    var indexImaginaryHindLeft = 0;
-    for (var i = 0; i < pointsRedLeft.length; i++) {
-      for (var j = 0; j < pointsRedRight.length; j++) {
-        if (i == j) {
-          var newRow = tbody.insertRow(-1);
-          let indexRow = newRow.rowIndex;
-          var cellOne = newRow.insertCell();
-          var cellTwo = newRow.insertCell();
-          var cellThree = newRow.insertCell();
-          var cellFour = newRow.insertCell();
-          var cellFive = newRow.insertCell();
-          indexImaginaryFrontLeft += 1;
-          cellOne.textContent = indexRow - 1;
-          // appendSafeHTML(cellTwo, [
-          // `Imaginary Front ${indexImaginaryFrontLeft} `,
-          //   (() => {
-          //     const arrow = document.createTextNode(' → ');
-          //     return arrow;
-          //   })(),
-          //   `Red R${j + 1}`
-          // ]);
-          appendSafeHTML(cellTwo, [
-              `Imaginary Front ${indexImaginaryFrontLeft} `,
-              ' → ', // Just pass it as a string
-              `Red R${j + 1}`
-            ]);
-          // cellTwo.textContent =
-          //   "Imaginary Front " +
-          //   indexImaginaryFrontLeft +
-          //   " &#x2192 Red R" +
-          //   (j + 1);
-          cellThree.textContent = "Stride Width Front(L)";
-          if (i < pointsRedLeft.length - 1) {
-            distance = Math.hypot(
-              pointsRedRight[j].x - pointsRedRight[j].x,
-              (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
-                pointsRedRight[j].y
-            ).toFixed(3);
-          } else {
-            distance = Math.hypot(
-              pointsRedRight[j].x - pointsRedRight[j].x,
-              pointsRedLeft[i].y - pointsRedRight[j].y
-            ).toFixed(3);
-          }
-          cellFour.textContent = distance;
-          if (dist != 0) {
-            cellFive.textContent = (distance / dist).toFixed(3);
-          } else {
-            cellFive.textContent = "Undefined";
-          }
-        }
-        if (i == j + 1) {
-          var newRow = tbody.insertRow(-1);
-          let indexRow = newRow.rowIndex;
-          var cellOne = newRow.insertCell();
-          var cellTwo = newRow.insertCell();
-          var cellThree = newRow.insertCell();
-          var cellFour = newRow.insertCell();
-          var cellFive = newRow.insertCell();
-          indexImaginaryFrontLeft += 1;
-          cellOne.textContent = indexRow - 1;
-          // appendSafeHTML(cellTwo, [
-          // `Imaginary Front ${indexImaginaryFrontLeft} `,
-          //   (() => {
-          //     const arrow = document.createTextNode(' → ');
-          //     return arrow;
-          //   })(),
-          //   `Red L${i + 1}`
-          // ]);
-          appendSafeHTML(cellTwo, [
-              `Imaginary Front ${indexImaginaryFrontLeft} `,
-              ' → ', // Just pass it as a string
-              `Red L${i + 1}`
-            ]);
-          cellThree.textContent = "Stride Width Front(L)";
-          if (j < pointsRedRight.length - 1) {
-            distance = Math.hypot(
-              pointsRedLeft[i].x - pointsRedLeft[i].x,
-              pointsRedLeft[i].y -
-                (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2
-            ).toFixed(3);
-          } else {
-            distance = Math.hypot(
-              pointsRedLeft[i].x - pointsRedLeft[i].x,
-              pointsRedLeft[i].y - pointsRedRight[j].y
-            ).toFixed(3);
-          }
-          cellFour.textContent = distance;
-          if (dist != 0) {
-            cellFive.textContent = (distance / dist).toFixed(3);
-          } else {
-            cellFive.textContent = "Undefined";
-          }
-        }
-      }
-    }
-    for (var i = 0; i < pointsBlueLeft.length; i++) {
-      for (var j = 0; j < pointsBlueRight.length; j++) {
-        if (i == j) {
-          var newRow = tbody.insertRow(-1);
-          let indexRow = newRow.rowIndex;
-          var cellOne = newRow.insertCell();
-          var cellTwo = newRow.insertCell();
-          var cellThree = newRow.insertCell();
-          var cellFour = newRow.insertCell();
-          var cellFive = newRow.insertCell();
-          indexImaginaryHindLeft += 1;
-          cellOne.textContent = indexRow - 1;
-          // appendSafeHTML(cellTwo, [
-          // `Imaginary Hind ${indexImaginaryHindLeft} `,
-          //   (() => {
-          //     const arrow = document.createTextNode(' → ');
-          //     return arrow;
-          //   })(),
-          //   `Blue R${j + 1}`
-          // ]);
-          appendSafeHTML(cellTwo, [
-              `Imaginary Hind ${indexImaginaryHindLeft} `,
-              ' → ', // Just pass it as a string
-              `Blue R${j + 1}`
-            ]);
-          // cellTwo.textContent =
-          //   "Imaginary Hind " +
-          //   indexImaginaryHindLeft +
-          //   " &#x2192 Blue R" +
-          //   (j + 1);
-          cellThree.textContent = "Stride Width Hind(L)";
-          if (i < pointsBlueLeft.length - 1) {
-            distance = Math.hypot(
-              pointsBlueRight[j].x - pointsBlueRight[j].x,
-              (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
-                pointsBlueRight[j].y
-            ).toFixed(3);
-          } else {
-            distance = Math.hypot(
-              pointsBlueRight[j].x - pointsBlueRight[j].x,
-              pointsBlueLeft[i].y - pointsBlueRight[j].y
-            ).toFixed(3);
-          }
-          cellFour.textContent = distance;
-          if (dist != 0) {
-            cellFive.textContent = (distance / dist).toFixed(3);
-          } else {
-            cellFive.textContent = "Undefined";
-          }
-        }
-        if (i == j + 1) {
-          var newRow = tbody.insertRow(-1);
-          let indexRow = newRow.rowIndex;
-          var cellOne = newRow.insertCell();
-          var cellTwo = newRow.insertCell();
-          var cellThree = newRow.insertCell();
-          var cellFour = newRow.insertCell();
-          var cellFive = newRow.insertCell();
-          indexImaginaryHindLeft += 1;
-          cellOne.textContent = indexRow - 1;
-          // appendSafeHTML(cellTwo, [
-          // `Imaginary Hind ${indexImaginaryHindLeft} `,
-          //   (() => {
-          //     const arrow = document.createTextNode(' → ');
-          //     return arrow;
-          //   })(),
-          //   `Blue L${i + 1}`
-          // ]);
-          appendSafeHTML(cellTwo, [
-              `Imaginary Hind ${indexImaginaryHindLeft} `,
-              ' → ', // Just pass it as a string
-              `Blue L${i + 1}`
-            ]);
-          // cellTwo.textContent =
-          //   "Imaginary Hind " +
-          //   indexImaginaryHindLeft +
-          //   " &#x2192 Blue L" +
-          //   (i + 1);
-          cellThree.textContent = "Stride Width Hind(L)";
-          if (j < pointsBlueRight.length - 1) {
-            distance = Math.hypot(
-              pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-              pointsBlueLeft[i].y -
-                (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2
-            ).toFixed(3);
-          } else {
-            distance = Math.hypot(
-              pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-              pointsBlueLeft[i].y - pointsBlueRight[j].y
-            ).toFixed(3);
-          }
-          cellFour.textContent = distance;
-          if (dist != 0) {
-            cellFive.textContent = (distance / dist).toFixed(3);
-          } else {
-            cellFive.textContent = "Undefined";
-          }
-        }
-      }
-    }
-  }
-  if (footstepStart.options[footstepStart.selectedIndex].value == "Right") {
-    var indexImaginaryFrontRight = 0;
-    var indexImaginaryHindRight = 0;
-    for (var i = 0; i < pointsRedLeft.length; i++) {
-      for (var j = 0; j < pointsRedRight.length; j++) {
-        if (i == j) {
-          var newRow = tbody.insertRow(-1);
-          let indexRow = newRow.rowIndex;
-          var cellOne = newRow.insertCell();
-          var cellTwo = newRow.insertCell();
-          var cellThree = newRow.insertCell();
-          var cellFour = newRow.insertCell();
-          var cellFive = newRow.insertCell();
-          indexImaginaryFrontRight += 1;
-          cellOne.textContent = indexRow - 1;
-          // appendSafeHTML(cellTwo, [
-          // `Imaginary Front ${indexImaginaryFrontRight} `,
-          //   (() => {
-          //     const arrow = document.createTextNode(' → ');
-          //     return arrow;
-          //   })(),
-          //   `Red L${i + 1}`
-          // ]);
-          appendSafeHTML(cellTwo, [
-              `Imaginary Front ${indexImaginaryFrontRight} `,
-              ' → ', // Just pass it as a string
-              `Red L${i + 1}`
-            ]);
-          
-          cellThree.textContent = "Stride Width Front(R)";
-          if (j < pointsRedRight.length - 1) {
-            distance = Math.hypot(
-              pointsRedLeft[i].x - pointsRedLeft[i].x,
-              (pointsRedRight[j].y + pointsRedRight[j + 1].y) / 2 -
-                pointsRedLeft[i].y
-            ).toFixed(3);
-          } else {
-            distance = Math.hypot(
-              pointsRedLeft[i].x - pointsRedLeft[i].x,
-              pointsRedRight[j].y - pointsRedLeft[i].y
-            ).toFixed(3);
-          }
-          cellFour.textContent = distance;
-          if (dist != 0) {
-            cellFive.textContent = (distance / dist).toFixed(3);
-          } else {
-            cellFive.textContent = "Undefined";
-          }
-        }
-        if (j == i + 1) {
-          var newRow = tbody.insertRow(-1);
-          let indexRow = newRow.rowIndex;
-          var cellOne = newRow.insertCell();
-          var cellTwo = newRow.insertCell();
-          var cellThree = newRow.insertCell();
-          var cellFour = newRow.insertCell();
-          var cellFive = newRow.insertCell();
-          indexImaginaryFrontRight += 1;
-          cellOne.textContent = indexRow - 1;
-          // appendSafeHTML(cellTwo, [
-          // `Imaginary Front ${indexImaginaryFrontRight} `,
-          //   (() => {
-          //     const arrow = document.createTextNode(' → ');
-          //     return arrow;
-          //   })(),
-          //   `Red R${j + 1}`
-          // ]);
-          appendSafeHTML(cellTwo, [
-              `Imaginary Front ${indexImaginaryFrontRight} `,
-              ' → ', // Just pass it as a string
-              `Red R${j + 1}`
-            ]);
-          // cellTwo.textContent =
-          //   "Imaginary Front " +
-          //   indexImaginaryFrontRight +
-          //   " &#x2192 Red R" +
-          //   (j + 1);
-          cellThree.textContent = "Stride Width Front(R)";
-          if (i < pointsRedLeft.length - 1) {
-            distance = Math.hypot(
-              pointsRedRight[j].x - pointsRedRight[j].x,
-              (pointsRedLeft[i].y + pointsRedLeft[i + 1].y) / 2 -
-                pointsRedRight[j].y
-            ).toFixed(3);
-          } else {
-            distance = Math.hypot(
-              pointsRedRight[j].x - pointsRedRight[j].x,
-              pointsRedLeft[i].y - pointsRedRight[j].y
-            ).toFixed(3);
-          }
-          cellFour.textContent = distance;
-          if (dist != 0) {
-            cellFive.textContent = (distance / dist).toFixed(3);
-          } else {
-            cellFive.textContent = "Undefined";
-          }
-        }
-      }
-    }
-    for (var i = 0; i < pointsBlueLeft.length; i++) {
-      for (var j = 0; j < pointsBlueRight.length; j++) {
-        if (i == j) {
-          var newRow = tbody.insertRow(-1);
-          let indexRow = newRow.rowIndex;
-          var cellOne = newRow.insertCell();
-          var cellTwo = newRow.insertCell();
-          var cellThree = newRow.insertCell();
-          var cellFour = newRow.insertCell();
-          var cellFive = newRow.insertCell();
-          indexImaginaryHindRight += 1;
-          cellOne.textContent = indexRow - 1;
-          // appendSafeHTML(cellTwo, [
-          // `Imaginary Hind ${indexImaginaryHindRight} `,
-          //   (() => {
-          //     const arrow = document.createTextNode(' → ');
-          //     return arrow;
-          //   })(),
-          //   `Blue L${i + 1}`
-          // ]);
-          appendSafeHTML(cellTwo, [
-              `Imaginary Hind ${indexImaginaryHindRight} `,
-              ' → ', // Just pass it as a string
-              `Blue L${i + 1}`
-            ]);
-          // cellTwo.textContent =
-          //   "Imaginary Hind " +
-          //   indexImaginaryHindRight +
-          //   " &#x2192 Blue L" +
-          //   (i + 1);
-          cellThree.textContent = "Stride Width Hind(R)";
-          if (j < pointsBlueRight.length - 1) {
-            distance = Math.hypot(
-              pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-              (pointsBlueRight[j].y + pointsBlueRight[j + 1].y) / 2 -
-                pointsBlueLeft[i].y
-            ).toFixed(3);
-          } else {
-            distance = Math.hypot(
-              pointsBlueLeft[i].x - pointsBlueLeft[i].x,
-              pointsBlueRight[j].y - pointsBlueLeft[i].y
-            ).toFixed(3);
-          }
-          cellFour.textContent = distance;
-          if (dist != 0) {
-            cellFive.textContent = (distance / dist).toFixed(3);
-          } else {
-            cellFive.textContent = "Undefined";
-          }
-        }
-        if (j == i + 1) {
-          var newRow = tbody.insertRow(-1);
-          let indexRow = newRow.rowIndex;
-          var cellOne = newRow.insertCell();
-          var cellTwo = newRow.insertCell();
-          var cellThree = newRow.insertCell();
-          var cellFour = newRow.insertCell();
-          var cellFive = newRow.insertCell();
-          indexImaginaryHindRight += 1;
-          cellOne.textContent = indexRow - 1;
-          // appendSafeHTML(cellTwo, [
-          // `Imaginary Hind ${indexImaginaryHindRight} `,
-          //   (() => {
-          //     const arrow = document.createTextNode(' → ');
-          //     return arrow;
-          //   })(),
-          //   `Blue R${j + 1}`
-          // ]);
-          appendSafeHTML(cellTwo, [
-              `Imaginary Hind ${indexImaginaryHindRight} `,
-              ' → ', // Just pass it as a string
-              `Blue R${j + 1}`
-            ]);
-          cellThree.textContent = "Stride Width Hind(R)";
-          if (i < pointsBlueLeft.length - 1) {
-            distance = Math.hypot(
-              pointsBlueRight[j].x - pointsBlueRight[j].x,
-              (pointsBlueLeft[i].y + pointsBlueLeft[i + 1].y) / 2 -
-                pointsBlueRight[j].y
-            ).toFixed(3);
-          } else {
-            distance = Math.hypot(
-              pointsBlueRight[j].x - pointsBlueRight[j].x,
-              pointsBlueLeft[i].y - pointsBlueRight[j].y
-            ).toFixed(3);
-          }
-          cellFour.textContent = distance;
-          if (dist != 0) {
-            cellFive.textContent = (distance / dist).toFixed(3);
-          } else {
-            cellFive.textContent = "Undefined";
-          }
-        }
-      }
-    }
-  }
-  if (
-    pointsRedLeft.length < 1 ||
-    pointsRedRight.length < 1 ||
-    pointsBlueLeft.length < 1 ||
-    pointsBlueRight.length < 1
-  ) {
-    alert("Points missing in some measurements.");
-  }
-  var lastRow = tbody.insertRow(-1);
-  var lastCell = lastRow.insertCell();
-  lastCell.textContent =
-    "------------------------------BREAK------------------------------";
-  lastCell.colSpan = "5";
-  lastCell.style.textAlign = "center";
-  if (tbody.rows.length >= 1){
-    removeByEntriesOption.style.display = '', removeByMeasurementsOption.style.display = ''
-  } else{
-  }
-}
+});
+
+
+// ---------------------------------------------------------------- screen resolution
+
+$id('userResolution').append(
+  `${Math.round(window.screen.width * window.devicePixelRatio)}x${Math.round(window.screen.height * window.devicePixelRatio)}`
+);
