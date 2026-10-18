@@ -4,75 +4,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{% static 'img/mus-musculus.ico' %}">
+    <link rel="shortcut icon" href="{% static 'img/logo_mice.ico' %}">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <title>MouseFrame - Information</title>
 </head>
 <body>
     {% include 'partials/header.html' %}
-    <main class="page">
-        <h1 class="page-title">How MouseFrame works</h1>
-        <p class="page-lead">What the tool measures, and how each value is calculated from the points you mark.</p>
+    <main class="page page-wide info-layout">
+        <aside class="toc" aria-label="On this page">
+            <p class="toc-title">On this page</p>
+            <nav>
+                <a href="#purpose">Purpose</a>
+                <a href="#measurements">Measurements</a>
+                <a href="#stride-width">Stride width</a>
+                <a href="#marking-order">Marking order</a>
+            </nav>
+            <a class="btn-main toc-cta" href="{% url 'home' %}">Open the analysis</a>
+        </aside>
 
-        <section class="panel">
-            <h2>Purpose</h2>
-            <p>MouseFrame automates the measurements traditionally taken by hand from mouse track sheets, which saves time and reduces human error.</p>
-            <p>A scanned sheet becomes an interactive canvas. You mark the paw prints on it, and the results can be exported to Excel or copied to the clipboard for further analysis.</p>
-        </section>
+        <div class="info-content">
+            <header class="info-hero">
+                <p class="eyebrow">Documentation</p>
+                <h1 class="page-title">How MouseFrame works</h1>
+                <p class="page-lead">What the tool measures, and how each value is calculated from the points you mark.</p>
+                <dl class="facts">
+                    <div><dt>8</dt><dd>gait measurements per sheet</dd></div>
+                    <div><dt>px &amp; cm</dt><dd>every value, once calibrated</dd></div>
+                    <div><dt>2</dt><dd>export options: Excel or clipboard</dd></div>
+                </dl>
+            </header>
 
-        <section class="panel">
-            <h2>Walking behaviour measurements</h2>
-            <p>Front paws are marked in <span class="paw-front">red</span> and hind paws in <span class="paw-hind">blue</span>. MouseFrame calculates eight measurements:</p>
-            <ul class="measure-list">
-                <li><a href="#sllf">Stride length left front</a></li>
-                <li><a href="#sllh">Stride length left hind</a></li>
-                <li><a href="#slrf">Stride length right front</a></li>
-                <li><a href="#slrh">Stride length right hind</a></li>
-                <li><a href="#ol">Overlap left</a></li>
-                <li><a href="#or">Overlap right</a></li>
-                <li><a href="#swf">Stride width front</a></li>
-                <li><a href="#swh">Stride width hind</a></li>
-            </ul>
-            <figure class="figure">
-                <a href="{% static 'img/image-vector.png' %}" target="_blank" aria-label="Open Figure 1 at full size">
-                    <img src="{% static 'img/image-vector.png' %}" alt="Diagram showing all measurements calculated by the online tool. Left (L) and right (R) sides are labeled, with x and y vectors indicating their respective directions. The coordinate system uses x and y values with the origin located at the top-left corner of the image.">
-                </a>
-                <figcaption><b>Figure 1.</b> Every measurement calculated by MouseFrame. L is the left side and R the right side. Vectors x and y show their directions. Coordinates are stored as x and y values, with the origin at the top-left corner of the image.</figcaption>
-            </figure>
-        </section>
+            <section class="info-section" id="purpose">
+                <h2>Purpose</h2>
+                <p>MouseFrame automates the measurements traditionally taken by hand from mouse track sheets, which saves time and reduces human error.</p>
+                <p>A scanned sheet becomes an interactive canvas. You mark the paw prints on it, and the results can be exported to Excel or copied to the clipboard for further analysis.</p>
+            </section>
 
-        <section class="panel">
-            <h2>How the values are calculated</h2>
-            <p>Every measurement is the Euclidean distance between two points on the image. The results depend on each print being marked as the right paw (front or hind, left or right).</p>
-            <p>Footprints are processed in the order they were marked, so keep that order consistent with the path of the animal. A different order gives incorrect measurements.</p>
-            <ul class="definitions">
-                <li><strong id="sllf">Stride length, left front.</strong> Distance between consecutive left front (red) prints, from L(x) to L(x+1). The last print in the sequence is excluded.</li>
-                <li><strong id="sllh">Stride length, left hind.</strong> Distance between consecutive left hind (blue) prints, from L(x) to L(x+1). The last print in the sequence is excluded.</li>
-                <li><strong id="slrf">Stride length, right front.</strong> Distance between consecutive right front (red) prints, from R(x) to R(x+1). The last print in the sequence is excluded.</li>
-                <li><strong id="slrh">Stride length, right hind.</strong> Distance between consecutive right hind (blue) prints, from R(x) to R(x+1). The last print in the sequence is excluded.</li>
-                <li><strong id="ol">Overlap, left.</strong> Distance between the left front (red) and left hind (blue) prints that share the same index.</li>
-                <li><strong id="or">Overlap, right.</strong> Distance between the right front (red) and right hind (blue) prints that share the same index.</li>
-                <li><strong id="swf">Stride width, front.</strong> Uses the front (red) prints. You choose whether the first print in the sequence is left or right. The width is the distance between the selected print and an intermediate reference point, which has the same x-coordinate as the selected print and the average y-coordinate of the corresponding left and right front prints. See Figure 2.</li>
-                <li><strong id="swh">Stride width, hind.</strong> Uses the hind (blue) prints, with the same method as the front stride width. You choose whether the first print is left or right. See Figure 3.</li>
-            </ul>
+            <section class="info-section" id="measurements">
+                <h2>Walking behaviour measurements</h2>
+                <p>Front paws are marked in <span class="paw-front">red</span> and hind paws in <span class="paw-hind">blue</span>. Every measurement is the Euclidean distance between two points on the image.</p>
 
-            <figure class="figure">
-                <a href="{% static 'img/swfrstart.jpg' %}" target="_blank" aria-label="Open Figure 2 at full size">
-                    <img src="{% static 'img/swfrstart.jpg' %}" alt="Example illustrating the front stride width measurement with the first set of footsteps on the right. Only the red landmarks are used as reference points. The stride width is measured between L1 and I1, where I1 shares the same x-coordinate as L1 and the average y-coordinate of R1 and R2.">
-                </a>
-                <figcaption><b>Figure 2.</b> Front stride width with the first footsteps on the right. Only the red landmarks are used. The width is measured between L1 and I1, where I1 has the x-coordinate of L1 and the average y-coordinate of R1 and R2.</figcaption>
-            </figure>
+                <figure class="fig fig-wide">
+                    <button class="fig-zoom" type="button" data-full="{% static 'img/image-vector.png' %}" aria-label="Enlarge Figure 1">
+                        <img src="{% static 'img/image-vector.png' %}" width="3344" height="861" alt="Diagram showing all measurements calculated by the online tool. Left (L) and right (R) sides are labeled, with x and y vectors indicating their respective directions. The coordinate system uses x and y values with the origin located at the top-left corner of the image.">
+                    </button>
+                    <figcaption><b>Figure 1.</b> Every measurement calculated by MouseFrame. L is the left side and R the right side. Vectors x and y show their directions. Coordinates are stored as x and y values, with the origin at the top-left corner of the image.</figcaption>
+                </figure>
 
-            <figure class="figure">
-                <a href="{% static 'img/swhlstart.jpg' %}" target="_blank" aria-label="Open Figure 3 at full size">
-                    <img src="{% static 'img/swhlstart.jpg' %}" alt="Example illustrating the hind stride width measurement with the first set of footsteps on the left. Only the blue landmarks are used as reference points. The stride width is measured between R1 and I1, where I1 shares the same x-coordinate as R1 and the average y-coordinate of L1 and L2.">
-                </a>
-                <figcaption><b>Figure 3.</b> Hind stride width with the first footsteps on the left. Only the blue landmarks are used. The width is measured between R1 and I1, where I1 has the x-coordinate of R1 and the average y-coordinate of L1 and L2.</figcaption>
-            </figure>
-        </section>
+                <div class="filter-bar" role="group" aria-label="Filter measurements">
+                    <button type="button" class="chip" data-filter="all" aria-pressed="true">All</button>
+                    <button type="button" class="chip" data-filter="length" aria-pressed="false">Stride length</button>
+                    <button type="button" class="chip" data-filter="overlap" aria-pressed="false">Overlap</button>
+                    <button type="button" class="chip" data-filter="width" aria-pressed="false">Stride width</button>
+                </div>
+
+                <div class="measure-grid">
+                    <article class="measure-card" id="sllf" data-kind="length">
+                        <span class="tag tag-front">Front · left</span>
+                        <h3>Stride length, left front</h3>
+                        <p>Distance between consecutive left front prints, from L(x) to L(x+1). The last print in the sequence is excluded.</p>
+                    </article>
+                    <article class="measure-card" id="sllh" data-kind="length">
+                        <span class="tag tag-hind">Hind · left</span>
+                        <h3>Stride length, left hind</h3>
+                        <p>Distance between consecutive left hind prints, from L(x) to L(x+1). The last print in the sequence is excluded.</p>
+                    </article>
+                    <article class="measure-card" id="slrf" data-kind="length">
+                        <span class="tag tag-front">Front · right</span>
+                        <h3>Stride length, right front</h3>
+                        <p>Distance between consecutive right front prints, from R(x) to R(x+1). The last print in the sequence is excluded.</p>
+                    </article>
+                    <article class="measure-card" id="slrh" data-kind="length">
+                        <span class="tag tag-hind">Hind · right</span>
+                        <h3>Stride length, right hind</h3>
+                        <p>Distance between consecutive right hind prints, from R(x) to R(x+1). The last print in the sequence is excluded.</p>
+                    </article>
+                    <article class="measure-card" id="ol" data-kind="overlap">
+                        <span class="tag tag-both">Front + hind · left</span>
+                        <h3>Overlap, left</h3>
+                        <p>Distance between the left front and left hind prints that share the same index.</p>
+                    </article>
+                    <article class="measure-card" id="or" data-kind="overlap">
+                        <span class="tag tag-both">Front + hind · right</span>
+                        <h3>Overlap, right</h3>
+                        <p>Distance between the right front and right hind prints that share the same index.</p>
+                    </article>
+                    <article class="measure-card" id="swf" data-kind="width">
+                        <span class="tag tag-front">Front</span>
+                        <h3>Stride width, front</h3>
+                        <p>Distance between a front print and an intermediate reference point on the opposite side. <a href="#stride-width">See Figure 2</a>.</p>
+                    </article>
+                    <article class="measure-card" id="swh" data-kind="width">
+                        <span class="tag tag-hind">Hind</span>
+                        <h3>Stride width, hind</h3>
+                        <p>Same method as the front stride width, using the hind prints. <a href="#stride-width">See Figure 3</a>.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="info-section" id="stride-width">
+                <h2>How stride width is calculated</h2>
+                <p>You choose whether the first print in the sequence is left or right. The width is the distance between the selected print and an intermediate reference point I, which has the same x-coordinate as the selected print and the average y-coordinate of the two neighbouring prints on the other side.</p>
+                <p class="formula"><code>I = ( L1<sub>x</sub> , (R1<sub>y</sub> + R2<sub>y</sub>) / 2 )</code></p>
+
+                <div class="fig-pair">
+                    <figure class="fig">
+                        <button class="fig-zoom" type="button" data-full="{% static 'img/swfrstart.jpg' %}" aria-label="Enlarge Figure 2">
+                            <img src="{% static 'img/swfrstart.jpg' %}" width="743" height="259" alt="Example illustrating the front stride width measurement with the first set of footsteps on the right. Only the red landmarks are used as reference points. The stride width is measured between L1 and I1, where I1 shares the same x-coordinate as L1 and the average y-coordinate of R1 and R2.">
+                        </button>
+                        <figcaption><b>Figure 2.</b> Front stride width, first footsteps on the right. Only the <span class="paw-front">red</span> landmarks are used. The width is measured between L1 and I1.</figcaption>
+                    </figure>
+                    <figure class="fig">
+                        <button class="fig-zoom" type="button" data-full="{% static 'img/swhlstart.jpg' %}" aria-label="Enlarge Figure 3">
+                            <img src="{% static 'img/swhlstart.jpg' %}" alt="Example illustrating the hind stride width measurement with the first set of footsteps on the left. Only the blue landmarks are used as reference points. The stride width is measured between R1 and I1, where I1 shares the same x-coordinate as R1 and the average y-coordinate of L1 and L2.">
+                        </button>
+                        <figcaption><b>Figure 3.</b> Hind stride width, first footsteps on the left. Only the <span class="paw-hind">blue</span> landmarks are used. The width is measured between R1 and I1.</figcaption>
+                    </figure>
+                </div>
+            </section>
+
+            <section class="info-section" id="marking-order">
+                <h2>Marking order matters</h2>
+                <div class="callout">
+                    <p><b>Mark the prints in the order the animal walked.</b> Footprints are processed in the order they were marked, so a different order gives incorrect measurements.</p>
+                    <p>Each print must also be marked as the correct paw: front or hind, left or right.</p>
+                </div>
+            </section>
+        </div>
     </main>
+
+    <dialog class="lightbox" id="lightbox" aria-label="Enlarged figure">
+        <form method="dialog"><button class="btn-quiet lightbox-close" aria-label="Close">Close</button></form>
+        <img alt="">
+        <p class="lightbox-caption"></p>
+    </dialog>
+
     {% include 'partials/footer.html' %}
     <script src="{% static 'js/simple-version-control.js' %}"></script>
+    <script src="{% static 'js/info.js' %}"></script>
 </body>
 </html>

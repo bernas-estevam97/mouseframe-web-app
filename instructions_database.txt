@@ -1,0 +1,31 @@
+1. Create a user and a database. Replace the password with your own:
+
+docker exec -it polyq-pg psql -U postgres -c "CREATE USER mouseframe WITH PASSWORD 'change_me_strong_pw';"
+docker exec -it polyq-pg psql -U postgres -c "CREATE DATABASE mouseframe OWNER mouseframe;"
+
+If -U postgres fails, your container uses a different admin user. That is whatever POSTGRES_USER was set to when the container was created. Check it with:
+
+docker exec polyq-pg env | grep POSTGRES_USER
+
+2. Add these lines to .env:
+
+DB_NAME=postgres
+POSTGRES_DB=mouseframe
+DB_USER=mouseframe
+DB_PASSWORD=change_me_strong_pw
+DB_HOST=127.0.0.1
+DB_PORT=5432
+
+DB_NAME=postgres is the switch that turns PostgreSQL on. It doesn't name the database; POSTGRES_DB does.
+
+3. Create the tables. Run these from the project root with the venv active:
+
+python manage.py migrate
+python manage.py createcachetable
+python manage.py createsuperuser
+
+Don't skip createcachetable. Sessions and the failed-login counters are stored in the database cache, so login won't work without that table.
+
+The new database starts empty. If you want to copy over the data in db.sqlite3, there are two steps:
+- With .env still on SQLite, run python manage.py dumpdata --exclude contenttypes --exclude auth.permission > data.json.
+- After switching .env to Postgres, run python manage.py loaddata data.json.
